@@ -42,7 +42,7 @@ const fotos = defineCollection({
             'Galàxies', 
             'Nebuloses', 
             'Cúmuls i Estrelles', 
-            'Cel'
+            'Sol'
         ]),
         
         equip: z.object({
@@ -72,9 +72,23 @@ const fotos = defineCollection({
             // 4. Convierte tu fecha ISO automáticamente para poder ordenarlas
             data: z.coerce.date(),
             bortle: z.string(),
+            sessions: z.array(z.object({
+                inici: z.coerce.date(),
+                fi: z.coerce.date().optional(),
+                captura: z.string().optional(),
+                lloc: z.string().optional(),
+            })).optional().default([]),
         }),
     }),
 });
 
-// Exportamos la colección con el nuevo nombre "fotos"
-export const collections = { fotos };
+const sol = defineCollection({
+	loader: glob({ base: './src/content/sol', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		fecha: z.coerce.date(),
+		imagen: z.string(),
+		comentario: z.string(),
+	}),
+});
+
+export const collections = { fotos, sol };

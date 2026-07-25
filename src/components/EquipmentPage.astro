@@ -9,7 +9,7 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
 const ui = equipmentUi[lang];
-const photo = withBase('imagenes/equipo-vista-lateral-izquierda.webp', base);
+const photo = withBase('imagenes/equipo/equipo-vista-lateral-izquierda.webp', base);
 ---
 
 <Layout minimal compact lang={lang} title={t.myEquipment} languageLinks={languageLinks.equipment(base)} backLink={{ href: homeHref(lang, base), label: ui.backHome }}>

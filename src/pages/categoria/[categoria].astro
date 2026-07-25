@@ -1,17 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
 import CategoryPage from '../../components/CategoryPage.astro';
+import SolarPage from '../../components/SolarPage.astro';
 import { categories } from '../../i18n';
 
 export async function getStaticPaths() {
 	const fotos = await getCollection('fotos');
+	const sol = await getCollection('sol');
 	return categories.map((category) => ({
 		params: { categoria: category.value },
-		props: { categoryKey: category.key, fotos: fotos.filter((foto) => foto.data.categoria === category.value).sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf()) },
+		props: {
+			categoryKey: category.key,
+			fotos: fotos.filter((foto) => foto.data.categoria === category.value).sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf()),
+			sol: sol.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()),
+		},
 	}));
 }
 
-const { categoryKey, fotos } = Astro.props;
+const { categoryKey, fotos, sol } = Astro.props;
 ---
 
-<CategoryPage lang="ca" categoryKey={categoryKey} fotos={fotos} />
+{categoryKey === 'sun' ? <SolarPage lang="ca" fotos={sol} /> : <CategoryPage lang="ca" categoryKey={categoryKey} fotos={fotos} />}

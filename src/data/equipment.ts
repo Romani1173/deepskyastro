@@ -82,12 +82,12 @@ export const equipmentGroups: EquipmentGroup[] = [
 		title: { ca: 'Tren Òptic Principal', es: 'Tren Óptico Principal', en: 'Main Optical Train' },
 		summary: { ca: 'Captura i formació de la imatge', es: 'Captura y formación de la imagen', en: 'Image capture and formation' },
 		slug: { ca: 'tren-principal', es: 'tren-principal', en: 'main-imaging-train' },
-		image: 'imagenes/equipo-tren-optico-principal.jpeg',
+		image: 'imagenes/equipo/equipo-tren-optico-principal.jpeg',
 		imageAlt: { ca: 'Vista general del tren òptic principal complet instal·lat sobre la muntura', es: 'Vista general del tren óptico principal completo instalado sobre la montura', en: 'General view of the complete main optical train installed on the mount' },
 		hotspot: { x: 15, y: 19, targetX: 35, targetY: 23 },
 		items: [
 			item('ota', '01', { ca: 'Teleskop Service TS 102ED f/7', es: 'Teleskop Service TS 102ED f/7', en: 'Teleskop Service TS 102ED f/7' }, { ca: 'Captura principal', es: 'Captura principal', en: 'Main capture' }, { ca: 'Refractor ED de 102 mm utilitzat a f/5,6', es: 'Refractor ED de 102 mm utilizado a f/5,6', en: '102 mm ED refractor used at f/5.6' }, { ca: 'ota-principal', es: 'ota-principal', en: 'main-ota' }, {
-				image: 'imagenes/equipo-ota-principal.jpeg',
+				image: 'imagenes/equipo/equipo-ota-principal.jpeg',
 				imageAlt: { ca: 'Refractor Teleskop Service TS 102ED amb les cintes calefactores del tub principal i del tub de guiatge, i la sonda de temperatura instal·lada al lateral', es: 'Refractor Teleskop Service TS 102ED con las cintas calentadoras del tubo principal y del tubo de guiado, y la sonda de temperatura instalada en el lateral', en: 'Teleskop Service TS 102ED refractor with heater bands on the main and guide scopes, and the temperature probe attached to its side' },
 				description: {
 					ca: 'El Teleskop Service TS 102ED és el tub principal de captura: un refractor ED de 102 mm amb 714 mm de distància focal i relació nativa f/7. En el meu muntatge treballa amb un reductor-aplanador 0,8×, que deixa el conjunt aproximadament en 571 mm i f/5,6 per obtenir un camp més ampli. La fotografia també ajuda a identificar petits elements del sistema anticondensació: la cinta calefactora del tub principal, una segona cinta al tub de guiatge i la sonda de temperatura fixada al lateral. Tot i pertànyer a l’electrònica de control, es mostren aquí perquè la seva col·locació sobre els tubs explica millor la seva funció.',
@@ -113,7 +113,7 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('reducer', '02', { ca: 'TS-Optics TS102RED 0,8×', es: 'TS-Optics TS102RED 0,8×', en: 'TS-Optics TS102RED 0.8×' }, { ca: 'Tren òptic', es: 'Tren óptico', en: 'Optical train' }, { ca: 'Reducció de focal i correcció del camp per al TS 102ED', es: 'Reducción de focal y corrección del campo para el TS 102ED', en: 'Focal reduction and field correction for the TS 102ED' }, { ca: 'reductor-aplanador', es: 'reductor-aplanador', en: 'reducer-flattener' }, {
-				image: 'imagenes/equipo-tren-imagen-posterior.jpeg',
+				image: 'imagenes/equipo/equipo-tren-imagen-posterior.jpeg',
 				imageAlt: { ca: 'Vista lateral del tren d’imatge amb el TS-Optics TS102RED 0,8× situat entre l’enfocador i la roda portafiltres', es: 'Vista lateral del tren de imagen con el TS-Optics TS102RED 0,8× situado entre el enfocador y la rueda portafiltros', en: 'Side view of the imaging train with the TS-Optics TS102RED 0.8× positioned between the focuser and filter wheel' },
 				description: {
 					ca: 'El TS-Optics TS102RED compleix dues funcions en una sola peça. Com a reductor 0,8×, transforma els 714 mm i f/7 natius de l’OTA en aproximadament 571 mm i f/5,6, ampliant el camp capturat i deixant el temps d’exposició en prop del 64 % de l’original. Com a aplanador, corregeix la curvatura del camp perquè les estrelles es mantinguin nítides també cap a les vores del sensor. A la fotografia es troba després de l’enfocador i abans de la roda portafiltres i la càmera. Està dissenyat específicament per a refractors ED i APO de 100–102 mm a f/7 i ofereix un camp corregit de fins a 30 mm, adequat per a sensors APS-C.',
@@ -135,14 +135,14 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('focuser', '03', { ca: 'ZWO EAF', es: 'ZWO EAF', en: 'ZWO EAF' }, { ca: 'Enfocament', es: 'Enfoque', en: 'Focusing' }, { ca: 'Control motoritzat de l’enfocament principal', es: 'Control motorizado del enfoque principal', en: 'Motorised focus control for the main optical train' }, { ca: 'enfocador', es: 'enfocador', en: 'focuser' }, {
-				image: 'imagenes/equipo-zwo-eaf-caja.png',
+				image: 'imagenes/equipo/equipo-zwo-eaf-caja.png',
 				imageAlt: { ca: 'Caixa original del motor d’enfocament automàtic ZWO EAF', es: 'Caja original del motor de enfoque automático ZWO EAF', en: 'Original box for the ZWO EAF electronic automatic focuser' },
-				additionalImage: 'imagenes/equipo-camara-eaf-detalle.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-camara-eaf-detalle.jpeg',
 				additionalImageAlt: { ca: 'Detall frontal del ZWO EAF al costat de la roda portafiltres EFW i la càmera principal', es: 'Detalle frontal del ZWO EAF junto a la rueda portafiltros EFW y la cámara principal', en: 'Front detail of the ZWO EAF beside the EFW filter wheel and main camera' },
 				additionalImageCaption: { ca: 'L’EAF comparteix espai amb la roda i la càmera', es: 'El EAF comparte espacio con la rueda y la cámara', en: 'The EAF shares the compact assembly with the wheel and camera' },
 				galleryImages: [
 					{
-						image: 'imagenes/equipo-electronica-vista-superior.jpeg',
+						image: 'imagenes/equipo/equipo-electronica-vista-superior.jpeg',
 						alt: { ca: 'Vista superior del tren òptic amb el motor d’enfocament ZWO EAF vermell muntat perpendicularment al tub', es: 'Vista superior del tren óptico con el motor de enfoque ZWO EAF rojo montado perpendicularmente al tubo', en: 'Top view of the optical train with the red ZWO EAF focus motor mounted perpendicular to the telescope' },
 						caption: { ca: 'El motor EAF muntat perpendicularment al tren òptic', es: 'El motor EAF montado perpendicularmente al tren óptico', en: 'The EAF motor mounted perpendicular to the optical train' },
 					},
@@ -161,14 +161,14 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('filter-wheel', '04', { ca: 'ZWO EFW', es: 'ZWO EFW', en: 'ZWO EFW' }, { ca: 'Tren d’imatge', es: 'Tren de imagen', en: 'Imaging train' }, { ca: 'Roda portafiltres; selecció automatitzada de filtres', es: 'Rueda portafiltros; selección automatizada de filtros', en: 'Filter wheel; automated filter selection' }, { ca: 'roda-portafiltres', es: 'rueda-portafiltros', en: 'filter-wheel' }, {
-				image: 'imagenes/equipo-zwo-efw-caja.png',
+				image: 'imagenes/equipo/equipo-zwo-efw-caja.png',
 				imageAlt: { ca: 'Caixa original de la roda portafiltres electrònica ZWO EFW, utilitzada en la versió de set filtres de 36 mm', es: 'Caja original de la rueda portafiltros electrónica ZWO EFW, utilizada en la versión de siete filtros de 36 mm', en: 'Original ZWO EFW electronic filter wheel box, used here in the seven-position 36 mm version' },
-				additionalImage: 'imagenes/equipo-tren-imagen-posterior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-tren-imagen-posterior.jpeg',
 				additionalImageAlt: { ca: 'Tren d’imatge posterior amb la roda portafiltres ZWO EFW instal·lada immediatament abans de la càmera principal', es: 'Tren de imagen posterior con la rueda portafiltros ZWO EFW instalada inmediatamente antes de la cámara principal', en: 'Rear imaging train with the ZWO EFW filter wheel installed immediately in front of the main camera' },
 				additionalImageCaption: { ca: 'Posició de la roda EFW dins del tren posterior', es: 'Posición de la rueda EFW dentro del tren posterior', en: 'Position of the EFW within the rear imaging train' },
 				galleryImages: [
 					{
-						image: 'imagenes/equipo-camara-principal.jpeg',
+						image: 'imagenes/equipo/equipo-camara-principal.jpeg',
 						alt: { ca: 'Detall de la roda portafiltres ZWO EFW entre el motor EAF i la càmera principal', es: 'Detalle de la rueda portafiltros ZWO EFW entre el motor EAF y la cámara principal', en: 'Detail of the ZWO EFW filter wheel between the EAF motor and main camera' },
 						caption: { ca: 'La roda EFW instal·lada entre l’enfocador i la càmera principal', es: 'La rueda EFW instalada entre el enfocador y la cámara principal', en: 'The EFW installed between the focuser and main camera' },
 					},
@@ -191,29 +191,29 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('main-camera', '05', { ca: 'ZWO ASI294MM Pro', es: 'ZWO ASI294MM Pro', en: 'ZWO ASI294MM Pro' }, { ca: 'Captura principal', es: 'Captura principal', en: 'Main capture' }, { ca: 'Càmera monocroma refrigerada de captura', es: 'Cámara monocroma refrigerada de captura', en: 'Cooled monochrome imaging camera' }, { ca: 'camera-principal', es: 'camara-principal', en: 'main-camera' }, {
-				image: 'imagenes/equipo-asi294mm-pro-trasera.png',
+				image: 'imagenes/equipo/equipo-asi294mm-pro-trasera.png',
 				imageAlt: { ca: 'Vista posterior de la ZWO ASI294MM Pro amb el ventilador, les connexions USB i l’entrada d’alimentació de 12 V', es: 'Vista posterior de la ZWO ASI294MM Pro con el ventilador, las conexiones USB y la entrada de alimentación de 12 V', en: 'Rear view of the ZWO ASI294MM Pro showing the fan, USB connections and 12 V power input' },
-				additionalImage: 'imagenes/equipo-tren-imagen-posterior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-tren-imagen-posterior.jpeg',
 				additionalImageAlt: { ca: 'Vista lateral de la càmera principal al final del tren òptic, darrere de la roda portafiltres i del reductor-aplanador', es: 'Vista lateral de la cámara principal al final del tren óptico, detrás de la rueda portafiltros y del reductor-aplanador', en: 'Side view of the main camera at the end of the optical train, behind the filter wheel and reducer-flattener' },
 				additionalImageCaption: { ca: 'Ordre complet del tren d’imatge posterior', es: 'Orden completo del tren de imagen posterior', en: 'Complete rear imaging-train order' },
 				galleryImages: [
 					{
-						image: 'imagenes/equipo-camara-eaf-detalle.jpeg',
+						image: 'imagenes/equipo/equipo-camara-eaf-detalle.jpeg',
 						alt: { ca: 'Càmera principal ZWO ASI294MM Pro refrigerada amb la roda portafiltres EFW i el motor EAF visibles', es: 'Cámara principal ZWO ASI294MM Pro refrigerada con la rueda portafiltros EFW y el motor EAF visibles', en: 'Cooled ZWO ASI294MM Pro main camera with the EFW filter wheel and EAF motor visible' },
 						caption: { ca: 'La càmera principal instal·lada amb la roda EFW i el motor EAF', es: 'La cámara principal instalada con la rueda EFW y el motor EAF', en: 'The main camera installed with the EFW and EAF motor' },
 					},
 					{
-						image: 'imagenes/equipo-asi294mm-camara-abierta.jpeg',
+						image: 'imagenes/equipo/equipo-asi294mm-camara-abierta.jpeg',
 						alt: { ca: 'Cos de la ZWO ASI294MM Pro amb el conjunt frontal retirat per accedir a la cambra del sensor', es: 'Cuerpo de la ZWO ASI294MM Pro con el conjunto frontal retirado para acceder a la cámara del sensor', en: 'ZWO ASI294MM Pro body with the front assembly removed to access the sensor chamber' },
 						caption: { ca: 'Accés a la cambra del sensor després de retirar el conjunt frontal', es: 'Acceso a la cámara del sensor tras retirar el conjunto frontal', en: 'Access to the sensor chamber after removing the front assembly' },
 					},
 					{
-						image: 'imagenes/equipo-asi294mm-pastillas-desecantes.jpeg',
+						image: 'imagenes/equipo/equipo-asi294mm-pastillas-desecantes.jpeg',
 						alt: { ca: 'Quatre pastilles dessecants muntades a la cara interior del conjunt frontal de la càmera', es: 'Cuatro pastillas desecantes montadas en la cara interior del conjunto frontal de la cámara', en: 'Four desiccant tablets mounted on the inside of the camera front assembly' },
 						caption: { ca: 'Posició de les quatre pastilles dessecants que controlen la humitat interna', es: 'Posición de las cuatro pastillas desecantes que controlan la humedad interna', en: 'Position of the four desiccant tablets that control internal humidity' },
 					},
 					{
-						image: 'imagenes/equipo-asi294mm-sensor.jpeg',
+						image: 'imagenes/equipo/equipo-asi294mm-sensor.jpeg',
 						alt: { ca: 'Detall del sensor monocrom de la ZWO ASI294MM Pro dins del cos de la càmera', es: 'Detalle del sensor monocromo de la ZWO ASI294MM Pro dentro del cuerpo de la cámara', en: 'Close view of the ZWO ASI294MM Pro monochrome sensor inside the camera body' },
 						caption: { ca: 'El sensor és la zona que cal mantenir lliure de condensació', es: 'El sensor es la zona que debe mantenerse libre de condensación', en: 'The sensor is the area that must remain free of condensation' },
 					},
@@ -263,7 +263,7 @@ export const equipmentGroups: EquipmentGroup[] = [
 		hotspot: { x: 82, y: 16, targetX: 57, targetY: 27 },
 		items: [
 			item('guide-scope', '01', { ca: 'Svbony SV106', es: 'Svbony SV106', en: 'Svbony SV106' }, { ca: 'Tub de guiatge', es: 'Tubo de guiado', en: 'Guide scope' }, { ca: 'Tub guia de 60 mm dedicat al seguiment', es: 'Tubo guía de 60 mm dedicado al seguimiento', en: '60 mm guide scope dedicated to tracking' }, { ca: 'tub-guiatge', es: 'tubo-guiado', en: 'guide-scope' }, {
-				image: 'imagenes/equipo-tubo-guiado.jpeg',
+				image: 'imagenes/equipo/equipo-tubo-guiado.jpeg',
 				imageAlt: { ca: 'Tub de guiatge Svbony SV106 de 60 mm amb la càmera ZWO ASI220MM Mini instal·lats sobre l’equip', es: 'Tubo de guiado Svbony SV106 de 60 mm con la cámara ZWO ASI220MM Mini instalados sobre el equipo', en: 'Svbony SV106 60 mm guide scope with the ZWO ASI220MM Mini camera installed on the rig' },
 				description: {
 					ca: 'El Svbony SV106 és un tub guia compacte de 60 mm i relació focal f/4. El seu camp ampli facilita la selecció d’estrelles de referència, mentre que l’enfocador helicoidal permet ajustar el focus amb precisió sense fer girar la càmera.',
@@ -281,9 +281,9 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('guide-camera', '02', { ca: 'ZWO ASI220MM Mini', es: 'ZWO ASI220MM Mini', en: 'ZWO ASI220MM Mini' }, { ca: 'Càmera de guiatge', es: 'Cámara de guiado', en: 'Guide camera' }, { ca: 'Sensor monocrom dedicat al seguiment', es: 'Sensor monocromo dedicado al seguimiento', en: 'Monochrome sensor dedicated to tracking' }, { ca: 'camera-guiatge', es: 'camara-guiado', en: 'guide-camera' }, {
-				image: 'imagenes/equipo-asi220mm-mini-caja.png',
+				image: 'imagenes/equipo/equipo-asi220mm-mini-caja.png',
 				imageAlt: { ca: 'Caixa original de la càmera de guiatge ZWO ASI220MM Mini', es: 'Caja original de la cámara de guiado ZWO ASI220MM Mini', en: 'Original box for the ZWO ASI220MM Mini guide camera' },
-				additionalImage: 'imagenes/equipo-camara-guiado.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-camara-guiado.jpeg',
 				additionalImageAlt: { ca: 'Càmera de guiatge monocroma ZWO ASI220MM Mini connectada al tub Svbony SV106 en el muntatge', es: 'Cámara de guiado monocroma ZWO ASI220MM Mini conectada al tubo Svbony SV106 en el montaje', en: 'ZWO ASI220MM Mini monochrome guide camera connected to the Svbony SV106 scope on the rig' },
 				additionalImageCaption: { ca: 'La ASI220MM Mini instal·lada al tub de guiatge', es: 'La ASI220MM Mini instalada en el tubo de guiado', en: 'The ASI220MM Mini installed on the guide scope' },
 				description: {
@@ -313,9 +313,9 @@ export const equipmentGroups: EquipmentGroup[] = [
 		hotspot: { x: 18, y: 56, targetX: 45, targetY: 50 },
 		items: [
 			item('wave-150i', '01', { ca: 'Sky-Watcher Wave 150i', es: 'Sky-Watcher Wave 150i', en: 'Sky-Watcher Wave 150i' }, { ca: 'Muntura harmònica', es: 'Montura armónica', en: 'Harmonic mount' }, { ca: 'Seguiment equatorial o azimutal de gran capacitat', es: 'Seguimiento ecuatorial o azimutal de gran capacidad', en: 'High-capacity equatorial or alt-azimuth tracking' }, { ca: 'wave-150i', es: 'wave-150i', en: 'wave-150i' }, {
-				image: 'imagenes/equipo-wave-150i.jpeg',
+				image: 'imagenes/equipo/equipo-wave-150i.jpeg',
 				imageAlt: { ca: 'Muntura Sky-Watcher Wave 150i instal·lada sobre la torreta d’extensió', es: 'Montura Sky-Watcher Wave 150i instalada sobre la torreta de extensión', en: 'Sky-Watcher Wave 150i mount installed on the extension pier' },
-				additionalImage: 'imagenes/equipo-wave-150i-posterior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-wave-150i-posterior.jpeg',
 				additionalImageAlt: { ca: 'Vista posterior de la Wave 150i amb les connexions i la torreta d’extensió', es: 'Vista posterior de la Wave 150i con las conexiones y la torreta de extensión', en: 'Rear view of the Wave 150i showing its connections and extension pier' },
 				additionalImageCaption: { ca: 'Vista posterior i connexions', es: 'Vista posterior y conexiones', en: 'Rear view and connections' },
 				description: {
@@ -345,14 +345,14 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('tripod', '02', { ca: 'Trípode HEQ-5 modificat', es: 'Trípode HEQ-5 modificado', en: 'Modified HEQ-5 tripod' }, { ca: 'Suport modificat', es: 'Soporte modificado', en: 'Modified support' }, { ca: 'Base baixa, extensió i llast per guanyar estabilitat', es: 'Base baja, extensión y lastre para ganar estabilidad', en: 'Low base, extension pier and ballast for greater stability' }, { ca: 'tripode', es: 'tripode', en: 'tripod' }, {
-				image: 'imagenes/equipo-tripode-heq5.jpeg',
+				image: 'imagenes/equipo/equipo-tripode-heq5.jpeg',
 				imageAlt: { ca: 'Conjunt del trípode HEQ-5 rebaixat amb la torreta d’extensió i la muntura Wave 150i', es: 'Conjunto del trípode HEQ-5 rebajado con la torreta de extensión y la montura Wave 150i', en: 'Lowered HEQ-5 tripod assembly with the extension pier and Wave 150i mount' },
-				additionalImage: 'imagenes/equipo-tripode-heq5-lastre.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-tripode-heq5-lastre.jpeg',
 				additionalImageAlt: { ca: 'Detall de les potes del trípode HEQ-5 i del suport triangular inferior amb la bossa de llast', es: 'Detalle de las patas del trípode HEQ-5 y del soporte triangular inferior con la bolsa de lastre', en: 'Detail of the HEQ-5 tripod legs and the lower triangular support with its ballast bag' },
 				additionalImageCaption: { ca: 'El llast de 8–10 kg reforça l’estabilitat del conjunt', es: 'El lastre de 8–10 kg refuerza la estabilidad del conjunto', en: 'The 8–10 kg ballast adds stability to the assembly' },
 				galleryImages: [
 					{
-						image: 'imagenes/equipo-tripode-heq5-lastre-practico.jpeg',
+						image: 'imagenes/equipo/equipo-tripode-heq5-lastre-practico.jpeg',
 						alt: { ca: 'Bossa inferior del trípode carregada amb pedres utilitzades com a llast', es: 'Bolsa inferior del trípode cargada con piedras utilizadas como lastre', en: 'Lower tripod bag loaded with stones used as ballast' },
 						caption: { ca: 'Una solució pràctica: pedres disponibles al lloc d’observació aporten el pes sense haver de transportar-lo', es: 'Una solución práctica: las piedras disponibles en el lugar de observación aportan el peso sin tener que transportarlo', en: 'A practical solution: stones found at the observing site provide the weight without having to transport it' },
 					},
@@ -383,9 +383,9 @@ export const equipmentGroups: EquipmentGroup[] = [
 		hotspot: { x: 82, y: 41, targetX: 53, targetY: 35 },
 		items: [
 			item('powerbox', '01', { ca: 'Pegasus Astro PPB Micro', es: 'Pegasus Astro PPB Micro', en: 'Pegasus Astro PPB Micro' }, { ca: 'Distribució d’alimentació', es: 'Distribución de alimentación', en: 'Power distribution' }, { ca: 'Alimentació, escalfadors i control ambiental', es: 'Alimentación, calentadores y control ambiental', en: 'Power, dew-heater and environmental control' }, { ca: 'distribuidor-powerbox', es: 'distribuidor-powerbox', en: 'powerbox-distributor' }, {
-				image: 'imagenes/equipo-powerbox.jpeg',
+				image: 'imagenes/equipo/equipo-powerbox.jpeg',
 				imageAlt: { ca: 'Pegasus Astro PPB Micro instal·lada sobre el tub principal amb les connexions d’alimentació i els escalfadors', es: 'Pegasus Astro PPB Micro instalada sobre el tubo principal con las conexiones de alimentación y los calentadores', en: 'Pegasus Astro PPB Micro installed on the main telescope with its power and dew-heater connections' },
-				additionalImage: 'imagenes/equipo-electronica-vista-superior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-electronica-vista-superior.jpeg',
 				additionalImageAlt: { ca: 'Vista superior del muntatge amb la PPB Micro, el cablejat d’alimentació i el tren de guiatge', es: 'Vista superior del montaje con la PPB Micro, el cableado de alimentación y el tren de guiado', en: 'Top view of the rig showing the PPB Micro, power cabling and guiding train' },
 				additionalImageCaption: { ca: 'Integració i cablejat en el muntatge', es: 'Integración y cableado en el montaje', en: 'Integration and cabling on the rig' },
 				description: {
@@ -406,9 +406,9 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('usb-hub', '02', { ca: 'Pegasus Astro USB Control Hub', es: 'Pegasus Astro USB Control Hub', en: 'Pegasus Astro USB Control Hub' }, { ca: 'Connectivitat', es: 'Conectividad', en: 'Connectivity' }, { ca: 'Connexió USB centralitzada i commutable', es: 'Conexión USB centralizada y conmutable', en: 'Centralised, switchable USB connectivity' }, { ca: 'hub-usb', es: 'hub-usb', en: 'usb-hub' }, {
-				image: 'imagenes/equipo-hub-usb.jpeg',
+				image: 'imagenes/equipo/equipo-hub-usb.jpeg',
 				imageAlt: { ca: 'Pegasus Astro USB Control Hub instal·lat sobre el tub principal i connectat als dispositius de l’equip', es: 'Pegasus Astro USB Control Hub instalado sobre el tubo principal y conectado a los dispositivos del equipo', en: 'Pegasus Astro USB Control Hub installed on the main telescope and connected to the rig devices' },
-				additionalImage: 'imagenes/equipo-electronica-vista-superior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-electronica-vista-superior.jpeg',
 				additionalImageAlt: { ca: 'Vista superior del muntatge amb el USB Control Hub i la distribució dels cables cap als diferents dispositius', es: 'Vista superior del montaje con el USB Control Hub y la distribución de los cables hacia los distintos dispositivos', en: 'Top view of the rig showing the USB Control Hub and cable distribution to the connected devices' },
 				additionalImageCaption: { ca: 'Distribució de les connexions USB', es: 'Distribución de las conexiones USB', en: 'USB connection layout' },
 				description: {
@@ -441,9 +441,9 @@ export const equipmentGroups: EquipmentGroup[] = [
 				],
 			}),
 			item('flat-panel', '03', { ca: 'Pegasus Astro FlatMaster 150L Wi-Fi', es: 'Pegasus Astro FlatMaster 150L Wi-Fi', en: 'Pegasus Astro FlatMaster 150L Wi-Fi' }, { ca: 'Calibratge', es: 'Calibración', en: 'Calibration' }, { ca: 'Panell LED regulable per obtenir flats uniformes', es: 'Panel LED regulable para obtener flats uniformes', en: 'Dimmable LED panel for uniform flat-field frames' }, { ca: 'panell-flats-pegasus', es: 'panel-flats-pegasus', en: 'pegasus-flat-field-panel' }, {
-				image: 'imagenes/equipo-flat-panel-pegasus.jpeg',
+				image: 'imagenes/equipo/equipo-flat-panel-pegasus.jpeg',
 				imageAlt: { ca: 'Pegasus Astro FlatMaster 150L Wi-Fi col·locat sobre l’obertura del telescopi principal amb un adaptador artesanal', es: 'Pegasus Astro FlatMaster 150L Wi-Fi colocado sobre la abertura del telescopio principal con un adaptador artesanal', en: 'Pegasus Astro FlatMaster 150L Wi-Fi fitted over the main telescope aperture with a custom-made adapter' },
-				additionalImage: 'imagenes/equipo-flat-panel-pegasus-posterior.jpeg',
+				additionalImage: 'imagenes/equipo/equipo-flat-panel-pegasus-posterior.jpeg',
 				additionalImageAlt: { ca: 'Vista del FlatMaster 150L amb les cintes de subjecció, l’adaptador artesanal i la connexió mini-USB', es: 'Vista del FlatMaster 150L con las cintas de sujeción, el adaptador artesanal y la conexión mini-USB', en: 'View of the FlatMaster 150L with its retaining straps, custom-made adapter and mini-USB connection' },
 				additionalImageCaption: { ca: 'El «barret» artesanal adapta el panell a l’OTA', es: 'El «sombrero» artesanal adapta el panel a la OTA', en: 'The custom-made “hat” fits the panel to the OTA' },
 				description: {

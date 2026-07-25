@@ -5,6 +5,14 @@ caracteristiques: "Al centre de la imatge es troba NGC6883, un cúmul estel·lar
 categoria: "Cúmuls i Estrelles"
 imatge: "NGC6883.jpg"
 
+traduccions:
+  es:
+    objecte: "NGC6883 – Cúmulo abierto"
+    caracteristiques: "En el centro de la imagen se encuentra NGC6883, un joven cúmulo estelar abierto situado en la constelación de Cygnus. Presenta un tamaño angular aparente de unos 35 minutos de arco, una magnitud visual de +8,0 y se encuentra a una distancia aproximada de 4.500 años luz. Contiene cerca de un centenar de estrellas, muchas de ellas estrellas calientes de tipo espectral B. El campo fotografiado también muestra la extensa nebulosidad de emisión de la región y la característica burbuja asociada a la estrella Wolf-Rayet WR134."
+  en:
+    objecte: "NGC6883 – Open Cluster"
+    caracteristiques: "At the centre of the image lies NGC6883, a young open star cluster in the constellation Cygnus. It has an apparent angular size of about 35 arcminutes, a visual magnitude of +8.0 and is approximately 4,500 light-years away. It contains around one hundred stars, many of them hot spectral-type B stars. The photographed field also shows the region's extensive emission nebulosity and the distinctive bubble associated with the Wolf-Rayet star WR134."
+
 equip:
   ota: "TS102 f/5.6"
   roda_filtres: "ZWO EFW 7pos"
@@ -37,8 +45,22 @@ imatges_addicionals:
     fitxer: "NGC6883_annotated.jpg"
     titol: "Objectes identificats"
     descripcio: "Identificació de NGC6883, l'estrella Wolf-Rayet WR134, la nebulosa fosca B147 i LDN 853 dins del camp fotografiat."
+    traduccions:
+      es:
+        titol: "Objetos identificados"
+        descripcio: "Identificación de NGC6883, la estrella Wolf-Rayet WR134, la nebulosa oscura B147 y LDN 853 dentro del campo fotografiado."
+      en:
+        titol: "Identified objects"
+        descripcio: "Identification of NGC6883, the Wolf-Rayet star WR134, the dark nebula B147 and LDN 853 within the photographed field."
   - tipus: "process"
     fitxer: "NGC6883_HOO_process.jpg"
     titol: "Flux de postprocessament"
     descripcio: "Flux de treball del postprocessament de la composició HOO de NGC6883 i WR134 amb PixInsight."
+    traduccions:
+      es:
+        titol: "Flujo de posprocesado"
+        descripcio: "Flujo de trabajo del posprocesado de la composición HOO de NGC6883 y WR134 con PixInsight."
+      en:
+        titol: "Post-processing workflow"
+        descripcio: "Post-processing workflow for the HOO composition of NGC6883 and WR134 in PixInsight."
 ---

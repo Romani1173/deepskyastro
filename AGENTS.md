@@ -23,6 +23,7 @@
 ## Idiomas
 
 - El catalán conserva las rutas históricas sin prefijo. El castellano usa `/es/` y el inglés `/en/`.
+- Los nombres de las constelaciones se muestran siempre en latín en los tres idiomas; solo se normalizan variantes no canónicas como `Aquari` a `Aquarius` y `Cefeu` a `Cepheus`.
 - El selector de idioma muestra las banderas y los códigos `CA`, `ES` y `EN`; debe llevar siempre a la página equivalente, no a la portada genérica.
 - Las rutas localizadas de la galería son `/es/galeria` y `/en/gallery`; las categorías usan `/es/categoria/...` y `/en/category/...`; las fichas usan `/es/foto/...` y `/en/photo/...`.
 - La fase 1 traduce la interfaz, navegación, etiquetas técnicas, fechas y metadatos.

@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import SolarDetail from '../../../components/SolarDetail.astro';
+
+export async function getStaticPaths() {
+	return (await getCollection('sol')).map((foto) => ({ params: { id: foto.id }, props: { foto } }));
+}
+const { foto } = Astro.props;
+---
+<SolarDetail foto={foto} lang="en" />

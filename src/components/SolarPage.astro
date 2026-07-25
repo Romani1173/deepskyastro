@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import CatalogHeader from './CatalogHeader.astro';
+import type { Lang } from '../i18n';
+import { languageLinks, localeFor, withBase } from '../i18n';
+
+interface Props {
+	lang: Lang;
+	fotos: CollectionEntry<'sol'>[];
+}
+
+const { lang, fotos } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const labels = {
+	ca: { title: 'Sol', description: 'Fotografies del Sol ordenades de més recent a més antiga.', photo: 'fotografia solar', photos: 'fotografies solars', enlarge: 'Ampliar fotografia', close: 'Tancar' },
+	es: { title: 'Sol', description: 'Fotografías del Sol ordenadas de más reciente a más antigua.', photo: 'fotografía solar', photos: 'fotografías solares', enlarge: 'Ampliar fotografía', close: 'Cerrar' },
+	en: { title: 'Sun', description: 'Photographs of the Sun, ordered from newest to oldest.', photo: 'solar photograph', photos: 'solar photographs', enlarge: 'Enlarge photograph', close: 'Close' },
+}[lang];
+---
+
+<Layout title={labels.title} description={labels.description} minimal lang={lang} languageLinks={languageLinks.category('sun', base)}>
+	<section aria-labelledby="solar-heading">
+		<div class="catalog-controls"><CatalogHeader lang={lang} currentCategory="sun" /></div>
+		<div class="page-heading solar-heading">
+			<h1 id="solar-heading">{labels.title}</h1>
+			<p>{labels.description}</p>
+			<p class="catalog-count">{fotos.length} {fotos.length === 1 ? labels.photo : labels.photos}</p>
+		</div>
+		<div class="solar-grid">
+			{fotos.map((foto) => {
+				const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
+				const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
+				const detailUrl = lang === 'ca'
+					? withBase(`sol/${foto.id}`, base)
+					: withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}`, base);
+				return (
+					<article class="solar-card">
+						<a class="solar-card__image" href={detailUrl}>
+							<img src={imageUrl} alt={`${labels.photo}, ${date}`} loading="lazy" decoding="async" />
+						</a>
+						<div class="solar-card__body">
+							<time datetime={foto.data.fecha.toISOString().slice(0, 10)}>{date}</time>
+							<p>{foto.data.comentario}</p>
+						</div>
+					</article>
+				);
+			})}
+		</div>
+	</section>
+</Layout>

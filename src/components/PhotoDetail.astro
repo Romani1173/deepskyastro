@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
 import { categoryByValue, categoryHref, copy, languageLinks, localeFor, withBase } from '../i18n';
 import { additionalImageText, photoText } from '../photoTranslations';
-import { photoTechnicalText } from '../technicalTranslations';
+import { photoTechnicalText, technicalValue } from '../technicalTranslations';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -14,7 +14,19 @@ const text = photoText(foto, lang);
 const technical = photoTechnicalText(foto, lang);
 const category = categoryByValue(foto.data.categoria);
 const categoryLabel = category.labels[lang];
-const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).format(foto.data.entorn.data);
+const dateFormatter = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' });
+const sessionDateFormatter = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'medium' });
+const date = dateFormatter.format(foto.data.entorn.data);
+const sessions = foto.data.entorn.sessions.map((session) => {
+	const interval = session.fi
+		? `${sessionDateFormatter.format(session.inici)} – ${sessionDateFormatter.format(session.fi)}`
+		: sessionDateFormatter.format(session.inici);
+	const details = [
+		session.captura ? technicalValue(session.captura, lang) : undefined,
+		session.lloc ? technicalValue(session.lloc, lang) : undefined,
+	].filter(Boolean);
+	return details.length > 0 ? `${interval} — ${details.join(' · ')}` : interval;
+});
 ---
 
 <Layout title={text.objecte} description={text.caracteristiques} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
@@ -22,15 +34,15 @@ const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).for
 		<a class="back-link" href={categoryHref(lang, category.key, base)}>← {t.backToCategory(categoryLabel)}</a>
 		<header class="page-heading"><h1>{text.objecte}</h1></header>
 		<div class="photo-detail__image">
-			<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/${foto.data.imatge}`, base)} data-lightbox-alt={`${t.astroPhoto} ${text.objecte}`} aria-label={`${t.enlarge}: ${text.objecte}`}>
-				<img src={withBase(`imagenes/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} fetchpriority="high" />
+			<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} data-lightbox-alt={`${t.astroPhoto} ${text.objecte}`} data-lightbox-group="primary" aria-label={`${t.enlarge}: ${text.objecte}`}>
+				<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} fetchpriority="high" />
 				<span aria-hidden="true">{t.enlarge} ↗</span>
 			</button>
 		</div>
 		<p class="photo-detail__summary">{text.caracteristiques}</p>
 		<div class="data-grid">
-			<section class="data-panel" aria-labelledby="general"><h2 id="general">{t.generalInfo}</h2><dl class="data-list"><div><dt>{t.constellation}</dt><dd>{technical.constellacio}</dd></div><div><dt>{t.category}</dt><dd>{categoryLabel}</dd></div><div><dt>{t.date}</dt><dd>{date}</dd></div></dl></section>
-			<section class="data-panel" aria-labelledby="capture"><h2 id="capture">{t.capture}</h2><dl class="data-list"><div><dt>{t.totalTime}</dt><dd>{technical.tempsTotal}</dd></div><div><dt>{t.subframes}</dt><dd>{technical.subframes}</dd></div><div><dt>{t.gainOffset}</dt><dd>{foto.data.exposicio.gain} / {foto.data.exposicio.offset}</dd></div><div><dt>{t.calibration}</dt><dd>{technical.calibratge}</dd></div></dl></section>
+			<section class="data-panel" aria-labelledby="general"><h2 id="general">{t.generalInfo}</h2><dl class="data-list"><div><dt>{t.constellation}</dt><dd>{technical.constellacio}</dd></div><div><dt>{t.category}</dt><dd>{categoryLabel}</dd></div><div><dt>{t.date}</dt><dd>{date}</dd></div>{sessions.length > 0 && <div><dt>{t.captureSessions}</dt><dd>{sessions.map((session, index) => <span>{session}{index < sessions.length - 1 && <br />}</span>)}</dd></div>}</dl></section>
+			<section class="data-panel" aria-labelledby="capture"><h2 id="capture">{t.capture}</h2><dl class="data-list"><div><dt>{t.totalTime}</dt><dd>{technical.tempsTotal}</dd></div><div><dt>{t.subframes}</dt><dd>{technical.subframes}</dd></div><div><dt>{t.gainOffset}</dt><dd>{technical.gain} / {technical.offset}</dd></div><div><dt>{t.calibration}</dt><dd>{technical.calibratge}</dd></div></dl></section>
 			<section class="data-panel" aria-labelledby="equipment"><h2 id="equipment">{t.equipment}</h2><dl class="data-list"><div><dt>{t.telescope}</dt><dd>{technical.ota}</dd></div><div><dt>{t.camera}</dt><dd>{technical.camera}</dd></div><div><dt>{t.filters}</dt><dd>{technical.filtres}</dd></div><div><dt>{t.mount}</dt><dd>{technical.muntura}</dd></div><div><dt>{t.guiding}</dt><dd>{technical.guiat}</dd></div>{foto.data.equip.enfocador !== 'N/A' && <div><dt>{t.focuser}</dt><dd>{technical.enfocador}</dd></div>}{foto.data.equip.roda_filtres !== 'N/A' && <div><dt>{t.filterWheel}</dt><dd>{technical.rodaFiltres}</dd></div>}</dl></section>
 			<section class="data-panel" aria-labelledby="process"><h2 id="process">{t.processingEnvironment}</h2><dl class="data-list"><div><dt>{t.processing}</dt><dd>{technical.processat}</dd></div>{foto.data.tractament.adquisicio !== 'N/A' && <div><dt>{t.acquisition}</dt><dd>{technical.adquisicio}</dd></div>}<div><dt>{t.place}</dt><dd>{technical.lloc}</dd></div><div><dt>{t.sky}</dt><dd>Bortle {foto.data.entorn.bortle}</dd></div></dl></section>
 		</div>
@@ -41,8 +53,8 @@ const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).for
 					{foto.data.imatges_addicionals.map((imatge) => {
 						const imageText = additionalImageText(imatge, lang);
 						return <figure>
-							<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/${imatge.fitxer}`, base)} data-lightbox-alt={`${imageText.titol}: ${text.objecte}`} aria-label={`${t.enlarge}: ${imageText.titol}`}>
-								<img src={withBase(`imagenes/${imatge.fitxer}`, base)} alt={`${imageText.titol}: ${text.objecte}`} loading="lazy" decoding="async" />
+							<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${imatge.fitxer}`, base)} data-lightbox-alt={`${imageText.titol}: ${text.objecte}`} data-lightbox-group="additional" data-lightbox-title={imageText.titol} aria-label={`${t.enlarge}: ${imageText.titol}`}>
+								<img src={withBase(`imagenes/cielo-profundo/${imatge.fitxer}`, base)} alt={`${imageText.titol}: ${text.objecte}`} loading="lazy" decoding="async" />
 								<span aria-hidden="true">{t.enlarge} ↗</span>
 							</button>
 							<figcaption><strong>{imageText.titol}</strong>{imageText.descripcio && <span>{imageText.descripcio}</span>}</figcaption>
@@ -53,8 +65,16 @@ const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).for
 		)}
 	</article>
 	<dialog class="image-lightbox" aria-label={t.enlargedImage}>
-		<button class="image-lightbox__close" type="button" aria-label={t.closeImage}>×</button>
-		<img alt="" />
+		<div class="image-lightbox__stage">
+			<button class="image-lightbox__close" type="button" aria-label={t.closeImage}>×</button>
+			<button class="image-lightbox__nav image-lightbox__nav--previous" type="button" aria-label={t.previousImage} hidden>‹</button>
+			<img alt="" />
+			<button class="image-lightbox__nav image-lightbox__nav--next" type="button" aria-label={t.nextImage} hidden>›</button>
+		</div>
+		<div class="image-lightbox__meta" aria-live="polite" hidden>
+			<strong></strong>
+			<span></span>
+		</div>
 	</dialog>
 </Layout>
 
@@ -62,14 +82,72 @@ const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).for
 	const lightbox = document.querySelector<HTMLDialogElement>('.image-lightbox');
 	const lightboxImage = lightbox?.querySelector<HTMLImageElement>('img');
 	const closeButton = lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__close');
-	document.querySelectorAll<HTMLButtonElement>('.image-zoom-trigger').forEach((trigger) => {
+	const previousButton = lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__nav--previous');
+	const nextButton = lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__nav--next');
+	const lightboxMeta = lightbox?.querySelector<HTMLElement>('.image-lightbox__meta');
+	const lightboxTitle = lightboxMeta?.querySelector<HTMLElement>('strong');
+	const lightboxCounter = lightboxMeta?.querySelector<HTMLElement>('span');
+	const lightboxStage = lightbox?.querySelector<HTMLElement>('.image-lightbox__stage');
+	const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('.image-zoom-trigger'));
+	const additionalTriggers = triggers.filter((trigger) => trigger.dataset.lightboxGroup === 'additional');
+	let currentAdditionalIndex = -1;
+	let touchStartX = 0;
+	let touchStartY = 0;
+
+	const displayTrigger = (trigger: HTMLButtonElement) => {
+		if (!lightboxImage) return;
+		lightboxImage.src = trigger.dataset.lightboxSrc ?? '';
+		lightboxImage.alt = trigger.dataset.lightboxAlt ?? '';
+		currentAdditionalIndex = additionalTriggers.indexOf(trigger);
+		const isAdditional = currentAdditionalIndex >= 0;
+		const canNavigate = isAdditional && additionalTriggers.length > 1;
+		lightbox?.classList.toggle('image-lightbox--additional', isAdditional);
+		if (previousButton) previousButton.hidden = !canNavigate;
+		if (nextButton) nextButton.hidden = !canNavigate;
+		if (lightboxMeta) lightboxMeta.hidden = !isAdditional;
+		if (lightboxTitle) lightboxTitle.textContent = isAdditional ? trigger.dataset.lightboxTitle ?? '' : '';
+		if (lightboxCounter) lightboxCounter.textContent = isAdditional ? `${currentAdditionalIndex + 1} / ${additionalTriggers.length}` : '';
+	};
+
+	const navigateAdditional = (step: number) => {
+		if (currentAdditionalIndex < 0 || additionalTriggers.length < 2) return;
+		currentAdditionalIndex = (currentAdditionalIndex + step + additionalTriggers.length) % additionalTriggers.length;
+		displayTrigger(additionalTriggers[currentAdditionalIndex]);
+	};
+
+	triggers.forEach((trigger) => {
 		trigger.addEventListener('click', () => {
-			if (!lightbox || !lightboxImage) return;
-			lightboxImage.src = trigger.dataset.lightboxSrc ?? '';
-			lightboxImage.alt = trigger.dataset.lightboxAlt ?? '';
+			if (!lightbox) return;
+			displayTrigger(trigger);
 			lightbox.showModal();
 		});
 	});
+	previousButton?.addEventListener('click', () => navigateAdditional(-1));
+	nextButton?.addEventListener('click', () => navigateAdditional(1));
 	closeButton?.addEventListener('click', () => lightbox?.close());
 	lightbox?.addEventListener('click', (event) => { if (event.target === lightbox) lightbox.close(); });
+	document.addEventListener('keydown', (event) => {
+		if (!lightbox?.open || currentAdditionalIndex < 0) return;
+		if (event.key === 'ArrowLeft') {
+			event.preventDefault();
+			navigateAdditional(-1);
+		}
+		if (event.key === 'ArrowRight') {
+			event.preventDefault();
+			navigateAdditional(1);
+		}
+	});
+	lightboxStage?.addEventListener('touchstart', (event) => {
+		const touch = event.changedTouches[0];
+		touchStartX = touch.clientX;
+		touchStartY = touch.clientY;
+	}, { passive: true });
+	lightboxStage?.addEventListener('touchend', (event) => {
+		if (currentAdditionalIndex < 0) return;
+		const touch = event.changedTouches[0];
+		const horizontalDistance = touch.clientX - touchStartX;
+		const verticalDistance = touch.clientY - touchStartY;
+		if (Math.abs(horizontalDistance) < 50 || Math.abs(horizontalDistance) <= Math.abs(verticalDistance)) return;
+		navigateAdditional(horizontalDistance < 0 ? 1 : -1);
+	}, { passive: true });
 </script>

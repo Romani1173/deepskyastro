@@ -53,4 +53,15 @@ imatges_addicionals:
         titol: "Detalle del Velo central oeste"
       en:
         titol: "Central Western Veil detail"
+  - tipus: "process"
+    fitxer: "NGC6960_CWV_process.jpg"
+    titol: "Flux de postprocessament"
+    descripcio: "Esquema del flux de treball emprat a PixInsight per al processament final de la imatge."
+    traduccions:
+      es:
+        titol: "Flujo de posprocesado"
+        descripcio: "Esquema del flujo de trabajo utilizado en PixInsight para el procesado final de la imagen."
+      en:
+        titol: "Post-processing workflow"
+        descripcio: "Diagram of the PixInsight workflow used to produce the final image."
 ---

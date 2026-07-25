@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import type { Lang } from '../i18n';
+import { categoryHref, localeFor, withBase } from '../i18n';
+
+interface Props { foto: CollectionEntry<'sol'>; lang: Lang; }
+const { foto, lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const labels = {
+	ca: { title: 'Fotografia del Sol', back: 'Tornar a Sol', enlarge: 'Ampliar', close: 'Tancar la imatge ampliada' },
+	es: { title: 'Fotografía del Sol', back: 'Volver a Sol', enlarge: 'Ampliar', close: 'Cerrar la imagen ampliada' },
+	en: { title: 'Photograph of the Sun', back: 'Back to Sun', enlarge: 'Enlarge', close: 'Close enlarged image' },
+}[lang];
+const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
+const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
+const languageLinks = {
+	ca: withBase(`sol/${foto.id}`, base),
+	es: withBase(`es/sol/${foto.id}`, base),
+	en: withBase(`en/sun/${foto.id}`, base),
+};
+---
+
+<Layout title={`${labels.title} · ${date}`} description={foto.data.comentario} minimal lang={lang} languageLinks={languageLinks}>
+	<article class="photo-detail">
+		<a class="back-link" href={categoryHref(lang, 'sun', base)}>← {labels.back}</a>
+		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>
+		<div class="photo-detail__image">
+			<button class="image-zoom-trigger" type="button" data-solar-enlarge aria-label={labels.enlarge}>
+				<img src={imageUrl} alt={`${labels.title}, ${date}`} fetchpriority="high" />
+				<span aria-hidden="true">{labels.enlarge} ↗</span>
+			</button>
+		</div>
+		<p class="photo-detail__summary">{foto.data.comentario}</p>
+	</article>
+	<dialog class="image-lightbox solar-detail-lightbox">
+		<button class="image-lightbox__close" type="button" aria-label={labels.close}>×</button>
+		<img src={imageUrl} alt={`${labels.title}, ${date}`} />
+	</dialog>
+</Layout>
+
+<script>
+	const trigger = document.querySelector<HTMLButtonElement>('[data-solar-enlarge]');
+	const lightbox = document.querySelector<HTMLDialogElement>('.solar-detail-lightbox');
+	trigger?.addEventListener('click', () => lightbox?.showModal());
+	lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__close')?.addEventListener('click', () => lightbox.close());
+	lightbox?.addEventListener('click', (event) => {
+		if (event.target === lightbox) lightbox.close();
+	});
+</script>

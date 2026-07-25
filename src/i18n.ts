@@ -1,18 +1,18 @@
 export type Lang = 'ca' | 'es' | 'en';
-export type CategoryKey = 'galaxies' | 'nebulae' | 'clusters' | 'sky';
+export type CategoryKey = 'galaxies' | 'nebulae' | 'clusters' | 'sun';
 
 export const languages: Lang[] = ['ca', 'es', 'en'];
 
 export const categories: Array<{
 	key: CategoryKey;
-	value: 'Galàxies' | 'Nebuloses' | 'Cúmuls i Estrelles' | 'Cel';
+	value: 'Galàxies' | 'Nebuloses' | 'Cúmuls i Estrelles' | 'Sol';
 	labels: Record<Lang, string>;
 	slugs: Record<Lang, string>;
 }> = [
 	{ key: 'galaxies', value: 'Galàxies', labels: { ca: 'Galàxies', es: 'Galaxias', en: 'Galaxies' }, slugs: { ca: 'Gal%C3%A0xies', es: 'Galaxias', en: 'Galaxies' } },
 	{ key: 'nebulae', value: 'Nebuloses', labels: { ca: 'Nebuloses', es: 'Nebulosas', en: 'Nebulae' }, slugs: { ca: 'Nebuloses', es: 'Nebulosas', en: 'Nebulae' } },
 	{ key: 'clusters', value: 'Cúmuls i Estrelles', labels: { ca: 'Cúmuls i estrelles', es: 'Cúmulos y estrellas', en: 'Clusters and stars' }, slugs: { ca: 'C%C3%BAmuls%20i%20Estrelles', es: 'Cumulos-y-estrellas', en: 'Clusters-and-stars' } },
-	{ key: 'sky', value: 'Cel', labels: { ca: 'Cel', es: 'Cielo', en: 'Sky' }, slugs: { ca: 'Cel', es: 'Cielo', en: 'Sky' } },
+	{ key: 'sun', value: 'Sol', labels: { ca: 'Sol', es: 'Sol', en: 'Sun' }, slugs: { ca: 'Sol', es: 'Sol', en: 'Sun' } },
 ];
 
 export const copy = {
@@ -23,9 +23,9 @@ export const copy = {
 		order: 'Ordena', recent: 'Data: recents', name: 'Nom: A–Z', object: 'objecte', objects: 'objectes', photographedObject: 'objecte fotografiat', photographedObjects: 'objectes fotografiats',
 		noResults: "No s'ha trobat cap objecte amb aquesta cerca.", emptyCategory: 'Encara no hi ha cap fotografia en aquesta categoria.',
 		viewPhoto: 'Veure la fitxa de', astroPhoto: 'Fotografia astronòmica de', constellation: 'Constel·lació', exposure: 'Exposició', includesProcess: 'Inclou el flux de postprocessament',
-		generalInfo: 'Informació general', category: 'Categoria', date: 'Data', capture: 'Captura', totalTime: 'Temps total', subframes: 'Subframes', gainOffset: 'Guany / Offset', calibration: 'Calibratge',
+		generalInfo: 'Informació general', category: 'Categoria', date: 'Data', captureSessions: 'Sessions de captura', capture: 'Captura', totalTime: 'Temps total', subframes: 'Subframes', gainOffset: 'Guany / Offset', calibration: 'Calibratge',
 		equipment: 'Equip', telescope: 'Telescopi', camera: 'Càmera', filters: 'Filtres', mount: 'Muntura', guiding: 'Guiat', focuser: 'Enfocador', filterWheel: 'Roda de filtres',
-		processingEnvironment: 'Processat i entorn', processing: 'Processat', acquisition: 'Adquisició', place: 'Lloc', sky: 'Cel', additionalVersions: 'Versions addicionals', enlarge: 'Ampliar', enlargedImage: 'Imatge ampliada', closeImage: 'Tancar la imatge ampliada',
+		processingEnvironment: 'Processat i entorn', processing: 'Processat', acquisition: 'Adquisició', place: 'Lloc', sky: 'Cel', additionalVersions: 'Versions addicionals', enlarge: 'Ampliar', enlargedImage: 'Imatge ampliada', closeImage: 'Tancar la imatge ampliada', previousImage: 'Imatge anterior', nextImage: 'Imatge següent',
 		languageSelector: 'Selecciona l’idioma', backToCategory: (category: string) => `Tornar a ${category}`, categoryDescription: (category: string) => `Fotografies de ${category.toLocaleLowerCase('ca')} de la meva galeria de cel profund.`,
 	},
 	es: {
@@ -35,9 +35,9 @@ export const copy = {
 		order: 'Ordenar', recent: 'Fecha: recientes', name: 'Nombre: A–Z', object: 'objeto', objects: 'objetos', photographedObject: 'objeto fotografiado', photographedObjects: 'objetos fotografiados',
 		noResults: 'No se ha encontrado ningún objeto con esta búsqueda.', emptyCategory: 'Todavía no hay ninguna fotografía en esta categoría.',
 		viewPhoto: 'Ver la ficha de', astroPhoto: 'Fotografía astronómica de', constellation: 'Constelación', exposure: 'Exposición', includesProcess: 'Incluye el flujo de posprocesado',
-		generalInfo: 'Información general', category: 'Categoría', date: 'Fecha', capture: 'Captura', totalTime: 'Tiempo total', subframes: 'Subframes', gainOffset: 'Ganancia / Offset', calibration: 'Calibración',
+		generalInfo: 'Información general', category: 'Categoría', date: 'Fecha', captureSessions: 'Sesiones de captura', capture: 'Captura', totalTime: 'Tiempo total', subframes: 'Subframes', gainOffset: 'Ganancia / Offset', calibration: 'Calibración',
 		equipment: 'Equipo', telescope: 'Telescopio', camera: 'Cámara', filters: 'Filtros', mount: 'Montura', guiding: 'Guiado', focuser: 'Enfocador', filterWheel: 'Rueda de filtros',
-		processingEnvironment: 'Procesado y entorno', processing: 'Procesado', acquisition: 'Adquisición', place: 'Lugar', sky: 'Cielo', additionalVersions: 'Versiones adicionales', enlarge: 'Ampliar', enlargedImage: 'Imagen ampliada', closeImage: 'Cerrar la imagen ampliada',
+		processingEnvironment: 'Procesado y entorno', processing: 'Procesado', acquisition: 'Adquisición', place: 'Lugar', sky: 'Cielo', additionalVersions: 'Versiones adicionales', enlarge: 'Ampliar', enlargedImage: 'Imagen ampliada', closeImage: 'Cerrar la imagen ampliada', previousImage: 'Imagen anterior', nextImage: 'Imagen siguiente',
 		languageSelector: 'Selecciona el idioma', backToCategory: (category: string) => `Volver a ${category}`, categoryDescription: (category: string) => `Fotografías de ${category.toLocaleLowerCase('es')} de mi galería de cielo profundo.`,
 	},
 	en: {
@@ -47,9 +47,9 @@ export const copy = {
 		order: 'Sort', recent: 'Date: newest', name: 'Name: A–Z', object: 'object', objects: 'objects', photographedObject: 'photographed object', photographedObjects: 'photographed objects',
 		noResults: 'No objects match this search.', emptyCategory: 'There are no photographs in this category yet.',
 		viewPhoto: 'View the details for', astroPhoto: 'Astronomical photograph of', constellation: 'Constellation', exposure: 'Exposure', includesProcess: 'Includes the post-processing workflow',
-		generalInfo: 'General information', category: 'Category', date: 'Date', capture: 'Capture', totalTime: 'Total time', subframes: 'Subframes', gainOffset: 'Gain / Offset', calibration: 'Calibration',
+		generalInfo: 'General information', category: 'Category', date: 'Date', captureSessions: 'Capture sessions', capture: 'Capture', totalTime: 'Total time', subframes: 'Subframes', gainOffset: 'Gain / Offset', calibration: 'Calibration',
 		equipment: 'Equipment', telescope: 'Telescope', camera: 'Camera', filters: 'Filters', mount: 'Mount', guiding: 'Guiding', focuser: 'Focuser', filterWheel: 'Filter wheel',
-		processingEnvironment: 'Processing and environment', processing: 'Processing', acquisition: 'Acquisition', place: 'Location', sky: 'Sky', additionalVersions: 'Additional versions', enlarge: 'Enlarge', enlargedImage: 'Enlarged image', closeImage: 'Close enlarged image',
+		processingEnvironment: 'Processing and environment', processing: 'Processing', acquisition: 'Acquisition', place: 'Location', sky: 'Sky', additionalVersions: 'Additional versions', enlarge: 'Enlarge', enlargedImage: 'Enlarged image', closeImage: 'Close enlarged image', previousImage: 'Previous image', nextImage: 'Next image',
 		languageSelector: 'Select language', backToCategory: (category: string) => `Back to ${category}`, categoryDescription: (category: string) => `Photographs of ${category.toLocaleLowerCase('en')} from my deep-sky gallery.`,
 	},
 } as const;
