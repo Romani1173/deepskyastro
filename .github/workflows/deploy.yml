@@ -2,7 +2,7 @@ name: Publicar a GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, prueba-articulo-sol-2026-07-26]
   workflow_dispatch:
 
 permissions:

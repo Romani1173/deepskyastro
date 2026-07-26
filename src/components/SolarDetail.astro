@@ -14,6 +14,9 @@ const labels = {
 }[lang];
 const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
 const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
+const comment = lang === 'ca'
+	? foto.data.comentario
+	: foto.data.traducciones?.[lang] ?? foto.data.comentario;
 const languageLinks = {
 	ca: withBase(`sol/${foto.id}`, base),
 	es: withBase(`es/sol/${foto.id}`, base),
@@ -21,7 +24,7 @@ const languageLinks = {
 };
 ---
 
-<Layout title={`${labels.title} · ${date}`} description={foto.data.comentario} minimal lang={lang} languageLinks={languageLinks}>
+<Layout title={`${labels.title} · ${date}`} description={comment} minimal lang={lang} languageLinks={languageLinks}>
 	<article class="photo-detail">
 		<a class="back-link" href={categoryHref(lang, 'sun', base)}>← {labels.back}</a>
 		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>
@@ -31,7 +34,7 @@ const languageLinks = {
 				<span aria-hidden="true">{labels.enlarge} ↗</span>
 			</button>
 		</div>
-		<p class="photo-detail__summary">{foto.data.comentario}</p>
+		<p class="photo-detail__summary">{comment}</p>
 	</article>
 	<dialog class="image-lightbox solar-detail-lightbox">
 		<button class="image-lightbox__close" type="button" aria-label={labels.close}>×</button>

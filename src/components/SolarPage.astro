@@ -17,6 +17,19 @@ const labels = {
 	es: { title: 'Sol', description: 'Fotografías del Sol ordenadas de más reciente a más antigua.', photo: 'fotografía solar', photos: 'fotografías solares', enlarge: 'Ampliar fotografía', close: 'Cerrar' },
 	en: { title: 'Sun', description: 'Photographs of the Sun, ordered from newest to oldest.', photo: 'solar photograph', photos: 'solar photographs', enlarge: 'Enlarge photograph', close: 'Close' },
 }[lang];
+const sortedFotos = [...fotos].sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const groupedYears = Array.from(
+	sortedFotos.reduce((years, foto) => {
+		const year = foto.data.fecha.getUTCFullYear();
+		const month = foto.data.fecha.getUTCMonth();
+		if (!years.has(year)) years.set(year, new Map<number, CollectionEntry<'sol'>[]>());
+		const months = years.get(year)!;
+		if (!months.has(month)) months.set(month, []);
+		months.get(month)!.push(foto);
+		return years;
+	}, new Map<number, Map<number, CollectionEntry<'sol'>[]>>()),
+	([year, months]) => ({ year, months: Array.from(months, ([month, entries]) => ({ month, entries })) }),
+);
 ---
 
 <Layout title={labels.title} description={labels.description} minimal lang={lang} languageLinks={languageLinks.category('sun', base)}>
@@ -27,25 +40,41 @@ const labels = {
 			<p>{labels.description}</p>
 			<p class="catalog-count">{fotos.length} {fotos.length === 1 ? labels.photo : labels.photos}</p>
 		</div>
-		<div class="solar-grid">
-			{fotos.map((foto) => {
-				const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
-				const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
-				const detailUrl = lang === 'ca'
-					? withBase(`sol/${foto.id}`, base)
-					: withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}`, base);
-				return (
-					<article class="solar-card">
-						<a class="solar-card__image" href={detailUrl}>
-							<img src={imageUrl} alt={`${labels.photo}, ${date}`} loading="lazy" decoding="async" />
-						</a>
-						<div class="solar-card__body">
-							<time datetime={foto.data.fecha.toISOString().slice(0, 10)}>{date}</time>
-							<p>{foto.data.comentario}</p>
-						</div>
-					</article>
-				);
-			})}
+		<div class="solar-archive">
+			{groupedYears.map(({ year, months }, yearIndex) => (
+				<details class="solar-year" open={yearIndex === 0}>
+					<summary><span>{year}</span><small>{months.reduce((total, item) => total + item.entries.length, 0)} {labels.photos}</small></summary>
+					<div class="solar-months">
+						{months.map(({ month, entries }, monthIndex) => {
+							const monthName = new Intl.DateTimeFormat(localeFor(lang), { month: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(year, month, 1)));
+							return (
+								<details class="solar-month" open={yearIndex === 0 && monthIndex === 0}>
+									<summary><span>{monthName}</span><small>{entries.length}</small></summary>
+									<div class="solar-grid">
+										{entries.map((foto) => {
+											const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
+											const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
+											const detailUrl = lang === 'ca'
+												? withBase(`sol/${foto.id}`, base)
+												: withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}`, base);
+											return (
+												<article class="solar-card">
+													<a class="solar-card__image" href={detailUrl}>
+														<img src={imageUrl} alt={`${labels.photo}, ${date}`} loading="lazy" decoding="async" />
+													</a>
+													<div class="solar-card__body">
+														<time datetime={foto.data.fecha.toISOString().slice(0, 10)}>{date}</time>
+													</div>
+												</article>
+											);
+										})}
+									</div>
+								</details>
+							);
+						})}
+					</div>
+				</details>
+			))}
 		</div>
 	</section>
 </Layout>

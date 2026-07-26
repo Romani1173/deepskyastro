@@ -88,7 +88,27 @@ const sol = defineCollection({
 		fecha: z.coerce.date(),
 		imagen: z.string(),
 		comentario: z.string(),
+		traducciones: z.object({
+			es: z.string(),
+			en: z.string(),
+		}).optional(),
 	}),
 });
 
-export const collections = { fotos, sol };
+const articulos = defineCollection({
+	loader: glob({ base: './src/content/articulos', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		titulo: z.string(),
+		resumen: z.string(),
+		fecha: z.coerce.date(),
+		tema: z.enum(['Sol', 'Cielo profundo']),
+		idioma: z.enum(['ca', 'es', 'en']),
+		slug: z.string(),
+		translationKey: z.string(),
+		portada: z.string(),
+		autor: z.string(),
+		prueba: z.boolean().optional().default(false),
+	}),
+});
+
+export const collections = { fotos, sol, articulos };
