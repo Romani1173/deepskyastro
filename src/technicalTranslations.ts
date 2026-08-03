@@ -18,6 +18,9 @@ export function technicalValue(value: string, lang: Lang) {
 
 	if (lang === 'es') {
 		return value
+			.replace(/^Abans de la supernova$/, 'Antes de la supernova')
+			.replace(/^Després de la supernova$/, 'Después de la supernova')
+			.replace(/^Sense fitxers de correcció$/, 'Sin archivos de corrección')
 			.replace(/\bSessió del\b/g, 'Sesión del')
 			.replace(/\bsessió del\b/g, 'sesión del')
 			.replace(/Airmass mitjana per sessió/g, 'Masa de aire media por sesión')
@@ -49,6 +52,9 @@ export function technicalValue(value: string, lang: Lang) {
 	}
 
 	return value
+		.replace(/^Abans de la supernova$/, 'Before the supernova')
+		.replace(/^Després de la supernova$/, 'After the supernova')
+		.replace(/^Sense fitxers de correcció$/, 'No calibration frames')
 		.replace(/\bSessió del\b/g, 'Session on')
 		.replace(/\bsessió del\b/g, 'session on')
 		.replace(/Airmass mitjana per sessió/g, 'Mean airmass per session')
