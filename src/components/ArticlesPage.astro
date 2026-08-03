@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { articleHref, articlesHref, homeHref, languageLinks, localeFor, withBase } from '../i18n';
+import { homeHref, languageLinks, localeFor, withBase } from '../i18n';
 
 interface Props {
 	lang: Lang;
@@ -12,13 +12,25 @@ interface Props {
 const { lang, articles } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const labels = {
-	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", read: "Llegir l'article", test: 'Prova parcial', empty: 'Encara no hi ha articles disponibles en aquest idioma.', backHome: 'Tornar a la portada' },
-	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', read: 'Leer el artículo', test: 'Prueba parcial', empty: 'Todavía no hay artículos disponibles en este idioma.', backHome: 'Volver a la portada' },
-	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', read: 'Read article', test: 'Partial preview', empty: 'There are no articles available in English yet.', backHome: 'Back to the home page' },
+	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", available: 'PDF disponibles', open: 'Obrir PDF', backHome: 'Tornar a la portada' },
+	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', available: 'PDF disponibles', open: 'Abrir PDF', backHome: 'Volver a la portada' },
+	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', available: 'Available PDFs', open: 'Open PDF', backHome: 'Back to the home page' },
 }[lang];
-const localized = articles
-	.filter((article) => article.data.idioma === lang)
-	.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const localized = articles.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const languageNames = {
+	ca: { ca: 'Català', es: 'Castellà', en: 'Anglès' },
+	es: { ca: 'Catalán', es: 'Castellano', en: 'Inglés' },
+	en: { ca: 'Catalan', es: 'Spanish', en: 'English' },
+}[lang];
+const topicNames = {
+	ca: { Sol: 'Sol', 'Cielo profundo': 'Cel profund' },
+	es: { Sol: 'Sol', 'Cielo profundo': 'Cielo profundo' },
+	en: { Sol: 'Sun', 'Cielo profundo': 'Deep sky' },
+}[lang];
+const localizedText = (article: CollectionEntry<'articulos'>) => {
+	if (lang === 'ca' || !article.data.traducciones) return { titulo: article.data.titulo, resumen: article.data.resumen };
+	return article.data.traducciones[lang];
+};
 ---
 
 <Layout title={labels.title} description={labels.description} minimal lang={lang} languageLinks={languageLinks.articles(base)} backLink={{ href: homeHref(lang, base), label: labels.backHome }}>
@@ -27,36 +39,35 @@ const localized = articles
 			<h1>{labels.title}</h1>
 			<p>{labels.description}</p>
 		</header>
-		{localized.length ? (
-			<div class="articles-grid">
-				{localized.map((article) => (
+		<div class="articles-grid">
+			{localized.map((article) => {
+				const text = localizedText(article);
+				const availablePdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
+				return (
 					<article class="article-card">
-						<a class="article-card__cover" href={articleHref(lang, article.data.slug, base)}>
+						<div class="article-card__cover">
 							<img src={withBase(`imagenes/articulos/sol/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
-						</a>
+						</div>
 						<div class="article-card__body">
 							<div class="article-card__meta">
-								<span>{article.data.tema}</span>
+								<span>{topicNames[article.data.tema]}</span>
 								<time datetime={article.data.fecha.toISOString().slice(0, 10)}>{new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(article.data.fecha)}</time>
 							</div>
-							<h2><a href={articleHref(lang, article.data.slug, base)}>{article.data.titulo}</a></h2>
-							<p>{article.data.resumen}</p>
-							{article.data.prueba && <span class="article-test-badge">{labels.test}</span>}
-							<a class="article-card__read" href={articleHref(lang, article.data.slug, base)}>{labels.read} →</a>
+							<h2>{text.titulo}</h2>
+							<p>{text.resumen}</p>
+							<p class="article-card__available">{labels.available}</p>
+							<div class="article-card__pdfs">
+								{availablePdfs.map((pdfLang) => (
+									<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">
+										<span>{languageNames[pdfLang]}</span>
+										<small>{labels.open} ↗</small>
+									</a>
+								))}
+							</div>
 						</div>
 					</article>
-				))}
-			</div>
-		) : (
-			<div class="articles-empty">
-				<p>{labels.empty}</p>
-				{lang === 'en' && (
-					<div class="articles-empty__links">
-						<a href={articlesHref('ca', base)}>Veure els articles en català</a>
-						<a href={articlesHref('es', base)}>Ver los artículos en castellano</a>
-					</div>
-				)}
-			</div>
-		)}
+				);
+			})}
+		</div>
 	</section>
 </Layout>

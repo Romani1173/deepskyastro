@@ -100,14 +100,21 @@ const articulos = defineCollection({
 	schema: z.object({
 		titulo: z.string(),
 		resumen: z.string(),
+		traducciones: z.object({
+			es: z.object({ titulo: z.string(), resumen: z.string() }),
+			en: z.object({ titulo: z.string(), resumen: z.string() }),
+		}).optional(),
 		fecha: z.coerce.date(),
 		tema: z.enum(['Sol', 'Cielo profundo']),
-		idioma: z.enum(['ca', 'es', 'en']),
 		slug: z.string(),
 		translationKey: z.string(),
 		portada: z.string(),
 		autor: z.string(),
-		prueba: z.boolean().optional().default(false),
+		pdfs: z.object({
+			ca: z.string().optional(),
+			es: z.string().optional(),
+			en: z.string().optional(),
+		}),
 	}),
 });
 
