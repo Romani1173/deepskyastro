@@ -12,7 +12,7 @@ fecha: "2024-06-01"
 tema: "Cielo profundo"
 slug: "apilat-amb-pixinsight"
 translationKey: "apilat-amb-pixinsight"
-portada: "portada.jpg"
+portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/apilat-amb-pixinsight-ca.pdf"

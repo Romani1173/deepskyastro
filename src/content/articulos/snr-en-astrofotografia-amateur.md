@@ -12,7 +12,7 @@ fecha: "2025-07-01"
 tema: "Cielo profundo"
 slug: "snr-en-astrofotografia-amateur"
 translationKey: "snr-en-astrofotografia-amateur"
-portada: "portada.jpg"
+portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/snr-en-astrofotografia-amateur-ca.pdf"

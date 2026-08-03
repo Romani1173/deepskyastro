@@ -12,7 +12,7 @@ fecha: "2022-12-01"
 tema: "Cielo profundo"
 slug: "fitxers-de-correccio"
 translationKey: "fitxers-de-correccio"
-portada: "portada.jpg"
+portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/fitxers-de-correccio-ca.pdf"
