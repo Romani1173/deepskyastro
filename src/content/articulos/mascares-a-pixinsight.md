@@ -16,4 +16,5 @@ portada: "portada.jpg"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/mascares-a-pixinsight-ca.pdf"
+  es: "documents/articles/mascares-a-pixinsight-es.pdf"
 ---
