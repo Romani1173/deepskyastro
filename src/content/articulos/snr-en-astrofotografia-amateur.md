@@ -16,4 +16,5 @@ portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/snr-en-astrofotografia-amateur-ca.pdf"
+  es: "documents/articles/snr-en-astrofotografia-amateur-es.pdf"
 ---

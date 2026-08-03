@@ -16,4 +16,5 @@ portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/apilat-amb-pixinsight-ca.pdf"
+  es: "documents/articles/apilat-amb-pixinsight-es.pdf"
 ---
