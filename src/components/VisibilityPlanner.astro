@@ -10,19 +10,21 @@ interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; }
 const { lang, fotos } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats que formen part d’aquesta web i que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes fotografiats analitzats`, week: 'Setmana de l’any', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps útil', above: 'sobre', view: 'Veure fotografia', night: 'Nit de referència', qualities: { excellent: 'Excel·lent', good: 'Bona', low: 'Baixa', 'very-low': 'Molt baixa', 'not-visible': 'No visible' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados que forman parte de esta web y que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos fotografiados analizados`, week: 'Semana del año', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo útil', above: 'sobre', view: 'Ver fotografía', night: 'Noche de referencia', qualities: { excellent: 'Excelente', good: 'Buena', low: 'Baja', 'very-low': 'Muy baja', 'not-visible': 'No visible' } },
-  en: { title: 'What can we photograph this week?', intro: 'A selection of the photographed objects already featured on this website that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} photographed objects analysed`, week: 'Week of the year', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Useful time', above: 'above', view: 'View photograph', night: 'Reference night', qualities: { excellent: 'Excellent', good: 'Good', low: 'Low', 'very-low': 'Very low', 'not-visible': 'Not visible' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps útil', above: 'sobre', view: 'Veure fotografia', night: 'Nit de referència', qualities: { excellent: 'Excel·lent', good: 'Bona', low: 'Baixa', 'very-low': 'Molt baixa', 'not-visible': 'No visible' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo útil', above: 'sobre', view: 'Ver fotografía', night: 'Noche de referencia', qualities: { excellent: 'Excelente', good: 'Buena', low: 'Baja', 'very-low': 'Muy baja', 'not-visible': 'No visible' } },
+  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Useful time', above: 'above', view: 'View photograph', night: 'Reference night', qualities: { excellent: 'Excellent', good: 'Good', low: 'Low', 'very-low': 'Very low', 'not-visible': 'Not visible' } },
 } as const;
 const t = texts[lang];
 const latestByObject = new Map<string, CollectionEntry<'fotos'>>();
 for (const foto of [...fotos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
   if (foto.data.objecte_astronomic && !latestByObject.has(foto.data.objecte_astronomic)) latestByObject.set(foto.data.objecte_astronomic, foto);
 }
-const cards = Object.entries(visibility.objects).flatMap(([id, object]) => {
+const cards = Object.entries(visibility.objects).map(([id, object]) => {
   const foto = latestByObject.get(id);
-  return foto ? [{ id, object, foto, text: photoText(foto, lang) }] : [];
+  return { id, object, foto, text: foto ? photoText(foto, lang) : undefined };
 });
+const photographedCount = cards.filter(({ object }) => object.status === 'photographed').length;
+const pendingCount = cards.filter(({ object }) => object.status === 'pending').length;
 const today = new Date();
 const referenceYear = visibility.observatory.referenceYear;
 const januaryFourth = new Date(Date.UTC(referenceYear, 0, 4));
@@ -63,17 +65,23 @@ const weekRange = (week: number) => {
       </div>
     </div>
 
+    <nav class="visibility-filters" aria-label={t.title}>
+      <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
+      <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
+      <button type="button" data-visibility-filter="all" aria-pressed="false">{t.all} <span>{cards.length}</span></button>
+    </nav>
+
     <div class="visibility-grid" data-visibility-grid>
       {cards.map(({ object, foto, text }) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['20'], week.hoursAbove['25'], week.hoursAbove['30'], week.quality, week.representativeNight]);
-        return <article class="visibility-card" data-visibility-card data-weeks={JSON.stringify(compactWeeks)}>
-          <a class="visibility-card__image" href={photoHref(lang, foto.id, base)}>
-            <img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" />
-          </a>
+        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-status={object.status} data-weeks={JSON.stringify(compactWeeks)}>
+          {foto && text
+            ? <a class="visibility-card__image" href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
+            : <div class="visibility-card__image visibility-card__image--pending" aria-hidden="true"><span>P</span></div>}
           <div class="visibility-card__body">
             <div class="visibility-card__heading">
-              <div><p>{foto.data.constellacio}</p><h2>{object.catalogName}</h2></div>
-              <span data-quality></span>
+              <div><p>{foto ? foto.data.constellacio : t.pendingTarget}</p><h2>{object.catalogName}</h2></div>
+              <div class="visibility-card__badges">{object.status === 'pending' && <span class="pending-badge">{t.pending}</span>}<span data-quality></span></div>
             </div>
             <dl>
               <div class="visibility-card__primary"><dt>{t.maxAltitude}</dt><dd data-altitude>—</dd></div>
@@ -81,7 +89,7 @@ const weekRange = (week: number) => {
               <div><dt>{t.usefulTime}</dt><dd data-hours>—</dd></div>
               <div><dt>{t.night}</dt><dd data-night>—</dd></div>
             </dl>
-            <a class="visibility-card__link" href={photoHref(lang, foto.id, base)}>{t.view} →</a>
+            {foto ? <a class="visibility-card__link" href={photoHref(lang, foto.id, base)}>{t.view} →</a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
           </div>
         </article>;
       })}
@@ -93,7 +101,10 @@ const weekRange = (week: number) => {
   const selector = document.querySelector('#visibility-week');
   const grid = document.querySelector('[data-visibility-grid]');
   const cards = [...document.querySelectorAll('[data-visibility-card]')];
+  const filterButtons = [...document.querySelectorAll('[data-visibility-filter]')];
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
+  const requestedView = new URL(window.location.href).searchParams.get('view');
+  let currentView = ['photographed', 'pending', 'all'].includes(requestedView) ? requestedView : 'photographed';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
   if (Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= selector.options.length) {
     selector.value = String(requestedWeek);
@@ -102,13 +113,16 @@ const weekRange = (week: number) => {
     const week = Number(selector.value);
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('week', String(week));
+    currentUrl.searchParams.set('view', currentView);
     window.history.replaceState(null, '', currentUrl);
     document.querySelectorAll('.language-selector a').forEach((link) => {
       const languageUrl = new URL(link.href);
       languageUrl.searchParams.set('week', String(week));
+      languageUrl.searchParams.set('view', currentView);
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
+      card.hidden = currentView !== 'all' && card.dataset.status !== currentView;
       const value = JSON.parse(card.dataset.weeks)[week - 1];
       const [altitude, bestTimeUtc, hours20, hours25, hours30, qualityCode, representativeNight] = value;
       card.dataset.altitude = altitude;
@@ -120,10 +134,15 @@ const weekRange = (week: number) => {
       quality.textContent = t.qualities[qualityCode];
       quality.className = `quality quality--${qualityCode}`;
     });
+    filterButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityFilter === currentView)));
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);
   };
   selector?.addEventListener('change', update);
+  filterButtons.forEach((button) => button.addEventListener('click', () => {
+    currentView = button.dataset.visibilityFilter;
+    update();
+  }));
   document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
     selector.value = String(Math.max(1, Math.min(selector.options.length, Number(selector.value) + Number(button.dataset.weekStep))));
     update();
@@ -145,18 +164,28 @@ const weekRange = (week: number) => {
   .week-control__select { display: grid; gap: .18rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control button { width: 2.7rem; cursor: pointer; }
+  .visibility-filters { display: flex; gap: .5rem; margin: 0 0 1.25rem; overflow-x: auto; scrollbar-width: none; }
+  .visibility-filters::-webkit-scrollbar { display: none; }
+  .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
+  .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
+  .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
   .visibility-grid { display: grid; gap: 1rem; }
   .visibility-card { display: grid; grid-template-columns: minmax(10rem, 28%) 1fr; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
   .visibility-card__image img { width: 100%; height: 100%; min-height: 15rem; object-fit: cover; }
+  .visibility-card__image--pending { display: grid; min-height: 15rem; place-items: center; background: radial-gradient(circle at 30% 30%, rgba(85,217,179,.12), transparent 35%), linear-gradient(145deg, #111925, #090d14); }
+  .visibility-card__image--pending span { display: grid; width: 4.5rem; height: 4.5rem; place-items: center; border: 1px solid rgba(85,217,179,.5); border-radius: 50%; color: #78e8c7; font: 700 2rem var(--font-mono); }
+  .visibility-card--pending { border-color: rgba(85,217,179,.28); }
   .visibility-card__body { padding: 1.1rem 1.25rem; }
   .visibility-card__heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
   .visibility-card__heading p { margin: 0 0 .15rem; color: var(--color-muted); font: .72rem var(--font-mono); text-transform: uppercase; }
+  .visibility-card__badges { display: flex; flex-wrap: wrap; justify-content: end; gap: .4rem; }
   .visibility-card h2 { margin: 0; font-size: 1.45rem; }
   .quality { padding: .35rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
   .quality--excellent { background: rgba(85,217,179,.16); color: #78e8c7; }
   .quality--good { background: rgba(102,170,255,.16); color: #8bbcff; }
   .quality--low, .quality--very-low { background: rgba(239,177,73,.16); color: #f1c36e; }
   .quality--not-visible { background: rgba(255,255,255,.08); color: var(--color-muted); }
+  .pending-badge { padding: .35rem .55rem; border-radius: 999px; background: rgba(85,217,179,.16); color: #78e8c7; font-size: .72rem; font-weight: 700; white-space: nowrap; }
   .visibility-card dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0; }
   .visibility-card dl div { padding: .75rem; border: 1px solid var(--color-border); border-radius: .55rem; }
   .visibility-card dl .visibility-card__primary { grid-row: span 2; }
@@ -164,6 +193,7 @@ const weekRange = (week: number) => {
   .visibility-card dd { margin: .25rem 0 0; font-family: var(--font-mono); }
   .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
   .visibility-card__link { font-weight: 700; }
+  .visibility-card__pending-note { margin: 0; color: #78e8c7; font-size: .82rem; font-weight: 700; }
   @media (max-width: 700px) {
     .week-control { align-items: stretch; flex-direction: column; }
     .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
