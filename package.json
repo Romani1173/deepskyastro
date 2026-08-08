@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "visibility:generate": "node scripts/generate-visibility-data.mjs",
+    "visibility:chart": "node scripts/generate-visibility-chart.mjs",
     "visibility:test": "node --test scripts/visibility.test.mjs"
   },
   "dependencies": {
