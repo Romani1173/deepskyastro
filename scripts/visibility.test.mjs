@@ -28,7 +28,7 @@ test('weekly night planning keeps low and circumpolar objects', () => {
   const common = { year: 2026, latitudeDeg: 41, longitudeDeg: 1.5, thresholdsDeg: [20, 25, 30] };
   const m8 = weeklyNightSamples({ ...common, raDeg: 270.904167, decDeg: -24.386667 });
   const m81 = weeklyNightSamples({ ...common, raDeg: 148.888219, decDeg: 69.065295 });
-  assert.equal(m8.length, 52);
+  assert.equal(m8.length, 53);
   assert.ok(Math.max(...m8.map(({ maxAltitudeDeg }) => maxAltitudeDeg)) > 24);
   assert.ok(Math.min(...m81.map(({ maxAltitudeDeg }) => maxAltitudeDeg)) > 20);
 });

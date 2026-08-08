@@ -24,8 +24,21 @@ const cards = Object.entries(visibility.objects).flatMap(([id, object]) => {
   return foto ? [{ id, object, foto, text: photoText(foto, lang) }] : [];
 });
 const today = new Date();
-const yearStart = Date.UTC(today.getUTCFullYear(), 0, 1);
-const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()) - yearStart) / 86400000 + 1) / 7)));
+const referenceYear = visibility.observatory.referenceYear;
+const januaryFourth = new Date(Date.UTC(referenceYear, 0, 4));
+const firstMonday = new Date(januaryFourth.getTime() - ((januaryFourth.getUTCDay() || 7) - 1) * 86400000);
+const weekCount = cards[0]?.object.nightWeeks.length ?? 52;
+const currentWeek = Math.max(1, Math.min(weekCount, Math.floor((Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()) - firstMonday.getTime()) / (7 * 86400000)) + 1));
+const dateLocale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
+const weekRange = (week: number) => {
+  const start = new Date(firstMonday.getTime() + (week - 1) * 7 * 86400000);
+  const end = new Date(start.getTime() + 6 * 86400000);
+  const startMonth = new Intl.DateTimeFormat(dateLocale, { month: 'short', timeZone: 'UTC' }).format(start).replace('.', '');
+  const endMonth = new Intl.DateTimeFormat(dateLocale, { month: 'short', timeZone: 'UTC' }).format(end).replace('.', '');
+  return startMonth === endMonth
+    ? `${start.getUTCDate()}–${end.getUTCDate()} ${endMonth}`
+    : `${start.getUTCDate()} ${startMonth}–${end.getUTCDate()} ${endMonth}`;
+};
 ---
 
 <Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)}>
@@ -41,9 +54,11 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
       <label for="visibility-week">{t.week}</label>
       <div class="week-control__row">
         <button type="button" data-week-step="-1" aria-label="−1">−</button>
-        <select id="visibility-week">
-          {Array.from({ length: 52 }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
-        </select>
+        <div class="week-control__select">
+          <select id="visibility-week">
+            {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
+          </select>
+        </div>
         <button type="button" data-week-step="1" aria-label="+1">+</button>
       </div>
     </div>
@@ -79,8 +94,20 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
   const grid = document.querySelector('[data-visibility-grid]');
   const cards = [...document.querySelectorAll('[data-visibility-card]')];
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
+  const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
+  if (Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= selector.options.length) {
+    selector.value = String(requestedWeek);
+  }
   const update = () => {
     const week = Number(selector.value);
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('week', String(week));
+    window.history.replaceState(null, '', currentUrl);
+    document.querySelectorAll('.language-selector a').forEach((link) => {
+      const languageUrl = new URL(link.href);
+      languageUrl.searchParams.set('week', String(week));
+      link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
+    });
     cards.forEach((card) => {
       const value = JSON.parse(card.dataset.weeks)[week - 1];
       const [altitude, bestTimeUtc, hours20, hours25, hours30, qualityCode, representativeNight] = value;
@@ -98,7 +125,7 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
   };
   selector?.addEventListener('change', update);
   document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
-    selector.value = String(Math.max(1, Math.min(52, Number(selector.value) + Number(button.dataset.weekStep))));
+    selector.value = String(Math.max(1, Math.min(selector.options.length, Number(selector.value) + Number(button.dataset.weekStep))));
     update();
   }));
   update();
@@ -115,7 +142,8 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
   .week-control label { font-weight: 700; }
   .week-control__row { display: flex; gap: .5rem; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
-  .week-control select { min-width: 6rem; padding: 0 .8rem; }
+  .week-control__select { display: grid; gap: .18rem; }
+  .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control button { width: 2.7rem; cursor: pointer; }
   .visibility-grid { display: grid; gap: 1rem; }
   .visibility-card { display: grid; grid-template-columns: minmax(10rem, 28%) 1fr; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
@@ -136,5 +164,13 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
   .visibility-card dd { margin: .25rem 0 0; font-family: var(--font-mono); }
   .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
   .visibility-card__link { font-weight: 700; }
-  @media (max-width: 700px) { .visibility-card { grid-template-columns: 1fr; } .visibility-card__image img { max-height: 13rem; min-height: 0; } .visibility-card dl { grid-template-columns: 1fr 1fr; } .visibility-card dl .visibility-card__primary { grid-row: auto; } }
+  @media (max-width: 700px) {
+    .week-control { align-items: stretch; flex-direction: column; }
+    .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
+    .week-control select { width: 100%; min-width: 0; }
+    .visibility-card { grid-template-columns: 1fr; }
+    .visibility-card__image img { max-height: 13rem; min-height: 0; }
+    .visibility-card dl { grid-template-columns: 1fr 1fr; }
+    .visibility-card dl .visibility-card__primary { grid-row: auto; }
+  }
 </style>

@@ -78,10 +78,22 @@ export function nightMetrics({ date, latitudeDeg, longitudeDeg, raDeg, decDeg, t
 }
 
 export function weeklyNightSamples(options) {
-  const nights = Array.from({ length: 364 }, (_, index) => nightMetrics({ ...options, date: new Date(Date.UTC(options.year, 0, index + 1)) }));
-  return Array.from({ length: 52 }, (_, index) => {
-    const group = nights.slice(index * 7, index * 7 + 7).filter(Boolean);
-    if (group.length === 0) return { week: index + 1, available: false };
+  const januaryFourth = new Date(Date.UTC(options.year, 0, 4));
+  const weekday = januaryFourth.getUTCDay() || 7;
+  const firstMonday = new Date(januaryFourth.getTime() - (weekday - 1) * 86400000);
+  const weeks = [];
+  for (let index = 0; index < 53; index += 1) {
+    const monday = new Date(firstMonday.getTime() + index * 7 * 86400000);
+    const thursday = new Date(monday.getTime() + 3 * 86400000);
+    if (thursday.getUTCFullYear() !== options.year) break;
+    const group = Array.from({ length: 7 }, (_, day) => nightMetrics({
+      ...options,
+      date: new Date(monday.getTime() + day * 86400000),
+    })).filter(Boolean);
+    if (group.length === 0) {
+      weeks.push({ week: index + 1, available: false });
+      continue;
+    }
     const best = group.reduce((current, night) => night.maxAltitudeDeg > current.maxAltitudeDeg ? night : current);
     const hoursAbove = Object.fromEntries(options.thresholdsDeg.map((threshold) => [threshold, Math.max(...group.map((night) => night.hoursAbove[threshold]))]));
     const maxAltitudeDeg = Math.max(...group.map((night) => night.maxAltitudeDeg));
@@ -92,7 +104,7 @@ export function weeklyNightSamples(options) {
         : maxAltitudeDeg >= 20
           ? 'low'
           : maxAltitudeDeg >= 0 ? 'very-low' : 'not-visible';
-    return {
+    weeks.push({
       week: index + 1,
       available: true,
       representativeNight: best.night,
@@ -101,6 +113,7 @@ export function weeklyNightSamples(options) {
       bestTimeUtc: best.bestTimeUtc,
       hoursAbove,
       quality,
-    };
-  });
+    });
+  }
+  return weeks;
 }
