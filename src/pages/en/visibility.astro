@@ -1,0 +1,6 @@
+---
+import { getCollection } from 'astro:content';
+import VisibilityPlanner from '../../components/VisibilityPlanner.astro';
+const fotos = await getCollection('fotos');
+---
+<VisibilityPlanner lang="en" fotos={fotos} />

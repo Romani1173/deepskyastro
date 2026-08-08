@@ -18,7 +18,7 @@ export const categories: Array<{
 export const copy = {
 	ca: {
 		siteDescription: 'Un recull personal de fotografies de cel profund.',
-		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', myEquipment: 'El meu equip', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
+		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', myEquipment: 'El meu equip', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
 		explore: 'Explora la galeria', categoryNav: 'Filtra per categoria', search: 'Cerca a la galeria', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Ordena', recent: 'Data: recents', name: 'Nom: A–Z', object: 'objecte', objects: 'objectes', photographedObject: 'objecte fotografiat', photographedObjects: 'objectes fotografiats',
 		noResults: "No s'ha trobat cap objecte amb aquesta cerca.", emptyCategory: 'Encara no hi ha cap fotografia en aquesta categoria.',
@@ -30,7 +30,7 @@ export const copy = {
 	},
 	es: {
 		siteDescription: 'Una colección personal de fotografías de cielo profundo.',
-		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', myEquipment: 'Mi equipo', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
+		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', myEquipment: 'Mi equipo', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
 		explore: 'Explora la galería', categoryNav: 'Filtrar por categoría', search: 'Buscar en la galería', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Ordenar', recent: 'Fecha: recientes', name: 'Nombre: A–Z', object: 'objeto', objects: 'objetos', photographedObject: 'objeto fotografiado', photographedObjects: 'objetos fotografiados',
 		noResults: 'No se ha encontrado ningún objeto con esta búsqueda.', emptyCategory: 'Todavía no hay ninguna fotografía en esta categoría.',
@@ -42,7 +42,7 @@ export const copy = {
 	},
 	en: {
 		siteDescription: 'A personal collection of deep-sky photographs.',
-		home: 'Home', catalogue: 'Gallery', articles: 'Articles', myEquipment: 'My equipment', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
+		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', myEquipment: 'My equipment', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
 		explore: 'Explore the gallery', categoryNav: 'Filter by category', search: 'Search the gallery', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Sort', recent: 'Date: newest', name: 'Name: A–Z', object: 'object', objects: 'objects', photographedObject: 'photographed object', photographedObjects: 'photographed objects',
 		noResults: 'No objects match this search.', emptyCategory: 'There are no photographs in this category yet.',
@@ -64,6 +64,7 @@ export const homeHref = (lang: Lang, base = '/') => lang === 'ca' ? normalizeBas
 export const galleryHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('galeria', base) : withBase(`${lang}/${lang === 'en' ? 'gallery' : 'galeria'}`, base);
 export const equipmentHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('equip', base) : withBase(`${lang}/${lang === 'en' ? 'equipment' : 'equipo'}`, base);
 export const articlesHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('articles', base) : withBase(`${lang}/${lang === 'en' ? 'articles' : 'articulos'}`, base);
+export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('visibilitat', base) : withBase(`${lang}/${lang === 'en' ? 'visibility' : 'visibilidad'}`, base);
 export const articleHref = (lang: Lang, slug: string, base = '/') => withBase(`${lang === 'ca' ? 'articles' : `${lang}/${lang === 'en' ? 'articles' : 'articulos'}`}/${slug}`, base);
 export const photoHref = (lang: Lang, id: string, base = '/') => lang === 'ca' ? withBase(`foto/${id}`, base) : withBase(`${lang}/${lang === 'en' ? 'photo' : 'foto'}/${id}`, base);
 export const categoryHref = (lang: Lang, key: CategoryKey, base = '/') => {
@@ -78,6 +79,7 @@ export const languageLinks = {
 	gallery: (base = '/') => ({ ca: galleryHref('ca', base), es: galleryHref('es', base), en: galleryHref('en', base) }),
 	equipment: (base = '/') => ({ ca: equipmentHref('ca', base), es: equipmentHref('es', base), en: equipmentHref('en', base) }),
 	articles: (base = '/') => ({ ca: articlesHref('ca', base), es: articlesHref('es', base), en: articlesHref('en', base) }),
+	visibility: (base = '/') => ({ ca: visibilityHref('ca', base), es: visibilityHref('es', base), en: visibilityHref('en', base) }),
 	category: (key: CategoryKey, base = '/') => ({ ca: categoryHref('ca', key, base), es: categoryHref('es', key, base), en: categoryHref('en', key, base) }),
 	photo: (id: string, base = '/') => ({ ca: photoHref('ca', id, base), es: photoHref('es', id, base), en: photoHref('en', id, base) }),
 };

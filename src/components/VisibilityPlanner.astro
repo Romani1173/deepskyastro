@@ -1,0 +1,138 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../i18n';
+import { languageLinks, photoHref, withBase } from '../i18n';
+import { photoText } from '../photoTranslations';
+import Layout from '../layouts/Layout.astro';
+import visibility from '../data/visibility.generated.json';
+
+interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; }
+const { lang, fotos } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const texts = {
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Planificació orientativa dels objectes de la galeria durant la foscor astronòmica.', location: 'Càlcul per al centre de Catalunya · 41° N, 1,5° E · Sol per sota de −18°', week: 'Setmana de l’any', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps útil', above: 'sobre', photographed: 'Fotografiat', view: 'Veure fotografia', night: 'Nit de referència', qualities: { excellent: 'Excel·lent', good: 'Bona', low: 'Baixa', 'very-low': 'Molt baixa', 'not-visible': 'No visible' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Planificación orientativa de los objetos de la galería durante la oscuridad astronómica.', location: 'Cálculo para el centro de Cataluña · 41° N, 1,5° E · Sol por debajo de −18°', week: 'Semana del año', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo útil', above: 'sobre', photographed: 'Fotografiado', view: 'Ver fotografía', night: 'Noche de referencia', qualities: { excellent: 'Excelente', good: 'Buena', low: 'Baja', 'very-low': 'Muy baja', 'not-visible': 'No visible' } },
+  en: { title: 'What can we photograph this week?', intro: 'An indicative plan for gallery objects during astronomical darkness.', location: 'Calculated for central Catalonia · 41° N, 1.5° E · Sun below −18°', week: 'Week of the year', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Useful time', above: 'above', photographed: 'Photographed', view: 'View photograph', night: 'Reference night', qualities: { excellent: 'Excellent', good: 'Good', low: 'Low', 'very-low': 'Very low', 'not-visible': 'Not visible' } },
+} as const;
+const t = texts[lang];
+const latestByObject = new Map<string, CollectionEntry<'fotos'>>();
+for (const foto of [...fotos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
+  if (foto.data.objecte_astronomic && !latestByObject.has(foto.data.objecte_astronomic)) latestByObject.set(foto.data.objecte_astronomic, foto);
+}
+const cards = Object.entries(visibility.objects).flatMap(([id, object]) => {
+  const foto = latestByObject.get(id);
+  return foto ? [{ id, object, foto, text: photoText(foto, lang) }] : [];
+});
+const today = new Date();
+const yearStart = Date.UTC(today.getUTCFullYear(), 0, 1);
+const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()) - yearStart) / 86400000 + 1) / 7)));
+---
+
+<Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)}>
+  <section class="visibility-planner" aria-labelledby="visibility-title">
+    <header class="visibility-planner__header">
+      <p class="visibility-planner__eyebrow">{t.photographed} · {cards.length}</p>
+      <h1 id="visibility-title">{t.title}</h1>
+      <p>{t.intro}</p>
+      <p class="visibility-planner__location">⌖ {t.location}</p>
+    </header>
+
+    <div class="week-control">
+      <label for="visibility-week">{t.week}</label>
+      <div class="week-control__row">
+        <button type="button" data-week-step="-1" aria-label="−1">−</button>
+        <select id="visibility-week">
+          {Array.from({ length: 52 }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
+        </select>
+        <button type="button" data-week-step="1" aria-label="+1">+</button>
+      </div>
+    </div>
+
+    <div class="visibility-grid" data-visibility-grid>
+      {cards.map(({ object, foto, text }) => (
+        <article class="visibility-card" data-visibility-card data-weeks={JSON.stringify(object.nightWeeks)}>
+          <a class="visibility-card__image" href={photoHref(lang, foto.id, base)}>
+            <img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" />
+          </a>
+          <div class="visibility-card__body">
+            <div class="visibility-card__heading">
+              <div><p>{foto.data.constellacio}</p><h2>{object.catalogName}</h2></div>
+              <span data-quality></span>
+            </div>
+            <dl>
+              <div class="visibility-card__primary"><dt>{t.maxAltitude}</dt><dd data-altitude>—</dd></div>
+              <div><dt>{t.bestTime}</dt><dd><span data-best-time>—</span> <small>{t.localTime}</small></dd></div>
+              <div><dt>{t.usefulTime}</dt><dd data-hours>—</dd></div>
+              <div><dt>{t.night}</dt><dd data-night>—</dd></div>
+            </dl>
+            <a class="visibility-card__link" href={photoHref(lang, foto.id, base)}>{t.view} →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ t, lang }}>
+  const selector = document.querySelector('#visibility-week');
+  const grid = document.querySelector('[data-visibility-grid]');
+  const cards = [...document.querySelectorAll('[data-visibility-card]')];
+  const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
+  const update = () => {
+    const week = Number(selector.value);
+    cards.forEach((card) => {
+      const value = JSON.parse(card.dataset.weeks)[week - 1];
+      card.dataset.altitude = value.maxAltitudeDeg;
+      card.querySelector('[data-altitude]').textContent = `${value.maxAltitudeDeg.toLocaleString(locale)}°`;
+      card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(value.bestTimeUtc));
+      card.querySelector('[data-hours]').textContent = `>${30}°: ${value.hoursAbove['30'].toLocaleString(locale)} h · >${25}°: ${value.hoursAbove['25'].toLocaleString(locale)} h · >${20}°: ${value.hoursAbove['20'].toLocaleString(locale)} h`;
+      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${value.representativeNight}T12:00:00Z`));
+      const quality = card.querySelector('[data-quality]');
+      quality.textContent = t.qualities[value.quality];
+      quality.className = `quality quality--${value.quality}`;
+    });
+    cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
+    grid.append(...cards);
+  };
+  selector?.addEventListener('change', update);
+  document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
+    selector.value = String(Math.max(1, Math.min(52, Number(selector.value) + Number(button.dataset.weekStep))));
+    update();
+  }));
+  update();
+</script>
+
+<style>
+  .visibility-planner { padding: 1.5rem 0 3rem; }
+  .visibility-planner__header { max-width: 52rem; margin-bottom: 1.5rem; }
+  .visibility-planner__eyebrow { color: var(--color-accent); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+  .visibility-planner h1 { margin: .25rem 0 .65rem; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.05; }
+  .visibility-planner__header > p:not(.visibility-planner__eyebrow) { color: var(--color-muted); }
+  .visibility-planner__location { display: inline-flex; margin-top: .6rem; padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: .45rem; background: var(--color-surface); font-family: var(--font-mono); font-size: .78rem; }
+  .week-control { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 1.75rem 0 1.25rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .8rem; background: linear-gradient(135deg, rgba(224,106,69,.12), var(--color-surface)); }
+  .week-control label { font-weight: 700; }
+  .week-control__row { display: flex; gap: .5rem; }
+  .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
+  .week-control select { min-width: 6rem; padding: 0 .8rem; }
+  .week-control button { width: 2.7rem; cursor: pointer; }
+  .visibility-grid { display: grid; gap: 1rem; }
+  .visibility-card { display: grid; grid-template-columns: minmax(10rem, 28%) 1fr; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
+  .visibility-card__image img { width: 100%; height: 100%; min-height: 15rem; object-fit: cover; }
+  .visibility-card__body { padding: 1.1rem 1.25rem; }
+  .visibility-card__heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+  .visibility-card__heading p { margin: 0 0 .15rem; color: var(--color-muted); font: .72rem var(--font-mono); text-transform: uppercase; }
+  .visibility-card h2 { margin: 0; font-size: 1.45rem; }
+  .quality { padding: .35rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+  .quality--excellent { background: rgba(85,217,179,.16); color: #78e8c7; }
+  .quality--good { background: rgba(102,170,255,.16); color: #8bbcff; }
+  .quality--low, .quality--very-low { background: rgba(239,177,73,.16); color: #f1c36e; }
+  .quality--not-visible { background: rgba(255,255,255,.08); color: var(--color-muted); }
+  .visibility-card dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0; }
+  .visibility-card dl div { padding: .75rem; border: 1px solid var(--color-border); border-radius: .55rem; }
+  .visibility-card dl .visibility-card__primary { grid-row: span 2; }
+  .visibility-card dt { color: var(--color-muted); font-size: .72rem; }
+  .visibility-card dd { margin: .25rem 0 0; font-family: var(--font-mono); }
+  .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
+  .visibility-card__link { font-weight: 700; }
+  @media (max-width: 700px) { .visibility-card { grid-template-columns: 1fr; } .visibility-card__image img { max-height: 13rem; min-height: 0; } .visibility-card dl { grid-template-columns: 1fr 1fr; } .visibility-card dl .visibility-card__primary { grid-row: auto; } }
+</style>
