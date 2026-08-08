@@ -46,6 +46,16 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 			<section class="data-panel" aria-labelledby="equipment"><h2 id="equipment">{t.equipment}</h2><dl class="data-list"><div><dt>{t.telescope}</dt><dd>{technical.ota}</dd></div><div><dt>{t.camera}</dt><dd>{technical.camera}</dd></div><div><dt>{t.filters}</dt><dd>{technical.filtres}</dd></div><div><dt>{t.mount}</dt><dd>{technical.muntura}</dd></div><div><dt>{t.guiding}</dt><dd>{technical.guiat}</dd></div>{foto.data.equip.enfocador !== 'N/A' && <div><dt>{t.focuser}</dt><dd>{technical.enfocador}</dd></div>}{foto.data.equip.roda_filtres !== 'N/A' && <div><dt>{t.filterWheel}</dt><dd>{technical.rodaFiltres}</dd></div>}</dl></section>
 			<section class="data-panel" aria-labelledby="process"><h2 id="process">{t.processingEnvironment}</h2><dl class="data-list"><div><dt>{t.processing}</dt><dd>{technical.processat}</dd></div>{foto.data.tractament.adquisicio !== 'N/A' && <div><dt>{t.acquisition}</dt><dd>{technical.adquisicio}</dd></div>}<div><dt>{t.place}</dt><dd>{technical.lloc}</dd></div><div><dt>{t.sky}</dt><dd>Bortle {foto.data.entorn.bortle}</dd></div></dl></section>
 		</div>
+		{foto.data.visibilitat && (
+			<section class="annual-visibility" aria-labelledby="annual-visibility-heading">
+				<h2 id="annual-visibility-heading">{t.annualVisibility}</h2>
+				<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} data-lightbox-alt={`${t.visibilityChart} ${text.objecte}`} data-lightbox-group="visibility" aria-label={`${t.enlarge}: ${t.annualVisibility}`}>
+					<img src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} alt={`${t.visibilityChart} ${text.objecte}`} loading="lazy" decoding="async" />
+					<span aria-hidden="true">{t.enlarge} ↗</span>
+				</button>
+				<p>{t.visibilityCaption(foto.data.visibilitat.dies_sobre_30)}</p>
+			</section>
+		)}
 		{foto.data.imatges_addicionals.length > 0 && (
 			<section class="additional-images" aria-labelledby="additional-images-heading">
 				<h2 id="additional-images-heading">{t.additionalVersions}</h2>

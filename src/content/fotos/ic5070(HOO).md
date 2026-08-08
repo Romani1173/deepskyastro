@@ -14,6 +14,9 @@ traduccions:
 
 categoria: "Nebuloses"
 imatge: "IC5070.jpg"
+visibilitat:
+  imatge: "ic5070-elevacion-anual.png"
+  dies_sobre_30: 174
 
 equip:
   ota: "TS102 f/5.6"

@@ -1,0 +1,13 @@
+---
+import type { Lang } from '../i18n';
+import { copy } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+
+<div class="photo-feature-legend" aria-label={t.featureLegend}>
+	<span><b class="photo-feature-badge photo-feature-badge--process" aria-hidden="true">P</b>{t.processIndicator}</span>
+	<span><b class="photo-feature-badge photo-feature-badge--visibility" aria-hidden="true">V</b>{t.visibilityIndicator}</span>
+</div>

@@ -14,6 +14,9 @@ traduccions:
 
 categoria: "Nebuloses"
 imatge: "Abell_21.jpg"
+visibilitat:
+  imatge: "abell21-elevacion-anual.png"
+  dies_sobre_30: 125
 
 equip:
   ota: "TS102 f/5.6"

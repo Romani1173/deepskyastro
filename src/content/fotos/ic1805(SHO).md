@@ -4,6 +4,9 @@ constellacio: "Cassiopeia"
 caracteristiques: "IC1805, coneguda com la nebulosa del Cor, és un extens complex de nebulositat d'emissió situat a la constel·lació de Cassiopeia. Té una magnitud visual de +6,50, una mida aparent de 60 × 60 minuts d'arc i un diàmetre físic d'uns 200 anys llum. Es troba a uns 6.200 anys llum de la Terra. Al seu centre alberga el cúmul obert Melotte 15, format per estrelles joves i massives, la intensa radiació ultraviolada de les quals fa brillar el gas d'hidrogen i esculpeix les intricades estructures de pols de la nebulosa. En la composició SHO o paleta Hubble, el sofre ionitzat (SII) s'assigna al vermell, l'hidrogen alfa (Ha) al verd i l'oxigen ionitzat (OIII) al blau. La cavitat central al voltant de Melotte 15 mostra intensos tons blaus, mentre que els pilars de pols i les vores del cor adopten tonalitats daurades i ataronjades. Aquests colors són representatius i depenen de la paleta de processament utilitzada."
 categoria: "Nebuloses"
 imatge: "IC1805_hubble.jpg"
+visibilitat:
+  imatge: "ic1805-elevacion-anual.png"
+  dies_sobre_30: 207
 
 traduccions:
   es:

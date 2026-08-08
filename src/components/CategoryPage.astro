@@ -3,6 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import CatalogHeader from './CatalogHeader.astro';
 import PhotoCard from './PhotoCard.astro';
+import PhotoFeatureLegend from './PhotoFeatureLegend.astro';
+import PhotoFeaturePreview from './PhotoFeaturePreview.astro';
 import type { CategoryKey, Lang } from '../i18n';
 import { categories, copy, languageLinks } from '../i18n';
 import { photoText } from '../photoTranslations';
@@ -41,6 +43,7 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 				>{fotos.length} {fotos.length === 1 ? t.photographedObject : t.photographedObjects}</p>
 			</div>
 		</div>
+		<PhotoFeatureLegend lang={lang} />
 		<div class="page-heading">
 			<h1 id="category-heading">{label}</h1>
 		</div>
@@ -53,6 +56,7 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 			{fotos.length > 0 && <p class="empty-state" id="sense-resultats" hidden>{t.noResults}</p>}
 		</div>
 	</section>
+	<PhotoFeaturePreview lang={lang} />
 </Layout>
 
 <script>

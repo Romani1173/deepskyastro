@@ -12,18 +12,23 @@ const text = photoText(foto, lang);
 const technical = photoTechnicalText(foto, lang);
 const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' }).format(foto.data.entorn.data);
 const hasProcess = foto.data.imatges_addicionals.some((imatge) => imatge.tipus === 'process');
+const hasVisibility = Boolean(foto.data.visibilitat);
+const processImage = foto.data.imatges_addicionals.find((imatge) => imatge.tipus === 'process');
 const base = import.meta.env.BASE_URL;
 ---
 
 <article class="photo-card">
-	<a href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
+	<a class="photo-card__link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
 		<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} loading="lazy" decoding="async" />
 		<div class="photo-card__body">
 			<h2>{text.objecte}</h2>
 			<p><b>{t.constellation}:</b> {technical.constellacio}</p>
 			<p><b>{t.exposure}:</b> {technical.tempsTotal}</p>
 			<p>{date}</p>
-			{hasProcess && <p class="photo-card__process">{t.includesProcess}</p>}
 		</div>
 	</a>
+	{(hasProcess || hasVisibility) && <span class="photo-card__features">
+		{processImage && <button class="photo-feature-badge photo-feature-badge--process" type="button" aria-label={`${t.openDirect}: ${t.processIndicator} — ${text.objecte}`} data-feature-preview data-preview-src={withBase(`imagenes/cielo-profundo/${processImage.fitxer}`, base)} data-preview-alt={`${t.processIndicator}: ${text.objecte}`} data-preview-title={`${t.processIndicator} — ${text.objecte}`}>P</button>}
+		{foto.data.visibilitat && <button class="photo-feature-badge photo-feature-badge--visibility" type="button" aria-label={`${t.openDirect}: ${t.visibilityIndicator} — ${text.objecte}`} data-feature-preview data-preview-src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} data-preview-alt={`${t.visibilityIndicator}: ${text.objecte}`} data-preview-title={`${t.visibilityIndicator} — ${text.objecte}`}>V</button>}
+	</span>}
 </article>

@@ -30,6 +30,10 @@ const fotos = defineCollection({
 				en: traduccioImatge,
 			}).optional(),
 		})).optional().default([]),
+        visibilitat: z.object({
+            imatge: z.string(),
+            dies_sobre_30: z.number().int().min(0).max(366),
+        }).optional(),
         constellacio: z.string(),
         caracteristiques: z.string(),
 		traduccions: z.object({

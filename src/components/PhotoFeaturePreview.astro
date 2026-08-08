@@ -1,0 +1,36 @@
+---
+import type { Lang } from '../i18n';
+import { copy } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+
+<dialog class="image-lightbox image-lightbox--additional feature-preview" aria-label={t.featurePreview}>
+	<div class="image-lightbox__stage">
+		<button class="image-lightbox__close feature-preview__close" type="button" aria-label={t.closeImage}>×</button>
+		<img alt="" />
+	</div>
+	<div class="image-lightbox__meta">
+		<strong></strong>
+	</div>
+</dialog>
+
+<script>
+	const preview = document.querySelector<HTMLDialogElement>('.feature-preview');
+	const previewImage = preview?.querySelector<HTMLImageElement>('img');
+	const previewTitle = preview?.querySelector<HTMLElement>('.image-lightbox__meta strong');
+	const previewClose = preview?.querySelector<HTMLButtonElement>('.feature-preview__close');
+	document.querySelectorAll<HTMLButtonElement>('[data-feature-preview]').forEach((button) => {
+		button.addEventListener('click', () => {
+			if (!preview || !previewImage) return;
+			previewImage.src = button.dataset.previewSrc ?? '';
+			previewImage.alt = button.dataset.previewAlt ?? '';
+			if (previewTitle) previewTitle.textContent = button.dataset.previewTitle ?? '';
+			preview.showModal();
+		});
+	});
+	previewClose?.addEventListener('click', () => preview?.close());
+	preview?.addEventListener('click', (event) => { if (event.target === preview) preview.close(); });
+</script>

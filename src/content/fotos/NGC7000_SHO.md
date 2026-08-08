@@ -11,6 +11,9 @@ traduccions:
     caracteristiques: "The image uses an advanced astrophotography colour-mapping technique known as the Hubble palette. Bright golden and orange tones generally represent light emitted by hydrogen and sulphur, while deep blues and cyans represent oxygen emission. Its most striking feature is the bright orange and yellow ridge crossing the image like a mountain range or rugged coastline, commonly known as the Cygnus Wall. It is a shock or ionisation front: intense ultraviolet radiation from young, massive stars strikes the dense cloud of cold gas, ionising it, causing it to glow and sculpting these undulating forms."
 categoria: "Nebuloses"
 imatge: "NGC7000_SHO.jpg"
+visibilitat:
+  imatge: "ngc7000-elevacion-anual.png"
+  dies_sobre_30: 174
 
 equip:
   ota: "TS102 f/5.6"
