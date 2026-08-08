@@ -1,0 +1,285 @@
+{
+  "observatory": {
+    "id": "centre-catalunya",
+    "name": {
+      "ca": "Centre de Catalunya",
+      "es": "Centro de Cataluña",
+      "en": "Central Catalonia"
+    },
+    "latitudeDeg": 41,
+    "longitudeDeg": 1.5,
+    "sampleTimeUtc": "00:00",
+    "referenceYear": 2026,
+    "thresholdDeg": 30
+  },
+  "objects": {
+    "ic1318": {
+      "catalogName": "IC1318",
+      "raDeg": 305.557091,
+      "decDeg": 40.256679,
+      "daysAboveThreshold": 167,
+      "weeks": [
+        {
+          "week": 1,
+          "date": "2026-01-04",
+          "altitudeDeg": -6.6
+        },
+        {
+          "week": 2,
+          "date": "2026-01-11",
+          "altitudeDeg": -7.8
+        },
+        {
+          "week": 3,
+          "date": "2026-01-18",
+          "altitudeDeg": -8.5
+        },
+        {
+          "week": 4,
+          "date": "2026-01-25",
+          "altitudeDeg": -8.7
+        },
+        {
+          "week": 5,
+          "date": "2026-02-01",
+          "altitudeDeg": -8.5
+        },
+        {
+          "week": 6,
+          "date": "2026-02-08",
+          "altitudeDeg": -7.7
+        },
+        {
+          "week": 7,
+          "date": "2026-02-15",
+          "altitudeDeg": -6.5
+        },
+        {
+          "week": 8,
+          "date": "2026-02-22",
+          "altitudeDeg": -4.9
+        },
+        {
+          "week": 9,
+          "date": "2026-03-01",
+          "altitudeDeg": -2.8
+        },
+        {
+          "week": 10,
+          "date": "2026-03-08",
+          "altitudeDeg": -0.4
+        },
+        {
+          "week": 11,
+          "date": "2026-03-15",
+          "altitudeDeg": 2.4
+        },
+        {
+          "week": 12,
+          "date": "2026-03-22",
+          "altitudeDeg": 5.6
+        },
+        {
+          "week": 13,
+          "date": "2026-03-29",
+          "altitudeDeg": 9
+        },
+        {
+          "week": 14,
+          "date": "2026-04-05",
+          "altitudeDeg": 12.7
+        },
+        {
+          "week": 15,
+          "date": "2026-04-12",
+          "altitudeDeg": 16.6
+        },
+        {
+          "week": 16,
+          "date": "2026-04-19",
+          "altitudeDeg": 20.8
+        },
+        {
+          "week": 17,
+          "date": "2026-04-26",
+          "altitudeDeg": 25.1
+        },
+        {
+          "week": 18,
+          "date": "2026-05-03",
+          "altitudeDeg": 29.5
+        },
+        {
+          "week": 19,
+          "date": "2026-05-10",
+          "altitudeDeg": 34.1
+        },
+        {
+          "week": 20,
+          "date": "2026-05-17",
+          "altitudeDeg": 38.8
+        },
+        {
+          "week": 21,
+          "date": "2026-05-24",
+          "altitudeDeg": 43.7
+        },
+        {
+          "week": 22,
+          "date": "2026-05-31",
+          "altitudeDeg": 48.6
+        },
+        {
+          "week": 23,
+          "date": "2026-06-07",
+          "altitudeDeg": 53.6
+        },
+        {
+          "week": 24,
+          "date": "2026-06-14",
+          "altitudeDeg": 58.6
+        },
+        {
+          "week": 25,
+          "date": "2026-06-21",
+          "altitudeDeg": 63.7
+        },
+        {
+          "week": 26,
+          "date": "2026-06-28",
+          "altitudeDeg": 68.9
+        },
+        {
+          "week": 27,
+          "date": "2026-07-05",
+          "altitudeDeg": 74
+        },
+        {
+          "week": 28,
+          "date": "2026-07-12",
+          "altitudeDeg": 79.2
+        },
+        {
+          "week": 29,
+          "date": "2026-07-19",
+          "altitudeDeg": 84.4
+        },
+        {
+          "week": 30,
+          "date": "2026-07-26",
+          "altitudeDeg": 89.2
+        },
+        {
+          "week": 31,
+          "date": "2026-08-02",
+          "altitudeDeg": 85
+        },
+        {
+          "week": 32,
+          "date": "2026-08-09",
+          "altitudeDeg": 79.8
+        },
+        {
+          "week": 33,
+          "date": "2026-08-16",
+          "altitudeDeg": 74.6
+        },
+        {
+          "week": 34,
+          "date": "2026-08-23",
+          "altitudeDeg": 69.4
+        },
+        {
+          "week": 35,
+          "date": "2026-08-30",
+          "altitudeDeg": 64.2
+        },
+        {
+          "week": 36,
+          "date": "2026-09-06",
+          "altitudeDeg": 59.1
+        },
+        {
+          "week": 37,
+          "date": "2026-09-13",
+          "altitudeDeg": 54.1
+        },
+        {
+          "week": 38,
+          "date": "2026-09-20",
+          "altitudeDeg": 49.1
+        },
+        {
+          "week": 39,
+          "date": "2026-09-27",
+          "altitudeDeg": 44.2
+        },
+        {
+          "week": 40,
+          "date": "2026-10-04",
+          "altitudeDeg": 39.3
+        },
+        {
+          "week": 41,
+          "date": "2026-10-11",
+          "altitudeDeg": 34.6
+        },
+        {
+          "week": 42,
+          "date": "2026-10-18",
+          "altitudeDeg": 30
+        },
+        {
+          "week": 43,
+          "date": "2026-10-25",
+          "altitudeDeg": 25.5
+        },
+        {
+          "week": 44,
+          "date": "2026-11-01",
+          "altitudeDeg": 21.2
+        },
+        {
+          "week": 45,
+          "date": "2026-11-08",
+          "altitudeDeg": 17
+        },
+        {
+          "week": 46,
+          "date": "2026-11-15",
+          "altitudeDeg": 13.1
+        },
+        {
+          "week": 47,
+          "date": "2026-11-22",
+          "altitudeDeg": 9.4
+        },
+        {
+          "week": 48,
+          "date": "2026-11-29",
+          "altitudeDeg": 5.9
+        },
+        {
+          "week": 49,
+          "date": "2026-12-06",
+          "altitudeDeg": 2.8
+        },
+        {
+          "week": 50,
+          "date": "2026-12-13",
+          "altitudeDeg": -0.1
+        },
+        {
+          "week": 51,
+          "date": "2026-12-20",
+          "altitudeDeg": -2.6
+        },
+        {
+          "week": 52,
+          "date": "2026-12-27",
+          "altitudeDeg": -4.7
+        }
+      ]
+    }
+  }
+}

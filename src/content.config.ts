@@ -19,6 +19,7 @@ const fotos = defineCollection({
     // 2. Definimos tu frontmatter estricto en catalán
     schema: z.object({
         objecte: z.string(),
+		objecte_astronomic: z.string().optional(),
 		imatge: z.string(),
 		imatges_addicionals: z.array(z.object({
 			tipus: z.enum(['starless', 'crop', 'fov', 'annotated', 'process', 'other']),

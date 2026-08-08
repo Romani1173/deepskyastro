@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "visibility:generate": "node scripts/generate-visibility-data.mjs",
+    "visibility:test": "node --test scripts/visibility.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",

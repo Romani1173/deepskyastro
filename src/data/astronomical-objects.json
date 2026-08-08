@@ -1,0 +1,12 @@
+[
+  {
+    "id": "ic1318",
+    "catalogName": "IC1318",
+    "aliases": ["Gamma Cygni Nebula", "Sadr region"],
+    "coordinateTarget": "Gamma Cygni (Sadr)",
+    "raDeg": 305.557091,
+    "decDeg": 40.256679,
+    "coordinateSource": "SIMBAD",
+    "coordinateEpoch": "J2000"
+  }
+]

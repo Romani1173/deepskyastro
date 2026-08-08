@@ -1,0 +1,9 @@
+{
+  "id": "centre-catalunya",
+  "name": { "ca": "Centre de Catalunya", "es": "Centro de Cataluña", "en": "Central Catalonia" },
+  "latitudeDeg": 41,
+  "longitudeDeg": 1.5,
+  "sampleTimeUtc": "00:00",
+  "referenceYear": 2026,
+  "thresholdDeg": 30
+}
