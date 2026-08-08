@@ -1,5 +1,6 @@
 ---
 objecte: "NGC6960 – Part oriental (est) del Western Veil Nebula"
+objecte_astronomic: "ngc6960"
 imatge: "NGC6960_EV.jpg"
 visibilitat:
   imatge: "ngc6960-elevacion-anual.png"

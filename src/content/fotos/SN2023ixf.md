@@ -1,5 +1,6 @@
 ---
 objecte: "M101 – Supernova SN2023ixf"
+objecte_astronomic: "m101"
 constellacio: "Ursa Major"
 caracteristiques: "La supernova SN2023ixf és un esdeveniment astrofísic de tipus II-L associat al col·lapse del nucli d’una estrella massiva de tipus supergegant vermella. Va ser descoberta el 19 de maig de 2023 a la galàxia Messier 101, coneguda com la galàxia del Molí de Vent, situada a la constel·lació d’Ursa Major a una distància aproximada de 21 milions d’anys llum. Aquest fenomen va assolir una magnitud aparent màxima al voltant de +10,8 a finals de maig de 2023, fet que va permetre observar-lo amb telescopis d’aficionat gràcies a la seva proximitat relativa i brillantor. La comparació mostra M101 el 16 d’abril de 2022, abans de l’explosió, i el 7 de juliol de 2023, després de l’aparició de la supernova."
 traduccions:

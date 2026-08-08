@@ -1,5 +1,6 @@
 ---
 objecte: "NGC6960 – Part Central Oest del Vel (Central Western Veil Nebula)"
+objecte_astronomic: "ngc6960"
 imatge: "NGC6960_CWV.jpg"
 visibilitat:
   imatge: "ngc6960-elevacion-anual.png"

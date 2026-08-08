@@ -1,5 +1,6 @@
 ---
 objecte: "12P/Pons-Brooks"
+visibilitat_variable: true
 constellacio: "Andromeda"
 caracteristiques: "El cometa 12P/Pons-Brooks és un cos celeste de tipus Halley, amb un període orbital d’aproximadament 71 anys. El 16 de març de 2024 transitava per la regió del cel situada entre les constel·lacions d’Andromeda i Pisces, a prop de la galàxia d’Andròmeda. En aquella data, la seva brillantor augmentava a mesura que s’aproximava al periheli, tot i que encara calien instruments òptics per observar-lo adequadament durant el crepuscle vespertí."
 categoria: "Cúmuls i Estrelles"

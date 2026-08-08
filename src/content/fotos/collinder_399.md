@@ -1,5 +1,6 @@
 ---
 objecte: "Collinder 399 – Cúmul del Penjador"
+objecte_astronomic: "collinder399"
 constellacio: "Vulpecula"
 caracteristiques: "Collinder 399, també conegut com Cr 399 o The Coathanger, és un asterisme format per una trentena d'estrelles a la constel·lació de Vulpecula. La seva característica més destacada és que les deu estrelles més brillants dibuixen una figura que recorda clarament una perxa o penjador. Algunes d'aquestes estrelles presenten tonalitats groc ataronjades que contrasten amb altres components de color blavós. En aquesta imatge s'han indicat 4, 5 i 7 Vul per facilitar-ne la localització."
 

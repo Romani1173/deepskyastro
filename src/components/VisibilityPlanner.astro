@@ -49,8 +49,9 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
     </div>
 
     <div class="visibility-grid" data-visibility-grid>
-      {cards.map(({ object, foto, text }) => (
-        <article class="visibility-card" data-visibility-card data-weeks={JSON.stringify(object.nightWeeks)}>
+      {cards.map(({ object, foto, text }) => {
+        const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['20'], week.hoursAbove['25'], week.hoursAbove['30'], week.quality, week.representativeNight]);
+        return <article class="visibility-card" data-visibility-card data-weeks={JSON.stringify(compactWeeks)}>
           <a class="visibility-card__image" href={photoHref(lang, foto.id, base)}>
             <img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" />
           </a>
@@ -67,8 +68,8 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
             </dl>
             <a class="visibility-card__link" href={photoHref(lang, foto.id, base)}>{t.view} →</a>
           </div>
-        </article>
-      ))}
+        </article>;
+      })}
     </div>
   </section>
 </Layout>
@@ -82,14 +83,15 @@ const currentWeek = Math.max(1, Math.min(52, Math.ceil(((Date.UTC(today.getUTCFu
     const week = Number(selector.value);
     cards.forEach((card) => {
       const value = JSON.parse(card.dataset.weeks)[week - 1];
-      card.dataset.altitude = value.maxAltitudeDeg;
-      card.querySelector('[data-altitude]').textContent = `${value.maxAltitudeDeg.toLocaleString(locale)}°`;
-      card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(value.bestTimeUtc));
-      card.querySelector('[data-hours]').textContent = `>${30}°: ${value.hoursAbove['30'].toLocaleString(locale)} h · >${25}°: ${value.hoursAbove['25'].toLocaleString(locale)} h · >${20}°: ${value.hoursAbove['20'].toLocaleString(locale)} h`;
-      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${value.representativeNight}T12:00:00Z`));
+      const [altitude, bestTimeUtc, hours20, hours25, hours30, qualityCode, representativeNight] = value;
+      card.dataset.altitude = altitude;
+      card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
+      card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
+      card.querySelector('[data-hours]').textContent = `>${30}°: ${hours30.toLocaleString(locale)} h · >${25}°: ${hours25.toLocaleString(locale)} h · >${20}°: ${hours20.toLocaleString(locale)} h`;
+      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${representativeNight}T12:00:00Z`));
       const quality = card.querySelector('[data-quality]');
-      quality.textContent = t.qualities[value.quality];
-      quality.className = `quality quality--${value.quality}`;
+      quality.textContent = t.qualities[qualityCode];
+      quality.className = `quality quality--${qualityCode}`;
     });
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);

@@ -1,5 +1,6 @@
 ---
 objecte: "Abell 21 – Nebulosa de la Medusa"
+objecte_astronomic: "abell21"
 constellacio: "Gemini"
 caracteristiques: "Abell 21, coneguda com la Nebulosa de la Medusa, és una nebulosa planetària situada a la constel·lació de Gemini, prop de la frontera amb Canis Minor. És un objecte molt tènue, amb una magnitud visual de +11,30, una mida aparent de 12,4 × 8,5 minuts d'arc i una distància aproximada de 1.500 anys llum."
 

@@ -1,5 +1,6 @@
 ---
 objecte: "NGC6883 – Cúmul obert"
+objecte_astronomic: "ngc6883"
 constellacio: "Cygnus"
 caracteristiques: "Al centre de la imatge es troba NGC6883, un cúmul estel·lar obert jove situat a la constel·lació de Cygnus. Presenta una mida angular aparent d'uns 35 minuts d'arc, una magnitud visual de +8,0 i es troba a una distància aproximada de 4.500 anys llum. Conté prop d'un centenar d'estrelles, moltes de les quals són estrelles calentes de tipus espectral B. El camp fotografiat també mostra l'extensa nebulositat d'emissió de la regió i la característica bombolla associada a l'estrella Wolf-Rayet WR134."
 categoria: "Cúmuls i Estrelles"

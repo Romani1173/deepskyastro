@@ -1,5 +1,6 @@
 ---
 objecte: "IC 5070(HOO) – Nebulosa del Pelicà"
+objecte_astronomic: "ic5070"
 constellacio: "Cygnus"
 caracteristiques: "IC 5070, coneguda com la Nebulosa del Pelicà, és una nebulosa d'emissió situada a la constel·lació de Cygnus. Presenta una mida aparent d'uns 60 × 50 minuts d'arc i combina emissions d'hidrogen ionitzat amb complexes estructures fosques de pols interestel·lar. La radiació ultraviolada de joves estrelles massives ionitza el gas, generant zones brillants als contorns, mentre que els vents estel·lars modelen la nebulosa i li confereixen una estructura intricada. Dins d'aquesta regió es poden trobar nombrosos objectes Herbig-Haro, petites nebulositats creades pel xoc de dolls de gas procedents d'estrelles joves amb el material circumdant, indicadors d'una intensa activitat de formació estel·lar."
 

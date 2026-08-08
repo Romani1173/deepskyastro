@@ -1,5 +1,6 @@
 ---
 objecte: "WR134 – Estrella Wolf-Rayet (HOO)"
+objecte_astronomic: "wr134"
 constellacio: "Cygnus"
 caracteristiques: "WR134 és una estrella Wolf-Rayet de tipus espectral WN6 situada a la constel·lació de Cygnus. És una estrella molt calenta, rica en nitrogen i heli i gairebé desproveïda d'hidrogen, que es troba en una etapa avançada de la seva evolució. Expulsa les capes externes mitjançant un vent estel·lar extremadament ràpid i dens, que modela una bombolla de gas ionitzat al seu voltant. La intensa radiació ultraviolada de l'estrella excita aquest gas, i l'emissió de l'oxigen doblement ionitzat de la bombolla es registra amb el filtre OIII. Previsiblement, WR134 acabarà la seva evolució amb una explosió de supernova."
 categoria: "Cúmuls i Estrelles"

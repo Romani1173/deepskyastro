@@ -1,5 +1,6 @@
 ---
 objecte: "NGC7000 – Nebulosa d'Amèrica del Nord (SHO)"
+objecte_astronomic: "ngc7000"
 constellacio: "Cygnus"
 caracteristiques: "La imatge utilitza una tècnica d'assignació de color típica de l'astrofotografia avançada, coneguda com la paleta del Hubble. Els tons daurats i ataronjats brillants solen representar la llum emesa pels gasos d'hidrogen i sofre, mentre que els blaus i cians profunds representen l'emissió de l'oxigen. La característica més cridanera és la cresta brillant de color taronja i groc que creua la imatge com si fos una serralada o una costa escarpada i que es coneix comunament com el Mur del Cigne. Es tracta d'un front de xoc o d'ionització: la intensa radiació ultraviolada d'estrelles joves i massives colpeja el dens núvol de gas fred, l'ionitza, el fa brillar i esculpeix aquestes formes ondulades."
 traduccions:

@@ -1,28 +1,1004 @@
 [
   {
+    "id": "abell21",
+    "catalogName": "Abell 21",
+    "aliases": [
+      "PN A66   21"
+    ],
+    "raDeg": 112.26129027,
+    "decDeg": 13.24682988,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "albireo",
+    "catalogName": "Albireo",
+    "aliases": [
+      "* bet01 Cyg"
+    ],
+    "raDeg": 292.68031501,
+    "decDeg": 27.95967363,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "b150",
+    "catalogName": "B150",
+    "aliases": [
+      "LDN 1082"
+    ],
+    "raDeg": 312.775,
+    "decDeg": 60.18333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "collinder399",
+    "catalogName": "Collinder 399",
+    "aliases": [],
+    "raDeg": 291.35,
+    "decDeg": 20.183,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic63",
+    "catalogName": "IC63",
+    "aliases": [
+      "IC   63"
+    ],
+    "raDeg": 14.75570833,
+    "decDeg": 60.88827778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic405",
+    "catalogName": "IC405",
+    "aliases": [
+      "IC  405"
+    ],
+    "raDeg": 79.35,
+    "decDeg": 34.38333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic410",
+    "catalogName": "IC410",
+    "aliases": [
+      "IC  410"
+    ],
+    "raDeg": 80.5,
+    "decDeg": 33.48333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic434",
+    "catalogName": "IC434",
+    "aliases": [
+      "IC  434"
+    ],
+    "raDeg": 85.25,
+    "decDeg": -2.5,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic443",
+    "catalogName": "IC443",
+    "aliases": [
+      "IC  443"
+    ],
+    "raDeg": 94.25,
+    "decDeg": 22.56999969,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
     "id": "ic1318",
     "catalogName": "IC1318",
-    "aliases": ["Gamma Cygni Nebula", "Sadr region"],
+    "aliases": [
+      "Gamma Cygni Nebula",
+      "Sadr region"
+    ],
     "coordinateTarget": "Gamma Cygni (Sadr)",
     "raDeg": 305.557091,
     "decDeg": 40.256679,
     "coordinateSource": "SIMBAD",
-    "coordinateEpoch": "J2000"
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
   },
   {
-    "id": "m81", "catalogName": "M81", "aliases": ["NGC3031", "Bode's Galaxy"],
-    "raDeg": 148.888219, "decDeg": 69.065295, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+    "id": "ic1396",
+    "catalogName": "IC1396",
+    "aliases": [],
+    "raDeg": 324.745,
+    "decDeg": 57.51389,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
   },
   {
-    "id": "m42", "catalogName": "M42", "aliases": ["NGC1976", "Orion Nebula"],
-    "raDeg": 83.82, "decDeg": -5.3875, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+    "id": "ic1805",
+    "catalogName": "IC1805",
+    "aliases": [],
+    "raDeg": 38.21,
+    "decDeg": 61.47111,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
   },
   {
-    "id": "m8", "catalogName": "M8", "aliases": ["NGC6523", "Lagoon Nebula"],
-    "raDeg": 270.904167, "decDeg": -24.386667, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+    "id": "ic1848",
+    "catalogName": "IC1848",
+    "aliases": [],
+    "raDeg": 42.855,
+    "decDeg": 60.41889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
   },
   {
-    "id": "m104", "catalogName": "M104", "aliases": ["NGC4594", "Sombrero Galaxy"],
-    "raDeg": 189.997625, "decDeg": -11.623056, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+    "id": "ic2118",
+    "catalogName": "IC2118",
+    "aliases": [
+      "NGC  1909"
+    ],
+    "raDeg": 75.5,
+    "decDeg": -7.9,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic2177",
+    "catalogName": "IC2177",
+    "aliases": [],
+    "raDeg": 106.10416667,
+    "decDeg": -10.455,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic5070",
+    "catalogName": "IC5070",
+    "aliases": [],
+    "raDeg": 312.75,
+    "decDeg": 44.36666667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ic5146",
+    "catalogName": "IC5146",
+    "aliases": [],
+    "raDeg": 328.372,
+    "decDeg": 47.246,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ldn1235",
+    "catalogName": "LDN1235",
+    "aliases": [],
+    "raDeg": 333.72916667,
+    "decDeg": 73.41666667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ldn1400",
+    "catalogName": "LDN1400",
+    "aliases": [],
+    "raDeg": 66.25,
+    "decDeg": 54.95,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m1",
+    "catalogName": "M1",
+    "aliases": [
+      "M   1"
+    ],
+    "raDeg": 83.6324,
+    "decDeg": 22.0174,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m3",
+    "catalogName": "M3",
+    "aliases": [
+      "M   3"
+    ],
+    "raDeg": 205.54841667,
+    "decDeg": 28.37727778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m8",
+    "catalogName": "M8",
+    "aliases": [
+      "NGC6523",
+      "Lagoon Nebula"
+    ],
+    "raDeg": 270.904167,
+    "decDeg": -24.386667,
+    "coordinateSource": "SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m13",
+    "catalogName": "M13",
+    "aliases": [
+      "M  13"
+    ],
+    "raDeg": 250.423475,
+    "decDeg": 36.46131944,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m15",
+    "catalogName": "M15",
+    "aliases": [
+      "M  15"
+    ],
+    "raDeg": 322.49304167,
+    "decDeg": 12.167,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m16",
+    "catalogName": "M16",
+    "aliases": [
+      "M  16"
+    ],
+    "raDeg": 274.688,
+    "decDeg": -13.792,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m20",
+    "catalogName": "M20",
+    "aliases": [
+      "M  20"
+    ],
+    "raDeg": 270.675,
+    "decDeg": -22.97166667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m21",
+    "catalogName": "M21",
+    "aliases": [
+      "M  21"
+    ],
+    "raDeg": 271.04208333,
+    "decDeg": -22.5,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m27",
+    "catalogName": "M27",
+    "aliases": [
+      "M  27"
+    ],
+    "raDeg": 299.90151327,
+    "decDeg": 22.72119779,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m29",
+    "catalogName": "M29",
+    "aliases": [
+      "M  29"
+    ],
+    "raDeg": 305.92875,
+    "decDeg": 38.49027778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m31",
+    "catalogName": "M31",
+    "aliases": [
+      "M  31"
+    ],
+    "raDeg": 10.68470833,
+    "decDeg": 41.26875,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m33",
+    "catalogName": "M33",
+    "aliases": [
+      "M  33"
+    ],
+    "raDeg": 23.46206906,
+    "decDeg": 30.66017511,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m35",
+    "catalogName": "M35",
+    "aliases": [
+      "NGC  2168"
+    ],
+    "raDeg": 92.28125,
+    "decDeg": 24.3375,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m36",
+    "catalogName": "M36",
+    "aliases": [
+      "M  36"
+    ],
+    "raDeg": 84.0825,
+    "decDeg": 34.13388889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m37",
+    "catalogName": "M37",
+    "aliases": [
+      "M  37"
+    ],
+    "raDeg": 88.0775,
+    "decDeg": 32.54333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m38",
+    "catalogName": "M38",
+    "aliases": [
+      "M  38"
+    ],
+    "raDeg": 82.16666667,
+    "decDeg": 35.81888889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m39",
+    "catalogName": "M39",
+    "aliases": [
+      "NGC  7092"
+    ],
+    "raDeg": 322.76666667,
+    "decDeg": 48.29638889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m42",
+    "catalogName": "M42",
+    "aliases": [
+      "NGC1976",
+      "Orion Nebula"
+    ],
+    "raDeg": 83.82,
+    "decDeg": -5.3875,
+    "coordinateSource": "SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m44",
+    "catalogName": "M44",
+    "aliases": [
+      "NGC  2632"
+    ],
+    "raDeg": 129.99333333,
+    "decDeg": 19.60916667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m45",
+    "catalogName": "M45",
+    "aliases": [
+      "Cl Melotte   22"
+    ],
+    "raDeg": 56.65833333,
+    "decDeg": 24.17805556,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m51",
+    "catalogName": "M51",
+    "aliases": [
+      "M  51"
+    ],
+    "raDeg": 202.469575,
+    "decDeg": 47.19525833,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m52",
+    "catalogName": "M52",
+    "aliases": [
+      "M  52"
+    ],
+    "raDeg": 351.19666667,
+    "decDeg": 61.59222222,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m56",
+    "catalogName": "M56",
+    "aliases": [
+      "M  56"
+    ],
+    "raDeg": 289.14820833,
+    "decDeg": 30.18347222,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m57",
+    "catalogName": "M57",
+    "aliases": [
+      "M  57"
+    ],
+    "raDeg": 283.39623652,
+    "decDeg": 33.02913425,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m63",
+    "catalogName": "M63",
+    "aliases": [
+      "M  63"
+    ],
+    "raDeg": 198.95530912,
+    "decDeg": 42.02936891,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m65",
+    "catalogName": "M65",
+    "aliases": [
+      "M  65"
+    ],
+    "raDeg": 169.73295194,
+    "decDeg": 13.09230575,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m71",
+    "catalogName": "M71",
+    "aliases": [
+      "M  71"
+    ],
+    "raDeg": 298.44370833,
+    "decDeg": 18.77919444,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m81",
+    "catalogName": "M81",
+    "aliases": [
+      "NGC3031",
+      "Bode's Galaxy"
+    ],
+    "raDeg": 148.888219,
+    "decDeg": 69.065295,
+    "coordinateSource": "SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m84",
+    "catalogName": "M84",
+    "aliases": [
+      "M  84"
+    ],
+    "raDeg": 186.26559721,
+    "decDeg": 12.88698314,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m92",
+    "catalogName": "M92",
+    "aliases": [
+      "M  92"
+    ],
+    "raDeg": 259.28079167,
+    "decDeg": 43.13594444,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m94",
+    "catalogName": "M94",
+    "aliases": [
+      "M  94"
+    ],
+    "raDeg": 192.72114082,
+    "decDeg": 41.12025025,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m101",
+    "catalogName": "M101",
+    "aliases": [],
+    "raDeg": 210.80242917,
+    "decDeg": 54.34875,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m103",
+    "catalogName": "M103",
+    "aliases": [],
+    "raDeg": 23.33791667,
+    "decDeg": 60.65361111,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m104",
+    "catalogName": "M104",
+    "aliases": [
+      "NGC4594",
+      "Sombrero Galaxy"
+    ],
+    "raDeg": 189.997625,
+    "decDeg": -11.623056,
+    "coordinateSource": "SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "m106",
+    "catalogName": "M106",
+    "aliases": [],
+    "raDeg": 184.74008333,
+    "decDeg": 47.30371944,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc281",
+    "catalogName": "NGC281",
+    "aliases": [
+      "NGC   281"
+    ],
+    "raDeg": 13.10458333,
+    "decDeg": 56.565,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc869",
+    "catalogName": "NGC869",
+    "aliases": [
+      "NGC   869"
+    ],
+    "raDeg": 34.7375,
+    "decDeg": 57.13388889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc1499",
+    "catalogName": "NGC1499",
+    "aliases": [
+      "NGC  1499"
+    ],
+    "raDeg": 60.825,
+    "decDeg": 36.42166667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc2174",
+    "catalogName": "NGC2174",
+    "aliases": [
+      "NGC  2174"
+    ],
+    "raDeg": 92.425,
+    "decDeg": 20.5,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc2237",
+    "catalogName": "NGC2237",
+    "aliases": [
+      "NGC  2237"
+    ],
+    "raDeg": 97.65041667,
+    "decDeg": 4.98072222,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc2264",
+    "catalogName": "NGC2264",
+    "aliases": [
+      "NGC  2264"
+    ],
+    "raDeg": 100.22375,
+    "decDeg": 9.87555556,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc2359",
+    "catalogName": "NGC2359",
+    "aliases": [
+      "NGC  2359"
+    ],
+    "raDeg": 109.625,
+    "decDeg": -13.22666667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc4244",
+    "catalogName": "NGC4244",
+    "aliases": [
+      "NGC  4244"
+    ],
+    "raDeg": 184.37357917,
+    "decDeg": 37.80711111,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc4565",
+    "catalogName": "NGC4565",
+    "aliases": [
+      "NGC  4565"
+    ],
+    "raDeg": 189.08668333,
+    "decDeg": 25.98739167,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6883",
+    "catalogName": "NGC6883",
+    "aliases": [
+      "NGC  6883"
+    ],
+    "raDeg": 302.82916667,
+    "decDeg": 35.83166667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6888",
+    "catalogName": "NGC6888",
+    "aliases": [
+      "HD 192163"
+    ],
+    "raDeg": 303.02725787,
+    "decDeg": 38.35494005,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6914",
+    "catalogName": "NGC6914",
+    "aliases": [
+      "NGC  6914"
+    ],
+    "raDeg": 306.25,
+    "decDeg": 42.3,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6946",
+    "catalogName": "NGC6946",
+    "aliases": [
+      "NGC  6946"
+    ],
+    "raDeg": 308.71805,
+    "decDeg": 60.15367778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6960",
+    "catalogName": "NGC6960",
+    "aliases": [
+      "NGC  6960"
+    ],
+    "raDeg": 311.40833333,
+    "decDeg": 30.70833333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6995",
+    "catalogName": "NGC6995",
+    "aliases": [
+      "NGC  6995"
+    ],
+    "raDeg": 314.25,
+    "decDeg": 31.21666667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc7000",
+    "catalogName": "NGC7000",
+    "aliases": [
+      "NGC  7000"
+    ],
+    "raDeg": 314.69583333,
+    "decDeg": 44.33,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc7023",
+    "catalogName": "NGC7023",
+    "aliases": [
+      "NGC  7023"
+    ],
+    "raDeg": 315.40375,
+    "decDeg": 68.16333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc7293",
+    "catalogName": "NGC7293",
+    "aliases": [
+      "NGC  7293"
+    ],
+    "raDeg": 337.41060585,
+    "decDeg": -20.83715201,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc7380",
+    "catalogName": "NGC7380",
+    "aliases": [
+      "NGC  7380"
+    ],
+    "raDeg": 341.8475,
+    "decDeg": 58.11527778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc7635",
+    "catalogName": "NGC7635",
+    "aliases": [
+      "NGC  7635"
+    ],
+    "raDeg": 350.20125,
+    "decDeg": 61.20166667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "pk064-051",
+    "catalogName": "PK064+05.1",
+    "aliases": [
+      "HD 184738"
+    ],
+    "raDeg": 293.68847401,
+    "decDeg": 30.51637518,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-101",
+    "catalogName": "Sh2-101",
+    "aliases": [
+      "LBN 071.58+02.86"
+    ],
+    "raDeg": 299.97916667,
+    "decDeg": 35.27666667,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-114",
+    "catalogName": "Sh2-114",
+    "aliases": [
+      "LBN 084.24-07.79"
+    ],
+    "raDeg": 320.3,
+    "decDeg": 38.7,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-115",
+    "catalogName": "Sh2-115",
+    "aliases": [
+      "LBN   357"
+    ],
+    "raDeg": 308.75833333,
+    "decDeg": 47.04,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-129",
+    "catalogName": "Sh2-129",
+    "aliases": [
+      "SH  2-129"
+    ],
+    "raDeg": 317.95,
+    "decDeg": 59.95,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-155",
+    "catalogName": "Sh2-155",
+    "aliases": [
+      "LBN 110.11+02.44"
+    ],
+    "raDeg": 344.27461618,
+    "decDeg": 62.63591586,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-157",
+    "catalogName": "Sh2-157",
+    "aliases": [
+      "LBN 111.14-00.72"
+    ],
+    "raDeg": 349.01641667,
+    "decDeg": 60.03358333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-173",
+    "catalogName": "Sh2-173",
+    "aliases": [
+      "LBN 119.57-00.92"
+    ],
+    "raDeg": 5.31666667,
+    "decDeg": 61.725,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "sh2-261",
+    "catalogName": "Sh2-261",
+    "aliases": [
+      "NAME Lower's Nebula"
+    ],
+    "raDeg": 92.18333333,
+    "decDeg": 15.675,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "vdb152",
+    "catalogName": "VdB152",
+    "aliases": [
+      "BD+69  1231"
+    ],
+    "raDeg": 333.3522021,
+    "decDeg": 70.25141155,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "wr134",
+    "catalogName": "WR134",
+    "aliases": [
+      "HD 191765"
+    ],
+    "raDeg": 302.55913669,
+    "decDeg": 36.17640852,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
   }
 ]

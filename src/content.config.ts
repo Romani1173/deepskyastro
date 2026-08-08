@@ -20,6 +20,7 @@ const fotos = defineCollection({
     schema: z.object({
         objecte: z.string(),
 		objecte_astronomic: z.string().optional(),
+		visibilitat_variable: z.boolean().optional().default(false),
 		imatge: z.string(),
 		imatges_addicionals: z.array(z.object({
 			tipus: z.enum(['starless', 'crop', 'fov', 'annotated', 'process', 'other']),

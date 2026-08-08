@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readdir, readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { altitudeDeg, dailySamples, nightMetrics, sunEquatorial, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
 test('an object on the meridian reaches its expected culmination altitude', () => {
@@ -29,6 +31,27 @@ test('weekly night planning keeps low and circumpolar objects', () => {
   assert.equal(m8.length, 52);
   assert.ok(Math.max(...m8.map(({ maxAltitudeDeg }) => maxAltitudeDeg)) > 24);
   assert.ok(Math.min(...m81.map(({ maxAltitudeDeg }) => maxAltitudeDeg)) > 20);
+});
+
+test('every photo has a valid fixed object or an explicit variable-visibility marker', async () => {
+  const root = resolve(import.meta.dirname, '..');
+  const catalog = JSON.parse(await readFile(resolve(root, 'src/data/astronomical-objects.json'), 'utf8'));
+  const ids = new Set(catalog.map(({ id }) => id));
+  const files = (await readdir(resolve(root, 'src/content/fotos'))).filter((file) => file.endsWith('.md'));
+  let fixedPhotos = 0;
+  let variablePhotos = 0;
+  for (const file of files) {
+    const source = await readFile(resolve(root, 'src/content/fotos', file), 'utf8');
+    const objectId = source.match(/^objecte_astronomic:\s*"([^"]+)"/m)?.[1];
+    const variable = /^visibilitat_variable:\s*true$/m.test(source);
+    assert.notEqual(Boolean(objectId), variable, `${file} must use exactly one visibility mode`);
+    if (objectId) {
+      assert.ok(ids.has(objectId), `${file} references missing object ${objectId}`);
+      fixedPhotos += 1;
+    } else variablePhotos += 1;
+  }
+  assert.equal(fixedPhotos, 93);
+  assert.equal(variablePhotos, 2);
 });
 
 test('a regular year produces 365 daily and 52 weekly samples', () => {

@@ -1,5 +1,6 @@
 ---
 objecte: "Beta 1-2 Cygni – Albireo"
+objecte_astronomic: "albireo"
 constellacio: "Cygnus"
 caracteristiques: "Beta Cygni, coneguda com Albireo, és un cèlebre sistema estel·lar situat a la constel·lació de Cygnus, a uns 430 anys llum de la Terra. El component principal, β1 Cygni, és una gegant lluminosa de tipus espectral K3II amb una tonalitat daurada molt marcada i una companya molt propera. El component secundari, β2 Cygni, és una estrella blava de la seqüència principal classificada com B8Ve que presenta una rotació estel·lar ràpida. Destaca per oferir un dels contrastos cromàtics i de temperatura efectiva més evidents del cel visible. Tot i presentar una separació angular d'uns 35 segons d'arc, mesures astromètriques modernes qüestionen si formen un sistema lligat gravitacionalment o bé una binària òptica."
 
