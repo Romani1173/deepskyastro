@@ -12,6 +12,9 @@ traduccions:
     caracteristiques: "Supernova SN2023ixf is a Type II-L astrophysical event associated with the core collapse of a massive red supergiant star. It was discovered on 19 May 2023 in Messier 101, the Pinwheel Galaxy, located in the constellation Ursa Major at a distance of approximately 21 million light-years. The event reached a peak apparent magnitude of about +10.8 in late May 2023, making it observable with amateur telescopes because of its relative proximity and brightness. The comparison shows M101 on 16 April 2022, before the explosion, and on 7 July 2023, after the supernova appeared."
 categoria: "Galàxies"
 imatge: "SN2023ixf_despues.jpg"
+visibilitat:
+  imatge: "m101-elevacion-anual.png"
+  dies_sobre_30: 191
 
 equip:
   ota: "TS102 f/5.6"

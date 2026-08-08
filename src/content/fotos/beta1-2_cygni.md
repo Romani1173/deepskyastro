@@ -15,6 +15,9 @@ traduccions:
 
 categoria: "Cúmuls i Estrelles"
 imatge: "Beta1-2_Cygni.jpg"
+visibilitat:
+  imatge: "albireo-elevacion-anual.png"
+  dies_sobre_30: 148
 
 equip:
   ota: "TS102 f/7"

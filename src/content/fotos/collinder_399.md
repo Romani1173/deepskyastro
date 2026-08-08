@@ -15,6 +15,9 @@ traduccions:
 
 categoria: "Cúmuls i Estrelles"
 imatge: "Col399.jpg"
+visibilitat:
+  imatge: "collinder399-elevacion-anual.png"
+  dies_sobre_30: 137
 
 equip:
   ota: "TS102 f/7"

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readdir, readFile } from 'node:fs/promises';
+import { access, readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { altitudeDeg, dailySamples, nightMetrics, sunEquatorial, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
@@ -56,6 +56,10 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
     if (objectId) {
       assert.ok(ids.has(objectId), `${file} references missing object ${objectId}`);
       assert.equal(byId.get(objectId).status, 'photographed', `${file} references an object not marked as photographed`);
+      const chart = source.match(/^visibilitat:\s*\n\s+imatge:\s*"([^"]+)"\s*\n\s+dies_sobre_30:\s*(\d+)/m);
+      assert.ok(chart, `${file} is missing its visibility chart metadata`);
+      await access(resolve(root, 'public/imagenes/visibilidad', chart[1]));
+      assert.ok(Number.isInteger(Number(chart[2])), `${file} has an invalid visibility day count`);
       fixedPhotos += 1;
     } else variablePhotos += 1;
   }
