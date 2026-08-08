@@ -37,6 +37,14 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
   const root = resolve(import.meta.dirname, '..');
   const catalog = JSON.parse(await readFile(resolve(root, 'src/data/astronomical-objects.json'), 'utf8'));
   const ids = new Set(catalog.map(({ id }) => id));
+  const byId = new Map(catalog.map((object) => [object.id, object]));
+  assert.equal(ids.size, catalog.length, 'astronomical object ids must be unique');
+  assert.equal(catalog.filter(({ status }) => status === 'photographed').length, 85);
+  assert.equal(catalog.filter(({ status }) => status === 'pending').length, 10);
+  for (const object of catalog) {
+    assert.ok(object.raDeg >= 0 && object.raDeg < 360, `${object.id} has invalid right ascension`);
+    assert.ok(object.decDeg >= -90 && object.decDeg <= 90, `${object.id} has invalid declination`);
+  }
   const files = (await readdir(resolve(root, 'src/content/fotos'))).filter((file) => file.endsWith('.md'));
   let fixedPhotos = 0;
   let variablePhotos = 0;
@@ -47,6 +55,7 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
     assert.notEqual(Boolean(objectId), variable, `${file} must use exactly one visibility mode`);
     if (objectId) {
       assert.ok(ids.has(objectId), `${file} references missing object ${objectId}`);
+      assert.equal(byId.get(objectId).status, 'photographed', `${file} references an object not marked as photographed`);
       fixedPhotos += 1;
     } else variablePhotos += 1;
   }

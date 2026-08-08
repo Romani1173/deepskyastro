@@ -23,6 +23,19 @@ const overrides = {
   'ngc6946+ngc6939': { id: 'ngc6946', query: 'NGC 6946' },
 };
 
+const pendingTargets = [
+  { id: 'lbn468', query: 'LBN 468', catalogName: 'LBN468', status: 'pending' },
+  { id: 'ldn914', query: 'LDN 914', catalogName: 'LDN914', status: 'pending' },
+  { id: 'sh2-86', query: 'Sh 2-86', catalogName: 'Sh2-86', status: 'pending' },
+  { id: 'ic59', query: 'IC 59', catalogName: 'IC59', status: 'pending' },
+  { id: 'ldn673', query: 'LDN 673', catalogName: 'LDN673', status: 'pending' },
+  { id: 'ngc6559', query: 'NGC 6559', catalogName: 'NGC6559', status: 'pending' },
+  { id: 'vdb158', query: 'VdB 158', catalogName: 'VdB158', status: 'pending' },
+  { id: 'ldn768', query: 'LDN 768', catalogName: 'LDN768', status: 'pending' },
+  { id: 'sh2-308', query: 'Sh 2-308', catalogName: 'Sh2-308', status: 'pending' },
+  { id: 'ngc225', query: 'NGC 225', catalogName: 'NGC225', status: 'pending' },
+];
+
 const deriveTarget = (stem) => {
   if (Object.hasOwn(overrides, stem)) return overrides[stem];
   const id = stem.toLowerCase()
@@ -55,12 +68,16 @@ const resolveSesame = async (query) => {
 const files = (await readdir(photosDir)).filter((file) => file.endsWith('.md')).sort();
 const assignments = files.map((file) => ({ file, target: deriveTarget(basename(file, '.md')) }));
 const existing = JSON.parse(await readFile(catalogPath, 'utf8'));
-const byId = new Map(existing.map((object) => [object.id, { ...object, status: 'photographed' }]));
+const byId = new Map(existing.map((object) => [object.id, { ...object, status: object.status ?? 'photographed' }]));
 const unresolved = [];
 
-const queue = [...new Map(assignments
-  .filter(({ target }) => target && !byId.has(target.id))
-  .map(({ target }) => [target.id, target])).values()];
+const requestedTargets = [
+  ...assignments.filter(({ target }) => target).map(({ target }) => target),
+  ...pendingTargets,
+];
+const queue = [...new Map(requestedTargets
+  .filter((target) => !byId.has(target.id))
+  .map((target) => [target.id, target])).values()];
 const resolveWorker = async () => {
   while (queue.length) {
     const target = queue.shift();
@@ -74,7 +91,7 @@ const resolveWorker = async () => {
         decDeg: coordinate.decDeg,
         coordinateSource: 'CDS Sesame / SIMBAD',
         coordinateEpoch: 'J2000',
-        status: 'photographed',
+        status: target.status ?? 'photographed',
       });
       console.log(`✓ ${target.id}: ${coordinate.raDeg}, ${coordinate.decDeg}`);
     } catch (error) {

@@ -18,6 +18,7 @@ const generatedObjects = Object.fromEntries(objects.map((object) => {
   });
   return [object.id, {
     catalogName: object.catalogName,
+    status: object.status,
     raDeg: object.raDeg,
     decDeg: object.decDeg,
     daysAboveThreshold: daily.filter(({ altitudeDeg }) => altitudeDeg > observatory.thresholdDeg).length,

@@ -46,6 +46,18 @@
     "status": "photographed"
   },
   {
+    "id": "ic59",
+    "catalogName": "IC59",
+    "aliases": [
+      "IC   59"
+    ],
+    "raDeg": 14.42666667,
+    "decDeg": 61.08327778,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ic63",
     "catalogName": "IC63",
     "aliases": [
@@ -190,6 +202,54 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "lbn468",
+    "catalogName": "LBN468",
+    "aliases": [
+      "LBN 102.67+15.42"
+    ],
+    "raDeg": 310.5,
+    "decDeg": 67.9,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
+    "id": "ldn673",
+    "catalogName": "LDN673",
+    "aliases": [
+      "LDN  673"
+    ],
+    "raDeg": 290.22666667,
+    "decDeg": 11.22,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
+    "id": "ldn768",
+    "catalogName": "LDN768",
+    "aliases": [
+      "LDN  768"
+    ],
+    "raDeg": 292.025,
+    "decDeg": 22.6,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
+    "id": "ldn914",
+    "catalogName": "LDN914",
+    "aliases": [
+      "LDN  914"
+    ],
+    "raDeg": 312.95,
+    "decDeg": 41.68333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
   },
   {
     "id": "ldn1235",
@@ -630,6 +690,18 @@
     "status": "photographed"
   },
   {
+    "id": "ngc225",
+    "catalogName": "NGC225",
+    "aliases": [
+      "NGC   225"
+    ],
+    "raDeg": 10.805,
+    "decDeg": 61.77388889,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ngc281",
     "catalogName": "NGC281",
     "aliases": [
@@ -736,6 +808,18 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "ngc6559",
+    "catalogName": "NGC6559",
+    "aliases": [
+      "NGC  6559"
+    ],
+    "raDeg": 272.5,
+    "decDeg": -24,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
   },
   {
     "id": "ngc6883",
@@ -882,6 +966,18 @@
     "status": "photographed"
   },
   {
+    "id": "sh2-86",
+    "catalogName": "Sh2-86",
+    "aliases": [
+      "LBN 059.38-00.15"
+    ],
+    "raDeg": 295.8,
+    "decDeg": 23.25,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "sh2-101",
     "catalogName": "Sh2-101",
     "aliases": [
@@ -978,6 +1074,18 @@
     "status": "photographed"
   },
   {
+    "id": "sh2-308",
+    "catalogName": "Sh2-308",
+    "aliases": [
+      "HD  50896"
+    ],
+    "raDeg": 103.55434984,
+    "decDeg": -23.92833981,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "vdb152",
     "catalogName": "VdB152",
     "aliases": [
@@ -988,6 +1096,18 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "vdb158",
+    "catalogName": "VdB158",
+    "aliases": [
+      "HD 222142"
+    ],
+    "raDeg": 354.46498984,
+    "decDeg": 48.49656599,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
   },
   {
     "id": "wr134",
