@@ -5,5 +5,8 @@
   "longitudeDeg": 1.5,
   "sampleTimeUtc": "00:00",
   "referenceYear": 2026,
-  "thresholdDeg": 30
+  "thresholdDeg": 30,
+  "astronomicalTwilightDeg": -18,
+  "nightSampleMinutes": 10,
+  "planningThresholdsDeg": [20, 25, 30]
 }

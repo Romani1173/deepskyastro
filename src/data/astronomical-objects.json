@@ -8,5 +8,21 @@
     "decDeg": 40.256679,
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000"
+  },
+  {
+    "id": "m81", "catalogName": "M81", "aliases": ["NGC3031", "Bode's Galaxy"],
+    "raDeg": 148.888219, "decDeg": 69.065295, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+  },
+  {
+    "id": "m42", "catalogName": "M42", "aliases": ["NGC1976", "Orion Nebula"],
+    "raDeg": 83.82, "decDeg": -5.3875, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+  },
+  {
+    "id": "m8", "catalogName": "M8", "aliases": ["NGC6523", "Lagoon Nebula"],
+    "raDeg": 270.904167, "decDeg": -24.386667, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
+  },
+  {
+    "id": "m104", "catalogName": "M104", "aliases": ["NGC4594", "Sombrero Galaxy"],
+    "raDeg": 189.997625, "decDeg": -11.623056, "coordinateSource": "SIMBAD", "coordinateEpoch": "J2000"
   }
 ]

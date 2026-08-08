@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { dailySamples, weeklySamples } from './lib/visibility.mjs';
+import { dailySamples, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async (path) => JSON.parse(await readFile(resolve(root, path), 'utf8'));
@@ -22,10 +22,15 @@ const generatedObjects = Object.fromEntries(objects.map((object) => {
     decDeg: object.decDeg,
     daysAboveThreshold: daily.filter(({ altitudeDeg }) => altitudeDeg > observatory.thresholdDeg).length,
     weeks: weeklySamples(daily),
+    nightWeeks: weeklyNightSamples({
+      year: observatory.referenceYear, latitudeDeg: observatory.latitudeDeg, longitudeDeg: observatory.longitudeDeg,
+      raDeg: object.raDeg, decDeg: object.decDeg, twilightDeg: observatory.astronomicalTwilightDeg,
+      sampleMinutes: observatory.nightSampleMinutes, thresholdsDeg: observatory.planningThresholdsDeg,
+    }),
   }];
 }));
 
 const result = { observatory, objects: generatedObjects };
 const output = resolve(root, 'src/data/visibility.generated.json');
-await writeFile(output, `${JSON.stringify(result, null, 2)}\n`);
+await writeFile(output, `${JSON.stringify(result)}\n`);
 console.log(`Generated ${objects.length} object(s) in ${output}`);
