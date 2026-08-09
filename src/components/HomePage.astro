@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, withBase } from '../i18n';
+import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, visibilityHref, withBase } from '../i18n';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -19,6 +19,7 @@ const t = copy[lang];
 			<div class="welcome-hero__actions">
 				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={equipmentHref(lang, base)}>{t.myEquipment} <span aria-hidden="true">＋</span></a>
 				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={articlesHref(lang, base)}>{t.articles} <span aria-hidden="true">＋</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={visibilityHref(lang, base)}>{t.visibilityPlanner} <span aria-hidden="true">⌖</span></a>
 				<a class="welcome-hero__cta" href={galleryHref(lang, base)}>{t.explore} <span aria-hidden="true">→</span></a>
 			</div>
 		</div>
