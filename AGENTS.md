@@ -44,6 +44,7 @@
 
 ## Fichas de objetos
 
+- La skill local `.codex/skills/generar-ficha-astrofoto` genera el YAML multilingüe de nuevas fichas. Usarla cuando se solicite una ficha nueva y actualizarla si cambia el esquema de contenido.
 - Cada objeto es un archivo Markdown en `src/content/fotos/`.
 - La imagen principal se guarda en `public/imagenes/` y se declara con `imatge`.
 - `imatge` debe aparecer siempre inmediatamente después de `categoria`.

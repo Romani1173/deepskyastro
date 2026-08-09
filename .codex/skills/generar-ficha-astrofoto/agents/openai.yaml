@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ficha astrofoto"
+  short_description: "Genera YAML multilingüe de astrofotografía"
+  default_prompt: "Usa $generar-ficha-astrofoto para crear el YAML de un nuevo objeto a partir de sus datos e imágenes."
