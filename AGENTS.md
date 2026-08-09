@@ -34,7 +34,8 @@
 
 ## Trabajo y publicación
 
-- El proyecto editable es esta carpeta: `work/porfolio-astrofoto`.
+- El proyecto editable es esta carpeta: `/Users/juanjoromero/Desktop/Web_deepskyastro`.
+- Guardar las copias ZIP de seguridad en `backups/` y los entregables locales en `outputs/`. Estas carpetas no se suben a Git; antes de borrar respaldos antiguos, verificar que la copia nueva existe y coincide.
 - La sección gráfica “Mi equipo” se desarrolla en la rama local `mi-equipo`. No fusionar, subir a GitHub ni publicar esta rama hasta que el autor haya aprobado el resultado final.
 - Las imágenes provisionales de “Mi equipo” deben sustituirse por fotografías reales del autor antes de publicar; conservar mientras tanto la interacción local para poder decidir encuadres y puntos sensitivos.
 - Ejecutar `npm run dev` en una terminal para la vista local y conservarla abierta mientras se prueba el sitio.

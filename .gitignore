@@ -7,6 +7,10 @@ src/data/visibility.generated.json
 # dependencies
 node_modules/
 
+# local deliverables and safety copies
+outputs/
+backups/
+
 # logs
 npm-debug.log*
 yarn-debug.log*
