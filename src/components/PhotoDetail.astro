@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { categoryByValue, categoryHref, copy, languageLinks, localeFor, withBase } from '../i18n';
+import { categoryByValue, categoryHref, copy, languageLinks, localeFor, visibilityHref, withBase } from '../i18n';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
 
@@ -31,7 +31,7 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 
 <Layout title={text.objecte} description={text.caracteristiques} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
 	<article class="photo-detail">
-		<a class="back-link" href={categoryHref(lang, category.key, base)}>← {t.backToCategory(categoryLabel)}</a>
+		<a class="back-link" data-photo-back href={categoryHref(lang, category.key, base)} data-visibility-href={visibilityHref(lang, base)} data-visibility-label={t.visibilityPlanner}>← {t.backToCategory(categoryLabel)}</a>
 		<header class="page-heading"><h1>{text.objecte}</h1></header>
 		<div class="photo-detail__image">
 			<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} data-lightbox-alt={`${t.astroPhoto} ${text.objecte}`} data-lightbox-group="primary" aria-label={`${t.enlarge}: ${text.objecte}`}>
@@ -89,6 +89,17 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 </Layout>
 
 <script>
+	const photoBackLink = document.querySelector<HTMLAnchorElement>('[data-photo-back]');
+	const photoParams = new URL(window.location.href).searchParams;
+	if (photoBackLink && photoParams.get('from') === 'visibility') {
+		const returnUrl = new URL(photoBackLink.dataset.visibilityHref!, window.location.origin);
+		for (const key of ['week', 'view']) {
+			const value = photoParams.get(key);
+			if (value) returnUrl.searchParams.set(key, value);
+		}
+		photoBackLink.href = `${returnUrl.pathname}${returnUrl.search}`;
+		photoBackLink.textContent = `← ${photoBackLink.dataset.visibilityLabel}`;
+	}
 	const lightbox = document.querySelector<HTMLDialogElement>('.image-lightbox');
 	const lightboxImage = lightbox?.querySelector<HTMLImageElement>('img');
 	const closeButton = lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__close');

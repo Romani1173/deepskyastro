@@ -10,9 +10,9 @@ interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; }
 const { lang, fotos } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps útil', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annualChart: 'Visibilitat anual · 00:00 UTC', selectedWeek: 'Setmana seleccionada · 00:00 UTC', close: 'Tancar', night: 'Nit de referència', qualities: { excellent: 'Excel·lent', good: 'Bona', low: 'Baixa', 'very-low': 'Molt baixa', 'not-visible': 'No visible' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo útil', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annualChart: 'Visibilidad anual · 00:00 UTC', selectedWeek: 'Semana seleccionada · 00:00 UTC', close: 'Cerrar', night: 'Noche de referencia', qualities: { excellent: 'Excelente', good: 'Buena', low: 'Baja', 'very-low': 'Muy baja', 'not-visible': 'No visible' } },
-  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Useful time', above: 'above', view: 'View photograph', viewChart: 'View V chart', annualChart: 'Annual visibility · 00:00 UTC', selectedWeek: 'Selected week · 00:00 UTC', close: 'Close', night: 'Reference night', qualities: { excellent: 'Excellent', good: 'Good', low: 'Low', 'very-low': 'Very low', 'not-visible': 'Not visible' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annualChart: 'Visibilitat anual · 00:00 UTC', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', qualities: { excellent: 'Excel·lent', good: 'Bona' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annualChart: 'Visibilidad anual · 00:00 UTC', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', qualities: { excellent: 'Excelente', good: 'Buena' } },
+  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View V chart', annualChart: 'Annual visibility · 00:00 UTC', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const t = texts[lang];
 const latestByObject = new Map<string, CollectionEntry<'fotos'>>();
@@ -43,16 +43,15 @@ const weekRange = (week: number) => {
 };
 ---
 
-<Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)}>
+<Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
   <section class="visibility-planner" aria-labelledby="visibility-title">
     <header class="visibility-planner__header">
-      <p class="visibility-planner__eyebrow">{t.analysed(cards.length)}</p>
+      <div class="visibility-planner__meta"><p class="visibility-planner__eyebrow">{t.analysed(cards.length)}</p><p class="visibility-planner__location">⌖ {t.location}</p></div>
       <h1 id="visibility-title">{t.title}</h1>
       <p>{t.intro}</p>
-      <p class="visibility-planner__location">⌖ {t.location}</p>
     </header>
 
-    <div class="week-control">
+    <div class="visibility-toolbar"><div class="week-control">
       <label for="visibility-week">{t.week}</label>
       <div class="week-control__row">
         <button type="button" data-week-step="-1" aria-label="−1">−</button>
@@ -68,22 +67,21 @@ const weekRange = (week: number) => {
     <nav class="visibility-filters" aria-label={t.title}>
       <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
       <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
-      <button type="button" data-visibility-filter="all" aria-pressed="false">{t.all} <span>{cards.length}</span></button>
-    </nav>
+    </nav></div>
 
     <section class="pending-explorer" data-pending-explorer hidden>
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
-        {cards.filter(({ object }) => object.status === 'pending').map(({ object }) => <button type="button" data-pending-select data-object-name={object.catalogName} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.quality]))}><span>{object.catalogName}</span><small data-pending-altitude>—</small></button>)}
+        {cards.filter(({ object }) => object.status === 'pending').map(({ object }) => <button type="button" data-pending-select data-object-name={object.catalogName} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{object.catalogName}</span><small data-pending-altitude>—</small></button>)}
       </div></div>
       <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p></div>
     </section>
 
     <div class="visibility-grid" data-visibility-grid>
       {cards.map(({ object, foto, text }) => {
-        const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['20'], week.hoursAbove['25'], week.hoursAbove['30'], week.quality, week.representativeNight]);
+        const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
         return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-name={object.catalogName} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
-            ? <a class="visibility-card__image" href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
+            ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
             : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><span aria-hidden="true">P</span></button>}
           <div class="visibility-card__body">
             <div class="visibility-card__heading">
@@ -97,7 +95,7 @@ const weekRange = (week: number) => {
               <div><dt>{t.night}</dt><dd data-night>—</dd></div>
             </dl>
             <div class="visibility-card__actions">
-              {foto ? <a class="visibility-card__link" href={photoHref(lang, foto.id, base)}>{t.view} →</a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
+              {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view} →</a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
               <button type="button" class="visibility-card__chart-link" data-open-chart><b aria-hidden="true">V</b>{t.viewChart}</button>
             </div>
           </div>
@@ -122,7 +120,7 @@ const weekRange = (week: number) => {
   const chartDialog = document.querySelector('[data-visibility-chart]');
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
   const requestedView = new URL(window.location.href).searchParams.get('view');
-  let currentView = ['photographed', 'pending', 'all'].includes(requestedView) ? requestedView : 'photographed';
+  let currentView = ['photographed', 'pending'].includes(requestedView) ? requestedView : 'photographed';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
   if (Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= selector.options.length) {
     selector.value = String(requestedWeek);
@@ -133,6 +131,13 @@ const weekRange = (week: number) => {
     currentUrl.searchParams.set('week', String(week));
     currentUrl.searchParams.set('view', currentView);
     window.history.replaceState(null, '', currentUrl);
+    document.querySelectorAll('[data-photo-link]').forEach((link) => {
+      const photoUrl = new URL(link.href);
+      photoUrl.searchParams.set('from', 'visibility');
+      photoUrl.searchParams.set('week', String(week));
+      photoUrl.searchParams.set('view', currentView);
+      link.href = `${photoUrl.pathname}${photoUrl.search}`;
+    });
     document.querySelectorAll('.language-selector a').forEach((link) => {
       const languageUrl = new URL(link.href);
       languageUrl.searchParams.set('week', String(week));
@@ -140,24 +145,25 @@ const weekRange = (week: number) => {
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
-      card.hidden = currentView !== 'all' && card.dataset.status !== currentView;
+      card.hidden = card.dataset.status !== currentView;
       const value = JSON.parse(card.dataset.weeks)[week - 1];
-      const [altitude, bestTimeUtc, hours20, hours25, hours30, qualityCode, representativeNight] = value;
+      const [altitude, bestTimeUtc, hours30, qualityCode, representativeNight] = value;
       card.dataset.altitude = altitude;
       card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
-      card.querySelector('[data-hours]').textContent = `>${30}°: ${hours30.toLocaleString(locale)} h · >${25}°: ${hours25.toLocaleString(locale)} h · >${20}°: ${hours20.toLocaleString(locale)} h`;
+      card.querySelector('[data-hours]').textContent = `${hours30.toLocaleString(locale)} h`;
       card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${representativeNight}T12:00:00Z`));
       const quality = card.querySelector('[data-quality]');
-      quality.textContent = t.qualities[qualityCode];
-      quality.className = `quality quality--${qualityCode}`;
+      quality.hidden = !qualityCode;
+      quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
+      quality.className = qualityCode ? `quality quality--${qualityCode}` : '';
     });
     grid.hidden = currentView === 'pending';
     pendingExplorer.hidden = currentView !== 'pending';
     pendingButtons.forEach((button) => {
-      const [altitude, quality] = JSON.parse(button.dataset.weeks)[week - 1];
+      const [altitude, , , quality] = JSON.parse(button.dataset.weeks)[week - 1];
       button.dataset.altitude = altitude;
-      button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}° · ${t.qualities[quality]}`;
+      button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}°${quality ? ` · ${t.qualities[quality]}` : ''}`;
     });
     pendingButtons.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     document.querySelector('[data-pending-list]').append(...pendingButtons);
@@ -179,15 +185,19 @@ const weekRange = (week: number) => {
   const renderChart = (source, plot, title, weekLabel) => {
     const values = JSON.parse(source.dataset.chartValues);
     const selected = Number(selector.value) - 1;
-    const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 42;
+    const weekData = JSON.parse(source.dataset.weeks)[selected];
+    const [maxAltitude, bestTimeUtc, , , representativeNight] = weekData;
+    const bestTime = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
+    const maximumDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${representativeNight}T12:00:00Z`));
+    const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 62;
     const x = (index) => left + index * (width - left - right) / (values.length - 1);
     const y = (altitude) => top + (90 - Math.max(-60, Math.min(90, altitude))) * (height - top - bottom) / 150;
     const points = values.map((altitude, index) => `${x(index).toFixed(1)},${y(altitude).toFixed(1)}`).join(' ');
     const gridLines = [-60, -30, 0, 20, 30, 60, 90].map((altitude) => `<g><line x1="${left}" y1="${y(altitude)}" x2="${width-right}" y2="${y(altitude)}"/><text x="${left-9}" y="${y(altitude)+4}" text-anchor="end">${altitude}°</text></g>`).join('');
     const weekLabels = [1, 13, 26, 39, values.length].map((week) => `<text x="${x(week-1)}" y="${height-14}" text-anchor="middle">${week}</text>`).join('');
     title.textContent = source.dataset.objectName;
-    weekLabel.textContent = `${t.selectedWeek}: ${selected + 1} · ${values[selected].toLocaleString(locale)}°`;
-    plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.annualChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-threshold chart-threshold--20" x1="${left}" y1="${y(20)}" x2="${width-right}" y2="${y(20)}"/><line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/><polyline class="chart-line" points="${points}"/><line class="chart-selected" x1="${x(selected)}" y1="${top}" x2="${x(selected)}" y2="${height-bottom}"/><circle class="chart-point" cx="${x(selected)}" cy="${y(values[selected])}" r="6"/><g class="chart-weeks">${weekLabels}</g></svg>`;
+    weekLabel.textContent = `${t.selectedWeek}: ${selected + 1} · ${bestTime} · ${maxAltitude.toLocaleString(locale)}°`;
+    plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.annualChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/><polyline class="chart-line" points="${points}"/><line class="chart-selected" x1="${x(selected)}" y1="${top}" x2="${x(selected)}" y2="${height-bottom}"/><circle class="chart-point" cx="${x(selected)}" cy="${y(values[selected])}" r="6"/><text class="chart-maximum-date" x="${x(selected)}" y="${height-bottom+20}" text-anchor="middle">${maximumDate}</text><g class="chart-weeks">${weekLabels}</g></svg>`;
   };
   const selectPending = (button) => {
     pendingButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
@@ -205,20 +215,23 @@ const weekRange = (week: number) => {
 </script>
 
 <style>
-  .visibility-planner { padding: 1.5rem 0 3rem; }
-  .visibility-planner__header { max-width: 52rem; margin-bottom: 1.5rem; }
+  .visibility-planner { padding: .45rem 0 3rem; }
+  .visibility-planner__header { margin-bottom: .7rem; }
+  .visibility-planner__meta { display: flex; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; }
   .visibility-planner__eyebrow { color: var(--color-accent); font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
-  .visibility-planner h1 { margin: .25rem 0 .65rem; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.05; }
+  .visibility-planner h1 { margin: .15rem 0 .3rem; font-size: clamp(1.45rem, 3vw, 2.2rem); line-height: 1.1; }
   .visibility-planner__header > p:not(.visibility-planner__eyebrow) { color: var(--color-muted); }
-  .visibility-planner__location { display: inline-flex; margin-top: .6rem; padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: .45rem; background: var(--color-surface); font-family: var(--font-mono); font-size: .78rem; }
-  .week-control { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 1.75rem 0 1.25rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .8rem; background: linear-gradient(135deg, rgba(224,106,69,.12), var(--color-surface)); }
+  .visibility-planner__header > p { margin: 0; font-size: .9rem; }
+  .visibility-planner__location { margin: 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .7rem; text-align: right; }
+  .visibility-toolbar { display: flex; align-items: end; justify-content: space-between; gap: .75rem; margin: .75rem 0 1rem; padding: .65rem .75rem; border: 1px solid var(--color-border); border-radius: .7rem; background: linear-gradient(135deg, rgba(224,106,69,.1), var(--color-surface)); }
+  .week-control { display: flex; align-items: center; gap: .75rem; margin: 0; }
   .week-control label { font-weight: 700; }
   .week-control__row { display: flex; gap: .5rem; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control__select { display: grid; gap: .18rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control button { width: 2.7rem; cursor: pointer; }
-  .visibility-filters { display: flex; gap: .5rem; margin: 0 0 1.25rem; overflow-x: auto; scrollbar-width: none; }
+  .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
   .visibility-filters::-webkit-scrollbar { display: none; }
   .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
   .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
@@ -251,8 +264,6 @@ const weekRange = (week: number) => {
   .quality { padding: .35rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
   .quality--excellent { background: rgba(85,217,179,.16); color: #78e8c7; }
   .quality--good { background: rgba(102,170,255,.16); color: #8bbcff; }
-  .quality--low, .quality--very-low { background: rgba(239,177,73,.16); color: #f1c36e; }
-  .quality--not-visible { background: rgba(255,255,255,.08); color: var(--color-muted); }
   .pending-badge { padding: .35rem .55rem; border-radius: 999px; background: rgba(85,217,179,.16); color: #78e8c7; font-size: .72rem; font-weight: 700; white-space: nowrap; }
   .visibility-card dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0; }
   .visibility-card dl div { padding: .75rem; border: 1px solid var(--color-border); border-radius: .55rem; }
@@ -276,13 +287,15 @@ const weekRange = (week: number) => {
   .visibility-chart__plot :global(.chart-grid line) { stroke: rgba(255,255,255,.1); }
   .visibility-chart__plot :global(.chart-grid text), .visibility-chart__plot :global(.chart-weeks text) { fill: #8d98aa; font: 11px var(--font-mono); }
   .visibility-chart__plot :global(.chart-threshold) { stroke: #e06a45; stroke-dasharray: 6 6; opacity: .75; }
-  .visibility-chart__plot :global(.chart-threshold--20) { stroke: #efb149; opacity: .5; }
   .visibility-chart__plot :global(.chart-line) { fill: none; stroke: #55d9b3; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
   .visibility-chart__plot :global(.chart-selected) { stroke: #fff; stroke-dasharray: 4 4; opacity: .7; }
   .visibility-chart__plot :global(.chart-point) { fill: #e06a45; stroke: #fff; stroke-width: 2; }
+  .visibility-chart__plot :global(.chart-maximum-date) { fill: #e4c66a; font: 700 11px var(--font-mono); }
   .visibility-chart__selection { display: flex; align-items: center; gap: .5rem; margin: .4rem 0 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .78rem; }
   .visibility-chart__selection span { width: .7rem; height: .7rem; border-radius: 50%; background: var(--color-accent); }
   @media (max-width: 700px) {
+    .visibility-planner__meta, .visibility-toolbar { align-items: stretch; flex-direction: column; }
+    .visibility-planner__location { text-align: left; }
     .week-control { align-items: stretch; flex-direction: column; }
     .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
     .week-control select { width: 100%; min-width: 0; }

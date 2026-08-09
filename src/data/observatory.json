@@ -8,5 +8,5 @@
   "thresholdDeg": 30,
   "astronomicalTwilightDeg": -18,
   "nightSampleMinutes": 10,
-  "planningThresholdsDeg": [20, 25, 30]
+  "planningThresholdsDeg": [30]
 }

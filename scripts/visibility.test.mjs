@@ -18,14 +18,14 @@ test('the approximate solar position is near the equator at the March equinox', 
 });
 
 test('night planning returns useful observing metrics', () => {
-  const metrics = nightMetrics({ date: new Date('2026-01-15T00:00:00Z'), latitudeDeg: 41, longitudeDeg: 1.5, raDeg: 83.82, decDeg: -5.3875, thresholdsDeg: [20, 25, 30] });
+  const metrics = nightMetrics({ date: new Date('2026-01-15T00:00:00Z'), latitudeDeg: 41, longitudeDeg: 1.5, raDeg: 83.82, decDeg: -5.3875, thresholdsDeg: [30] });
   assert.ok(metrics.darknessHours > 10);
   assert.ok(metrics.maxAltitudeDeg > 43 && metrics.maxAltitudeDeg < 44);
   assert.ok(metrics.hoursAbove[30] > 4);
 });
 
 test('weekly night planning keeps low and circumpolar objects', () => {
-  const common = { year: 2026, latitudeDeg: 41, longitudeDeg: 1.5, thresholdsDeg: [20, 25, 30] };
+  const common = { year: 2026, latitudeDeg: 41, longitudeDeg: 1.5, thresholdsDeg: [30] };
   const m8 = weeklyNightSamples({ ...common, raDeg: 270.904167, decDeg: -24.386667 });
   const m81 = weeklyNightSamples({ ...common, raDeg: 148.888219, decDeg: 69.065295 });
   assert.equal(m8.length, 53);

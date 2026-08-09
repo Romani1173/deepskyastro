@@ -56,7 +56,7 @@ export function weeklySamples(daily) {
   });
 }
 
-export function nightMetrics({ date, latitudeDeg, longitudeDeg, raDeg, decDeg, twilightDeg = -18, sampleMinutes = 10, thresholdsDeg = [20, 25, 30] }) {
+export function nightMetrics({ date, latitudeDeg, longitudeDeg, raDeg, decDeg, twilightDeg = -18, sampleMinutes = 10, thresholdsDeg = [30] }) {
   const start = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12);
   const stepMs = sampleMinutes * 60000;
   const darkSamples = [];
@@ -97,13 +97,11 @@ export function weeklyNightSamples(options) {
     const best = group.reduce((current, night) => night.maxAltitudeDeg > current.maxAltitudeDeg ? night : current);
     const hoursAbove = Object.fromEntries(options.thresholdsDeg.map((threshold) => [threshold, Math.max(...group.map((night) => night.hoursAbove[threshold]))]));
     const maxAltitudeDeg = Math.max(...group.map((night) => night.maxAltitudeDeg));
-    const quality = maxAltitudeDeg >= 50 && hoursAbove[30] >= 3
+    const quality = hoursAbove[30] >= 8
       ? 'excellent'
-      : maxAltitudeDeg >= 30 && hoursAbove[30] > 0
+      : hoursAbove[30] >= 4
         ? 'good'
-        : maxAltitudeDeg >= 20
-          ? 'low'
-          : maxAltitudeDeg >= 0 ? 'very-low' : 'not-visible';
+        : null;
     weeks.push({
       week: index + 1,
       available: true,
