@@ -46,8 +46,28 @@
     "status": "photographed"
   },
   {
+    "id": "ic1795",
+    "catalogName": "IC1795",
+    "aliases": [],
+    "commonNames": {
+      "ca": "Nebulosa del Cap de Peix",
+      "es": "Nebulosa Cabeza de Pez",
+      "en": "Fish Head Nebula"
+    },
+    "raDeg": 36.43125,
+    "decDeg": 62.10361111,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ic59",
     "catalogName": "IC59",
+    "commonNames": {
+      "ca": "Nebulosa de Gamma Cassiopeiae",
+      "es": "Nebulosa de Gamma Cassiopeiae",
+      "en": "Gamma Cassiopeiae Nebula"
+    },
     "aliases": [
       "IC   59"
     ],
@@ -206,6 +226,11 @@
   {
     "id": "lbn468",
     "catalogName": "LBN468",
+    "commonNames": {
+      "ca": "Complex de la nebulosa de Gyulbudaghian",
+      "es": "Complejo de la nebulosa de Gyulbudaghian",
+      "en": "Gyulbudaghian's Nebula complex"
+    },
     "aliases": [
       "LBN 102.67+15.42"
     ],
@@ -218,6 +243,11 @@
   {
     "id": "ldn673",
     "catalogName": "LDN673",
+    "commonNames": {
+      "ca": "Núvol fosc de l'Esquerda de l'Àguila",
+      "es": "Nube oscura de la Grieta del Águila",
+      "en": "Aquila Rift dark cloud"
+    },
     "aliases": [
       "LDN  673"
     ],
@@ -230,6 +260,11 @@
   {
     "id": "ldn768",
     "catalogName": "LDN768",
+    "commonNames": {
+      "ca": "Nebulosa del Monstre del llac Ness",
+      "es": "Nebulosa del Monstruo del Lago Ness",
+      "en": "Loch Ness Monster Nebula"
+    },
     "aliases": [
       "LDN  768"
     ],
@@ -242,6 +277,11 @@
   {
     "id": "ldn914",
     "catalogName": "LDN914",
+    "commonNames": {
+      "ca": "Nebulosa del Drac Fosc",
+      "es": "Nebulosa del Dragón Oscuro",
+      "en": "Dark Dragon Nebula"
+    },
     "aliases": [
       "LDN  914"
     ],
@@ -690,8 +730,28 @@
     "status": "photographed"
   },
   {
+    "id": "ngc1491",
+    "catalogName": "NGC1491",
+    "aliases": [],
+    "commonNames": {
+      "ca": "Nebulosa de la Petjada Fòssil",
+      "es": "Nebulosa de la Huella Fósil",
+      "en": "Fossil Footprint Nebula"
+    },
+    "raDeg": 60.81625,
+    "decDeg": 51.315,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ngc225",
     "catalogName": "NGC225",
+    "commonNames": {
+      "ca": "Cúmul del Veler",
+      "es": "Cúmulo del Velero",
+      "en": "Sailboat Cluster"
+    },
     "aliases": [
       "NGC   225"
     ],
@@ -812,6 +872,11 @@
   {
     "id": "ngc6559",
     "catalogName": "NGC6559",
+    "commonNames": {
+      "ca": "Nebulosa del Drac Xinès",
+      "es": "Nebulosa del Dragón Chino",
+      "en": "Chinese Dragon Nebula"
+    },
     "aliases": [
       "NGC  6559"
     ],
@@ -968,6 +1033,11 @@
   {
     "id": "sh2-86",
     "catalogName": "Sh2-86",
+    "commonNames": {
+      "ca": "Nebulosa NGC 6820",
+      "es": "Nebulosa NGC 6820",
+      "en": "NGC 6820 Nebula"
+    },
     "aliases": [
       "LBN 059.38-00.15"
     ],
@@ -1026,6 +1096,23 @@
     "status": "photographed"
   },
   {
+    "id": "sh2-132",
+    "catalogName": "Sh2-132",
+    "aliases": [
+      "LBN 102.79-00.92"
+    ],
+    "commonNames": {
+      "ca": "Nebulosa del Lleó",
+      "es": "Nebulosa del León",
+      "en": "Lion Nebula"
+    },
+    "raDeg": 334.78749815,
+    "decDeg": 56.07912137,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "sh2-155",
     "catalogName": "Sh2-155",
     "aliases": [
@@ -1076,6 +1163,11 @@
   {
     "id": "sh2-308",
     "catalogName": "Sh2-308",
+    "commonNames": {
+      "ca": "Nebulosa del Cap de Dofí",
+      "es": "Nebulosa Cabeza de Delfín",
+      "en": "Dolphin-Head Nebula"
+    },
     "aliases": [
       "HD  50896"
     ],
@@ -1100,6 +1192,11 @@
   {
     "id": "vdb158",
     "catalogName": "VdB158",
+    "commonNames": {
+      "ca": "Marca de verificació còsmica",
+      "es": "Marca de verificación cósmica",
+      "en": "Cosmic Checkmark Nebula"
+    },
     "aliases": [
       "HD 222142"
     ],
