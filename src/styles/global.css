@@ -160,6 +160,11 @@ main { padding: 1rem 0 4rem; }
 .additional-images figcaption { padding: .9rem 1rem; }
 .additional-images figcaption strong, .additional-images figcaption span { display: block; }
 .additional-images figcaption span { margin-top: .25rem; color: var(--color-muted); font-size: .9rem; }
+.photo-navigation { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 2.25rem 0 .5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
+.photo-navigation a { display: flex; min-width: 0; flex-direction: column; gap: .28rem; color: var(--color-muted); font-size: .82rem; text-decoration: none; }
+.photo-navigation a:hover { color: var(--color-accent); }
+.photo-navigation strong { overflow: hidden; color: var(--color-text); font-size: .95rem; text-overflow: ellipsis; white-space: nowrap; }
+.photo-navigation__next { align-items: flex-end; text-align: right; }
 .detail-content { margin-top: 2rem; }
 .detail-content h2, .detail-content h3 { color: var(--color-accent); }
 .detail-content p { color: var(--color-muted); }
@@ -394,6 +399,8 @@ main { padding: 1rem 0 4rem; }
 	.equipment-specifications dl { grid-template-columns: 1fr; }
 	.data-grid { grid-template-columns: 1fr; }
 	.additional-images__grid { grid-template-columns: 1fr; }
+	.photo-navigation { grid-template-columns: 1fr; gap: 1.15rem; }
+	.photo-navigation__next { align-items: flex-start; text-align: left; }
 	.solar-grid { grid-template-columns: 1fr; }
 	.catalog-controls__search { align-items: stretch; flex-direction: column; gap: .35rem; }
 	.catalog-search { flex: 0 0 auto; width: 100%; max-width: none; }

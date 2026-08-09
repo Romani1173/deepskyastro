@@ -3,11 +3,13 @@ import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, visibilityHref, withBase } from '../i18n';
+import { articlesHref, copy, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, withBase } from '../i18n';
 
 interface Props {
 	title?: string;
 	description?: string;
+	image?: string;
+	structuredData?: Record<string, unknown>;
 	hero?: boolean;
 	minimal?: boolean;
 	compact?: boolean;
@@ -16,17 +18,18 @@ interface Props {
 	languageLinks?: Record<Lang, string>;
 	backLink?: { href: string; label: string };
 }
-const { title = SITE_TITLE, hero = false, minimal = false, compact = false, focused = false, lang = 'ca', languageLinks = makeLanguageLinks.home(import.meta.env.BASE_URL), backLink } = Astro.props;
+const { title = SITE_TITLE, hero = false, minimal = false, compact = false, focused = false, lang = 'ca', languageLinks = makeLanguageLinks.home(import.meta.env.BASE_URL), backLink, image, structuredData } = Astro.props;
 const description = Astro.props.description ?? copy[lang].siteDescription;
 const pageTitle = title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
 const rootHref = normalizeBase(base);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = image ? new URL(image, Astro.site) : undefined;
+const structuredDataJson = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 const nav = [
 	{ href: homeHref(lang, base), label: copy[lang].home },
 	{ href: galleryHref(lang, base), label: copy[lang].catalogue },
-	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner },
 	{ href: articlesHref(lang, base), label: copy[lang].articles },
 ];
 const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', en: 'Main navigation' }[lang];
@@ -48,6 +51,16 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		{Object.entries(languageLinks).map(([language, href]) => <link rel="alternate" hreflang={language} href={new URL(href, Astro.site)} />)}
 		<link rel="alternate" hreflang="x-default" href={new URL(languageLinks.ca, Astro.site)} />
 		<title>{pageTitle}</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		{socialImage && <meta property="og:image" content={socialImage} />}
+		<meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		{socialImage && <meta name="twitter:image" content={socialImage} />}
+		{structuredDataJson && <script type="application/ld+json" set:html={structuredDataJson} />}
 	</head>
 	<body class:list={{ 'home-page': hero, 'equipment-section': compact }}>
 		{!minimal && !hero && <header class:list={{ 'site-header': true, 'site-shell': true, 'site-header--compact': hero, 'site-header--focused': focused }}>

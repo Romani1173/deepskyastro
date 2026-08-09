@@ -26,7 +26,7 @@ export const copy = {
 		generalInfo: 'Informació general', category: 'Categoria', date: 'Data', captureSessions: 'Sessions de captura', capture: 'Captura', totalTime: 'Temps total', subframes: 'Subframes', gainOffset: 'Guany / Offset', calibration: 'Calibratge',
 		equipment: 'Equip', telescope: 'Telescopi', camera: 'Càmera', filters: 'Filtres', mount: 'Muntura', guiding: 'Guiat', focuser: 'Enfocador', filterWheel: 'Roda de filtres',
 		processingEnvironment: 'Processat i entorn', processing: 'Processat', acquisition: 'Adquisició', place: 'Lloc', sky: 'Cel', annualVisibility: 'Visibilitat anual', visibilityChart: 'Diagrama de visibilitat anual de', visibilityCaption: (days: number) => `${days} dies l’any per sobre de +30° a les 00:00 UTC des de 41° N, 1,5° E.`, additionalVersions: 'Versions addicionals', enlarge: 'Ampliar', enlargedImage: 'Imatge ampliada', closeImage: 'Tancar la imatge ampliada', previousImage: 'Imatge anterior', nextImage: 'Imatge següent',
-		languageSelector: 'Selecciona l’idioma', backToCategory: (category: string) => `Tornar a ${category}`, categoryDescription: (category: string) => `Fotografies de ${category.toLocaleLowerCase('ca')} de la meva galeria de cel profund.`,
+		languageSelector: 'Selecciona l’idioma', backToCategory: (category: string) => `Tornar a ${category}`, categoryDescription: (category: string) => `Fotografies de ${category.toLocaleLowerCase('ca')} de la meva galeria de cel profund.`, previousObject: 'Objecte anterior', nextObject: 'Objecte següent', photoNavigation: 'Navegació entre objectes',
 	},
 	es: {
 		siteDescription: 'Una colección personal de fotografías de cielo profundo.',
@@ -38,7 +38,7 @@ export const copy = {
 		generalInfo: 'Información general', category: 'Categoría', date: 'Fecha', captureSessions: 'Sesiones de captura', capture: 'Captura', totalTime: 'Tiempo total', subframes: 'Subframes', gainOffset: 'Ganancia / Offset', calibration: 'Calibración',
 		equipment: 'Equipo', telescope: 'Telescopio', camera: 'Cámara', filters: 'Filtros', mount: 'Montura', guiding: 'Guiado', focuser: 'Enfocador', filterWheel: 'Rueda de filtros',
 		processingEnvironment: 'Procesado y entorno', processing: 'Procesado', acquisition: 'Adquisición', place: 'Lugar', sky: 'Cielo', annualVisibility: 'Visibilidad anual', visibilityChart: 'Diagrama de visibilidad anual de', visibilityCaption: (days: number) => `${days} días al año por encima de +30° a las 00:00 UTC desde 41° N, 1,5° E.`, additionalVersions: 'Versiones adicionales', enlarge: 'Ampliar', enlargedImage: 'Imagen ampliada', closeImage: 'Cerrar la imagen ampliada', previousImage: 'Imagen anterior', nextImage: 'Imagen siguiente',
-		languageSelector: 'Selecciona el idioma', backToCategory: (category: string) => `Volver a ${category}`, categoryDescription: (category: string) => `Fotografías de ${category.toLocaleLowerCase('es')} de mi galería de cielo profundo.`,
+		languageSelector: 'Selecciona el idioma', backToCategory: (category: string) => `Volver a ${category}`, categoryDescription: (category: string) => `Fotografías de ${category.toLocaleLowerCase('es')} de mi galería de cielo profundo.`, previousObject: 'Objeto anterior', nextObject: 'Objeto siguiente', photoNavigation: 'Navegación entre objetos',
 	},
 	en: {
 		siteDescription: 'A personal collection of deep-sky photographs.',
@@ -50,7 +50,7 @@ export const copy = {
 		generalInfo: 'General information', category: 'Category', date: 'Date', captureSessions: 'Capture sessions', capture: 'Capture', totalTime: 'Total time', subframes: 'Subframes', gainOffset: 'Gain / Offset', calibration: 'Calibration',
 		equipment: 'Equipment', telescope: 'Telescope', camera: 'Camera', filters: 'Filters', mount: 'Mount', guiding: 'Guiding', focuser: 'Focuser', filterWheel: 'Filter wheel',
 		processingEnvironment: 'Processing and environment', processing: 'Processing', acquisition: 'Acquisition', place: 'Location', sky: 'Sky', annualVisibility: 'Annual visibility', visibilityChart: 'Annual visibility chart for', visibilityCaption: (days: number) => `${days} days per year above +30° at 00:00 UTC from 41° N, 1.5° E.`, additionalVersions: 'Additional versions', enlarge: 'Enlarge', enlargedImage: 'Enlarged image', closeImage: 'Close enlarged image', previousImage: 'Previous image', nextImage: 'Next image',
-		languageSelector: 'Select language', backToCategory: (category: string) => `Back to ${category}`, categoryDescription: (category: string) => `Photographs of ${category.toLocaleLowerCase('en')} from my deep-sky gallery.`,
+		languageSelector: 'Select language', backToCategory: (category: string) => `Back to ${category}`, categoryDescription: (category: string) => `Photographs of ${category.toLocaleLowerCase('en')} from my deep-sky gallery.`, previousObject: 'Previous object', nextObject: 'Next object', photoNavigation: 'Object navigation',
 	},
 } as const;
 

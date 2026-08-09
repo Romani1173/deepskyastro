@@ -1,8 +1,8 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { categoryByValue, categoryHref, copy, languageLinks, localeFor, visibilityHref, withBase } from '../i18n';
+import { categoryByValue, categoryHref, copy, languageLinks, localeFor, photoHref, visibilityHref, withBase } from '../i18n';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
 
@@ -14,6 +14,14 @@ const text = photoText(foto, lang);
 const technical = photoTechnicalText(foto, lang);
 const category = categoryByValue(foto.data.categoria);
 const categoryLabel = category.labels[lang];
+const categoryPhotos = (await getCollection('fotos'))
+	.filter((entry) => entry.data.categoria === foto.data.categoria)
+	.sort((a, b) => b.data.entorn.data.getTime() - a.data.entorn.data.getTime() || a.id.localeCompare(b.id, undefined, { numeric: true }));
+const currentIndex = categoryPhotos.findIndex((entry) => entry.id === foto.id);
+const previousPhoto = currentIndex > 0 ? categoryPhotos[currentIndex - 1] : undefined;
+const nextPhoto = currentIndex >= 0 && currentIndex < categoryPhotos.length - 1 ? categoryPhotos[currentIndex + 1] : undefined;
+const previousText = previousPhoto ? photoText(previousPhoto, lang) : undefined;
+const nextText = nextPhoto ? photoText(nextPhoto, lang) : undefined;
 const dateFormatter = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long' });
 const sessionDateFormatter = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'medium' });
 const date = dateFormatter.format(foto.data.entorn.data);
@@ -27,9 +35,27 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 	].filter(Boolean);
 	return details.length > 0 ? `${interval} — ${details.join(' · ')}` : interval;
 });
+const photoUrl = new URL(photoHref(lang, foto.id, base), Astro.site).toString();
+const imageUrl = new URL(withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base), Astro.site).toString();
+const seoDescription = {
+	ca: `${text.objecte}, fotografia de cel profund de Juan José Romero a ${technical.constellacio}.`,
+	es: `${text.objecte}, fotografía de cielo profundo de Juan José Romero en ${technical.constellacio}.`,
+	en: `${text.objecte}, deep-sky photograph by Juan José Romero in ${technical.constellacio}.`,
+}[lang];
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageObject',
+	name: text.objecte,
+	description: seoDescription,
+	contentUrl: imageUrl,
+	url: photoUrl,
+	creator: { '@type': 'Person', name: 'Juan José Romero' },
+	copyrightHolder: { '@type': 'Person', name: 'Juan José Romero' },
+	dateCreated: foto.data.entorn.data.toISOString().slice(0, 10),
+};
 ---
 
-<Layout title={text.objecte} description={text.caracteristiques} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
+<Layout title={text.objecte} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
 	<article class="photo-detail">
 		<a class="back-link" data-photo-back href={categoryHref(lang, category.key, base)} data-visibility-href={visibilityHref(lang, base)} data-visibility-label={t.visibilityPlanner}>← {t.backToCategory(categoryLabel)}</a>
 		<header class="page-heading"><h1>{text.objecte}</h1></header>
@@ -72,6 +98,12 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 					})}
 				</div>
 			</section>
+		)}
+		{(previousPhoto || nextPhoto) && (
+			<nav class="photo-navigation" aria-label={t.photoNavigation}>
+				{previousPhoto ? <a class="photo-navigation__previous" href={photoHref(lang, previousPhoto.id, base)}><span>← {t.previousObject}</span><strong>{previousText?.objecte}</strong></a> : <span />}
+				{nextPhoto ? <a class="photo-navigation__next" href={photoHref(lang, nextPhoto.id, base)}><span>{t.nextObject} →</span><strong>{nextText?.objecte}</strong></a> : <span />}
+			</nav>
 		)}
 	</article>
 	<dialog class="image-lightbox" aria-label={t.enlargedImage}>
