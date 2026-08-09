@@ -1,10 +1,6 @@
 ---
-import { homeHref } from '../../i18n';
-
-if (!import.meta.env.DEV) return Astro.redirect(homeHref('en', import.meta.env.BASE_URL));
-
 const { getCollection } = await import('astro:content');
 const { default: VisibilityPlanner } = await import('../../components/VisibilityPlanner.astro');
 const fotos = await getCollection('fotos');
 ---
-<VisibilityPlanner lang="en" fotos={fotos} />
+<VisibilityPlanner lang="en" fotos={fotos} showPending={import.meta.env.DEV} />

@@ -6,13 +6,13 @@ import { photoText } from '../photoTranslations';
 import Layout from '../layouts/Layout.astro';
 import visibility from '../data/visibility.generated.json';
 
-interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; }
-const { lang, fotos } = Astro.props;
+interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: boolean; }
+const { lang, fotos, showPending = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annualChart: 'Visibilitat anual · 00:00 UTC', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', qualities: { excellent: 'Excel·lent', good: 'Bona' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annualChart: 'Visibilidad anual · 00:00 UTC', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', qualities: { excellent: 'Excelente', good: 'Buena' } },
-  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View V chart', annualChart: 'Annual visibility · 00:00 UTC', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', qualities: { excellent: 'Excellent', good: 'Good' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', publicIntro: 'Selecció dels objectes fotografiats d’aquesta web que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annualChart: 'Visibilitat anual · 00:00 UTC', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', qualities: { excellent: 'Excel·lent', good: 'Bona' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', publicIntro: 'Selección de los objetos fotografiados de esta web que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annualChart: 'Visibilidad anual · 00:00 UTC', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', qualities: { excellent: 'Excelente', good: 'Buena' } },
+  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', publicIntro: 'A selection of photographed objects from this website that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View V chart', annualChart: 'Annual visibility · 00:00 UTC', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const t = texts[lang];
 const latestByObject = new Map<string, CollectionEntry<'fotos'>>();
@@ -21,10 +21,12 @@ for (const foto of [...fotos].sort((a, b) => b.data.entorn.data.valueOf() - a.da
 }
 const cards = Object.entries(visibility.objects).map(([id, object]) => {
   const foto = latestByObject.get(id);
-  return { id, object, foto, text: foto ? photoText(foto, lang) : undefined };
+  const commonName = (object as { commonNames?: Partial<Record<Lang, string>> }).commonNames?.[lang];
+  return { id, object, commonName, foto, text: foto ? photoText(foto, lang) : undefined };
 });
 const photographedCount = cards.filter(({ object }) => object.status === 'photographed').length;
 const pendingCount = cards.filter(({ object }) => object.status === 'pending').length;
+const visibleCards = showPending ? cards : cards.filter(({ object }) => object.status === 'photographed');
 const today = new Date();
 const referenceYear = visibility.observatory.referenceYear;
 const januaryFourth = new Date(Date.UTC(referenceYear, 0, 4));
@@ -46,9 +48,9 @@ const weekRange = (week: number) => {
 <Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
   <section class="visibility-planner" aria-labelledby="visibility-title">
     <header class="visibility-planner__header">
-      <div class="visibility-planner__meta"><p class="visibility-planner__eyebrow">{t.analysed(cards.length)}</p><p class="visibility-planner__location">⌖ {t.location}</p></div>
+      <div class="visibility-planner__meta"><p class="visibility-planner__eyebrow">{t.analysed(visibleCards.length)}</p><p class="visibility-planner__location">⌖ {t.location}</p></div>
       <h1 id="visibility-title">{t.title}</h1>
-      <p>{t.intro}</p>
+      <p>{showPending ? t.intro : t.publicIntro}</p>
     </header>
 
     <div class="visibility-toolbar"><div class="week-control">
@@ -64,20 +66,20 @@ const weekRange = (week: number) => {
       </div>
     </div>
 
-    <nav class="visibility-filters" aria-label={t.title}>
+    {showPending && <nav class="visibility-filters" aria-label={t.title}>
       <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
       <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
-    </nav></div>
+    </nav>}</div>
 
-    <section class="pending-explorer" data-pending-explorer hidden>
+    {showPending && <section class="pending-explorer" data-pending-explorer hidden>
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
-        {cards.filter(({ object }) => object.status === 'pending').map(({ object }) => <button type="button" data-pending-select data-object-name={object.catalogName} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{object.catalogName}</span><small data-pending-altitude>—</small></button>)}
+        {cards.filter(({ object }) => object.status === 'pending').map(({ object, commonName }) => <button type="button" data-pending-select data-object-name={commonName ? `${object.catalogName} · ${commonName}` : object.catalogName} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{object.catalogName}{commonName && <small class="pending-explorer__alias">{commonName}</small>}</span><small data-pending-altitude>—</small></button>)}
       </div></div>
       <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p></div>
-    </section>
+    </section>}
 
     <div class="visibility-grid" data-visibility-grid>
-      {cards.map(({ object, foto, text }) => {
+      {visibleCards.map(({ object, commonName, foto, text }) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
         return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-name={object.catalogName} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
@@ -85,7 +87,7 @@ const weekRange = (week: number) => {
             : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><span aria-hidden="true">P</span></button>}
           <div class="visibility-card__body">
             <div class="visibility-card__heading">
-              <div><p>{foto ? foto.data.constellacio : t.pendingTarget}</p><h2>{object.catalogName}</h2></div>
+              <div><p>{foto ? foto.data.constellacio : t.pendingTarget}</p><h2>{object.catalogName}</h2>{commonName && <p class="visibility-card__alias">{commonName}</p>}</div>
               <div class="visibility-card__badges">{object.status === 'pending' && <span class="pending-badge">{t.pending}</span>}<span data-quality></span></div>
             </div>
             <dl>
@@ -110,7 +112,7 @@ const weekRange = (week: number) => {
   </section>
 </Layout>
 
-<script define:vars={{ t, lang }}>
+<script define:vars={{ t, lang, showPending }}>
   const selector = document.querySelector('#visibility-week');
   const grid = document.querySelector('[data-visibility-grid]');
   const cards = [...document.querySelectorAll('[data-visibility-card]')];
@@ -120,7 +122,7 @@ const weekRange = (week: number) => {
   const chartDialog = document.querySelector('[data-visibility-chart]');
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
   const requestedView = new URL(window.location.href).searchParams.get('view');
-  let currentView = ['photographed', 'pending'].includes(requestedView) ? requestedView : 'photographed';
+  let currentView = showPending && requestedView === 'pending' ? 'pending' : 'photographed';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
   if (Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= selector.options.length) {
     selector.value = String(requestedWeek);
@@ -158,15 +160,16 @@ const weekRange = (week: number) => {
       quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
       quality.className = qualityCode ? `quality quality--${qualityCode}` : '';
     });
-    grid.hidden = currentView === 'pending';
-    pendingExplorer.hidden = currentView !== 'pending';
+    grid.hidden = showPending && currentView === 'pending';
+    if (pendingExplorer) pendingExplorer.hidden = currentView !== 'pending';
     pendingButtons.forEach((button) => {
       const [altitude, , , quality] = JSON.parse(button.dataset.weeks)[week - 1];
       button.dataset.altitude = altitude;
       button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}°${quality ? ` · ${t.qualities[quality]}` : ''}`;
     });
     pendingButtons.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
-    document.querySelector('[data-pending-list]').append(...pendingButtons);
+    const pendingList = document.querySelector('[data-pending-list]');
+    if (pendingList) pendingList.append(...pendingButtons);
     filterButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityFilter === currentView)));
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);
@@ -246,6 +249,7 @@ const weekRange = (week: number) => {
   .pending-explorer__list button { display: grid; gap: .12rem; padding: .58rem .65rem; border: 1px solid transparent; border-radius: .45rem; background: transparent; color: var(--color-text); cursor: pointer; text-align: left; }
   .pending-explorer__list button:hover, .pending-explorer__list button[aria-pressed="true"] { border-color: rgba(85,217,179,.45); background: rgba(85,217,179,.1); }
   .pending-explorer__list button span { font-weight: 700; }
+  .pending-explorer__list .pending-explorer__alias { display: block; margin-top: .12rem; color: var(--color-muted); font-family: var(--font-sans); font-size: .72rem; font-weight: 400; text-transform: none; }
   .pending-explorer__list button small { color: var(--color-muted); font-family: var(--font-mono); }
   .pending-explorer__chart { min-width: 0; padding: 1rem; }
   .pending-explorer__chart > p:first-child { margin: 0 0 .15rem; color: #78e8c7; font: .72rem var(--font-mono); text-transform: uppercase; }
@@ -261,6 +265,7 @@ const weekRange = (week: number) => {
   .visibility-card__heading p { margin: 0 0 .15rem; color: var(--color-muted); font: .72rem var(--font-mono); text-transform: uppercase; }
   .visibility-card__badges { display: flex; flex-wrap: wrap; justify-content: end; gap: .4rem; }
   .visibility-card h2 { margin: 0; font-size: 1.45rem; }
+  .visibility-card__heading .visibility-card__alias { margin-top: .2rem; color: var(--color-text); font-family: var(--font-sans); font-size: .86rem; text-transform: none; }
   .quality { padding: .35rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
   .quality--excellent { background: rgba(85,217,179,.16); color: #78e8c7; }
   .quality--good { background: rgba(102,170,255,.16); color: #8bbcff; }

@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, withBase } from '../i18n';
+import { articlesHref, copy, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, visibilityHref, withBase } from '../i18n';
 
 interface Props {
 	title?: string;
@@ -30,6 +30,7 @@ const structuredDataJson = structuredData ? JSON.stringify(structuredData).repla
 const nav = [
 	{ href: homeHref(lang, base), label: copy[lang].home },
 	{ href: galleryHref(lang, base), label: copy[lang].catalogue },
+	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner },
 	{ href: articlesHref(lang, base), label: copy[lang].articles },
 ];
 const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', en: 'Main navigation' }[lang];
