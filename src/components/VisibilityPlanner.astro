@@ -10,18 +10,23 @@ interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: b
 const { lang, fotos, showPending = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', publicIntro: 'Selecció dels objectes fotografiats d’aquesta web que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annualChart: 'Visibilitat anual · 00:00 UTC', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', qualities: { excellent: 'Excel·lent', good: 'Bona' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', publicIntro: 'Selección de los objetos fotografiados de esta web que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annualChart: 'Visibilidad anual · 00:00 UTC', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', qualities: { excellent: 'Excelente', good: 'Buena' } },
-  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', publicIntro: 'A selection of photographed objects from this website that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View V chart', annualChart: 'Annual visibility · 00:00 UTC', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', qualities: { excellent: 'Excellent', good: 'Good' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Selecció dels objectes fotografiats d’aquesta web i dels objectius pendents que es poden observar durant la setmana escollida.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18°', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana de l’any', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', photos: 'Amb fotos', list: 'Llista', display: 'Visualització dels objectes fotografiats', selectedObject: 'objecte seleccionat', selectedObjects: 'objectes seleccionats', noResults: 'No hi ha objectes que compleixin els criteris aquesta setmana.', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica V', annual: 'Anual', selectedNight: 'Nit seleccionada', annualChart: 'Visibilitat anual · 00:00 UTC', nightChart: 'Altura durant la nit astronòmica', darkness: 'Foscor astronòmica', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', qualities: { excellent: 'Excel·lent', good: 'Bona' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Selección de los objetos fotografiados de esta web y de los objetivos pendientes que pueden observarse durante la semana elegida.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18°', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana del año', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', photos: 'Con fotos', list: 'Lista', display: 'Visualización de los objetos fotografiados', selectedObject: 'objeto seleccionado', selectedObjects: 'objetos seleccionados', noResults: 'No hay objetos que cumplan los criterios esta semana.', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica V', annual: 'Anual', selectedNight: 'Noche seleccionada', annualChart: 'Visibilidad anual · 00:00 UTC', nightChart: 'Altura durante la noche astronómica', darkness: 'Oscuridad astronómica', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', qualities: { excellent: 'Excelente', good: 'Buena' } },
+  en: { title: 'What can we photograph this week?', intro: 'A selection of photographed objects from this website and pending targets that can be observed during the chosen week.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18°', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week of the year', photographed: 'Photographed', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View V chart', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const t = texts[lang];
+const publicIntro = {
+  ca: 'Selecció dels objectes fotografiats d’aquesta web que es poden observar durant la setmana escollida.',
+  es: 'Selección de los objetos fotografiados de esta web que pueden observarse durante la semana elegida.',
+  en: 'A selection of photographed objects from this website that can be observed during the chosen week.',
+}[lang];
 const latestByObject = new Map<string, CollectionEntry<'fotos'>>();
 for (const foto of [...fotos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
   if (foto.data.objecte_astronomic && !latestByObject.has(foto.data.objecte_astronomic)) latestByObject.set(foto.data.objecte_astronomic, foto);
 }
 const cards = Object.entries(visibility.objects).map(([id, object]) => {
   const foto = latestByObject.get(id);
-  const commonName = (object as { commonNames?: Partial<Record<Lang, string>> }).commonNames?.[lang];
+  const commonName = object.commonNames?.[lang];
   return { id, object, commonName, foto, text: foto ? photoText(foto, lang) : undefined };
 });
 const photographedCount = cards.filter(({ object }) => object.status === 'photographed').length;
@@ -50,7 +55,7 @@ const weekRange = (week: number) => {
     <header class="visibility-planner__header">
       <div class="visibility-planner__meta"><p class="visibility-planner__eyebrow">{t.analysed(visibleCards.length)}</p><p class="visibility-planner__location">⌖ {t.location}</p></div>
       <h1 id="visibility-title">{t.title}</h1>
-      <p>{showPending ? t.intro : t.publicIntro}</p>
+      <p>{showPending ? t.intro : publicIntro}</p>
     </header>
 
     <div class="visibility-toolbar"><div class="week-control">
@@ -66,10 +71,18 @@ const weekRange = (week: number) => {
       </div>
     </div>
 
+    <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
+      <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
+      <button type="button" data-visibility-layout="list" aria-pressed="false">{t.list}</button>
+    </nav>
+
     {showPending && <nav class="visibility-filters" aria-label={t.title}>
       <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
       <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
     </nav>}</div>
+
+    <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
+    <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
 
     {showPending && <section class="pending-explorer" data-pending-explorer hidden>
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
@@ -79,9 +92,9 @@ const weekRange = (week: number) => {
     </section>}
 
     <div class="visibility-grid" data-visibility-grid>
-      {visibleCards.map(({ object, commonName, foto, text }) => {
+      {visibleCards.map(({ id, object, commonName, foto, text }) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
-        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-name={object.catalogName} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
+        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={object.catalogName} data-ra={object.raDeg} data-dec={object.decDeg} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
             ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
             : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><span aria-hidden="true">P</span></button>}
@@ -98,31 +111,45 @@ const weekRange = (week: number) => {
             </dl>
             <div class="visibility-card__actions">
               {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view} →</a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
-              <button type="button" class="visibility-card__chart-link" data-open-chart><b aria-hidden="true">V</b>{t.viewChart}</button>
+              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><b aria-hidden="true">V</b><span class="visibility-card__chart-label">{t.viewChart}</span></button>
             </div>
           </div>
         </article>;
       })}
     </div>
     <dialog class="visibility-chart" data-visibility-chart>
-      <div class="visibility-chart__header"><div><p>{t.annualChart}</p><h2 data-chart-title></h2></div><button type="button" data-close-chart aria-label={t.close}>×</button></div>
+      <div class="visibility-chart__header"><div><p data-chart-kicker>{t.annualChart}</p><h2 data-chart-title></h2></div><button type="button" data-close-chart aria-label={t.close}>×</button></div>
+      <nav class="visibility-chart__tabs" data-chart-tabs hidden><button type="button" data-chart-mode="annual" aria-pressed="true">{t.annual}</button><button type="button" data-chart-mode="night" aria-pressed="false">{t.selectedNight}</button></nav>
       <div class="visibility-chart__plot" data-chart-plot></div>
       <p class="visibility-chart__selection"><span></span> <b data-chart-week></b></p>
     </dialog>
   </section>
 </Layout>
 
-<script define:vars={{ t, lang, showPending }}>
+<script define:vars={{ t, lang, referenceYear, showPending }}>
   const selector = document.querySelector('#visibility-week');
   const grid = document.querySelector('[data-visibility-grid]');
   const cards = [...document.querySelectorAll('[data-visibility-card]')];
   const filterButtons = [...document.querySelectorAll('[data-visibility-filter]')];
+  const layoutButtons = [...document.querySelectorAll('[data-visibility-layout]')];
+  const layoutControls = document.querySelector('[data-visibility-layout-controls]');
+  const chartLabels = [...document.querySelectorAll('.visibility-card__chart-label')];
+  const visibleCount = document.querySelector('[data-visible-count]');
+  const visibleLabel = document.querySelector('[data-visible-label]');
+  const emptyMessage = document.querySelector('[data-visibility-empty]');
   const pendingExplorer = document.querySelector('[data-pending-explorer]');
   const pendingButtons = [...document.querySelectorAll('[data-pending-select]')];
   const chartDialog = document.querySelector('[data-visibility-chart]');
+  const chartTabs = document.querySelector('[data-chart-tabs]');
+  const chartModeButtons = [...document.querySelectorAll('[data-chart-mode]')];
+  let currentChartSource;
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
+  const isoJanuaryFourth = new Date(Date.UTC(referenceYear, 0, 4));
+  const isoFirstMonday = new Date(isoJanuaryFourth.getTime() - ((isoJanuaryFourth.getUTCDay() || 7) - 1) * 86400000);
   const requestedView = new URL(window.location.href).searchParams.get('view');
   let currentView = showPending && requestedView === 'pending' ? 'pending' : 'photographed';
+  const requestedLayout = new URL(window.location.href).searchParams.get('layout');
+  let currentLayout = ['photos', 'list'].includes(requestedLayout) ? requestedLayout : 'photos';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
   if (Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= selector.options.length) {
     selector.value = String(requestedWeek);
@@ -132,24 +159,28 @@ const weekRange = (week: number) => {
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('week', String(week));
     currentUrl.searchParams.set('view', currentView);
+    currentUrl.searchParams.set('layout', currentLayout);
     window.history.replaceState(null, '', currentUrl);
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
       const photoUrl = new URL(link.href);
       photoUrl.searchParams.set('from', 'visibility');
       photoUrl.searchParams.set('week', String(week));
       photoUrl.searchParams.set('view', currentView);
+      photoUrl.searchParams.set('layout', currentLayout);
       link.href = `${photoUrl.pathname}${photoUrl.search}`;
     });
     document.querySelectorAll('.language-selector a').forEach((link) => {
       const languageUrl = new URL(link.href);
       languageUrl.searchParams.set('week', String(week));
       languageUrl.searchParams.set('view', currentView);
+      languageUrl.searchParams.set('layout', currentLayout);
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
-      card.hidden = card.dataset.status !== currentView;
       const value = JSON.parse(card.dataset.weeks)[week - 1];
       const [altitude, bestTimeUtc, hours30, qualityCode, representativeNight] = value;
+      card.dataset.selected = String(Boolean(qualityCode));
+      card.hidden = card.dataset.status !== currentView || !qualityCode;
       card.dataset.altitude = altitude;
       card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
@@ -160,25 +191,44 @@ const weekRange = (week: number) => {
       quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
       quality.className = qualityCode ? `quality quality--${qualityCode}` : '';
     });
-    grid.hidden = showPending && currentView === 'pending';
+    grid.hidden = currentView === 'pending';
+    grid.classList.toggle('visibility-grid--list', currentLayout === 'list');
+    chartLabels.forEach((label) => { label.hidden = currentLayout === 'list'; });
+    layoutControls.hidden = currentView !== 'photographed';
+    layoutButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityLayout === currentLayout)));
     if (pendingExplorer) pendingExplorer.hidden = currentView !== 'pending';
     pendingButtons.forEach((button) => {
       const [altitude, , , quality] = JSON.parse(button.dataset.weeks)[week - 1];
       button.dataset.altitude = altitude;
+      button.hidden = !quality;
       button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}°${quality ? ` · ${t.qualities[quality]}` : ''}`;
     });
     pendingButtons.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
-    const pendingList = document.querySelector('[data-pending-list]');
-    if (pendingList) pendingList.append(...pendingButtons);
-    filterButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityFilter === currentView)));
+    document.querySelector('[data-pending-list]')?.append(...pendingButtons);
+    const counts = Object.fromEntries(['photographed', 'pending'].map((status) => [status, cards.filter((card) => card.dataset.status === status && card.dataset.selected === 'true').length]));
+    filterButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.visibilityFilter === currentView));
+      button.querySelector('span').textContent = String(counts[button.dataset.visibilityFilter]);
+    });
+    const currentCount = counts[currentView];
+    visibleCount.textContent = String(currentCount);
+    visibleLabel.textContent = currentCount === 1 ? t.selectedObject : t.selectedObjects;
+    emptyMessage.hidden = currentCount !== 0;
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);
-    const selectedPending = pendingButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? pendingButtons[0];
+    const visiblePendingButtons = pendingButtons.filter((button) => !button.hidden);
+    const selectedPending = visiblePendingButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? visiblePendingButtons[0];
+    const pendingChart = document.querySelector('.pending-explorer__chart');
+    if (pendingChart) pendingChart.hidden = !selectedPending;
     if (selectedPending) selectPending(selectedPending);
   };
   selector?.addEventListener('change', update);
   filterButtons.forEach((button) => button.addEventListener('click', () => {
     currentView = button.dataset.visibilityFilter;
+    update();
+  }));
+  layoutButtons.forEach((button) => button.addEventListener('click', () => {
+    currentLayout = button.dataset.visibilityLayout;
     update();
   }));
   document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
@@ -189,9 +239,8 @@ const weekRange = (week: number) => {
     const values = JSON.parse(source.dataset.chartValues);
     const selected = Number(selector.value) - 1;
     const weekData = JSON.parse(source.dataset.weeks)[selected];
-    const [maxAltitude, bestTimeUtc, , , representativeNight] = weekData;
-    const bestTime = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
-    const maximumDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short' }).format(new Date(`${representativeNight}T12:00:00Z`));
+    const middleDate = new Date(isoFirstMonday.getTime() + (selected * 7 + 3) * 86400000);
+    const maximumDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(middleDate);
     const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 62;
     const x = (index) => left + index * (width - left - right) / (values.length - 1);
     const y = (altitude) => top + (90 - Math.max(-60, Math.min(90, altitude))) * (height - top - bottom) / 150;
@@ -199,7 +248,7 @@ const weekRange = (week: number) => {
     const gridLines = [-60, -30, 0, 20, 30, 60, 90].map((altitude) => `<g><line x1="${left}" y1="${y(altitude)}" x2="${width-right}" y2="${y(altitude)}"/><text x="${left-9}" y="${y(altitude)+4}" text-anchor="end">${altitude}°</text></g>`).join('');
     const weekLabels = [1, 13, 26, 39, values.length].map((week) => `<text x="${x(week-1)}" y="${height-14}" text-anchor="middle">${week}</text>`).join('');
     title.textContent = source.dataset.objectName;
-    weekLabel.textContent = `${t.selectedWeek}: ${selected + 1} · ${bestTime} · ${maxAltitude.toLocaleString(locale)}°`;
+    weekLabel.textContent = `${t.selectedWeek}: ${selected + 1} · 00:00 UTC · ${values[selected].toLocaleString(locale)}°`;
     plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.annualChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/><polyline class="chart-line" points="${points}"/><line class="chart-selected" x1="${x(selected)}" y1="${top}" x2="${x(selected)}" y2="${height-bottom}"/><circle class="chart-point" cx="${x(selected)}" cy="${y(values[selected])}" r="6"/><text class="chart-maximum-date" x="${x(selected)}" y="${height-bottom+20}" text-anchor="middle">${maximumDate}</text><g class="chart-weeks">${weekLabels}</g></svg>`;
   };
   const selectPending = (button) => {
@@ -207,9 +256,69 @@ const weekRange = (week: number) => {
     renderChart(button, document.querySelector('[data-pending-chart-plot]'), document.querySelector('[data-pending-chart-title]'), document.querySelector('[data-pending-chart-week]'));
   };
   const drawChart = (card) => {
+    currentChartSource = card;
+    chartTabs.hidden = card.dataset.status !== 'photographed';
+    chartModeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.chartMode === 'annual')));
+    chartDialog.querySelector('[data-chart-kicker]').textContent = t.annualChart;
     renderChart(card, chartDialog.querySelector('[data-chart-plot]'), chartDialog.querySelector('[data-chart-title]'), chartDialog.querySelector('[data-chart-week]'));
     chartDialog.showModal();
   };
+  const normalizeDegrees = (value) => ((value % 360) + 360) % 360;
+  const altitudeAt = (date, raDeg, decDeg) => {
+    const days = date.getTime() / 86400000 + 2440587.5 - 2451545;
+    const hourAngle = normalizeDegrees(normalizeDegrees(280.46061837 + 360.98564736629 * days) + 1.5 - raDeg + 180) - 180;
+    const rad = Math.PI / 180, latitude = 41 * rad, declination = decDeg * rad, angle = hourAngle * rad;
+    return Math.asin(Math.sin(latitude) * Math.sin(declination) + Math.cos(latitude) * Math.cos(declination) * Math.cos(angle)) / rad;
+  };
+  const sunPosition = (date) => {
+    const days = date.getTime() / 86400000 + 2440587.5 - 2451545;
+    const meanLongitude = normalizeDegrees(280.46 + .9856474 * days);
+    const anomaly = normalizeDegrees(357.528 + .9856003 * days) * Math.PI / 180;
+    const longitude = normalizeDegrees(meanLongitude + 1.915 * Math.sin(anomaly) + .02 * Math.sin(2 * anomaly)) * Math.PI / 180;
+    const obliquity = (23.439 - .0000004 * days) * Math.PI / 180;
+    return { ra: normalizeDegrees(Math.atan2(Math.cos(obliquity) * Math.sin(longitude), Math.cos(longitude)) * 180 / Math.PI), dec: Math.asin(Math.sin(obliquity) * Math.sin(longitude)) * 180 / Math.PI };
+  };
+  const renderNightChart = (source) => {
+    const middleDate = new Date(isoFirstMonday.getTime() + ((Number(selector.value) - 1) * 7 + 3) * 86400000);
+    const date = middleDate.toISOString().slice(0, 10);
+    const dayStart = Date.parse(`${date}T12:00:00Z`), darkMinutes = [];
+    for (let time = dayStart; time < dayStart + 86400000; time += 60000) {
+      const instant = new Date(time), sun = sunPosition(instant);
+      if (altitudeAt(instant, sun.ra, sun.dec) <= -18) darkMinutes.push(time);
+    }
+    const darknessStart = darkMinutes[0], darknessEnd = darkMinutes[darkMinutes.length - 1];
+    const samples = [];
+    for (let time = darknessStart; time <= darknessEnd; time += 300000) {
+      const instant = new Date(time);
+      samples.push({ instant, altitude: altitudeAt(instant, Number(source.dataset.ra), Number(source.dataset.dec)) });
+    }
+    if (samples.at(-1).instant.getTime() !== darknessEnd) {
+      const instant = new Date(darknessEnd);
+      samples.push({ instant, altitude: altitudeAt(instant, Number(source.dataset.ra), Number(source.dataset.dec)) });
+    }
+    const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 62;
+    const x = (index) => left + index * (width - left - right) / Math.max(1, samples.length - 1);
+    const y = (altitude) => top + (90 - Math.max(-60, Math.min(90, altitude))) * (height - top - bottom) / 150;
+    const points = samples.map((sample, index) => `${x(index).toFixed(1)},${y(sample.altitude).toFixed(1)}`).join(' ');
+    const gridLines = [-60, -30, 0, 20, 30, 60, 90].map((altitude) => `<g><line x1="${left}" y1="${y(altitude)}" x2="${width-right}" y2="${y(altitude)}"/><text x="${left-9}" y="${y(altitude)+4}" text-anchor="end">${altitude}°</text></g>`).join('');
+    const labelIndexes = [0, .25, .5, .75, 1].map((part) => Math.round((samples.length - 1) * part));
+    const timeLabels = labelIndexes.map((index) => `<text x="${x(index)}" y="${height-14}" text-anchor="middle">${new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(samples[index].instant)}</text>`).join('');
+    const best = samples.reduce((current, sample) => sample.altitude > current.altitude ? sample : current);
+    const usefulHours = samples.filter((sample) => sample.altitude >= 30).length / 12;
+    chartDialog.querySelector('[data-chart-title]').textContent = source.dataset.objectName;
+    chartDialog.querySelector('[data-chart-plot]').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.nightChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-night-boundary" x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}"/><line class="chart-night-boundary" x1="${width-right}" y1="${top}" x2="${width-right}" y2="${height-bottom}"/><line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/><polyline class="chart-line" points="${points}"/><g class="chart-weeks">${timeLabels}</g></svg>`;
+    const bestTime = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(best.instant);
+    const timeFormat = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' });
+    chartDialog.querySelector('[data-chart-week]').textContent = `${date} · ${t.darkness}: ${timeFormat.format(new Date(darknessStart))}–${timeFormat.format(new Date(darknessEnd))} · ${t.maxAltitude}: ${best.altitude.toLocaleString(locale, { maximumFractionDigits: 1 })}° (${bestTime}) · ${usefulHours.toLocaleString(locale, { maximumFractionDigits: 1 })} h ${t.above} 30°`;
+  };
+  chartModeButtons.forEach((button) => button.addEventListener('click', () => {
+    if (!currentChartSource) return;
+    chartModeButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+    const nightMode = button.dataset.chartMode === 'night';
+    chartDialog.querySelector('[data-chart-kicker]').textContent = nightMode ? t.nightChart : t.annualChart;
+    if (nightMode) renderNightChart(currentChartSource);
+    else renderChart(currentChartSource, chartDialog.querySelector('[data-chart-plot]'), chartDialog.querySelector('[data-chart-title]'), chartDialog.querySelector('[data-chart-week]'));
+  }));
   pendingButtons.forEach((button) => button.addEventListener('click', () => selectPending(button)));
   document.querySelectorAll('[data-open-chart]').forEach((button) => button.addEventListener('click', () => drawChart(button.closest('[data-visibility-card]'))));
   document.querySelector('[data-close-chart]')?.addEventListener('click', () => chartDialog.close());
@@ -234,11 +343,17 @@ const weekRange = (week: number) => {
   .week-control__select { display: grid; gap: .18rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control button { width: 2.7rem; cursor: pointer; }
-  .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
+  .visibility-layout, .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
+  .visibility-layout { margin-left: auto; padding-left: .5rem; border-left: 1px solid var(--color-border); }
+  .visibility-layout::-webkit-scrollbar,
   .visibility-filters::-webkit-scrollbar { display: none; }
+  .visibility-layout button,
   .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
   .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
-  .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
+  .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
+  .visibility-results { margin: -.35rem 0 .8rem; color: var(--color-muted); font-size: .82rem; }
+  .visibility-results strong { color: var(--color-accent); font: 700 1rem var(--font-mono); }
+  .visibility-empty { padding: 1rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); color: var(--color-muted); text-align: center; }
   [hidden] { display: none !important; }
   .pending-explorer { grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr); gap: 1rem; }
   .pending-explorer:not([hidden]) { display: grid; }
@@ -281,12 +396,37 @@ const weekRange = (week: number) => {
   .visibility-card__actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .visibility-card__chart-link { display: inline-flex; align-items: center; gap: .45rem; padding: 0; border: 0; background: transparent; color: var(--color-text); cursor: pointer; font: 700 .82rem var(--font-sans); }
   .visibility-card__chart-link b { display: grid; width: 1.8rem; height: 1.8rem; place-items: center; border: 1px solid #55d9b3; border-radius: 50%; color: #78e8c7; font: 700 .78rem var(--font-mono); }
+  .visibility-grid--list { gap: .4rem; }
+  .visibility-grid--list .visibility-card { display: block; border-radius: .55rem; }
+  .visibility-grid--list .visibility-card__image { display: none; }
+  .visibility-grid--list .visibility-card__body { display: grid; grid-template-columns: minmax(11rem, 1.2fr) minmax(29rem, 2fr) auto; align-items: center; gap: .8rem; padding: .6rem .75rem; }
+  .visibility-grid--list .visibility-card__heading { align-items: center; }
+  .visibility-grid--list .visibility-card__heading p { font-size: .65rem; }
+  .visibility-grid--list .visibility-card h2 { font-size: 1rem; }
+  .visibility-grid--list .visibility-card__heading .visibility-card__alias { margin-top: .08rem; font-size: .72rem; }
+  .visibility-grid--list .visibility-card dl { grid-template-columns: repeat(4, minmax(6rem, 1fr)); gap: .35rem; margin: 0; }
+  .visibility-grid--list .visibility-card dl div { padding: .45rem .55rem; }
+  .visibility-grid--list .visibility-card dl .visibility-card__primary { grid-row: auto; }
+  .visibility-grid--list .visibility-card dt { font-size: .64rem; }
+  .visibility-grid--list .visibility-card dd,
+  .visibility-grid--list .visibility-card__primary dd { margin-top: .12rem; font-size: .82rem; }
+  .visibility-grid--list .visibility-card__actions { justify-content: end; min-width: 15rem; }
+  .visibility-grid--list .visibility-card__link,
+  .visibility-grid--list .visibility-card__chart-link { font-size: .75rem; white-space: nowrap; }
+  .visibility-grid--list .visibility-card__chart-label { display: none; }
+  @media (max-width: 1050px) {
+    .visibility-grid--list .visibility-card__body { grid-template-columns: minmax(11rem, 1fr) minmax(25rem, 2fr); }
+    .visibility-grid--list .visibility-card__actions { grid-column: 1 / -1; min-width: 0; }
+  }
   .visibility-chart { width: min(56rem, calc(100% - 2rem)); padding: 1.2rem; border: 1px solid var(--color-border); border-radius: .9rem; background: #090d14; color: var(--color-text); box-shadow: 0 2rem 6rem rgba(0,0,0,.7); }
   .visibility-chart::backdrop { background: rgba(2,5,10,.82); backdrop-filter: blur(4px); }
   .visibility-chart__header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
   .visibility-chart__header p { margin: 0 0 .15rem; color: #78e8c7; font: .72rem var(--font-mono); text-transform: uppercase; }
   .visibility-chart__header h2 { margin: 0; }
   .visibility-chart__header button { border: 0; background: transparent; color: var(--color-muted); cursor: pointer; font-size: 2rem; line-height: 1; }
+  .visibility-chart__tabs { display: flex; gap: .4rem; margin-top: .8rem; }
+  .visibility-chart__tabs button { padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font-weight: 700; }
+  .visibility-chart__tabs button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
   .visibility-chart__plot { margin-top: 1rem; overflow-x: auto; }
   .visibility-chart__plot svg { display: block; width: 100%; min-width: 34rem; }
   .visibility-chart__plot :global(.chart-grid line) { stroke: rgba(255,255,255,.1); }
@@ -294,12 +434,14 @@ const weekRange = (week: number) => {
   .visibility-chart__plot :global(.chart-threshold) { stroke: #e06a45; stroke-dasharray: 6 6; opacity: .75; }
   .visibility-chart__plot :global(.chart-line) { fill: none; stroke: #55d9b3; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
   .visibility-chart__plot :global(.chart-selected) { stroke: #fff; stroke-dasharray: 4 4; opacity: .7; }
+  .visibility-chart__plot :global(.chart-night-boundary) { stroke: #e4c66a; stroke-dasharray: 4 4; opacity: .9; }
   .visibility-chart__plot :global(.chart-point) { fill: #e06a45; stroke: #fff; stroke-width: 2; }
   .visibility-chart__plot :global(.chart-maximum-date) { fill: #e4c66a; font: 700 11px var(--font-mono); }
   .visibility-chart__selection { display: flex; align-items: center; gap: .5rem; margin: .4rem 0 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .78rem; }
   .visibility-chart__selection span { width: .7rem; height: .7rem; border-radius: 50%; background: var(--color-accent); }
   @media (max-width: 700px) {
     .visibility-planner__meta, .visibility-toolbar { align-items: stretch; flex-direction: column; }
+    .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
     .visibility-planner__location { text-align: left; }
     .week-control { align-items: stretch; flex-direction: column; }
     .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
@@ -309,5 +451,8 @@ const weekRange = (week: number) => {
     .visibility-card dl { grid-template-columns: 1fr 1fr; }
     .visibility-card dl .visibility-card__primary { grid-row: auto; }
     .pending-explorer:not([hidden]) { grid-template-columns: 1fr; }
+    .visibility-grid--list .visibility-card__body { display: block; }
+    .visibility-grid--list .visibility-card dl { grid-template-columns: 1fr 1fr; margin: .6rem 0; }
+    .visibility-grid--list .visibility-card__actions { justify-content: space-between; }
   }
 </style>

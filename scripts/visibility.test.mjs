@@ -67,9 +67,10 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
   assert.equal(variablePhotos, 2);
 });
 
-test('a regular year produces 365 daily and 52 weekly samples', () => {
+test('the reference year produces 365 daily and 53 ISO weekly samples', () => {
   const daily = dailySamples({ year: 2026, latitudeDeg: 41, longitudeDeg: 1.5, raDeg: 305.557091, decDeg: 40.256679 });
   assert.equal(daily.length, 365);
-  assert.equal(weeklySamples(daily).length, 52);
+  assert.equal(weeklySamples(daily).length, 53);
+  assert.equal(weeklySamples(daily)[16].date, '2026-04-23');
   assert.equal(daily.filter(({ altitudeDeg }) => altitudeDeg > 30).length, 167);
 });

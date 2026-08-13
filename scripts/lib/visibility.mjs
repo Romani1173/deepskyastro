@@ -49,11 +49,19 @@ export function dailySamples({ year, latitudeDeg, longitudeDeg, raDeg, decDeg })
 }
 
 export function weeklySamples(daily) {
-  return Array.from({ length: 52 }, (_, index) => {
-    const group = daily.slice(index * 7, index * 7 + 7);
-    const middle = group[Math.floor(group.length / 2)];
-    return { week: index + 1, date: middle.date, altitudeDeg: Number(middle.altitudeDeg.toFixed(1)) };
-  });
+  const year = Number(daily[0].date.slice(0, 4));
+  const byDate = new Map(daily.map((sample) => [sample.date, sample]));
+  const januaryFourth = new Date(Date.UTC(year, 0, 4));
+  const firstMonday = new Date(januaryFourth.getTime() - ((januaryFourth.getUTCDay() || 7) - 1) * 86400000);
+  const weeks = [];
+  for (let index = 0; index < 53; index += 1) {
+    const thursday = new Date(firstMonday.getTime() + (index * 7 + 3) * 86400000);
+    if (thursday.getUTCFullYear() !== year) break;
+    const date = thursday.toISOString().slice(0, 10);
+    const sample = byDate.get(date);
+    weeks.push({ week: index + 1, date, altitudeDeg: Number(sample.altitudeDeg.toFixed(1)) });
+  }
+  return weeks;
 }
 
 export function nightMetrics({ date, latitudeDeg, longitudeDeg, raDeg, decDeg, twilightDeg = -18, sampleMinutes = 10, thresholdsDeg = [30] }) {

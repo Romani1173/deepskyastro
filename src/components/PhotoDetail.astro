@@ -125,7 +125,7 @@ const structuredData = {
 	const photoParams = new URL(window.location.href).searchParams;
 	if (photoBackLink && photoParams.get('from') === 'visibility') {
 		const returnUrl = new URL(photoBackLink.dataset.visibilityHref!, window.location.origin);
-		for (const key of ['week', 'view']) {
+		for (const key of ['week', 'view', 'layout']) {
 			const value = photoParams.get(key);
 			if (value) returnUrl.searchParams.set(key, value);
 		}
