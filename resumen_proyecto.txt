@@ -137,7 +137,7 @@ export default defineConfig({
 
 === DEPENDENCIAS (PACKAGE.JSON) ===
 {
-  "name": "porfolio-astrofoto",
+  "name": "deepskyastro",
   "type": "module",
   "version": "0.0.1",
   "engines": {

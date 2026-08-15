@@ -12,7 +12,7 @@
 
 ## Publicación y estado actual
 
-- La web pública activa se publica con Cloudflare Pages en `https://porfolio-astrofoto.pages.dev`.
+- La web pública activa se publica con Cloudflare Pages en `https://deepskyastro.pages.dev`.
 - GitHub Pages está también configurado como alternativa, pero el enlace público de referencia es el de Cloudflare Pages.
 - La página de Visibilidad se publica mostrando únicamente los objetos ya fotografiados. Durante el desarrollo local en `localhost`, la misma página añade la planificación privada: objetivos pendientes y sus alias. Nunca publicar, enlazar ni generar en la web pública los pendientes, sus alias o datos de planificación.
 - Las fichas permiten ampliar la imagen principal y las adicionales al pulsarlas; el visor se cierra con la `×`, al tocar fuera o con `Esc`.
