@@ -8,7 +8,7 @@ const isGitHubPages = process.env.GITHUB_ACTIONS === 'true';
 
 // https://astro.build/config
 export default defineConfig({
-	site: isGitHubPages ? 'https://romani1173.github.io' : 'https://deepskyastro.pages.dev',
+	site: isGitHubPages ? 'https://romani1173.github.io' : 'https://deepskyastro.com',
 	base: isGitHubPages ? '/deepskyastro' : '/',
 	integrations: [mdx(), sitemap()],
 	redirects: {

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://deepskyastro.pages.dev/sitemap-index.xml
+Sitemap: https://deepskyastro.com/sitemap-index.xml
