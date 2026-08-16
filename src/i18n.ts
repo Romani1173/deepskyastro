@@ -18,6 +18,9 @@ export const categories: Array<{
 export const copy = {
 	ca: {
 		siteDescription: 'Un recull personal de fotografies de cel profund.',
+		homeSeoTitle: 'Astrofotografia de cel profund',
+		homeSeoDescription: 'Galeria personal d’astrofotografia de Juan José Romero: nebuloses, galàxies, cúmuls estel·lars i el Sol, amb dades de captura, equip i processament.',
+		homeIntro: 'Una mirada al cel profund a través de l’astrofotografia de Juan José Romero.',
 		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', myEquipment: 'El meu equip', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
 		explore: 'Explora la galeria', categoryNav: 'Filtra per categoria', search: 'Cerca a la galeria', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Ordena', recent: 'Data: recents', name: 'Nom: A–Z', object: 'objecte', objects: 'objectes', photographedObject: 'objecte fotografiat', photographedObjects: 'objectes fotografiats',
@@ -30,6 +33,9 @@ export const copy = {
 	},
 	es: {
 		siteDescription: 'Una colección personal de fotografías de cielo profundo.',
+		homeSeoTitle: 'Astrofotografía de cielo profundo',
+		homeSeoDescription: 'Galería personal de astrofotografía de Juan José Romero: nebulosas, galaxias, cúmulos estelares y el Sol, con datos de captura, equipo y procesado.',
+		homeIntro: 'Una mirada al cielo profundo a través de la astrofotografía de Juan José Romero.',
 		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', myEquipment: 'Mi equipo', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
 		explore: 'Explora la galería', categoryNav: 'Filtrar por categoría', search: 'Buscar en la galería', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Ordenar', recent: 'Fecha: recientes', name: 'Nombre: A–Z', object: 'objeto', objects: 'objetos', photographedObject: 'objeto fotografiado', photographedObjects: 'objetos fotografiados',
@@ -42,6 +48,9 @@ export const copy = {
 	},
 	en: {
 		siteDescription: 'A personal collection of deep-sky photographs.',
+		homeSeoTitle: 'Deep-Sky Astrophotography',
+		homeSeoDescription: 'Juan José Romero’s personal astrophotography gallery: nebulae, galaxies, star clusters and the Sun, with capture, equipment and processing details.',
+		homeIntro: 'A personal view of the deep sky through the astrophotography of Juan José Romero.',
 		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', myEquipment: 'My equipment', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
 		explore: 'Explore the gallery', categoryNav: 'Filter by category', search: 'Search the gallery', searchPlaceholder: 'M31, NGC2237, …',
 		order: 'Sort', recent: 'Date: newest', name: 'Name: A–Z', object: 'object', objects: 'objects', photographedObject: 'photographed object', photographedObjects: 'photographed objects',

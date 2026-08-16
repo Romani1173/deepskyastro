@@ -19,7 +19,7 @@
 - La galería permite buscar **solo por el campo `objecte`** y ordenar por fecha reciente o por nombre natural (`M2` antes que `M10`, `NGC2237` antes que `NGC6960`). Esta ordenación está disponible también en cada categoría.
 - Los nombres de catálogo NGC se escriben siempre unidos (`NGC2237`) en títulos, descripciones, comentarios, metadatos y textos de interfaz; no se admite ningún espacio tras el prefijo.
 - El diseño de la galería y las categorías está aprobado en este punto; no cambiarlo de forma amplia sin petición expresa.
-- La portada usa `public/imagenes/portada.webp`, con estrellas visibles, la firma blanca `Juan José Romero` en Bradley Hand abajo a la izquierda y el mensaje principal desplazado 10 mm hacia arriba. El acceso “Explora la galeria” debe permanecer abajo a la derecha.
+- La portada usa `public/imagenes/portada.webp`, con estrellas visibles y el mensaje principal desplazado 10 mm hacia arriba. La autoría de Juan José Romero aparece integrada en el subtítulo con la tipografía manuscrita de la antigua firma; no mostrar una firma independiente abajo a la izquierda. En escritorio, los cuatro accesos inferiores forman una fila compacta a la derecha, con los tres secundarios más discretos y “Explora la galeria” destacado; en móvil se apilan verticalmente.
 
 ## Idiomas
 

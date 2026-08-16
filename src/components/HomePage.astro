@@ -7,14 +7,29 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
+const homeUrl = new URL(lang === 'ca' ? base : `${base}${lang}/`, Astro.site).href;
+const authorName = 'Juan José Romero';
+const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: 'El meu Cel Profund',
+	url: homeUrl,
+	description: t.homeSeoDescription,
+	inLanguage: lang,
+	author: {
+		'@type': 'Person',
+		name: 'Juan José Romero',
+	},
+};
 ---
 
-<Layout title={lang === 'ca' ? 'Inici' : t.home} hero lang={lang} languageLinks={languageLinks.home(base)}>
+<Layout title={t.homeSeoTitle} description={t.homeSeoDescription} image={withBase('imagenes/portada.webp', base)} structuredData={structuredData} hero lang={lang} languageLinks={languageLinks.home(base)}>
 	<section class="welcome-hero" style={`--hero-image: url('${withBase('imagenes/portada.webp', base)}')`} aria-labelledby="welcome-title">
 		<div class="welcome-hero__content">
 			<div class="welcome-hero__message">
 				<h1 id="welcome-title">El meu Cel Profund</h1>
-				<p class="welcome-hero__description">{t.siteDescription}</p>
+				<p class="welcome-hero__description">{introBeforeAuthor}<span class="welcome-hero__author">{authorName}</span>{introAfterAuthor}</p>
 			</div>
 			<div class="welcome-hero__actions">
 				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={equipmentHref(lang, base)}>{t.myEquipment} <span aria-hidden="true">＋</span></a>
@@ -23,6 +38,5 @@ const t = copy[lang];
 				<a class="welcome-hero__cta" href={galleryHref(lang, base)}>{t.explore} <span aria-hidden="true">→</span></a>
 			</div>
 		</div>
-		<p class="welcome-hero__signature">Juan José Romero</p>
 	</section>
 </Layout>

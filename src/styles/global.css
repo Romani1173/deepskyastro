@@ -67,12 +67,12 @@ main { padding: 1rem 0 4rem; }
 .welcome-hero__content { width: min(800px, 100%); }
 .welcome-hero__message { transform: translateY(-10mm); }
 .welcome-hero h1 { margin: 0; color: var(--color-text); font-size: clamp(3rem, 9vw, 6.4rem); letter-spacing: -.06em; line-height: .95; white-space: nowrap; }
+.welcome-hero__author { display: inline-block; margin-inline-start: .3em; color: rgba(255, 255, 255, .96); font-family: 'Bradley Hand', 'Bradley Hand ITC', cursive; font-size: 1.15em; line-height: 1; white-space: nowrap; text-shadow: 0 2px 8px rgba(0, 0, 0, .55); }
 .welcome-hero__description { max-width: 34rem; margin: 2rem auto 0; color: var(--color-accent-soft); font-size: clamp(1.15rem, 2.5vw, 1.5rem); }
-.welcome-hero__actions { position: absolute; right: clamp(1.25rem, 4vw, 4rem); bottom: clamp(1.25rem, 4vw, 3rem); display: flex; flex-direction: column; gap: .55rem; align-items: flex-end; }
-.welcome-hero__cta { display: inline-flex; gap: .45rem; align-items: center; padding: .55rem .8rem; border: 1px solid rgba(237, 241, 247, .38); border-radius: .4rem; background: rgba(8, 11, 18, .35); color: #d9e0ee; font-size: .85rem; text-decoration: none; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+.welcome-hero__actions { position: absolute; right: clamp(1.25rem, 4vw, 4rem); bottom: clamp(1.25rem, 4vw, 3rem); display: flex; flex-direction: row; gap: .55rem; align-items: center; }
+.welcome-hero__cta { display: inline-flex; gap: .5rem; align-items: center; padding: .68rem 1rem; border: 1px solid rgba(237, 241, 247, .46); border-radius: .4rem; background: rgba(8, 11, 18, .5); color: #eef2f8; font-size: .93rem; font-weight: 600; text-decoration: none; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
 .welcome-hero__cta:hover { background: rgba(8, 11, 18, .72); color: var(--color-text); opacity: 1; transform: translateY(-2px); }
-.welcome-hero__cta--equipment { border-color: rgba(237, 241, 247, .38); color: #d9e0ee; }
-.welcome-hero__signature { position: absolute; bottom: clamp(1.2rem, 4vw, 2.8rem); left: clamp(1.25rem, 4vw, 4rem); margin: 0; color: rgba(255, 255, 255, .92); font-family: 'Bradley Hand', 'Bradley Hand ITC', cursive; font-size: clamp(1.2rem, 2.7vw, 1.95rem); line-height: 1; text-shadow: 0 2px 10px rgba(0, 0, 0, .7); }
+.welcome-hero__cta--equipment { gap: .35rem; padding: .44rem .65rem; border-color: rgba(237, 241, 247, .2); background: rgba(8, 11, 18, .2); color: #c9d1df; font-size: .76rem; font-weight: 400; }
 .intro { max-width: 760px; margin: .5rem auto 2.25rem; text-align: center; color: var(--color-muted); }
 .intro strong { color: var(--color-accent); }
 .catalog-controls { margin: 0 0 .85rem; padding: .75rem 1rem .8rem; border: 1px solid var(--color-border); border-radius: .7rem; background: rgba(17, 24, 39, .78); box-shadow: 0 10px 28px rgba(0, 0, 0, .16); }
@@ -377,8 +377,7 @@ main { padding: 1rem 0 4rem; }
 	.language-selector-shell--hero { top: .75rem; right: .75rem; padding: 0; }
 	.language-selector a { gap: .22rem; padding: .3rem .4rem; font-size: .62rem; }
 	.welcome-hero h1 { white-space: normal; }
-	.welcome-hero__actions { right: 1rem; bottom: 1rem; }
-	.welcome-hero__signature { bottom: 1.2rem; left: 1rem; }
+	.welcome-hero__actions { right: 1rem; bottom: 1rem; flex-direction: column; align-items: flex-end; }
 	.equipment-page { padding-top: .25rem; }
 	.equipment-heading__title { align-items: flex-start; flex-direction: column; gap: .7rem; }
 	.equipment-instruction { font-size: .7rem; }
