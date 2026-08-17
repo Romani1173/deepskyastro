@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { access, readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { altitudeDeg, dailySamples, nightMetrics, sunEquatorial, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
+import { altitudeDeg, dailySamples, nightMetrics, sunEquatorial, thresholdPeriods, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
 test('an object on the meridian reaches its expected culmination altitude', () => {
   const date = new Date('2026-01-01T00:00:00Z');
@@ -73,4 +73,15 @@ test('the reference year produces 365 daily and 53 ISO weekly samples', () => {
   assert.equal(weeklySamples(daily).length, 53);
   assert.equal(weeklySamples(daily)[16].date, '2026-04-23');
   assert.equal(daily.filter(({ altitudeDeg }) => altitudeDeg > 30).length, 167);
+});
+
+test('threshold periods join an observing season across the year boundary', () => {
+  const periods = thresholdPeriods([
+    { date: '2026-01-01', altitudeDeg: 31 },
+    { date: '2026-01-02', altitudeDeg: 29 },
+    { date: '2026-01-03', altitudeDeg: 29 },
+    { date: '2026-01-04', altitudeDeg: 31 },
+    { date: '2026-01-05', altitudeDeg: 32 },
+  ], 30);
+  assert.deepEqual(periods, [{ start: '2026-01-04', end: '2026-01-01', wrapsYear: true }]);
 });

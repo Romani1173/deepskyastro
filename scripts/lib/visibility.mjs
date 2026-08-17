@@ -64,6 +64,25 @@ export function weeklySamples(daily) {
   return weeks;
 }
 
+export function thresholdPeriods(daily, thresholdDeg) {
+  const periods = [];
+  let start = null;
+  for (let index = 0; index < daily.length; index += 1) {
+    const sample = daily[index];
+    if (sample.altitudeDeg > thresholdDeg && start === null) start = sample.date;
+    if (sample.altitudeDeg <= thresholdDeg && start !== null) {
+      const previous = daily[index - 1];
+      periods.push({ start, end: previous.date });
+      start = null;
+    }
+  }
+  if (start !== null) periods.push({ start, end: daily.at(-1).date });
+  if (periods.length > 1 && periods[0].start === daily[0].date && periods.at(-1).end === daily.at(-1).date) {
+    return [{ start: periods.at(-1).start, end: periods[0].end, wrapsYear: true }, ...periods.slice(1, -1)];
+  }
+  return periods;
+}
+
 export function nightMetrics({ date, latitudeDeg, longitudeDeg, raDeg, decDeg, twilightDeg = -18, sampleMinutes = 10, thresholdsDeg = [30] }) {
   const start = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12);
   const stepMs = sampleMinutes * 60000;

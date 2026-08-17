@@ -4,6 +4,7 @@ import type { Lang } from '../i18n';
 import { copy, localeFor, photoHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { photoTechnicalText } from '../technicalTranslations';
+import visibility from '../data/visibility.generated.json';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang?: Lang; }
 const { foto, lang = 'ca' } = Astro.props;
@@ -15,6 +16,11 @@ const hasProcess = foto.data.imatges_addicionals.some((imatge) => imatge.tipus =
 const hasVisibility = Boolean(foto.data.visibilitat);
 const processImage = foto.data.imatges_addicionals.find((imatge) => imatge.tipus === 'process');
 const base = import.meta.env.BASE_URL;
+const visibilityObject = foto.data.objecte_astronomic ? visibility.objects[foto.data.objecte_astronomic as keyof typeof visibility.objects] : undefined;
+const periodDate = new Intl.DateTimeFormat(localeFor(lang), { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
+	.map(({ start, end }) => `${periodDate.format(new Date(`${start}T00:00:00Z`))} – ${periodDate.format(new Date(`${end}T00:00:00Z`))}`)
+	.join(', ');
 ---
 
 <article class="photo-card">
@@ -29,6 +35,9 @@ const base = import.meta.env.BASE_URL;
 	</a>
 	{(hasProcess || hasVisibility) && <span class="photo-card__features">
 		{processImage && <button class="photo-feature-badge photo-feature-badge--process" type="button" aria-label={`${t.openDirect}: ${t.processIndicator} — ${text.objecte}`} data-feature-preview data-preview-src={withBase(`imagenes/cielo-profundo/${processImage.fitxer}`, base)} data-preview-alt={`${t.processIndicator}: ${text.objecte}`} data-preview-title={`${t.processIndicator} — ${text.objecte}`}>P</button>}
-		{foto.data.visibilitat && <button class="photo-feature-badge photo-feature-badge--visibility" type="button" aria-label={`${t.openDirect}: ${t.visibilityIndicator} — ${text.objecte}`} data-feature-preview data-preview-src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} data-preview-alt={`${t.visibilityIndicator}: ${text.objecte}`} data-preview-title={`${t.visibilityIndicator} — ${text.objecte}`}>V</button>}
+		{foto.data.visibilitat && visibilityPeriod && <span class="context-tooltip context-tooltip--feature">
+			<button class="photo-feature-badge photo-feature-badge--visibility" type="button" aria-label={`${t.openDirect}: ${t.visibilityIndicator} — ${text.objecte}`} aria-describedby={`visibility-tip-${foto.id}`} data-feature-preview data-preview-src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} data-preview-alt={`${t.visibilityIndicator}: ${text.objecte}`} data-preview-title={`${t.visibilityIndicator} — ${text.objecte}`}>V</button>
+			<span class="context-tooltip__bubble" id={`visibility-tip-${foto.id}`} role="tooltip">{t.visibilityTooltip(visibilityPeriod)}</span>
+		</span>}
 	</span>}
 </article>

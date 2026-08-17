@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { dailySamples, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
+import { dailySamples, thresholdPeriods, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async (path) => JSON.parse(await readFile(resolve(root, path), 'utf8'));
@@ -23,6 +23,7 @@ const generatedObjects = Object.fromEntries(objects.map((object) => {
     raDeg: object.raDeg,
     decDeg: object.decDeg,
     daysAboveThreshold: daily.filter(({ altitudeDeg }) => altitudeDeg > observatory.thresholdDeg).length,
+    aboveThresholdPeriods: thresholdPeriods(daily, observatory.thresholdDeg),
     weeks: weeklySamples(daily),
     nightWeeks: weeklyNightSamples({
       year: observatory.referenceYear, latitudeDeg: observatory.latitudeDeg, longitudeDeg: observatory.longitudeDeg,
