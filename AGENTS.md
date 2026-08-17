@@ -54,6 +54,10 @@
 - `imatges_addicionals` es opcional: incluir únicamente las imágenes que existan físicamente.
 - Antes de generar o modificar una ficha, revisar los archivos reales en `public/imagenes/`; nunca inventar nombres de imagen.
 
+## Objetivos pendientes de Visibilidad
+
+- La skill local `.codex/skills/anadir-pendientes-visibilidad` añade o actualiza objetivos pendientes, nombres comunes multilingües y alias de catálogo. Usarla siempre que se soliciten cambios en la planificación privada de Visibilidad.
+
 ## Imágenes adicionales
 
 - Mantener este orden: `starless`, `crop`, `fov`, `annotated`, `process`, `other`.

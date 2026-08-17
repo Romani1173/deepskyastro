@@ -1031,6 +1031,24 @@
     "status": "photographed"
   },
   {
+    "id": "pn-g0803-104",
+    "catalogName": "PN G080.3-10.4",
+    "aliases": [
+      "MWP 1",
+      "PK 080-10 1"
+    ],
+    "commonNames": {
+      "ca": "Nebulosa de Matusalem",
+      "es": "Nebulosa de Matusalén",
+      "en": "Methuselah Nebula"
+    },
+    "raDeg": 319.28450741,
+    "decDeg": 34.20761555,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "sh2-86",
     "catalogName": "Sh2-86",
     "commonNames": {
@@ -1043,6 +1061,24 @@
     ],
     "raDeg": 295.8,
     "decDeg": 23.25,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
+    "id": "sh2-91",
+    "catalogName": "Sh2-91",
+    "aliases": [
+      "LBN 064.22+04.16",
+      "LBN 147"
+    ],
+    "commonNames": {
+      "ca": "Nebulosa del Petit Vel",
+      "es": "Nebulosa del Pequeño Velo",
+      "en": "Little Veil Nebula"
+    },
+    "raDeg": 293.9,
+    "decDeg": 29.6,
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"

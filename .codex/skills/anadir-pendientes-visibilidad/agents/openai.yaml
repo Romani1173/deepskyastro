@@ -1,0 +1,4 @@
+interface:
+  display_name: "Añadir pendientes de visibilidad"
+  short_description: "Añade objetivos pendientes y sus alias"
+  default_prompt: "Usa $anadir-pendientes-visibilidad para añadir nuevos objetivos pendientes a Visibilidad."
