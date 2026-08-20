@@ -33,6 +33,7 @@ const nav = [
 	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner },
 	{ href: articlesHref(lang, base), label: copy[lang].articles },
 ];
+const isCategoryPage = /\/(?:categoria|category)\//.test(currentPath);
 const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', en: 'Main navigation' }[lang];
 ---
 
@@ -67,7 +68,7 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		{!minimal && !hero && <header class:list={{ 'site-header': true, 'site-shell': true, 'site-header--compact': hero, 'site-header--focused': focused }}>
 			{!focused && (hero ? <a class="site-brand" href={rootHref}>{SITE_TITLE}</a> : <><h1 class="site-title"><a href={homeHref(lang, base)}>{SITE_TITLE}</a></h1><p class="site-tagline">{copy[lang].siteDescription}</p></>)}
 			{!hero && <nav class="site-nav" aria-label={mainNavLabel}>
-				{nav.map((item) => <a href={item.href} aria-current={currentPath === decodeURIComponent(item.href) ? 'page' : undefined}>{item.label}</a>)}
+				{nav.map((item) => <a href={item.href} aria-current={currentPath === decodeURIComponent(item.href) || (item.href === galleryHref(lang, base) && isCategoryPage) ? 'page' : undefined}>{item.label}</a>)}
 			</nav>}
 			{focused && <LanguageSelector lang={lang} links={languageLinks} />}
 		</header>}

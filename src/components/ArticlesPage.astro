@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { homeHref, languageLinks, localeFor, withBase } from '../i18n';
+import { languageLinks, localeFor, withBase } from '../i18n';
 
 interface Props {
 	lang: Lang;
@@ -33,7 +33,7 @@ const localizedText = (article: CollectionEntry<'articulos'>) => {
 };
 ---
 
-<Layout title={labels.title} description={labels.description} minimal lang={lang} languageLinks={languageLinks.articles(base)} backLink={{ href: homeHref(lang, base), label: labels.backHome }}>
+<Layout title={labels.title} description={labels.description} focused lang={lang} languageLinks={languageLinks.articles(base)}>
 	<section class="articles-index">
 		<header class="page-heading">
 			<h1>{labels.title}</h1>

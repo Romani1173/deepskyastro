@@ -36,6 +36,61 @@ export function sunAltitudeDeg({ date, latitudeDeg, longitudeDeg }) {
   return altitudeDeg({ date, latitudeDeg, longitudeDeg, ...sunEquatorial(date) });
 }
 
+export function moonEquatorial(date) {
+  const days = julianDate(date) - 2451543.5;
+  const node = normalizeDegrees(125.1228 - 0.0529538083 * days) * DEG;
+  const inclination = 5.1454 * DEG;
+  const periapsis = normalizeDegrees(318.0634 + 0.1643573223 * days) * DEG;
+  const eccentricity = 0.0549;
+  const meanAnomalyDeg = normalizeDegrees(115.3654 + 13.0649929509 * days);
+  const meanAnomaly = meanAnomalyDeg * DEG;
+  const eccentricAnomaly = meanAnomaly + eccentricity * Math.sin(meanAnomaly) * (1 + eccentricity * Math.cos(meanAnomaly));
+  const orbitalX = 60.2666 * (Math.cos(eccentricAnomaly) - eccentricity);
+  const orbitalY = 60.2666 * Math.sqrt(1 - eccentricity ** 2) * Math.sin(eccentricAnomaly);
+  const trueAnomaly = Math.atan2(orbitalY, orbitalX);
+  const distanceEarthRadii = Math.hypot(orbitalX, orbitalY);
+  const argument = trueAnomaly + periapsis;
+  const eclipticX = distanceEarthRadii * (Math.cos(node) * Math.cos(argument) - Math.sin(node) * Math.sin(argument) * Math.cos(inclination));
+  const eclipticY = distanceEarthRadii * (Math.sin(node) * Math.cos(argument) + Math.cos(node) * Math.sin(argument) * Math.cos(inclination));
+  const eclipticZ = distanceEarthRadii * Math.sin(argument) * Math.sin(inclination);
+  let longitudeDeg = Math.atan2(eclipticY, eclipticX) / DEG;
+  let latitudeDeg = Math.atan2(eclipticZ, Math.hypot(eclipticX, eclipticY)) / DEG;
+  const sunMeanAnomaly = normalizeDegrees(356.047 + 0.9856002585 * days);
+  const sunPeriapsis = normalizeDegrees(282.9404 + 4.70935e-5 * days);
+  const sunLongitude = normalizeDegrees(sunMeanAnomaly + sunPeriapsis);
+  const meanLongitude = normalizeDegrees(meanAnomalyDeg + periapsis / DEG + node / DEG);
+  const elongation = normalizeDegrees(meanLongitude - sunLongitude);
+  const argumentLatitude = normalizeDegrees(meanLongitude - node / DEG);
+  const sine = (degrees) => Math.sin(degrees * DEG);
+  longitudeDeg += -1.274 * sine(meanAnomalyDeg - 2 * elongation) + 0.658 * sine(2 * elongation) - 0.186 * sine(sunMeanAnomaly) - 0.059 * sine(2 * meanAnomalyDeg - 2 * elongation) - 0.057 * sine(meanAnomalyDeg - 2 * elongation + sunMeanAnomaly) + 0.053 * sine(meanAnomalyDeg + 2 * elongation) + 0.046 * sine(2 * elongation - sunMeanAnomaly) + 0.041 * sine(meanAnomalyDeg - sunMeanAnomaly) - 0.035 * sine(elongation) - 0.031 * sine(meanAnomalyDeg + sunMeanAnomaly) - 0.015 * sine(2 * argumentLatitude - 2 * elongation) + 0.011 * sine(meanAnomalyDeg - 4 * elongation);
+  latitudeDeg += -0.173 * sine(argumentLatitude - 2 * elongation) - 0.055 * sine(meanAnomalyDeg - argumentLatitude - 2 * elongation) - 0.046 * sine(meanAnomalyDeg + argumentLatitude - 2 * elongation) + 0.033 * sine(argumentLatitude + 2 * elongation) + 0.017 * sine(2 * meanAnomalyDeg + argumentLatitude);
+  const longitude = longitudeDeg * DEG;
+  const latitude = latitudeDeg * DEG;
+  const obliquity = (23.4393 - 3.563e-7 * days) * DEG;
+  const x = Math.cos(longitude) * Math.cos(latitude);
+  const y = Math.sin(longitude) * Math.cos(latitude);
+  const z = Math.sin(latitude);
+  const equatorialY = y * Math.cos(obliquity) - z * Math.sin(obliquity);
+  const equatorialZ = y * Math.sin(obliquity) + z * Math.cos(obliquity);
+  return {
+    raDeg: normalizeDegrees(Math.atan2(equatorialY, x) / DEG),
+    decDeg: Math.asin(equatorialZ) / DEG,
+    distanceEarthRadii,
+    phaseAngleDeg: normalizeDegrees(longitudeDeg - sunLongitude),
+  };
+}
+
+export function moonAltitudeDeg({ date, latitudeDeg, longitudeDeg }) {
+  const moon = moonEquatorial(date);
+  const geocentricAltitude = altitudeDeg({ date, latitudeDeg, longitudeDeg, raDeg: moon.raDeg, decDeg: moon.decDeg });
+  const parallaxDeg = Math.asin(Math.cos(geocentricAltitude * DEG) / moon.distanceEarthRadii) / DEG;
+  return geocentricAltitude - parallaxDeg;
+}
+
+export function moonPhaseIndex(date) {
+  return Math.floor((moonEquatorial(date).phaseAngleDeg + 22.5) / 45) % 8;
+}
+
 export function dailySamples({ year, latitudeDeg, longitudeDeg, raDeg, decDeg }) {
   const samples = [];
   for (let timestamp = Date.UTC(year, 0, 1); timestamp < Date.UTC(year + 1, 0, 1); timestamp += 86400000) {

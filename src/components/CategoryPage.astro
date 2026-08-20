@@ -18,7 +18,7 @@ const t = copy[lang];
 const searchableText = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
 ---
 
-<Layout title={label} description={t.categoryDescription(label)} minimal lang={lang} languageLinks={languageLinks.category(categoryKey, base)}>
+<Layout title={label} description={t.categoryDescription(label)} focused lang={lang} languageLinks={languageLinks.category(categoryKey, base)}>
 	<section aria-labelledby="category-heading">
 		<div class="catalog-controls">
 			<CatalogHeader lang={lang} currentCategory={categoryKey} />

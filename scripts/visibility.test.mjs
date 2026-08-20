@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { access, readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { altitudeDeg, dailySamples, nightMetrics, sunEquatorial, thresholdPeriods, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
+import { altitudeDeg, dailySamples, moonAltitudeDeg, moonPhaseIndex, nightMetrics, sunEquatorial, thresholdPeriods, weeklyNightSamples, weeklySamples } from './lib/visibility.mjs';
 
 test('an object on the meridian reaches its expected culmination altitude', () => {
   const date = new Date('2026-01-01T00:00:00Z');
@@ -15,6 +15,21 @@ test('an object on the meridian reaches its expected culmination altitude', () =
 
 test('the approximate solar position is near the equator at the March equinox', () => {
   assert.ok(Math.abs(sunEquatorial(new Date('2026-03-20T14:46:00Z')).decDeg) < 0.2);
+});
+
+test('the local lunar model identifies the four principal phases', () => {
+  assert.equal(moonPhaseIndex(new Date('2026-08-12T17:37:00Z')), 0);
+  assert.equal(moonPhaseIndex(new Date('2026-08-20T02:46:00Z')), 2);
+  assert.equal(moonPhaseIndex(new Date('2026-08-28T04:18:00Z')), 4);
+  assert.equal(moonPhaseIndex(new Date('2026-09-04T07:51:00Z')), 6);
+});
+
+test('the local lunar model crosses the Barcelona horizon near the published moonrise', () => {
+  const location = { latitudeDeg: 41.41, longitudeDeg: 2.16 };
+  const before = moonAltitudeDeg({ date: new Date('2026-08-02T20:50:00Z'), ...location });
+  const after = moonAltitudeDeg({ date: new Date('2026-08-02T21:05:00Z'), ...location });
+  assert.ok(before < 0);
+  assert.ok(after > 0);
 });
 
 test('night planning returns useful observing metrics', () => {
