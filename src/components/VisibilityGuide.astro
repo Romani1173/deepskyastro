@@ -1,0 +1,142 @@
+---
+import type { Lang } from '../i18n';
+import { languageLinks, visibilityHref } from '../i18n';
+import Layout from '../layouts/Layout.astro';
+
+interface Props { lang: Extract<Lang, 'ca' | 'es'>; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const content = {
+  ca: {
+    title: 'Guia de Visibilitat',
+    eyebrow: 'Ajuda de planificació astronòmica',
+    intro: 'Aquesta eina ajuda a escollir objectes de cel profund segons la setmana, la durada de la visibilitat i la presència de la Lluna. Els càlculs estan referits al centre de Catalunya: 41° N, 1,5° E.',
+    index: 'En aquesta guia',
+    back: 'Tornar a Visibilitat',
+    summaryTitle: 'Resum ràpid',
+    summary: 'Busca objectes amb prou hores per sobre de 30°, comprova que assoleixin una bona altura durant la nit astronòmica i revisa l’altura i la fase de la Lluna abans de decidir.',
+    sections: [
+      { id: 'comencar', title: 'Com començar', steps: ['Selecciona la setmana i l’any.', 'Indica quantes hores de visibilitat necessites: entre 2 i 6 hores.', 'Consulta els objectes disponibles.', 'Obre la gràfica d’un objecte per estudiar-ne la visibilitat anual o una nit concreta.'] },
+      { id: 'setmana-any', title: 'Setmana i any', paragraphs: ['La selecció utilitza setmanes ISO, de dilluns a diumenge. Per això es mostra sempre com «Setmana 10/2027».', 'L’any és especialment important per calcular la posició i la fase de la Lluna. La visibilitat anual d’un objecte canvia molt poc entre anys, però la Lluna no es troba en la mateixa posició durant una mateixa setmana d’anys diferents.'] },
+      { id: 'llindar', title: 'Llindar de visibilitat', paragraphs: ['El selector d’hores mostra només els objectes que es mantenen per sobre de 30° d’altura durant el temps escollit.'], bullets: ['2 hores: selecció àmplia.', '3–4 hores: selecció equilibrada.', '5–6 hores: objectes amb més oportunitats d’observació o fotografia.'], note: 'La línia de 30° representa una altura raonable per reduir els efectes de l’atmosfera i de la contaminació lumínica propera a l’horitzó.' },
+      { id: 'nit-astronomica', title: 'Nit astronòmica', paragraphs: ['Es considera nit astronòmica el període durant el qual el Sol està per sota de −18°. És l’interval més fosc de la nit i, generalment, el més adequat per fotografiar objectes febles de cel profund.', 'La durada canvia al llarg de l’any: les nits astronòmiques són més llargues a l’hivern i més curtes a l’estiu.'] },
+      { id: 'grafica-anual', title: 'Gràfica anual', paragraphs: ['La gràfica anual representa l’altura aproximada de l’objecte a les 00:00 UTC durant les setmanes de l’any.'], bullets: ['La millor època de l’any.', 'Les setmanes en què l’objecte assoleix més altura.', 'Quan es troba per sobre o per sota de 30°.', 'L’evolució general de la seva visibilitat.'], note: 'El marcador vertical assenyala la setmana i l’any seleccionats.' },
+      { id: 'grafica-nit', title: 'Gràfica d’una nit', paragraphs: ['La pestanya «Nit seleccionada» mostra l’evolució durant la foscor astronòmica. Inicialment apareix seleccionada la nit central de la setmana; els botons de dilluns a diumenge permeten estudiar qualsevol de les set nits.'], bullets: ['L’altura de l’objecte i de la Lluna.', 'L’horitzó a 0°.', 'El llindar recomanat de 30°.', 'L’inici i el final de la foscor astronòmica.', 'L’hora de màxima altura de l’objecte.'] },
+      { id: 'lluna', title: 'L’objecte i la Lluna', paragraphs: ['La corba verda representa l’altura de l’objecte. La corba vermellosa discontínua representa l’altura de la Lluna.', 'Si la corba lunar està per sota de 0°, la Lluna es troba sota l’horitzó. Si és alta durant bona part de la nit, pot reduir el contrast del cel, especialment quan la fase és avançada.'], curves: { object: 'Objecte', moon: 'Lluna', horizon: 'Horitzó', threshold: 'Llindar de 30°' } },
+      { id: 'fase-lunar', title: 'Fase lunar', paragraphs: ['La fase i l’altura lunar s’han d’interpretar conjuntament: una Lluna brillant sota l’horitzó no afecta l’observació, mentre que una Lluna alta sí que pot fer-ho.'], bullets: ['Lluna nova.', 'Creixent fina.', 'Quart creixent.', 'Gibosa creixent.', 'Lluna plena.', 'Gibosa minvant.', 'Quart minvant.', 'Minvant fina.'] },
+      { id: 'limits', title: 'Què no té en compte', paragraphs: ['L’eina és una ajuda per planificar, però no substitueix la comprovació de les condicions reals.'], bullets: ['La meteorologia.', 'Núvols o humitat.', 'Relleu i obstacles de l’horitzó.', 'Contaminació lumínica local.', 'Transparència o turbulència atmosfèrica.'] },
+    ],
+  },
+  es: {
+    title: 'Guía de Visibilidad',
+    eyebrow: 'Ayuda de planificación astronómica',
+    intro: 'Esta herramienta ayuda a elegir objetos de cielo profundo según la semana, la duración de su visibilidad y la presencia de la Luna. Los cálculos están referidos al centro de Cataluña: 41° N, 1,5° E.',
+    index: 'En esta guía',
+    back: 'Volver a Visibilidad',
+    summaryTitle: 'Resumen rápido',
+    summary: 'Busca objetos con suficientes horas por encima de 30°, comprueba que alcancen buena altura durante la noche astronómica y revisa la altura y la fase de la Luna antes de decidir.',
+    sections: [
+      { id: 'empezar', title: 'Cómo empezar', steps: ['Selecciona la semana y el año.', 'Indica cuántas horas de visibilidad necesitas: entre 2 y 6 horas.', 'Consulta los objetos disponibles.', 'Abre la gráfica de un objeto para estudiar su visibilidad anual o una noche concreta.'] },
+      { id: 'semana-ano', title: 'Semana y año', paragraphs: ['La selección utiliza semanas ISO, de lunes a domingo. Por eso se muestra siempre como «Semana 10/2027».', 'El año es especialmente importante para calcular la posición y la fase de la Luna. La visibilidad anual de un objeto cambia muy poco entre años, pero la Luna no se encuentra en la misma posición durante una misma semana de años diferentes.'] },
+      { id: 'umbral', title: 'Umbral de visibilidad', paragraphs: ['El selector de horas muestra solamente los objetos que permanecen por encima de 30° de altura durante el tiempo elegido.'], bullets: ['2 horas: selección amplia.', '3–4 horas: selección equilibrada.', '5–6 horas: objetos con mejores oportunidades de observación o fotografía.'], note: 'La línea de 30° representa una altura razonable para reducir los efectos de la atmósfera y de la contaminación luminosa cercana al horizonte.' },
+      { id: 'noche-astronomica', title: 'Noche astronómica', paragraphs: ['Se considera noche astronómica el periodo durante el cual el Sol está por debajo de −18°. Es el intervalo más oscuro de la noche y, generalmente, el más adecuado para fotografiar objetos débiles de cielo profundo.', 'La duración cambia a lo largo del año: las noches astronómicas son más largas en invierno y más cortas en verano.'] },
+      { id: 'grafica-anual', title: 'Gráfica anual', paragraphs: ['La gráfica anual representa la altura aproximada del objeto a las 00:00 UTC durante las semanas del año.'], bullets: ['La mejor época del año.', 'Las semanas en que el objeto alcanza mayor altura.', 'Cuándo se encuentra por encima o por debajo de 30°.', 'La evolución general de su visibilidad.'], note: 'El marcador vertical señala la semana y el año seleccionados.' },
+      { id: 'grafica-noche', title: 'Gráfica de una noche', paragraphs: ['La pestaña «Noche seleccionada» muestra la evolución durante la oscuridad astronómica. Inicialmente aparece seleccionada la noche central de la semana; los botones de lunes a domingo permiten estudiar cualquiera de las siete noches.'], bullets: ['La altura del objeto y de la Luna.', 'El horizonte a 0°.', 'El umbral recomendado de 30°.', 'El inicio y el final de la oscuridad astronómica.', 'La hora de máxima altura del objeto.'] },
+      { id: 'luna', title: 'El objeto y la Luna', paragraphs: ['La curva verde representa la altura del objeto. La curva rojiza discontinua representa la altura de la Luna.', 'Si la curva lunar está por debajo de 0°, la Luna se encuentra bajo el horizonte. Si está alta durante buena parte de la noche, puede reducir el contraste del cielo, especialmente cuando su fase es avanzada.'], curves: { object: 'Objeto', moon: 'Luna', horizon: 'Horizonte', threshold: 'Umbral de 30°' } },
+      { id: 'fase-lunar', title: 'Fase lunar', paragraphs: ['La fase y la altura lunar deben interpretarse conjuntamente: una Luna brillante bajo el horizonte no afecta a la observación, mientras que una Luna alta sí puede hacerlo.'], bullets: ['Luna nueva.', 'Creciente fina.', 'Cuarto creciente.', 'Gibosa creciente.', 'Luna llena.', 'Gibosa menguante.', 'Cuarto menguante.', 'Menguante fina.'] },
+      { id: 'limites', title: 'Qué no tiene en cuenta', paragraphs: ['La herramienta es una ayuda para planificar, pero no sustituye la comprobación de las condiciones reales.'], bullets: ['La meteorología.', 'Nubes o humedad.', 'Relieve y obstáculos del horizonte.', 'Contaminación luminosa local.', 'Transparencia o turbulencia atmosférica.'] },
+    ],
+  },
+} as const;
+const t = content[lang];
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.visibilityGuide(base)} focused>
+  <article class="visibility-guide">
+    <a class="visibility-guide__back" href={visibilityHref(lang, base)}>← {t.back}</a>
+    <header class="visibility-guide__hero">
+      <div class="visibility-guide__book" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg></div>
+      <div><p>{t.eyebrow}</p><h1>{t.title}</h1></div>
+    </header>
+    <p class="visibility-guide__intro">{t.intro}</p>
+
+    <nav class="visibility-guide__index" aria-label={t.index}>
+      <strong>{t.index}</strong>
+      <ol>{t.sections.map((section, index) => <li><a href={`#${section.id}`}><span>{String(index + 1).padStart(2, '0')}</span>{section.title}</a></li>)}</ol>
+    </nav>
+
+    <div class="visibility-guide__sections">
+      {t.sections.map((section, index) => <section id={section.id}>
+        <div class="visibility-guide__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
+        <div class="visibility-guide__copy">
+          <h2>{section.title}</h2>
+          {'paragraphs' in section && section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+          {'steps' in section && section.steps && <ol class="visibility-guide__steps">{section.steps.map((step) => <li>{step}</li>)}</ol>}
+          {'bullets' in section && section.bullets && <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
+          {'curves' in section && section.curves && <div class="visibility-guide__curves" aria-label={section.title}>
+            <span><i class="curve curve--object"></i>{section.curves.object}</span>
+            <span><i class="curve curve--moon"></i>{section.curves.moon}</span>
+            <span><i class="curve curve--horizon"></i>{section.curves.horizon}</span>
+            <span><i class="curve curve--threshold"></i>{section.curves.threshold}</span>
+          </div>}
+          {'note' in section && section.note && <aside>{section.note}</aside>}
+        </div>
+      </section>)}
+    </div>
+
+    <section class="visibility-guide__summary" aria-labelledby="visibility-summary">
+      <p>{t.summaryTitle}</p>
+      <h2 id="visibility-summary">{t.summary}</h2>
+    </section>
+    <a class="visibility-guide__return" href={visibilityHref(lang, base)}>← {t.back}</a>
+  </article>
+</Layout>
+
+<style>
+  .visibility-guide { max-width: 58rem; margin: 0 auto; padding: .5rem 0 3rem; }
+  .visibility-guide__back { display: inline-block; margin-bottom: 1.1rem; color: var(--color-muted); font-size: .78rem; text-decoration: none; }
+  .visibility-guide__back:hover { color: var(--color-text); }
+  .visibility-guide__hero { display: flex; align-items: center; gap: 1rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-border); }
+  .visibility-guide__hero p { margin: 0 0 .2rem; color: var(--color-accent); font: .72rem var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  .visibility-guide__hero h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -.045em; line-height: 1; }
+  .visibility-guide__book { display: grid; flex: 0 0 auto; width: 3.4rem; height: 3.4rem; place-items: center; border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent); border-radius: .8rem; background: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-text); }
+  .visibility-guide__book svg { width: 2rem; height: 2rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
+  .visibility-guide__intro { max-width: 48rem; margin: 1.25rem 0; color: var(--color-text); font-size: clamp(1rem, 2vw, 1.14rem); line-height: 1.7; }
+  .visibility-guide__index { margin: 1.5rem 0 2.4rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
+  .visibility-guide__index > strong { display: block; margin-bottom: .65rem; color: var(--color-muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+  .visibility-guide__index ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .3rem .8rem; margin: 0; padding: 0; list-style: none; }
+  .visibility-guide__index a { display: flex; align-items: baseline; gap: .5rem; padding: .35rem .4rem; border-radius: .35rem; color: var(--color-text); font-size: .85rem; text-decoration: none; }
+  .visibility-guide__index a:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+  .visibility-guide__index a span { color: var(--color-accent); font: .68rem var(--font-mono); }
+  .visibility-guide__sections { display: grid; gap: 1rem; }
+  .visibility-guide__sections > section { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); scroll-margin-top: 1rem; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
+  .visibility-guide__number { padding: 1.2rem .55rem; border-right: 1px solid var(--color-border); color: var(--color-accent); font: 700 .72rem var(--font-mono); text-align: center; }
+  .visibility-guide__copy { padding: 1.1rem 1.2rem 1.2rem; }
+  .visibility-guide__copy h2 { margin: 0 0 .65rem; color: var(--color-text); font-size: 1.25rem; }
+  .visibility-guide__copy p { margin: .55rem 0; color: var(--color-muted); line-height: 1.65; }
+  .visibility-guide__copy ul, .visibility-guide__copy ol { margin: .7rem 0; padding-left: 1.2rem; color: var(--color-text); }
+  .visibility-guide__copy li { margin: .35rem 0; line-height: 1.5; }
+  .visibility-guide__steps { counter-reset: guide-step; padding: 0 !important; list-style: none; }
+  .visibility-guide__steps li { display: grid; grid-template-columns: 1.8rem 1fr; align-items: baseline; gap: .5rem; counter-increment: guide-step; }
+  .visibility-guide__steps li::before { content: counter(guide-step); display: grid; width: 1.45rem; height: 1.45rem; place-items: center; border: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent); border-radius: 50%; color: var(--color-accent-soft); font: 700 .65rem var(--font-mono); }
+  .visibility-guide__copy aside { margin-top: .85rem; padding: .75rem .85rem; border-left: 3px solid var(--color-accent); border-radius: 0 .4rem .4rem 0; background: color-mix(in srgb, var(--color-accent) 8%, transparent); color: var(--color-text); font-size: .86rem; line-height: 1.55; }
+  .visibility-guide__curves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin: .9rem 0; }
+  .visibility-guide__curves span { display: flex; align-items: center; gap: .65rem; color: var(--color-text); font-size: .82rem; }
+  .curve { display: inline-block; width: 2.5rem; border-top: 3px solid; }
+  .curve--object { border-color: #55d9b3; }
+  .curve--moon { border-color: #ff746c; border-top-style: dashed; }
+  .curve--horizon { border-color: #edf1f7; border-top-width: 2px; }
+  .curve--threshold { border-color: #e06a45; border-top-style: dashed; border-top-width: 2px; }
+  .visibility-guide__summary { margin-top: 1.4rem; padding: 1.3rem 1.4rem; border: 1px solid color-mix(in srgb, var(--color-accent) 52%, transparent); border-radius: .8rem; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 13%, transparent), var(--color-surface)); }
+  .visibility-guide__summary p { margin: 0 0 .4rem; color: var(--color-accent); font: .72rem var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
+  .visibility-guide__summary h2 { margin: 0; color: var(--color-text); font-size: clamp(1.05rem, 2.4vw, 1.35rem); line-height: 1.5; }
+  .visibility-guide__return { display: inline-flex; margin-top: 1rem; padding: .65rem .8rem; border: 1px solid var(--color-border); border-radius: .55rem; color: var(--color-text); font-size: .82rem; font-weight: 700; text-decoration: none; }
+  .visibility-guide__return:hover { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+  @media (max-width: 600px) {
+    .visibility-guide__index ol { grid-template-columns: 1fr; }
+    .visibility-guide__sections > section { grid-template-columns: 2.35rem minmax(0, 1fr); }
+    .visibility-guide__number { padding-inline: .3rem; }
+    .visibility-guide__copy { padding: 1rem; }
+    .visibility-guide__curves { grid-template-columns: 1fr; }
+  }
+</style>

@@ -74,6 +74,9 @@ export const galleryHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase(
 export const equipmentHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('equip', base) : withBase(`${lang}/${lang === 'en' ? 'equipment' : 'equipo'}`, base);
 export const articlesHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('articles', base) : withBase(`${lang}/${lang === 'en' ? 'articles' : 'articulos'}`, base);
 export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('visibilitat', base) : withBase(`${lang}/${lang === 'en' ? 'visibility' : 'visibilidad'}`, base);
+export const visibilityGuideHref = (lang: Lang, base = '/') => lang === 'ca'
+	? withBase('visibilitat/guia', base)
+	: lang === 'es' ? withBase('es/visibilidad/guia', base) : visibilityHref('en', base);
 export const articleHref = (lang: Lang, slug: string, base = '/') => withBase(`${lang === 'ca' ? 'articles' : `${lang}/${lang === 'en' ? 'articles' : 'articulos'}`}/${slug}`, base);
 export const photoHref = (lang: Lang, id: string, base = '/') => lang === 'ca' ? withBase(`foto/${id}`, base) : withBase(`${lang}/${lang === 'en' ? 'photo' : 'foto'}/${id}`, base);
 export const categoryHref = (lang: Lang, key: CategoryKey, base = '/') => {
@@ -89,6 +92,7 @@ export const languageLinks = {
 	equipment: (base = '/') => ({ ca: equipmentHref('ca', base), es: equipmentHref('es', base), en: equipmentHref('en', base) }),
 	articles: (base = '/') => ({ ca: articlesHref('ca', base), es: articlesHref('es', base), en: articlesHref('en', base) }),
 	visibility: (base = '/') => ({ ca: visibilityHref('ca', base), es: visibilityHref('es', base), en: visibilityHref('en', base) }),
+	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityHref('en', base) }),
 	category: (key: CategoryKey, base = '/') => ({ ca: categoryHref('ca', key, base), es: categoryHref('es', key, base), en: categoryHref('en', key, base) }),
 	photo: (id: string, base = '/') => ({ ca: photoHref('ca', id, base), es: photoHref('es', id, base), en: photoHref('en', id, base) }),
 };
