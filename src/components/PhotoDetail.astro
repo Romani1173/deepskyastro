@@ -76,7 +76,7 @@ const structuredData = {
 			<section class="annual-visibility" aria-labelledby="annual-visibility-heading">
 				<div class="annual-visibility__header">
 					<h2 id="annual-visibility-heading">{t.annualVisibility}</h2>
-					{lang !== 'en' && foto.data.objecte_astronomic && <a class="annual-visibility__detail-link" href={`${visibilityHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&chart=annual`}>{t.detailedVisibility} <span aria-hidden="true">→</span></a>}
+					{lang !== 'en' && foto.data.objecte_astronomic && <a class="annual-visibility__detail-link" data-detailed-visibility href={`${visibilityHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&chart=annual`}>{t.detailedVisibility} <span aria-hidden="true">→</span></a>}
 				</div>
 				<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} data-lightbox-alt={`${t.visibilityChart} ${text.objecte}`} data-lightbox-group="visibility" aria-label={`${t.enlarge}: ${t.annualVisibility}`}>
 					<img src={withBase(`imagenes/visibilidad/${foto.data.visibilitat.imatge}`, base)} alt={`${t.visibilityChart} ${text.objecte}`} loading="lazy" decoding="async" />
@@ -128,12 +128,21 @@ const structuredData = {
 	const photoParams = new URL(window.location.href).searchParams;
 	if (photoBackLink && photoParams.get('from') === 'visibility') {
 		const returnUrl = new URL(photoBackLink.dataset.visibilityHref!, window.location.origin);
-		for (const key of ['week', 'view', 'layout']) {
+		for (const key of ['year', 'week', 'view', 'layout', 'hours']) {
 			const value = photoParams.get(key);
 			if (value) returnUrl.searchParams.set(key, value);
 		}
 		photoBackLink.href = `${returnUrl.pathname}${returnUrl.search}`;
 		photoBackLink.textContent = `← ${photoBackLink.dataset.visibilityLabel}`;
+	}
+	const detailedVisibilityLink = document.querySelector<HTMLAnchorElement>('[data-detailed-visibility]');
+	if (detailedVisibilityLink) {
+		const detailedUrl = new URL(detailedVisibilityLink.href);
+		for (const key of ['year', 'week', 'view', 'layout', 'hours']) {
+			const value = photoParams.get(key);
+			if (value) detailedUrl.searchParams.set(key, value);
+		}
+		detailedVisibilityLink.href = `${detailedUrl.pathname}${detailedUrl.search}`;
 	}
 	const lightbox = document.querySelector<HTMLDialogElement>('.image-lightbox');
 	const lightboxImage = lightbox?.querySelector<HTMLImageElement>('img');

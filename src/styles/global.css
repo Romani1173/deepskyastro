@@ -150,7 +150,7 @@ main { padding: 1rem 0 4rem; }
 .annual-visibility__header > h2 { margin: 0; color: var(--color-accent); font-size: 1.35rem; }
 .annual-visibility .image-zoom-trigger { overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
 .annual-visibility img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-.annual-visibility p { margin: .75rem 0 0; color: var(--color-muted); }
+.annual-visibility p { margin: .75rem 0 0; color: var(--color-text); }
 .annual-visibility__detail-link { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; flex: 0 0 auto; width: fit-content; padding: .55rem .75rem; border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent); border-radius: .65rem; background: color-mix(in srgb, var(--color-accent) 9%, transparent); color: var(--color-accent); font-size: .85rem; font-weight: 700; text-decoration: none; transition: border-color .16s ease, background .16s ease, transform .16s ease; }
 .annual-visibility__detail-link:hover, .annual-visibility__detail-link:focus-visible { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 16%, transparent); color: var(--color-accent-soft); transform: translateY(-1px); }
 @media (max-width: 600px) { .annual-visibility__header { align-items: flex-start; flex-direction: column; gap: .7rem; } }
@@ -169,7 +169,7 @@ main { padding: 1rem 0 4rem; }
 .additional-images figure .image-zoom-trigger:hover img { transform: scale(1.025); }
 .additional-images figcaption { padding: .9rem 1rem; }
 .additional-images figcaption strong, .additional-images figcaption span { display: block; }
-.additional-images figcaption span { margin-top: .25rem; color: var(--color-muted); font-size: .9rem; }
+.additional-images figcaption span { margin-top: .25rem; color: var(--color-text); font-size: .9rem; }
 .photo-navigation { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 2.25rem 0 .5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
 .photo-navigation a { display: flex; min-width: 0; flex-direction: column; gap: .28rem; color: var(--color-muted); font-size: .82rem; text-decoration: none; }
 .photo-navigation a:hover { color: var(--color-accent); }
