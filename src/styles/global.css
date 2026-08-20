@@ -63,7 +63,7 @@ main { padding: 1rem 0 4rem; }
 .language-selector a:hover { color: var(--color-text); }
 .language-selector a[aria-current='page'] { background: rgba(228, 198, 106, .16); color: var(--color-accent-soft); }
 .language-flag { width: 1.05rem; height: .7rem; overflow: hidden; border: 1px solid rgba(255, 255, 255, .32); border-radius: .12rem; box-shadow: 0 1px 3px rgba(0, 0, 0, .4); }
-.welcome-hero { position: relative; display: grid; min-height: 100svh; place-items: center; padding: 7rem 1rem 3rem; background: linear-gradient(90deg, rgba(4, 7, 13, .45), rgba(4, 7, 13, .08)), var(--hero-image) center / cover; text-align: center; }
+.welcome-hero { position: relative; display: grid; min-height: 100svh; place-items: center; padding: 7rem 1rem 3rem; background: linear-gradient(90deg, rgba(4, 7, 13, var(--hero-shade-left, .45)), rgba(4, 7, 13, var(--hero-shade-right, .08))), var(--hero-image) center / cover; text-align: center; }
 .welcome-hero__content { width: min(800px, 100%); }
 .welcome-hero__message { transform: translateY(-10mm); }
 .welcome-hero h1 { margin: 0; color: var(--color-text); font-size: clamp(3rem, 9vw, 6.4rem); letter-spacing: -.06em; line-height: .95; white-space: nowrap; }

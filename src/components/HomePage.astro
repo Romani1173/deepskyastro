@@ -10,6 +10,17 @@ const t = copy[lang];
 const homeUrl = new URL(lang === 'ca' ? base : `${base}${lang}/`, Astro.site).href;
 const authorName = 'Juan José Romero';
 const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName);
+const coverRotationDays = 2;
+const coverRotationAnchor = Date.UTC(2026, 7, 21);
+const coverPreviewEnabled = import.meta.env.DEV;
+const rotatingCovers = [
+	{ src: withBase('imagenes/portadas/portada-rotativa-01.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-02.webp', base), shadeLeft: .45, shadeRight: .08 }, // rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-03.webp', base), shadeLeft: .55, shadeRight: .17 }, // verde
+	{ src: withBase('imagenes/portadas/portada-rotativa-04.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-05.webp', base), shadeLeft: .53, shadeRight: .15 }, // rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-06.webp', base), shadeLeft: .50, shadeRight: .13 }, // dorado/azul
+];
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'WebSite',
@@ -25,7 +36,17 @@ const structuredData = {
 ---
 
 <Layout title={t.homeSeoTitle} description={t.homeSeoDescription} image={withBase('imagenes/portada.webp', base)} structuredData={structuredData} hero lang={lang} languageLinks={languageLinks.home(base)}>
-	<section class="welcome-hero" style={`--hero-image: url('${withBase('imagenes/portada.webp', base)}')`} aria-labelledby="welcome-title">
+	<script is:inline define:vars={{ rotatingCovers, coverRotationDays, coverRotationAnchor, coverPreviewEnabled }}>
+		const elapsedDays = Math.floor((Date.now() - coverRotationAnchor) / 86400000);
+		const cycleIndex = ((Math.floor(elapsedDays / coverRotationDays) % rotatingCovers.length) + rotatingCovers.length) % rotatingCovers.length;
+		const requestedCover = coverPreviewEnabled ? Number(new URLSearchParams(window.location.search).get('cover')) : 0;
+		const selectedIndex = Number.isInteger(requestedCover) && requestedCover >= 1 && requestedCover <= rotatingCovers.length ? requestedCover - 1 : cycleIndex;
+		const selectedCover = rotatingCovers[selectedIndex];
+		document.documentElement.style.setProperty('--rotating-hero-image', `url("${selectedCover.src}")`);
+		document.documentElement.style.setProperty('--rotating-hero-shade-left', String(selectedCover.shadeLeft));
+		document.documentElement.style.setProperty('--rotating-hero-shade-right', String(selectedCover.shadeRight));
+	</script>
+	<section class="welcome-hero" style={`--hero-image: var(--rotating-hero-image, url('${withBase('imagenes/portada.webp', base)}')); --hero-shade-left: var(--rotating-hero-shade-left, .45); --hero-shade-right: var(--rotating-hero-shade-right, .08)`} aria-labelledby="welcome-title">
 		<div class="welcome-hero__content">
 			<div class="welcome-hero__message">
 				<h1 id="welcome-title">El meu Cel Profund</h1>
