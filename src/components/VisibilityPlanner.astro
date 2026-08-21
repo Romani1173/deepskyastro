@@ -88,15 +88,13 @@ const weekRange = (week: number) => {
       <label for="visibility-week">{t.week}</label>
       <div class="week-control__row">
         <button type="button" data-week-step="-1" aria-label="−1">−</button>
-        <div class="week-control__selects">
-          <select id="visibility-week">
-            {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
-          </select>
-          <select id="visibility-year" aria-label={lang === 'ca' ? 'Any' : lang === 'es' ? 'Año' : 'Year'}>
-            {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
-          </select>
-        </div>
+        <select id="visibility-week">
+          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
+        </select>
         <button type="button" data-week-step="1" aria-label="+1">+</button>
+        <select id="visibility-year" aria-label={lang === 'ca' ? 'Any' : lang === 'es' ? 'Año' : 'Year'}>
+          {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
+        </select>
       </div>
     </div>
     {enhancedVisibility && <label class="hours-control" for="visibility-hours"><span>{t.minimumVisibility}</span><select id="visibility-hours">{[2, 3, 4, 5, 6].map((hours) => <option value={hours} selected={hours === 4}>{hours} h</option>)}</select></label>}
@@ -141,7 +139,7 @@ const weekRange = (week: number) => {
               <div><dt>{t.night}</dt><dd data-night>—</dd></div>
             </dl>
             <div class="visibility-card__actions">
-              {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view} →</a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
+              {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view}<span aria-hidden="true">→</span></a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
               <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><b aria-hidden="true">V</b><span class="visibility-card__chart-label">{t.viewChart}</span></button>
             </div>
           </div>
@@ -529,20 +527,20 @@ const weekRange = (week: number) => {
   .visibility-toolbar__selectors { display: flex; align-items: end; gap: .9rem; }
   .week-control { display: flex; align-items: center; gap: .75rem; margin: 0; }
   .week-control label { font-weight: 700; }
-  .week-control__row { display: flex; gap: .5rem; }
+  .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
-  .week-control__selects { display: grid; grid-template-columns: minmax(11rem, 1fr) 6.2rem; gap: .4rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control #visibility-year { min-width: 0; }
   .week-control button { width: 2.7rem; cursor: pointer; }
-  .hours-control { display: grid; gap: .18rem; font-weight: 700; }
-  .hours-control select { min-width: 7rem; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
+  .hours-control { display: grid; width: 5.8rem; flex: 0 0 5.8rem; gap: .22rem; font-weight: 700; }
+  .hours-control span { font-size: .7rem; line-height: 1.15; text-align: center; }
+  .hours-control select { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .35rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 .92rem var(--font-mono); text-align: center; text-align-last: center; }
   .visibility-layout, .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
   .visibility-layout { margin-left: auto; padding-left: .5rem; border-left: 1px solid var(--color-border); }
   .visibility-layout::-webkit-scrollbar,
   .visibility-filters::-webkit-scrollbar { display: none; }
   .visibility-layout button,
-  .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
+  .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: .55rem; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
   .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
   .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
   .visibility-results { margin: -.35rem 0 .8rem; color: var(--color-muted); font-size: .82rem; }
@@ -586,7 +584,12 @@ const weekRange = (week: number) => {
   .visibility-card dt { color: var(--color-muted); font-size: .72rem; }
   .visibility-card dd { margin: .25rem 0 0; font-family: var(--font-mono); }
   .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
-  .visibility-card__link { font-weight: 700; }
+  .visibility-card__link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; gap: .45rem; padding: .52rem .72rem; border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent); border-radius: .6rem; background: color-mix(in srgb, var(--color-accent) 9%, transparent); color: var(--color-accent); font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
+  .visibility-card__link span { transition: transform .16s ease; }
+  .visibility-card__link:hover,
+  .visibility-card__link:focus-visible { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 16%, transparent); color: var(--color-accent-soft); text-decoration: none; transform: translateY(-1px); }
+  .visibility-card__link:hover span,
+  .visibility-card__link:focus-visible span { transform: translateX(.12rem); }
   .visibility-card__pending-note { margin: 0; color: #78e8c7; font-size: .82rem; font-weight: 700; }
   .visibility-card__actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .visibility-card__chart-link { display: inline-flex; align-items: center; gap: .45rem; padding: 0; border: 0; background: transparent; color: var(--color-text); cursor: pointer; font: 700 .82rem var(--font-sans); }
@@ -620,7 +623,7 @@ const weekRange = (week: number) => {
   .visibility-chart__header h2 { margin: 0; }
   .visibility-chart__header button { border: 0; background: transparent; color: var(--color-muted); cursor: pointer; font-size: 2rem; line-height: 1; }
   .visibility-chart__tabs { display: flex; gap: .4rem; margin-top: .8rem; }
-  .visibility-chart__tabs button { padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: 999px; background: transparent; color: var(--color-muted); cursor: pointer; font-weight: 700; }
+  .visibility-chart__tabs button { padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: .55rem; background: transparent; color: var(--color-muted); cursor: pointer; font-weight: 700; }
   .visibility-chart__tabs button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
   .night-controls { display: grid; gap: .55rem; margin-top: .75rem; padding: .65rem; border: 1px solid var(--color-border); border-radius: .6rem; background: rgba(17,24,39,.72); }
   .night-controls > span { color: var(--color-muted); font-size: .72rem; font-weight: 700; }
@@ -631,7 +634,7 @@ const weekRange = (week: number) => {
   .night-legend__object { color: #78e8c7; }
   .night-legend__moon { color: #ff746c; }
   .night-legend strong { display: inline-flex; align-items: center; gap: .38rem; margin-left: auto; color: var(--color-text); font-weight: 600; }
-  .night-legend [data-moon-phase-icon] { font-size: 1.45rem; line-height: 1; }
+  .night-legend [data-moon-phase-icon] { min-width: 2rem; color: var(--color-accent-soft); font-size: 2rem; line-height: 1; text-align: center; }
   .visibility-chart__plot { margin-top: 1rem; overflow-x: auto; }
   .visibility-chart__plot svg { display: block; width: 100%; min-width: 34rem; }
   .visibility-chart__plot :global(.chart-grid line) { stroke: rgba(255,255,255,.1); }
@@ -653,9 +656,9 @@ const weekRange = (week: number) => {
     .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
     .visibility-planner__location { text-align: left; }
     .week-control { align-items: stretch; flex-direction: column; }
-    .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
-    .week-control__selects { grid-template-columns: minmax(0, 1fr) 5.8rem; }
+    .week-control__row { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
     .week-control select { width: 100%; min-width: 0; }
+    .hours-control { width: 100%; flex-basis: auto; }
     .hours-control select { width: 100%; }
     .visibility-card { grid-template-columns: 1fr; }
     .visibility-card__image img { max-height: 13rem; min-height: 0; }
