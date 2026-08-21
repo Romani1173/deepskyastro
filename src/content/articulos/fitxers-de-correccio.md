@@ -16,4 +16,5 @@ portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/fitxers-de-correccio-ca.pdf"
+  es: "documents/articles/fitxers-de-correccio-es.pdf"
 ---
