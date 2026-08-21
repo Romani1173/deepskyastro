@@ -9,7 +9,7 @@ traducciones:
     titulo: "Mapping active regions of the Sun with PixInsight"
     resumen: "A procedure for accurately representing active regions of the Sun and aligning solar photographs with heliographic coordinates."
 fecha: "2024-12-01"
-tema: "Sol"
+tema: "Astronomía solar"
 slug: "mapejant-sol-amb-pixinsight"
 translationKey: "mapejant-sol-amb-pixinsight"
 portada: "portada.png"

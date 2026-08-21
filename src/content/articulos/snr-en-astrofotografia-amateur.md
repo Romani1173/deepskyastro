@@ -9,7 +9,7 @@ traducciones:
     titulo: "Signal-to-noise ratio in amateur astrophotography"
     resumen: "An introduction to the nature of noise, signal-to-noise ratio, and the capture and calibration techniques used to improve astronomical images."
 fecha: "2025-07-01"
-tema: "Cielo profundo"
+tema: "Captura y calibración"
 slug: "snr-en-astrofotografia-amateur"
 translationKey: "snr-en-astrofotografia-amateur"
 portada: "portada-generada.webp"

@@ -9,7 +9,7 @@ traducciones:
     titulo: "Stacking with PixInsight"
     resumen: "A practical guide to calibrating, registering and stacking astronomical images with PixInsight's WeightedBatchPreProcessing (WBPP) script."
 fecha: "2024-06-01"
-tema: "Cielo profundo"
+tema: "Procesado"
 slug: "apilat-amb-pixinsight"
 translationKey: "apilat-amb-pixinsight"
 portada: "portada-generada.webp"

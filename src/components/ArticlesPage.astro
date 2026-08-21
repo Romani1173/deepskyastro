@@ -12,9 +12,9 @@ interface Props {
 const { lang, articles } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const labels = {
-	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", available: 'PDF disponibles', open: 'Obrir PDF', backHome: 'Tornar a la portada' },
-	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', available: 'PDF disponibles', open: 'Abrir PDF', backHome: 'Volver a la portada' },
-	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', available: 'Available PDFs', open: 'Open PDF', backHome: 'Back to the home page' },
+	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", index: 'Explora els articles', latest: 'Article més recent', topics: 'Temes', available: 'PDF disponibles', open: 'Obrir PDF', backHome: 'Tornar a la portada' },
+	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', index: 'Explora los artículos', latest: 'Artículo más reciente', topics: 'Temas', available: 'PDF disponibles', open: 'Abrir PDF', backHome: 'Volver a la portada' },
+	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', index: 'Explore the articles', latest: 'Latest article', topics: 'Topics', available: 'Available PDFs', open: 'Open PDF', backHome: 'Back to the home page' },
 }[lang];
 const localized = articles.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 const languageNames = {
@@ -23,14 +23,15 @@ const languageNames = {
 	en: { ca: 'Catalan', es: 'Spanish', en: 'English' },
 }[lang];
 const topicNames = {
-	ca: { Sol: 'Sol', 'Cielo profundo': 'Cel profund' },
-	es: { Sol: 'Sol', 'Cielo profundo': 'Cielo profundo' },
-	en: { Sol: 'Sun', 'Cielo profundo': 'Deep sky' },
+	ca: { Procesado: 'Processament', 'Captura y calibración': 'Captura i calibratge', 'Planificación': 'Planificació', 'Astronomía solar': 'Astronomia solar' },
+	es: { Procesado: 'Procesado', 'Captura y calibración': 'Captura y calibración', 'Planificación': 'Planificación', 'Astronomía solar': 'Astronomía solar' },
+	en: { Procesado: 'Processing', 'Captura y calibración': 'Capture and calibration', 'Planificación': 'Planning', 'Astronomía solar': 'Solar astronomy' },
 }[lang];
 const localizedText = (article: CollectionEntry<'articulos'>) => {
 	if (lang === 'ca' || !article.data.traducciones) return { titulo: article.data.titulo, resumen: article.data.resumen };
 	return article.data.traducciones[lang];
 };
+const [featured, ...remaining] = localized;
 ---
 
 <Layout title={labels.title} description={labels.description} focused lang={lang} languageLinks={languageLinks.articles(base)}>
@@ -39,14 +40,37 @@ const localizedText = (article: CollectionEntry<'articulos'>) => {
 			<h1>{labels.title}</h1>
 			<p>{labels.description}</p>
 		</header>
-		<div class="articles-grid">
-			{localized.map((article) => {
+		<nav class="articles-index-nav" aria-label={labels.index}>
+			<strong>{labels.index} · {labels.topics}</strong>
+			<div>
+				{localized.map((article, index) => <a href={`#article-${article.data.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{localizedText(article).titulo}</a>)}
+			</div>
+		</nav>
+		{featured && <article class="article-featured" id={`article-${featured.data.slug}`}>
+			<div class="article-featured__cover">
+				<img src={withBase(`imagenes/articulos/${featured.data.translationKey}/${featured.data.portada}`, base)} alt="" />
+				<span>{labels.latest}</span>
+			</div>
+			<div class="article-featured__body">
+				<div class="article-card__meta">
+					<span>{topicNames[featured.data.tema]}</span>
+					<time datetime={featured.data.fecha.toISOString().slice(0, 10)}>{new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(featured.data.fecha)}</time>
+				</div>
+				<h2>{localizedText(featured).titulo}</h2>
+				<p>{localizedText(featured).resumen}</p>
+				<div class="article-card__pdfs">
+					{(['ca', 'es', 'en'] as const).filter((pdfLang) => featured.data.pdfs[pdfLang]).map((pdfLang) => <a href={withBase(featured.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener"><span>{languageNames[pdfLang]}</span><small>{labels.open} ↗</small></a>)}
+				</div>
+			</div>
+		</article>}
+		<div class="articles-compact-list">
+			{remaining.map((article) => {
 				const text = localizedText(article);
 				const availablePdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
 				return (
-					<article class="article-card">
+					<article class="article-card article-card--compact" id={`article-${article.data.slug}`}>
 						<div class="article-card__cover">
-							<img src={withBase(`imagenes/articulos/sol/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
+							<img src={withBase(`imagenes/articulos/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
 						</div>
 						<div class="article-card__body">
 							<div class="article-card__meta">
@@ -55,7 +79,6 @@ const localizedText = (article: CollectionEntry<'articulos'>) => {
 							</div>
 							<h2>{text.titulo}</h2>
 							<p>{text.resumen}</p>
-							<p class="article-card__available">{labels.available}</p>
 							<div class="article-card__pdfs">
 								{availablePdfs.map((pdfLang) => (
 									<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">

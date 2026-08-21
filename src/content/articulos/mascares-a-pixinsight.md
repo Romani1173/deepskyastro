@@ -9,10 +9,10 @@ traducciones:
     titulo: "Masks in PixInsight"
     resumen: "A practical introduction to masks in PixInsight, including methods for creating luminance, star, color and gradient masks and applying selective adjustments."
 fecha: "2024-09-01"
-tema: "Cielo profundo"
+tema: "Procesado"
 slug: "mascares-a-pixinsight"
 translationKey: "mascares-a-pixinsight"
-portada: "portada.jpg"
+portada: "portada-generada.webp"
 autor: "Juan José Romero"
 pdfs:
   ca: "documents/articles/mascares-a-pixinsight-ca.pdf"

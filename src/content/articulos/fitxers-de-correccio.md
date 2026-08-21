@@ -9,7 +9,7 @@ traducciones:
     titulo: "Calibration frames: bias, darks, flats and dark flats"
     resumen: "An introduction to the calibration frames used in astrophotography, the noise or defect corrected by each type, and the conditions required to capture them correctly."
 fecha: "2022-12-01"
-tema: "Cielo profundo"
+tema: "Captura y calibración"
 slug: "fitxers-de-correccio"
 translationKey: "fitxers-de-correccio"
 portada: "portada-generada.webp"

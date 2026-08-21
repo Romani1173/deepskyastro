@@ -111,7 +111,7 @@ const articulos = defineCollection({
 			en: z.object({ titulo: z.string(), resumen: z.string() }),
 		}).optional(),
 		fecha: z.coerce.date(),
-		tema: z.enum(['Sol', 'Cielo profundo']),
+		tema: z.enum(['Procesado', 'Captura y calibración', 'Planificación', 'Astronomía solar']),
 		slug: z.string(),
 		translationKey: z.string(),
 		portada: z.string(),
