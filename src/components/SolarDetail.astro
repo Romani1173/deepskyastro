@@ -18,9 +18,9 @@ const comment = lang === 'ca'
 	? foto.data.comentario
 	: foto.data.traducciones?.[lang] ?? foto.data.comentario;
 const languageLinks = {
-	ca: withBase(`sol/${foto.id}`, base),
-	es: withBase(`es/sol/${foto.id}`, base),
-	en: withBase(`en/sun/${foto.id}`, base),
+	ca: withBase(`sol/${foto.id}/`, base),
+	es: withBase(`es/sol/${foto.id}/`, base),
+	en: withBase(`en/sun/${foto.id}/`, base),
 };
 ---
 

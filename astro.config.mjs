@@ -12,8 +12,8 @@ export default defineConfig({
 	base: isGitHubPages ? '/deepskyastro' : '/',
 	integrations: [mdx(), sitemap()],
 	redirects: {
-		'/foto/vbd_152': '/foto/vdb_152',
-		'/es/foto/vbd_152': '/es/foto/vdb_152',
-		'/en/photo/vbd_152': '/en/photo/vdb_152',
+		'/foto/vbd_152': '/foto/vdb_152/',
+		'/es/foto/vbd_152': '/es/foto/vdb_152/',
+		'/en/photo/vbd_152': '/en/photo/vdb_152/',
 	},
 });

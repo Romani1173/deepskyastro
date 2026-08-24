@@ -69,20 +69,24 @@ export const normalizeBase = (base = '/') => {
 	return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`;
 };
 export const withBase = (path: string, base = '/') => `${normalizeBase(base)}${path.replace(/^\/+/, '')}`;
+const pageHref = (path: string, base = '/') => {
+	const href = withBase(path, base);
+	return href.endsWith('/') ? href : `${href}/`;
+};
 export const homeHref = (lang: Lang, base = '/') => lang === 'ca' ? normalizeBase(base) : withBase(`${lang}/`, base);
-export const galleryHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('galeria', base) : withBase(`${lang}/${lang === 'en' ? 'gallery' : 'galeria'}`, base);
-export const equipmentHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('equip', base) : withBase(`${lang}/${lang === 'en' ? 'equipment' : 'equipo'}`, base);
-export const articlesHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('articles', base) : withBase(`${lang}/${lang === 'en' ? 'articles' : 'articulos'}`, base);
-export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? withBase('visibilitat', base) : withBase(`${lang}/${lang === 'en' ? 'visibility' : 'visibilidad'}`, base);
+export const galleryHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('galeria', base) : pageHref(`${lang}/${lang === 'en' ? 'gallery' : 'galeria'}`, base);
+export const equipmentHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('equip', base) : pageHref(`${lang}/${lang === 'en' ? 'equipment' : 'equipo'}`, base);
+export const articlesHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('articles', base) : pageHref(`${lang}/${lang === 'en' ? 'articles' : 'articulos'}`, base);
+export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('visibilitat', base) : pageHref(`${lang}/${lang === 'en' ? 'visibility' : 'visibilidad'}`, base);
 export const visibilityGuideHref = (lang: Lang, base = '/') => lang === 'ca'
-	? withBase('visibilitat/guia', base)
-	: lang === 'es' ? withBase('es/visibilidad/guia', base) : visibilityHref('en', base);
-export const articleHref = (lang: Lang, slug: string, base = '/') => withBase(`${lang === 'ca' ? 'articles' : `${lang}/${lang === 'en' ? 'articles' : 'articulos'}`}/${slug}`, base);
-export const photoHref = (lang: Lang, id: string, base = '/') => lang === 'ca' ? withBase(`foto/${id}`, base) : withBase(`${lang}/${lang === 'en' ? 'photo' : 'foto'}/${id}`, base);
+	? pageHref('visibilitat/guia', base)
+	: lang === 'es' ? pageHref('es/visibilidad/guia', base) : visibilityHref('en', base);
+export const articleHref = (lang: Lang, slug: string, base = '/') => pageHref(`${lang === 'ca' ? 'articles' : `${lang}/${lang === 'en' ? 'articles' : 'articulos'}`}/${slug}`, base);
+export const photoHref = (lang: Lang, id: string, base = '/') => lang === 'ca' ? pageHref(`foto/${id}`, base) : pageHref(`${lang}/${lang === 'en' ? 'photo' : 'foto'}/${id}`, base);
 export const categoryHref = (lang: Lang, key: CategoryKey, base = '/') => {
 	const category = categories.find((item) => item.key === key)!;
 	const segment = lang === 'en' ? 'category' : 'categoria';
-	return lang === 'ca' ? withBase(`${segment}/${category.slugs.ca}`, base) : withBase(`${lang}/${segment}/${category.slugs[lang]}`, base);
+	return lang === 'ca' ? pageHref(`${segment}/${category.slugs.ca}`, base) : pageHref(`${lang}/${segment}/${category.slugs[lang]}`, base);
 };
 export const categoryByValue = (value: string) => categories.find((item) => item.value === value)!;
 

@@ -55,8 +55,8 @@ const groupedYears = Array.from(
 											const date = new Intl.DateTimeFormat(localeFor(lang), { dateStyle: 'long', timeZone: 'UTC' }).format(foto.data.fecha);
 											const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
 											const detailUrl = lang === 'ca'
-												? withBase(`sol/${foto.id}`, base)
-												: withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}`, base);
+												? withBase(`sol/${foto.id}/`, base)
+												: withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}/`, base);
 											return (
 												<article class="solar-card">
 													<a class="solar-card__image" href={detailUrl}>
