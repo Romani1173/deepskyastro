@@ -1120,6 +1120,24 @@
     "status": "photographed"
   },
   {
+    "id": "sh2-119",
+    "catalogName": "Sh2-119",
+    "aliases": [
+      "LBN 087.23-03.80",
+      "LBN 391"
+    ],
+    "commonNames": {
+      "ca": "Nebulosa de la Petxina",
+      "es": "Nebulosa de la Concha",
+      "en": "Clamshell Nebula"
+    },
+    "raDeg": 319.625,
+    "decDeg": 43.93333333,
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
     "id": "sh2-129",
     "catalogName": "Sh2-129",
     "aliases": [
