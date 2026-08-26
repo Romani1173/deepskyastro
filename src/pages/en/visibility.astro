@@ -1,6 +1,7 @@
 ---
 const { getCollection } = await import('astro:content');
 const { default: VisibilityPlanner } = await import('../../components/VisibilityPlanner.astro');
+const { PUBLIC_PENDING_OBJECTS } = await import('../../config/features');
 const fotos = await getCollection('fotos');
 ---
-<VisibilityPlanner lang="en" fotos={fotos} showPending={import.meta.env.DEV} />
+<VisibilityPlanner lang="en" fotos={fotos} showPending={import.meta.env.DEV || PUBLIC_PENDING_OBJECTS} />

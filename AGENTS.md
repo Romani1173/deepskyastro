@@ -14,7 +14,7 @@
 
 - La web pública activa se publica con Cloudflare Pages en `https://deepskyastro.com`; `https://deepskyastro.pages.dev` es únicamente el dominio técnico de Pages.
 - GitHub Pages está también configurado como alternativa, pero el enlace público de referencia es el de Cloudflare Pages.
-- La página de Visibilidad se publica mostrando únicamente los objetos ya fotografiados. Durante el desarrollo local en `localhost`, la misma página añade la planificación privada: objetivos pendientes y sus alias. Nunca publicar, enlazar ni generar en la web pública los pendientes, sus alias o datos de planificación.
+- Los objetivos pendientes y sus alias se muestran actualmente en producción tanto en Visibilidad como en Planificación. Esta publicación se controla con `PUBLIC_PENDING_OBJECTS` en `src/config/features.ts`. Para volver a ocultarlos en producción sin perder la funcionalidad local, cambiar únicamente ese interruptor a `false`; en desarrollo local continuarán disponibles.
 - Las fichas permiten ampliar la imagen principal y las adicionales al pulsarlas; el visor se cierra con la `×`, al tocar fuera o con `Esc`.
 - La galería permite buscar **solo por el campo `objecte`** y ordenar por fecha reciente o por nombre natural (`M2` antes que `M10`, `NGC2237` antes que `NGC6960`). Esta ordenación está disponible también en cada categoría.
 - Los nombres de catálogo NGC se escriben siempre unidos (`NGC2237`) en títulos, descripciones, comentarios, metadatos y textos de interfaz; no se admite ningún espacio tras el prefijo.
@@ -54,9 +54,9 @@
 - `imatges_addicionals` es opcional: incluir únicamente las imágenes que existan físicamente.
 - Antes de generar o modificar una ficha, revisar los archivos reales en `public/imagenes/`; nunca inventar nombres de imagen.
 
-## Objetivos pendientes de Visibilidad
+## Objetivos pendientes
 
-- La skill local `.codex/skills/anadir-pendientes-visibilidad` añade o actualiza objetivos pendientes, nombres comunes multilingües y alias de catálogo. Usarla siempre que se soliciten cambios en la planificación privada de Visibilidad.
+- La skill local `.codex/skills/anadir-pendientes-visibilidad` añade o actualiza objetivos pendientes, nombres comunes multilingües y alias de catálogo. Usarla siempre que se soliciten cambios en estos objetivos.
 
 ## Imágenes adicionales
 

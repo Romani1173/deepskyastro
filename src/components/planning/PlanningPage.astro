@@ -1,0 +1,355 @@
+---
+import type { Lang } from '../../i18n';
+import { languageLinks } from '../../i18n';
+import Layout from '../../layouts/Layout.astro';
+import objectsData from '../../data/astronomical-objects.json';
+import { PUBLIC_PENDING_OBJECTS } from '../../config/features';
+import { getCollection } from 'astro:content';
+import { photoText } from '../../photoTranslations';
+import '../../styles/planning.css';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const texts = {
+  ca: {
+    title: 'Planificació', intro: 'Eina avançada per estudiar un únic objecte des d’una ubicació concreta. Tots els càlculs, dates i hores s’expressen en UTC.',
+    location: '1 · Ubicació', locationName: 'Nom opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicació es conserva només durant aquesta sessió.',
+    object: '2 · Objecte', localObject: 'Objecte local', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
+    period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
+    comparison: '4 · Comparació de les set nits', night: 'Nit UTC', darkness: 'Nit astronòmica', maxAltitude: 'Alt. màx. nocturna', effective: 'Finestra >30°', moonDown: 'Sense Lluna', bestMoonDown: 'Millor hora sense Lluna', bestMoonUp: 'Millor hora amb Lluna', moon: 'Lluna', separation: 'Separació', unavailable: 'No supera 30° durant la nit astronòmica', none: '—', select: 'Seleccionar nit',
+    detail: '5 · Detall nocturn', objectCurve: 'Objecte', moonCurve: 'Lluna', threshold: 'Límit 30°', astronomyNight: 'Nit astronòmica', chartHelp: 'Mou el cursor o toca i arrossega per inspeccionar mostres cada cinc minuts. Els trams fora de la nit astronòmica es mostren atenuats.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Il·luminació', sun: 'Sol', engine: 'Coordenades topocèntriques geomètriques, sense refracció atmosfèrica.', error: 'Revisa la ubicació, l’objecte i el període.',
+  },
+  es: {
+    title: 'Planificación', intro: 'Estudia un objeto durante siete noches desde una ubicación concreta. Todos los datos se muestran en UTC.',
+    location: '1 · Ubicación', locationName: 'Nombre opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicación se conserva únicamente durante esta sesión.',
+    object: '2 · Objeto', localObject: 'Objeto local', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
+    period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
+    comparison: '4 · Comparación de las siete noches', night: 'Noche UTC', darkness: 'Noche astronómica', maxAltitude: 'Altura máxima', effective: 'Ventana >30°', moonDown: 'Tiempo sin Luna', bestMoonDown: 'Mejor hora sin Luna', bestMoonUp: 'Mejor hora con Luna', moon: 'Luna', separation: 'Separación', unavailable: 'No supera 30° durante la noche astronómica', none: '—', select: 'Ver esta noche',
+    detail: '5 · Detalle de la noche', objectCurve: 'Objeto', moonCurve: 'Luna', threshold: 'Límite 30°', astronomyNight: 'Noche astronómica', chartHelp: 'Mueve el cursor —o toca y arrastra— para consultar los datos cada cinco minutos. Los tramos fuera de la noche astronómica aparecen atenuados.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Iluminación', sun: 'Sol', engine: 'Posiciones topocéntricas geométricas, sin refracción atmosférica.', error: 'Revisa la ubicación, el objeto y la semana.',
+  },
+  en: {
+    title: 'Planning', intro: 'Advanced tool for studying one object from a specific location. All calculations, dates, and times are expressed in UTC.',
+    location: '1 · Location', locationName: 'Optional name', latitude: 'Latitude', longitude: 'Longitude', restore: 'Restore L’Ampolla', session: 'The location is retained only for this browser session.',
+    object: '2 · Object', localObject: 'Local object', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
+    period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
+    comparison: '4 · Seven-night comparison', night: 'UTC night', darkness: 'Astronomical night', maxAltitude: 'Night max. alt.', effective: '>30° window', moonDown: 'Moon down', bestMoonDown: 'Best Moon-down time', bestMoonUp: 'Best Moon-up time', moon: 'Moon', separation: 'Separation', unavailable: 'Never above 30° during astronomical night', none: '—', select: 'Select night',
+    detail: '5 · Night detail', objectCurve: 'Object', moonCurve: 'Moon', threshold: '30° limit', astronomyNight: 'Astronomical night', chartHelp: 'Move the pointer or touch and drag to inspect five-minute samples. Segments outside astronomical night are dimmed.', altitude: 'Altitude', azimuth: 'Azimuth', illumination: 'Illumination', sun: 'Sun', engine: 'Geometric topocentric coordinates without atmospheric refraction.', error: 'Check the location, object, and period.',
+  },
+} as const;
+const t = texts[lang];
+const photos = await getCollection('fotos');
+const latestPhotoByObject = new Map<string, (typeof photos)[number]>();
+for (const photo of [...photos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
+  if (photo.data.objecte_astronomic && !latestPhotoByObject.has(photo.data.objecte_astronomic)) latestPhotoByObject.set(photo.data.objecte_astronomic, photo);
+}
+const photoAlias = (id: string, catalogName: string) => {
+  const photo = latestPhotoByObject.get(id);
+  if (!photo) return undefined;
+  const localizedName = photoText(photo, lang).objecte;
+  const escapedCatalog = [...catalogName.replace(/\s+/g, '')].map((character) => character.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s*');
+  const alias = localizedName.replace(new RegExp(`^\\s*${escapedCatalog}(?:\\s*\\((?:HOO|SHO|Hα|NN)\\))?\\s*(?:[–—,:-]\\s*)?`, 'i'), '').trim();
+  return alias || undefined;
+};
+const objects = objectsData
+  .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
+  .map((object) => ({ id: object.id, catalogName: object.catalogName, commonName: object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' }));
+const photographed = objects.filter((object) => object.source === 'gallery');
+const pending = objects.filter((object) => object.source === 'pending');
+const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\u003c');
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
+  <main class="planning" data-planning-root>
+    <header class="planning__header">
+      <p class="planning__eyebrow">UTC · 5 min · J2000</p>
+      <h1>{t.title}</h1>
+      <p>{t.intro}</p>
+      <small>{t.engine}</small>
+    </header>
+
+    <form class="planning-controls" data-planning-form>
+      <fieldset class="planning-panel">
+        <legend>{t.location}</legend>
+        <div class="planning-fields planning-fields--location">
+          <label><span>{t.locationName}</span><input name="locationName" type="text" value="L’Ampolla" /></label>
+          <label><span>{t.latitude}</span><input name="latitude" type="number" min="-90" max="90" step="0.00001" value="40.80194" required /></label>
+          <label><span>{t.longitude}</span><input name="longitude" type="number" min="-180" max="180" step="0.00001" value="0.69361" required /></label>
+        </div>
+        <div class="planning-panel__footer"><small>{t.session}</small><button type="button" class="planning-button planning-button--quiet" data-restore-location>{t.restore}</button></div>
+      </fieldset>
+
+      <fieldset class="planning-panel planning-panel--object">
+        <legend>{t.object}</legend>
+        <nav class="planning-object-modes" aria-label={t.object}>
+          <button type="button" data-object-mode="local" aria-pressed="true">{t.localObject}</button>
+          <button type="button" data-object-mode="simbad" aria-pressed="false">{t.simbad}</button>
+          <button type="button" data-object-mode="manual" aria-pressed="false">{t.manual}</button>
+        </nav>
+        <div data-object-panel="local">
+          <label><span>{t.localObject}</span><select name="localObject">
+            <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.catalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
+            {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.catalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
+          </select></label>
+        </div>
+        <div class="planning-simbad" data-object-panel="simbad" hidden>
+          <p data-simbad-result aria-live="polite"></p>
+          <label><span>{t.simbadQuery}</span><span class="planning-simbad__row"><input name="simbadQuery" type="search" placeholder={t.simbadPlaceholder} autocomplete="off" /><button type="button" class="planning-button planning-button--quiet" data-resolve-simbad>{t.resolve}</button></span></label>
+          <small>{t.simbadNote}</small>
+        </div>
+        <div class="planning-fields" data-object-panel="manual" hidden>
+          <label><span>{t.manualCoordinates}</span><input name="manualName" type="text" placeholder="J2000" /></label>
+          <label><span>{t.ra}</span><input name="manualRa" type="number" min="0" max="359.999999" step="0.000001" /></label>
+          <label><span>{t.dec}</span><input name="manualDec" type="number" min="-90" max="90" step="0.000001" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="planning-panel planning-panel--period">
+        <legend>{t.period}</legend>
+        <div class="planning-fields">
+          <label><span>{t.year}</span><input name="year" type="number" min="1900" max="2200" required /></label>
+          <label><span>{t.week}</span><input name="week" type="number" min="1" max="53" required /></label>
+          <output class="planning-week-range" data-week-range aria-live="polite"></output>
+          <button class="planning-button" type="submit" data-calculate>{t.calculate}</button>
+        </div>
+        <p class="planning-error" data-planning-error hidden>{t.error}</p>
+      </fieldset>
+    </form>
+
+    <section class="planning-results" data-results hidden>
+      <div class="planning-section-heading"><p>UTC</p><h2>{t.comparison}</h2><strong class="planning-selected-object" data-selected-object></strong><span class="planning-week-context" data-week-label></span></div>
+      <div class="planning-table-wrap">
+        <table class="planning-table">
+          <thead><tr><th>{t.night}</th><th>{t.darkness}</th><th>{t.maxAltitude}</th><th>{t.effective}</th><th>{t.moonDown}</th><th>{t.bestMoonDown}</th><th>{t.bestMoonUp}</th><th>{t.moon}</th><th>{t.separation}</th></tr></thead>
+          <tbody data-night-rows></tbody>
+        </table>
+      </div>
+
+      <section class="planning-night" data-night-detail>
+        <div class="planning-section-heading planning-section-heading--night"><p data-night-date>UTC</p><h2>{t.detail}</h2></div>
+        <div class="planning-legend"><span class="planning-legend__object">— {t.objectCurve}</span><span class="planning-legend__moon">— {t.moonCurve}</span><span class="planning-legend__threshold">┄ {t.threshold}</span><span class="planning-legend__darkness">■ {t.astronomyNight}</span></div>
+        <div class="planning-chart" data-chart-wrap>
+          <svg viewBox="0 0 1000 430" role="img" aria-label={t.detail} data-night-chart></svg>
+          <div class="planning-tooltip" data-chart-tooltip hidden></div>
+        </div>
+        <p class="planning-chart-help">{t.chartHelp}</p>
+      </section>
+    </section>
+  </main>
+</Layout>
+
+<script type="application/json" id="planning-data" set:html={clientData}></script>
+<script>
+  import { DEFAULT_LOCATION, analyzeWeek, isoWeekStart, isoWeeksInYear } from '../../lib/planning/engine.mjs';
+  import { loadPlanningSession, savePlanningSession } from '../../lib/planning/session.mjs';
+  import { findLocalObject, resolveSimbad } from '../../lib/planning/simbad.mjs';
+
+  const config = JSON.parse(document.querySelector('#planning-data')?.textContent ?? '{}');
+  const root = document.querySelector<HTMLElement>('[data-planning-root]');
+  const form = document.querySelector<HTMLFormElement>('[data-planning-form]');
+  if (!root || !form) throw new Error('Planning interface not found');
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement;
+  const results = root.querySelector<HTMLElement>('[data-results]');
+  const error = root.querySelector<HTMLElement>('[data-planning-error]');
+  const calculateButton = root.querySelector<HTMLButtonElement>('[data-calculate]');
+  const rows = root.querySelector<HTMLTableSectionElement>('[data-night-rows]');
+  const chart = root.querySelector<SVGSVGElement>('[data-night-chart]');
+  const tooltip = root.querySelector<HTMLElement>('[data-chart-tooltip]');
+  const simbadButton = root.querySelector<HTMLButtonElement>('[data-resolve-simbad]');
+  const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
+  const weekRange = root.querySelector<HTMLOutputElement>('[data-week-range]');
+  let analysis: any = null;
+  let selectedNight: any = null;
+  let resolvedSimbad: any = null;
+  let objectMode = sessionStorage.getItem('deepskyastro:planning-object-mode') ?? 'local';
+
+  const now = new Date();
+  const iso = (() => {
+    const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    day.setUTCDate(day.getUTCDate() + 4 - (day.getUTCDay() || 7));
+    const start = new Date(Date.UTC(day.getUTCFullYear(), 0, 1));
+    return { year: day.getUTCFullYear(), week: Math.ceil((((day.getTime() - start.getTime()) / 86400000) + 1) / 7) };
+  })();
+
+  const session = loadPlanningSession(sessionStorage);
+  field('locationName').value = session.location.name ?? '';
+  field('latitude').value = String(session.location.latitudeDeg);
+  field('longitude').value = String(session.location.longitudeDeg);
+  field('year').value = String(session.isoYear ?? iso.year);
+  field('week').value = String(session.isoWeek ?? iso.week);
+  const updateWeekRange = () => {
+    if (!weekRange) return;
+    const year = Number(field('year').value);
+    const week = Number(field('week').value);
+    if (!Number.isInteger(year) || !Number.isInteger(week) || week < 1 || week > isoWeeksInYear(year)) { weekRange.textContent = ''; return; }
+    const start = isoWeekStart(year, week);
+    const end = new Date(start.getTime() + 6 * 86400000);
+    const formatter = new Intl.DateTimeFormat({ ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[config.lang] ?? 'es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+    weekRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(start, end) : `${formatter.format(start)} — ${formatter.format(end)}`} · UTC`;
+  };
+  updateWeekRange();
+  if (session.objectInputMode) objectMode = session.objectInputMode;
+  if (session.object?.localObjectId && config.objects.some((object: any) => object.id === session.object.localObjectId)) field('localObject').value = session.object.localObjectId;
+  else if (session.object?.source === 'simbad') {
+    resolvedSimbad = session.object;
+    field('simbadQuery').value = session.object.canonicalName ?? session.object.displayName;
+    if (simbadResult) simbadResult.textContent = `${session.object.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
+  }
+
+  const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];
+  const modePanels = [...root.querySelectorAll<HTMLElement>('[data-object-panel]')];
+  const setObjectMode = (mode: string, changed = false) => {
+    objectMode = ['local', 'simbad', 'manual'].includes(mode) ? mode : 'local';
+    modeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.objectMode === objectMode)));
+    modePanels.forEach((panel) => { panel.hidden = panel.dataset.objectPanel !== objectMode; });
+    sessionStorage.setItem('deepskyastro:planning-object-mode', objectMode);
+    if (changed) { markDirty(); persist(); }
+  };
+  modeButtons.forEach((button) => button.addEventListener('click', () => setObjectMode(button.dataset.objectMode ?? 'local', true)));
+  setObjectMode(objectMode);
+
+  root.querySelector('[data-restore-location]')?.addEventListener('click', () => {
+    field('locationName').value = DEFAULT_LOCATION.name;
+    field('latitude').value = String(DEFAULT_LOCATION.latitudeDeg);
+    field('longitude').value = String(DEFAULT_LOCATION.longitudeDeg);
+    persist();
+    markDirty();
+  });
+
+  const locationValue = () => ({
+    name: field('locationName').value.trim() || `${Number(field('latitude').value).toFixed(5)}, ${Number(field('longitude').value).toFixed(5)}`,
+    latitudeDeg: Number(field('latitude').value), longitudeDeg: Number(field('longitude').value), elevationM: 0,
+  });
+  const objectValue = () => {
+    if (objectMode === 'manual') return {
+      displayName: field('manualName').value.trim() || 'J2000', raDeg: Number(field('manualRa').value), decDeg: Number(field('manualDec').value), epoch: 'J2000', frame: 'ICRS', source: 'manual',
+    };
+    if (objectMode === 'simbad' && resolvedSimbad) return resolvedSimbad;
+    const selected = config.objects.find((object: any) => object.id === field('localObject').value);
+    return { displayName: selected.commonName ? `${selected.catalogName} · ${selected.commonName}` : selected.catalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
+  };
+  const persist = () => {
+    const location = locationValue();
+    if (!Number.isFinite(location.latitudeDeg) || !Number.isFinite(location.longitudeDeg)) return;
+    savePlanningSession(sessionStorage, { version: 1, location, object: objectValue(), objectInputMode: objectMode, isoYear: Number(field('year').value), isoWeek: Number(field('week').value), selectedNightDateUtc: selectedNight?.nightDateUtc });
+  };
+  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
+  ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
+  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; });
+  field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; });
+  field('simbadQuery').addEventListener('input', () => simbadButton?.classList.add('is-dirty'));
+
+  simbadButton?.addEventListener('click', async () => {
+    const query = field('simbadQuery').value.trim();
+    if (!query) return;
+    simbadButton.disabled = true; simbadButton.classList.remove('is-dirty'); simbadButton.textContent = config.texts.resolving;
+    if (simbadResult) simbadResult.textContent = '';
+    try {
+      const local = findLocalObject(config.objects, query);
+      if (local) {
+        field('localObject').value = local.id; resolvedSimbad = null;
+        if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.catalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
+      } else {
+        resolvedSimbad = await resolveSimbad(query);
+        if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${resolvedSimbad.raDeg.toFixed(6)}° · Dec ${resolvedSimbad.decDeg.toFixed(6)}°`;
+      }
+      markDirty(); persist();
+    } catch (caught) { console.error(caught); if (simbadResult) simbadResult.textContent = config.texts.simbadError; }
+    finally { simbadButton.disabled = false; simbadButton.textContent = config.texts.resolve; }
+  });
+
+  const minutes = (value: number) => `${Math.floor(value / 60)} h ${Math.round(value % 60).toString().padStart(2, '0')} min`;
+  const time = (value?: string) => value ? `${value.slice(11, 16)} UTC` : config.texts.none;
+  const interval = (items: any[]) => items.length ? items.map((item) => `${time(item.startUtc)}–${time(item.endUtc)}`).join(', ') : config.texts.none;
+  const degrees = (value?: number | null) => Number.isFinite(value) ? `${Number(value).toFixed(1)}°` : config.texts.none;
+  const percent = (value?: number | null) => Number.isFinite(value) ? `${(Number(value) * 100).toFixed(0)} %` : config.texts.none;
+
+  const renderRows = () => {
+    if (!rows || !analysis) return;
+    rows.innerHTML = analysis.nights.map((night: any) => {
+      const moonMoment = night.bestMoonUp;
+      const selected = night.nightDateUtc === selectedNight?.nightDateUtc;
+      return `<tr class="${selected ? 'is-selected' : ''}" data-night="${night.nightDateUtc}">
+        <th><button type="button" data-select-night="${night.nightDateUtc}" aria-pressed="${selected}">${night.nightDateUtc}<span>${config.texts.select}</span></button></th>
+        <td>${interval(night.intervals.astronomicalNight)}</td><td>${degrees(night.maxObjectAltitudeDeg)}</td>
+        <td>${night.status === 'available' ? `${minutes(night.effectiveMinutes)}<small>${interval(night.intervals.effective)}</small>` : config.texts.unavailable}</td>
+        <td>${minutes(night.effectiveMoonDownMinutes)}</td><td>${time(night.bestMoonDown?.timestampUtc)}</td><td>${time(moonMoment?.timestampUtc)}</td>
+        <td>${percent(moonMoment?.moonIlluminationFraction)}</td><td>${degrees(moonMoment?.moonSeparationDeg)}</td></tr>`;
+    }).join('');
+    rows.querySelectorAll<HTMLButtonElement>('[data-select-night]').forEach((button) => button.addEventListener('click', () => selectNight(button.dataset.selectNight)));
+  };
+
+  const svgNode = (name: string, attributes: Record<string, string>) => {
+    const node = document.createElementNS('http://www.w3.org/2000/svg', name);
+    Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, value));
+    return node;
+  };
+  const renderChart = () => {
+    if (!chart || !selectedNight) return;
+    chart.replaceChildren();
+    const samples = selectedNight.samples;
+    const left = 58, right = 980, top = 18, bottom = 375;
+    const x = (index: number) => left + index / (samples.length - 1) * (right - left);
+    const y = (altitude: number) => bottom - (Math.max(-90, Math.min(90, altitude)) + 90) / 180 * (bottom - top);
+    selectedNight.intervals.astronomicalNight.forEach((period: any) => {
+      const startIndex = (Date.parse(period.startUtc) - Date.parse(samples[0].timestampUtc)) / 300000;
+      const endIndex = (Date.parse(period.endUtc) - Date.parse(samples[0].timestampUtc)) / 300000;
+      chart.append(svgNode('rect', { x: String(x(startIndex)), y: String(top), width: String(x(endIndex) - x(startIndex)), height: String(bottom - top), class: 'planning-chart__darkness' }));
+    });
+    [-90, -60, -30, 0, 30, 60, 90].forEach((tick) => {
+      chart.append(svgNode('line', { x1: String(left), x2: String(right), y1: String(y(tick)), y2: String(y(tick)), class: tick === 30 ? 'planning-chart__threshold' : 'planning-chart__grid' }));
+      const label = svgNode('text', { x: '48', y: String(y(tick) + 4), 'text-anchor': 'end', class: 'planning-chart__label' }); label.textContent = `${tick}°`; chart.append(label);
+    });
+    const path = (key: string, className: string, selectedSamples = samples) => chart.append(svgNode('polyline', { points: selectedSamples.map((sample: any) => `${x(samples.indexOf(sample))},${y(sample[key])}`).join(' '), class: className }));
+    const nightSegments = (key: string, className: string) => {
+      let segment: any[] = [];
+      samples.forEach((sample: any, index: number) => {
+        if (sample.isAstronomicalNight) segment.push(sample);
+        if ((!sample.isAstronomicalNight || index === samples.length - 1) && segment.length) { if (segment.length > 1) path(key, className, segment); segment = []; }
+      });
+    };
+    path('objectAltitudeDeg', 'planning-chart__object-context'); path('moonAltitudeDeg', 'planning-chart__moon-context');
+    nightSegments('objectAltitudeDeg', 'planning-chart__object'); nightSegments('moonAltitudeDeg', 'planning-chart__moon');
+    for (let hour = 0; hour <= 24; hour += 2) {
+      const index = hour * 12;
+      const label = svgNode('text', { x: String(x(index)), y: '403', 'text-anchor': 'middle', class: 'planning-chart__label' });
+      label.textContent = `${samples[index].timestampUtc.slice(11, 16)}`; chart.append(label);
+    }
+    const utc = svgNode('text', { x: String(right), y: '422', 'text-anchor': 'end', class: 'planning-chart__utc' }); utc.textContent = 'UTC'; chart.append(utc);
+    const cursor = svgNode('line', { x1: String(left), x2: String(left), y1: String(top), y2: String(bottom), class: 'planning-chart__cursor', hidden: '' }); chart.append(cursor);
+    const inspect = (event: PointerEvent) => {
+      const rect = chart.getBoundingClientRect();
+      const viewX = (event.clientX - rect.left) / rect.width * 1000;
+      const index = Math.max(0, Math.min(samples.length - 1, Math.round((viewX - left) / (right - left) * (samples.length - 1))));
+      const sample = samples[index]; const cursorX = x(index); cursor.removeAttribute('hidden'); cursor.setAttribute('x1', String(cursorX)); cursor.setAttribute('x2', String(cursorX));
+      if (tooltip) { tooltip.hidden = false; tooltip.style.left = `${Math.min(82, Math.max(4, event.clientX - rect.left) / rect.width * 100)}%`; tooltip.innerHTML = `<strong>${time(sample.timestampUtc)}</strong><span>${config.texts.objectCurve}: ${degrees(sample.objectAltitudeDeg)} · ${config.texts.azimuth}: ${degrees(sample.objectAzimuthDeg)}</span><span>${config.texts.moonCurve}: ${degrees(sample.moonAltitudeDeg)} · ${config.texts.illumination}: ${percent(sample.moonIlluminationFraction)}</span><span>${config.texts.separation}: ${degrees(sample.moonSeparationDeg)} · ${config.texts.sun}: ${degrees(sample.sunAltitudeDeg)}</span>`; }
+    };
+    chart.onpointermove = inspect; chart.onpointerdown = (event) => { chart.setPointerCapture(event.pointerId); inspect(event); };
+  };
+  const selectNight = (date?: string) => {
+    selectedNight = analysis?.nights.find((night: any) => night.nightDateUtc === date) ?? analysis?.nights[0];
+    root.querySelector<HTMLElement>('[data-night-date]')!.textContent = `${selectedNight.nightDateUtc} · UTC`;
+    renderRows(); renderChart(); persist();
+  };
+
+  const calculate = async () => {
+    if (error) error.hidden = true;
+    const location = locationValue(); const object = objectValue(); const isoYear = Number(field('year').value); const isoWeek = Number(field('week').value);
+    const valid = form.reportValidity() && Number.isFinite(object.raDeg) && object.raDeg >= 0 && object.raDeg < 360 && Number.isFinite(object.decDeg) && object.decDeg >= -90 && object.decDeg <= 90 && isoWeek <= isoWeeksInYear(isoYear);
+    if (!valid) { if (error) error.hidden = false; return; }
+    if (calculateButton) { calculateButton.disabled = true; calculateButton.classList.remove('is-dirty'); calculateButton.textContent = config.texts.calculating; }
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
+    try {
+      analysis = analyzeWeek({ isoYear, isoWeek, location, object });
+      selectedNight = analysis.nights.find((night: any) => night.nightDateUtc === session.selectedNightDateUtc) ?? analysis.nights.find((night: any) => night.status === 'available') ?? analysis.nights[0];
+      root.querySelector<HTMLElement>('[data-selected-object]')!.textContent = object.displayName;
+      root.querySelector<HTMLElement>('[data-week-label]')!.textContent = `${location.name} · ${analysis.weekStartUtc.slice(0, 10)} — ${new Date(Date.parse(analysis.weekEndUtc) - 86400000).toISOString().slice(0, 10)} UTC`;
+      if (results) results.hidden = false; selectNight(selectedNight.nightDateUtc);
+    } catch (caught) { console.error(caught); if (error) error.hidden = false; }
+    finally { if (calculateButton) { calculateButton.disabled = false; calculateButton.textContent = config.texts.calculate; } }
+  };
+  const markDirty = () => calculateButton?.classList.add('is-dirty');
+  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
+  form.addEventListener('submit', (event) => { event.preventDefault(); calculate(); });
+  calculate();
+</script>

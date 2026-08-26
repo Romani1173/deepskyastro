@@ -14,13 +14,15 @@
     "astro": "astro",
     "visibility:generate": "node scripts/generate-visibility-data.mjs",
     "visibility:chart": "node scripts/generate-visibility-chart.mjs",
-    "visibility:test": "node --test scripts/visibility.test.mjs"
+    "visibility:test": "node --test scripts/visibility.test.mjs",
+    "planning:test": "node --test scripts/planning.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.2",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.0.7",
+    "astronomy-engine": "^2.1.19",
     "sharp": "^0.35.0"
   }
 }
