@@ -107,9 +107,9 @@ main { padding: 1rem 0 4rem; }
 .photo-card a { display: block; height: 100%; text-decoration: none; }
 .photo-card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-bottom: 1px solid var(--color-border); border-radius: .75rem .75rem 0 0; }
 .photo-card__features { position: absolute; z-index: 1; top: .65rem; right: .65rem; display: flex; gap: .38rem; }
-.photo-feature-badge { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; width: 1.75rem; height: 1.75rem; padding: 0; border: 1px solid currentColor; border-radius: 50%; background: rgba(8, 11, 18, .88); font-family: var(--font-technical); font-size: .78rem; font-weight: 700; line-height: 1; box-shadow: 0 3px 12px rgba(0, 0, 0, .32); }
+.photo-feature-badge { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 1.75rem; padding: .38rem .58rem; border: 1px solid currentColor; border-radius: .38rem; background: rgba(8, 11, 18, .9); font-family: var(--font-technical); font-size: .68rem; font-weight: 700; line-height: 1; letter-spacing: .01em; box-shadow: 0 3px 12px rgba(0, 0, 0, .32); }
 .photo-card__features button { cursor: zoom-in; transition: background .18s ease, transform .18s ease; }
-.photo-card__features button:hover, .photo-card__features button:focus-visible { background: rgba(24, 31, 46, .98); transform: scale(1.1); }
+.photo-card__features button:hover, .photo-card__features button:focus-visible { background: rgba(24, 31, 46, .98); transform: translateY(-1px); }
 .photo-feature-badge--process { color: var(--color-accent); }
 .photo-feature-badge--visibility { color: #55d9b3; }
 .context-tooltip { position: relative; }
@@ -118,9 +118,6 @@ main { padding: 1rem 0 4rem; }
 .context-tooltip--feature { display: inline-flex; }
 .context-tooltip--feature .context-tooltip__bubble { top: calc(100% + .55rem); right: 0; }
 .context-tooltip--home .context-tooltip__bubble { right: 0; bottom: calc(100% + .65rem); }
-.photo-feature-legend { display: flex; justify-content: flex-end; gap: 1rem; align-items: center; margin: -.15rem 0 .8rem; color: var(--color-muted); font-size: .72rem; }
-.photo-feature-legend > span { display: inline-flex; gap: .4rem; align-items: center; }
-.photo-feature-legend .photo-feature-badge { width: 1.35rem; height: 1.35rem; font-size: .62rem; box-shadow: none; }
 .feature-preview .image-lightbox__meta { justify-content: flex-start; }
 .photo-card__body { padding: 1.15rem; }
 .photo-card h2 { margin: 0 0 .75rem; color: var(--color-accent); font-size: 1.35rem; line-height: 1.15; }

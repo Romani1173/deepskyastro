@@ -3,7 +3,6 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import CatalogHeader from './CatalogHeader.astro';
 import PhotoCard from './PhotoCard.astro';
-import PhotoFeatureLegend from './PhotoFeatureLegend.astro';
 import PhotoFeaturePreview from './PhotoFeaturePreview.astro';
 import type { Lang } from '../i18n';
 import { copy, languageLinks } from '../i18n';
@@ -47,7 +46,6 @@ const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))]
 				>{fotos.length} {fotos.length === 1 ? t.object : t.objects}</p>
 			</div>
 		</div>
-		<PhotoFeatureLegend lang={lang} />
 		<div class="photo-grid" id="grid-fotos">
 			{fotos.map((foto) => {
 				const text = photoText(foto, lang);
