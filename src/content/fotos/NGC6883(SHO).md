@@ -48,14 +48,14 @@ imatges_addicionals:
   - tipus: "annotated"
     fitxer: "NGC6883_SHO_annotated.jpg"
     titol: "Objectes identificats"
-    descripcio: "Identificació de NGC6883, la nebulosa fosca B147 i LDN 853 dins del camp fotografiat en paleta SHO."
+    descripcio: "Identificació de NGC6883, la nebulosa fosca B147 i LDN853 dins del camp fotografiat en paleta SHO."
     traduccions:
       es:
         titol: "Objetos identificados"
-        descripcio: "Identificación de NGC6883, la nebulosa oscura B147 y LDN 853 dentro del campo fotografiado con paleta SHO."
+        descripcio: "Identificación de NGC6883, la nebulosa oscura B147 y LDN853 dentro del campo fotografiado con paleta SHO."
       en:
         titol: "Identified objects"
-        descripcio: "Identification of NGC6883, the dark nebula B147 and LDN 853 within the field photographed in the SHO palette."
+        descripcio: "Identification of NGC6883, the dark nebula B147 and LDN853 within the field photographed in the SHO palette."
   - tipus: "process"
     fitxer: "NGC6883_SHO_process.jpg"
     titol: "Flux de postprocessament"

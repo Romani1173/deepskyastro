@@ -48,14 +48,14 @@ imatges_addicionals:
   - tipus: "annotated"
     fitxer: "NGC6883_annotated.jpg"
     titol: "Objectes identificats"
-    descripcio: "Identificació de NGC6883, l'estrella Wolf-Rayet WR134, la nebulosa fosca B147 i LDN 853 dins del camp fotografiat."
+    descripcio: "Identificació de NGC6883, l'estrella Wolf-Rayet WR134, la nebulosa fosca B147 i LDN853 dins del camp fotografiat."
     traduccions:
       es:
         titol: "Objetos identificados"
-        descripcio: "Identificación de NGC6883, la estrella Wolf-Rayet WR134, la nebulosa oscura B147 y LDN 853 dentro del campo fotografiado."
+        descripcio: "Identificación de NGC6883, la estrella Wolf-Rayet WR134, la nebulosa oscura B147 y LDN853 dentro del campo fotografiado."
       en:
         titol: "Identified objects"
-        descripcio: "Identification of NGC6883, the Wolf-Rayet star WR134, the dark nebula B147 and LDN 853 within the photographed field."
+        descripcio: "Identification of NGC6883, the Wolf-Rayet star WR134, the dark nebula B147 and LDN853 within the photographed field."
   - tipus: "process"
     fitxer: "NGC6883_HOO_process.jpg"
     titol: "Flux de postprocessament"

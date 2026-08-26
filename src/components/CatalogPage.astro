@@ -14,6 +14,7 @@ const { lang, fotos } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
 const searchableText = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
+const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))].sort((a, b) => a.localeCompare(b, lang, { sensitivity: 'base' }));
 ---
 
 <Layout title={t.catalogue} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
@@ -33,6 +34,10 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 					<label for="ordre">{t.order}</label>
 					<select id="ordre"><option value="date">{t.recent}</option><option value="name">{t.name}</option></select>
 				</div>
+				<div class="catalog-order">
+					<label for="constellacio">{t.constellation}</label>
+					<select id="constellacio"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select>
+				</div>
 				<p
 					class="catalog-count"
 					id="recompte-fotos"
@@ -47,7 +52,7 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 			{fotos.map((foto) => {
 				const text = photoText(foto, lang);
 				const searchIndex = searchableText([foto.id, text.objecte, foto.data.constellacio, foto.data.categoria].join(' '));
-				return <div data-card data-search={searchIndex} data-name={text.objecte} data-date={foto.data.entorn.data.valueOf()}><PhotoCard foto={foto} lang={lang} /></div>;
+				return <div data-card data-search={searchIndex} data-constellation={foto.data.constellacio} data-name={text.objecte} data-date={foto.data.entorn.data.valueOf()}><PhotoCard foto={foto} lang={lang} /></div>;
 			})}
 			<p class="empty-state" id="sense-resultats" hidden>{t.noResults}</p>
 		</div>
@@ -58,6 +63,7 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 <script>
 	const search = document.querySelector<HTMLInputElement>('#buscador');
 	const order = document.querySelector<HTMLSelectElement>('#ordre');
+	const constellation = document.querySelector<HTMLSelectElement>('#constellacio');
 	const grid = document.querySelector<HTMLElement>('#grid-fotos');
 	const cards = [...document.querySelectorAll<HTMLElement>('[data-card]')];
 	const empty = document.querySelector<HTMLElement>('#sense-resultats');
@@ -69,17 +75,22 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 		count.textContent = `${visible} ${label ?? ''}`.trim();
 	};
 
-	search?.addEventListener('input', () => {
-		const term = search.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLocaleLowerCase();
+	const applyFilters = () => {
+		const term = search?.value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLocaleLowerCase() ?? '';
+		const selectedConstellation = constellation?.value ?? '';
 		let visible = 0;
 		cards.forEach((card) => {
-			const matches = card.dataset.search?.includes(term) ?? false;
+			const matchesSearch = card.dataset.search?.includes(term) ?? false;
+			const matchesConstellation = !selectedConstellation || card.dataset.constellation === selectedConstellation;
+			const matches = matchesSearch && matchesConstellation;
 			card.hidden = !matches;
 			if (matches) visible += 1;
 		});
 		if (empty) empty.hidden = visible !== 0;
 		updateCount(visible);
-	});
+	};
+	search?.addEventListener('input', applyFilters);
+	constellation?.addEventListener('change', applyFilters);
 
 	order?.addEventListener('change', () => {
 		const sorted = [...cards].sort((a, b) => order.value === 'name'
