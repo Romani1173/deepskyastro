@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DEFAULT_LOCATION, analyzeNight, analyzeWeek, isoWeekStart, isoWeeksInYear, sampleInstant, thresholdIntervals } from '../src/lib/planning/engine.mjs';
 import { loadPlanningSession, savePlanningSession } from '../src/lib/planning/session.mjs';
-import { findLocalObject, parseSesameXml } from '../src/lib/planning/simbad.mjs';
+import { findLocalObject, parseSesameXml, parseSimbadAliases } from '../src/lib/planning/simbad.mjs';
 import { formatCatalogDesignations } from '../src/lib/catalog-formatting.mjs';
 
 const m42 = { displayName: 'M42', raDeg: 83.82208, decDeg: -5.39111, source: 'gallery' };
@@ -76,4 +76,14 @@ test('local objects are resolved before an external lookup, ignoring catalogue s
 test('Sesame XML is reduced to name and J2000 coordinates', () => {
   const object = parseSesameXml('<Sesame><oname>M 31</oname><jradeg>10.6847083</jradeg><jdedeg>41.26875</jdedeg></Sesame>', 'M31');
   assert.deepEqual(object, { displayName: 'M 31', canonicalName: 'M 31', raDeg: 10.6847083, decDeg: 41.26875, epoch: 'J2000', frame: 'ICRS', source: 'simbad' });
+});
+
+test('SIMBAD identifiers choose a useful NAME alias', () => {
+  const identifiers = `Identifiers (12):
+   NAME Keyhole                         1E 1044.0-5940                       BRAN 316A
+   NGC 3372                             RCW 53                               NAME Car Nebula
+   NAME Carina Nebula                   NAME eta Car Nebula                  NAME Keyhole Nebula
+
+Bibcodes:`;
+  assert.equal(parseSimbadAliases(identifiers), 'Carina Nebula');
 });

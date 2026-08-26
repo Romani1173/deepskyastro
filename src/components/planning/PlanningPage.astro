@@ -15,7 +15,7 @@ const base = import.meta.env.BASE_URL;
 const texts = {
   ca: {
     title: 'Planificació', intro: 'Eina avançada per estudiar un únic objecte des d’una ubicació concreta. Tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
-    location: '1 · Ubicació', locationName: 'Nom opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicació es conserva només durant aquesta sessió.',
+    location: '1 · Ubicació', locationName: 'Nom opcional', savedLocations: 'Cercar ubicació', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicació es conserva només durant aquesta sessió.',
     object: '2 · Objecte', localObject: 'Objecte local', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
     period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
     comparison: '4 · Comparació de les set nits', night: 'Nit UTC', darkness: 'Nit astronòmica', maxAltitude: 'Alt. màx. nocturna', effective: 'Finestra >30°', moonDown: 'Sense Lluna', bestMoonDown: 'Millor hora sense Lluna', bestMoonUp: 'Millor hora amb Lluna', moon: 'Lluna', separation: 'Separació', unavailable: 'No supera 30° durant la nit astronòmica', none: '—', select: 'Seleccionar nit',
@@ -23,7 +23,7 @@ const texts = {
   },
   es: {
     title: 'Planificación', intro: 'Estudia un objeto durante siete noches desde una ubicación concreta. Todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
-    location: '1 · Ubicación', locationName: 'Nombre opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicación se conserva únicamente durante esta sesión.',
+    location: '1 · Ubicación', locationName: 'Nombre opcional', savedLocations: 'Buscar ubicación', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicación se conserva únicamente durante esta sesión.',
     object: '2 · Objeto', localObject: 'Objeto local', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
     period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
     comparison: '4 · Comparación de las siete noches', night: 'Noche UTC', darkness: 'Noche astronómica', maxAltitude: 'Altura máxima', effective: 'Ventana >30°', moonDown: 'Tiempo sin Luna', bestMoonDown: 'Mejor hora sin Luna', bestMoonUp: 'Mejor hora con Luna', moon: 'Luna', separation: 'Separación', unavailable: 'No supera 30° durante la noche astronómica', none: '—', select: 'Ver esta noche',
@@ -31,7 +31,7 @@ const texts = {
   },
   en: {
     title: 'Planning', intro: 'Advanced tool for studying one object from a specific location. All calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
-    location: '1 · Location', locationName: 'Optional name', latitude: 'Latitude', longitude: 'Longitude', restore: 'Restore L’Ampolla', session: 'The location is retained only for this browser session.',
+    location: '1 · Location', locationName: 'Optional name', savedLocations: 'Find location', latitude: 'Latitude', longitude: 'Longitude', session: 'The location is retained only for this browser session.',
     object: '2 · Object', localObject: 'Local object', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
     period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
     comparison: '4 · Seven-night comparison', night: 'UTC night', darkness: 'Astronomical night', maxAltitude: 'Night max. alt.', effective: '>30° window', moonDown: 'Moon down', bestMoonDown: 'Best Moon-down time', bestMoonUp: 'Best Moon-up time', moon: 'Moon', separation: 'Separation', unavailable: 'Never above 30° during astronomical night', none: '—', select: 'Select night',
@@ -39,6 +39,23 @@ const texts = {
   },
 } as const;
 const t = texts[lang];
+const moonGuide = {
+  ca: {
+    title: 'Com interpretar la Lluna', separation: 'Separació', effect: 'Efecte probable',
+    rows: [['Menys de 20°', 'Molt desfavorable, especialment amb Lluna brillant'], ['20–40°', 'Interferència important'], ['40–60°', 'Pot ser acceptable amb Lluna moderada o filtres estrets'], ['60–90°', 'Generalment manejable'], ['Més de 90°', 'Situació favorable, tot i que una Lluna plena i alta encara il·lumina el cel']],
+    illumination: 'La il·luminació lunar canvia molt la interpretació:', bullets: ['0–20 %: la separació sol tenir poca importància.', '20–60 %: convé buscar una separació superior a 50–60°.', 'Més de 60 %: fins i tot amb més de 90° pot elevar apreciablement el fons del cel.'],
+  },
+  es: {
+    title: 'Cómo interpretar la Luna', separation: 'Separación', effect: 'Efecto probable',
+    rows: [['Menos de 20°', 'Muy desfavorable, especialmente con Luna brillante'], ['20–40°', 'Interferencia importante'], ['40–60°', 'Puede ser aceptable con Luna moderada o filtros estrechos'], ['60–90°', 'Generalmente manejable'], ['Más de 90°', 'Situación favorable, aunque una Luna llena y alta todavía ilumina el cielo']],
+    illumination: 'La iluminación lunar cambia mucho la interpretación:', bullets: ['0–20 %: la separación suele tener poca importancia.', '20–60 %: conviene buscar una separación superior a 50–60°.', 'Más de 60 %: incluso con más de 90° puede elevar apreciablemente el fondo del cielo.'],
+  },
+  en: {
+    title: 'How to interpret the Moon', separation: 'Separation', effect: 'Likely effect',
+    rows: [['Under 20°', 'Very unfavourable, especially with a bright Moon'], ['20–40°', 'Significant interference'], ['40–60°', 'May be acceptable with a moderate Moon or narrowband filters'], ['60–90°', 'Generally manageable'], ['Over 90°', 'Favourable, although a high full Moon still brightens the sky']],
+    illumination: 'Lunar illumination changes the interpretation considerably:', bullets: ['0–20%: separation usually matters little.', '20–60%: aim for a separation greater than 50–60°.', 'Over 60%: even beyond 90° it can noticeably brighten the sky background.'],
+  },
+}[lang];
 const photos = await getCollection('fotos');
 const latestPhotoByObject = new Map<string, (typeof photos)[number]>();
 for (const photo of [...photos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
@@ -76,11 +93,11 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       <fieldset class="planning-panel">
         <legend>{t.location}</legend>
         <div class="planning-fields planning-fields--location">
-          <label><span>{t.locationName}</span><input name="locationName" type="text" value="L’Ampolla" /></label>
-          <label><span>{t.latitude}</span><input name="latitude" type="number" min="-90" max="90" step="0.00001" value="40.80194" required /></label>
-          <label><span>{t.longitude}</span><input name="longitude" type="number" min="-180" max="180" step="0.00001" value="0.69361" required /></label>
+          <label><span>{t.locationName}</span><select name="locationName" title={t.savedLocations}><option value="">—</option><option value="L’Ampolla" selected>L’Ampolla</option><option value="Barcelona">Barcelona</option></select></label>
+          <label><span>{t.latitude}</span><input name="latitude" type="text" inputmode="decimal" pattern="-?[0-9]+(?:[.,][0-9]+)?" value="40.80194" required /></label>
+          <label><span>{t.longitude}</span><input name="longitude" type="text" inputmode="decimal" pattern="-?[0-9]+(?:[.,][0-9]+)?" value="0.69361" required /></label>
         </div>
-        <div class="planning-panel__footer"><small>{t.session}</small><button type="button" class="planning-button planning-button--quiet" data-restore-location>{t.restore}</button></div>
+        <div class="planning-panel__footer"><small>{t.session}</small></div>
       </fieldset>
 
       <fieldset class="planning-panel planning-panel--object">
@@ -130,7 +147,17 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       </div>
 
       <section class="planning-night" data-night-detail>
-        <div class="planning-section-heading planning-section-heading--night"><p data-night-date>UTC</p><h2>{t.detail}</h2></div>
+        <div class="planning-section-heading planning-section-heading--night">
+          <p data-night-date>UTC</p><h2>{t.detail}</h2>
+          <details class="planning-moon-guide">
+            <summary><span aria-hidden="true">☾</span>{moonGuide.title}</summary>
+            <div class="planning-moon-guide__content">
+              <table><thead><tr><th>{moonGuide.separation}</th><th>{moonGuide.effect}</th></tr></thead><tbody>{moonGuide.rows.map((row) => <tr><th>{row[0]}</th><td>{row[1]}</td></tr>)}</tbody></table>
+              <p>{moonGuide.illumination}</p>
+              <ul>{moonGuide.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+            </div>
+          </details>
+        </div>
         <div class="planning-legend"><span class="planning-legend__object">— {t.objectCurve}</span><span class="planning-legend__moon">— {t.moonCurve}</span><span class="planning-legend__threshold">┄ {t.threshold}</span><span class="planning-legend__darkness">■ {t.astronomyNight}</span></div>
         <div class="planning-chart" data-chart-wrap>
           <svg viewBox="0 0 1000 430" role="img" aria-label={t.detail} data-night-chart></svg>
@@ -144,7 +171,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
 
 <script type="application/json" id="planning-data" set:html={clientData}></script>
 <script>
-  import { DEFAULT_LOCATION, analyzeWeek, isoWeekStart, isoWeeksInYear } from '../../lib/planning/engine.mjs';
+  import { analyzeWeek, isoWeekStart, isoWeeksInYear } from '../../lib/planning/engine.mjs';
   import { loadPlanningSession, savePlanningSession } from '../../lib/planning/session.mjs';
   import { findLocalObject, resolveSimbad } from '../../lib/planning/simbad.mjs';
   import { formatCatalogDesignations } from '../../lib/catalog-formatting.mjs';
@@ -160,6 +187,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const rows = root.querySelector<HTMLTableSectionElement>('[data-night-rows]');
   const chart = root.querySelector<SVGSVGElement>('[data-night-chart]');
   const tooltip = root.querySelector<HTMLElement>('[data-chart-tooltip]');
+  const nightDetail = root.querySelector<HTMLElement>('[data-night-detail]');
   const simbadButton = root.querySelector<HTMLButtonElement>('[data-resolve-simbad]');
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
   const weekRange = root.querySelector<HTMLOutputElement>('[data-week-range]');
@@ -182,6 +210,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   field('longitude').value = String(session.location.longitudeDeg);
   field('year').value = String(session.isoYear ?? iso.year);
   field('week').value = String(session.isoWeek ?? iso.week);
+  const locationPresets: Record<string, { name: string; latitudeDeg: number; longitudeDeg: number }> = {
+    lampolla: { name: 'L’Ampolla', latitudeDeg: 40.80194, longitudeDeg: 0.69361 },
+    barcelona: { name: 'Barcelona', latitudeDeg: 41.3926, longitudeDeg: 2.1865 },
+  };
   const updateWeekRange = () => {
     if (!weekRange) return;
     const year = Number(field('year').value);
@@ -195,7 +227,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   updateWeekRange();
   if (session.objectInputMode) objectMode = session.objectInputMode;
   if (session.object?.localObjectId && config.objects.some((object: any) => object.id === session.object.localObjectId)) field('localObject').value = session.object.localObjectId;
-  else if (session.object?.source === 'simbad') {
+  else if (session.object?.source === 'simbad' && Number.isFinite(session.object.raDeg) && Number.isFinite(session.object.decDeg)) {
     resolvedSimbad = { ...session.object, displayName: formatCatalogDesignations(session.object.displayName) };
     field('simbadQuery').value = session.object.canonicalName ?? session.object.displayName;
     if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
@@ -208,28 +240,37 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     modeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.objectMode === objectMode)));
     modePanels.forEach((panel) => { panel.hidden = panel.dataset.objectPanel !== objectMode; });
     sessionStorage.setItem('deepskyastro:planning-object-mode', objectMode);
-    if (changed) { markDirty(); persist(); }
+    if (changed) { invalidateObjectResults(); markDirty(); persist(); }
   };
   modeButtons.forEach((button) => button.addEventListener('click', () => setObjectMode(button.dataset.objectMode ?? 'local', true)));
   setObjectMode(objectMode);
 
-  root.querySelector('[data-restore-location]')?.addEventListener('click', () => {
-    field('locationName').value = DEFAULT_LOCATION.name;
-    field('latitude').value = String(DEFAULT_LOCATION.latitudeDeg);
-    field('longitude').value = String(DEFAULT_LOCATION.longitudeDeg);
-    persist();
-    markDirty();
+  field('locationName').addEventListener('change', () => {
+    const preset = Object.values(locationPresets).find((location) => location.name.toLocaleLowerCase() === field('locationName').value.trim().toLocaleLowerCase());
+    if (!preset) return;
+    field('locationName').value = preset.name;
+    field('latitude').value = String(preset.latitudeDeg);
+    field('longitude').value = String(preset.longitudeDeg);
+    persist(); markDirty();
   });
+  ['latitude', 'longitude'].forEach((name) => field(name).addEventListener('input', () => {
+    field('locationName').value = '';
+  }));
+  ['latitude', 'longitude'].forEach((name) => field(name).addEventListener('change', () => {
+    const value = decimalValue(field(name).value);
+    if (Number.isFinite(value)) field(name).value = String(value);
+  }));
 
+  const decimalValue = (value: string) => Number(value.trim().replace(',', '.'));
   const locationValue = () => ({
-    name: field('locationName').value.trim() || `${Number(field('latitude').value).toFixed(5)}, ${Number(field('longitude').value).toFixed(5)}`,
-    latitudeDeg: Number(field('latitude').value), longitudeDeg: Number(field('longitude').value), elevationM: 0,
+    name: field('locationName').value.trim() || `${decimalValue(field('latitude').value).toFixed(5)}, ${decimalValue(field('longitude').value).toFixed(5)}`,
+    latitudeDeg: decimalValue(field('latitude').value), longitudeDeg: decimalValue(field('longitude').value), elevationM: 0,
   });
   const objectValue = () => {
     if (objectMode === 'manual') return {
       displayName: field('manualName').value.trim() || 'J2000', raDeg: Number(field('manualRa').value), decDeg: Number(field('manualDec').value), epoch: 'J2000', frame: 'ICRS', source: 'manual',
     };
-    if (objectMode === 'simbad' && resolvedSimbad) return resolvedSimbad;
+    if (objectMode === 'simbad') return resolvedSimbad ?? { displayName: '—', raDeg: Number.NaN, decDeg: Number.NaN, epoch: 'J2000', frame: 'ICRS', source: 'simbad' };
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
     return { displayName: selected.commonName ? `${selected.displayCatalogName} · ${selected.commonName}` : selected.displayCatalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
   };
@@ -240,8 +281,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   };
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
   ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
-  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; });
-  field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; });
+  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
+  field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
   field('simbadQuery').addEventListener('input', () => simbadButton?.classList.add('is-dirty'));
 
   simbadButton?.addEventListener('click', async () => {
@@ -252,7 +293,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     try {
       const local = findLocalObject(config.objects, query);
       if (local) {
-        field('localObject').value = local.id; resolvedSimbad = null;
+        field('localObject').value = local.id;
+        resolvedSimbad = { displayName: local.commonName ? `${local.displayCatalogName} · ${local.commonName}` : local.displayCatalogName, canonicalName: local.catalogName, raDeg: local.raDeg, decDeg: local.decDeg, epoch: 'J2000', frame: 'ICRS', source: local.source, localObjectId: local.id };
         if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.displayCatalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
       } else {
         resolvedSimbad = await resolveSimbad(query);
@@ -340,8 +382,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const calculate = async () => {
     if (error) error.hidden = true;
     const location = locationValue(); const object = objectValue(); const isoYear = Number(field('year').value); const isoWeek = Number(field('week').value);
-    const valid = form.reportValidity() && Number.isFinite(object.raDeg) && object.raDeg >= 0 && object.raDeg < 360 && Number.isFinite(object.decDeg) && object.decDeg >= -90 && object.decDeg <= 90 && isoWeek <= isoWeeksInYear(isoYear);
-    if (!valid) { if (error) error.hidden = false; return; }
+    const valid = form.reportValidity() && Number.isFinite(location.latitudeDeg) && location.latitudeDeg >= -90 && location.latitudeDeg <= 90 && Number.isFinite(location.longitudeDeg) && location.longitudeDeg >= -180 && location.longitudeDeg <= 180 && Number.isFinite(object.raDeg) && object.raDeg >= 0 && object.raDeg < 360 && Number.isFinite(object.decDeg) && object.decDeg >= -90 && object.decDeg <= 90 && isoWeek <= isoWeeksInYear(isoYear);
+    if (!valid) { if (error) error.hidden = false; invalidateObjectResults(); return; }
     if (calculateButton) { calculateButton.disabled = true; calculateButton.classList.remove('is-dirty'); calculateButton.textContent = config.texts.calculating; }
     await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
     try {
@@ -349,12 +391,23 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       selectedNight = analysis.nights.find((night: any) => night.nightDateUtc === session.selectedNightDateUtc) ?? analysis.nights.find((night: any) => night.status === 'available') ?? analysis.nights[0];
       root.querySelector<HTMLElement>('[data-selected-object]')!.textContent = object.displayName;
       root.querySelector<HTMLElement>('[data-week-label]')!.textContent = `${location.name} · ${analysis.weekStartUtc.slice(0, 10)} — ${new Date(Date.parse(analysis.weekEndUtc) - 86400000).toISOString().slice(0, 10)} UTC`;
-      if (results) results.hidden = false; selectNight(selectedNight.nightDateUtc);
+      if (results) results.hidden = false; if (nightDetail) nightDetail.hidden = false; selectNight(selectedNight.nightDateUtc);
     } catch (caught) { console.error(caught); if (error) error.hidden = false; }
     finally { if (calculateButton) { calculateButton.disabled = false; calculateButton.textContent = config.texts.calculate; } }
   };
   const markDirty = () => calculateButton?.classList.add('is-dirty');
+  function invalidateObjectResults() {
+    analysis = null; selectedNight = null;
+    if (results) results.hidden = false;
+    const selectedObject = root.querySelector<HTMLElement>('[data-selected-object]');
+    const weekLabel = root.querySelector<HTMLElement>('[data-week-label]');
+    if (selectedObject) selectedObject.textContent = '—';
+    if (weekLabel) weekLabel.textContent = '';
+    if (rows) rows.replaceChildren();
+    if (nightDetail) nightDetail.hidden = true;
+  }
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
+  ['manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', invalidateObjectResults));
   form.addEventListener('submit', (event) => { event.preventDefault(); calculate(); });
   calculate();
 </script>

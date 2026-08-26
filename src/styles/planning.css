@@ -20,6 +20,10 @@
 .planning-fields--location { grid-template-columns: 1.4fr 1fr 1fr; }
 .planning-panel label { display: grid; gap: .4rem; color: var(--color-muted); font-size: .82rem; }
 .planning-panel input, .planning-panel select { width: 100%; min-height: 2.65rem; padding: .58rem .68rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .9); color: var(--color-text); font: .86rem var(--font-technical); }
+.planning-panel input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+.planning-panel input[type="number"]::-webkit-inner-spin-button, .planning-panel input[type="number"]::-webkit-outer-spin-button { margin: 0; appearance: none; }
+.planning-panel input[name="year"], .planning-panel input[name="week"] { appearance: auto; -moz-appearance: auto; color-scheme: dark; }
+.planning-panel input[name="year"]::-webkit-inner-spin-button, .planning-panel input[name="week"]::-webkit-inner-spin-button { appearance: auto; opacity: 1; }
 .planning-panel > label { margin-bottom: .75rem; }
 .planning-object-modes { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 1.1rem; }
 .planning-object-modes button { min-height: 2.1rem; padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .45); color: var(--color-muted); font-size: .76rem; cursor: pointer; }
@@ -45,7 +49,22 @@
 .planning-section-heading h2 { flex: 1 1 100%; margin: 0; font-size: 1.05rem; line-height: 1.25; }
 .planning-selected-object { display: block; flex: 1 1 100%; color: var(--planning-gold); font: 700 clamp(1.15rem, 2.4vw, 1.65rem) var(--font-technical); }
 .planning-week-context { color: var(--color-muted); font: .8rem var(--font-technical); }
+.planning-moon-guide { width: min(100%, 39rem); margin: 0 0 .7rem auto; }
+.planning-moon-guide summary { display: flex; align-items: center; justify-content: flex-end; gap: .4rem; width: fit-content; margin-left: auto; padding: .38rem .58rem; border: 1px solid var(--color-border); border-radius: .55rem; color: var(--color-muted); font-size: .72rem; font-weight: 700; cursor: pointer; list-style: none; }
+.planning-moon-guide summary::-webkit-details-marker { display: none; }
+.planning-moon-guide summary > span[aria-hidden="true"] { color: var(--planning-gold); font-size: 1.25rem; line-height: .8; }
+.planning-moon-guide summary:hover, .planning-moon-guide[open] summary { border-color: rgba(229, 169, 63, .55); color: var(--planning-gold); background: rgba(229, 169, 63, .08); }
+.planning-moon-guide__content { margin-top: .45rem; padding: .85rem; border: 1px solid var(--color-border); border-radius: .75rem; background: rgba(17, 24, 39, .92); color: var(--color-muted); font-size: .75rem; line-height: 1.45; }
+.planning-moon-guide table { width: 100%; border-collapse: collapse; }
+.planning-moon-guide th, .planning-moon-guide td { padding: .36rem .45rem; border-bottom: 1px solid rgba(43, 56, 80, .55); text-align: left; vertical-align: top; }
+.planning-moon-guide thead th { color: var(--color-text); font-size: .66rem; text-transform: uppercase; letter-spacing: .04em; }
+.planning-moon-guide tbody th { width: 7.5rem; color: var(--planning-gold); font-family: var(--font-technical); white-space: nowrap; }
+.planning-moon-guide__content > p { margin: .75rem 0 .3rem; color: var(--color-text); font-weight: 700; }
+.planning-moon-guide ul { margin: 0; padding-left: 1.15rem; }
+.planning-moon-guide li { margin: .22rem 0; }
 .planning-section-heading--night > p { flex: 1 1 100%; color: var(--planning-gold); font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 700; letter-spacing: .04em; }
+.planning-section-heading--night h2 { flex: 1 1 auto; }
+.planning-section-heading--night .planning-moon-guide { margin: 0 0 0 auto; }
 .planning-table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: .85rem; }
 .planning-table { width: 100%; min-width: 1160px; border-collapse: separate; border-spacing: 0; background: rgba(8, 11, 18, .7); font-size: .79rem; }
 .planning-table th, .planning-table td { padding: .72rem .6rem; border-bottom: 1px solid rgba(43, 56, 80, .65); text-align: left; vertical-align: top; }
