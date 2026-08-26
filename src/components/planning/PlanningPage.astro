@@ -1,11 +1,12 @@
 ---
 import type { Lang } from '../../i18n';
-import { languageLinks } from '../../i18n';
+import { languageLinks, planningGuideHref } from '../../i18n';
 import Layout from '../../layouts/Layout.astro';
 import objectsData from '../../data/astronomical-objects.json';
 import { PUBLIC_PENDING_OBJECTS } from '../../config/features';
 import { getCollection } from 'astro:content';
 import { photoText } from '../../photoTranslations';
+import { formatCatalogDesignations } from '../../lib/catalog-formatting.mjs';
 import '../../styles/planning.css';
 
 interface Props { lang: Lang; }
@@ -13,7 +14,7 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
   ca: {
-    title: 'Planificació', intro: 'Eina avançada per estudiar un únic objecte des d’una ubicació concreta. Tots els càlculs, dates i hores s’expressen en UTC.',
+    title: 'Planificació', intro: 'Eina avançada per estudiar un únic objecte des d’una ubicació concreta. Tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
     location: '1 · Ubicació', locationName: 'Nom opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicació es conserva només durant aquesta sessió.',
     object: '2 · Objecte', localObject: 'Objecte local', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
     period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
@@ -21,7 +22,7 @@ const texts = {
     detail: '5 · Detall nocturn', objectCurve: 'Objecte', moonCurve: 'Lluna', threshold: 'Límit 30°', astronomyNight: 'Nit astronòmica', chartHelp: 'Mou el cursor o toca i arrossega per inspeccionar mostres cada cinc minuts. Els trams fora de la nit astronòmica es mostren atenuats.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Il·luminació', sun: 'Sol', engine: 'Coordenades topocèntriques geomètriques, sense refracció atmosfèrica.', error: 'Revisa la ubicació, l’objecte i el període.',
   },
   es: {
-    title: 'Planificación', intro: 'Estudia un objeto durante siete noches desde una ubicación concreta. Todos los datos se muestran en UTC.',
+    title: 'Planificación', intro: 'Estudia un objeto durante siete noches desde una ubicación concreta. Todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
     location: '1 · Ubicación', locationName: 'Nombre opcional', latitude: 'Latitud', longitude: 'Longitud', restore: 'Restaurar L’Ampolla', session: 'La ubicación se conserva únicamente durante esta sesión.',
     object: '2 · Objeto', localObject: 'Objeto local', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
     period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
@@ -29,7 +30,7 @@ const texts = {
     detail: '5 · Detalle de la noche', objectCurve: 'Objeto', moonCurve: 'Luna', threshold: 'Límite 30°', astronomyNight: 'Noche astronómica', chartHelp: 'Mueve el cursor —o toca y arrastra— para consultar los datos cada cinco minutos. Los tramos fuera de la noche astronómica aparecen atenuados.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Iluminación', sun: 'Sol', engine: 'Posiciones topocéntricas geométricas, sin refracción atmosférica.', error: 'Revisa la ubicación, el objeto y la semana.',
   },
   en: {
-    title: 'Planning', intro: 'Advanced tool for studying one object from a specific location. All calculations, dates, and times are expressed in UTC.',
+    title: 'Planning', intro: 'Advanced tool for studying one object from a specific location. All calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
     location: '1 · Location', locationName: 'Optional name', latitude: 'Latitude', longitude: 'Longitude', restore: 'Restore L’Ampolla', session: 'The location is retained only for this browser session.',
     object: '2 · Object', localObject: 'Local object', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
     period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
@@ -53,7 +54,7 @@ const photoAlias = (id: string, catalogName: string) => {
 };
 const objects = objectsData
   .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
-  .map((object) => ({ id: object.id, catalogName: object.catalogName, commonName: object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' }));
+  .map((object) => ({ id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' }));
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
 const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\u003c');
@@ -65,7 +66,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       <p class="planning__eyebrow">UTC · 5 min · J2000</p>
       <h1>{t.title}</h1>
       <p>{t.intro}</p>
-      <small>{t.engine}</small>
+      <a class="planning-guide-link" href={planningGuideHref(lang, base)} title={t.guideTooltip}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg>
+        <span>{t.guide}</span>
+      </a>
     </header>
 
     <form class="planning-controls" data-planning-form>
@@ -88,8 +92,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
         </nav>
         <div data-object-panel="local">
           <label><span>{t.localObject}</span><select name="localObject">
-            <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.catalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
-            {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.catalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
+            <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
+            {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
           </select></label>
         </div>
         <div class="planning-simbad" data-object-panel="simbad" hidden>
@@ -143,6 +147,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   import { DEFAULT_LOCATION, analyzeWeek, isoWeekStart, isoWeeksInYear } from '../../lib/planning/engine.mjs';
   import { loadPlanningSession, savePlanningSession } from '../../lib/planning/session.mjs';
   import { findLocalObject, resolveSimbad } from '../../lib/planning/simbad.mjs';
+  import { formatCatalogDesignations } from '../../lib/catalog-formatting.mjs';
 
   const config = JSON.parse(document.querySelector('#planning-data')?.textContent ?? '{}');
   const root = document.querySelector<HTMLElement>('[data-planning-root]');
@@ -191,9 +196,9 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   if (session.objectInputMode) objectMode = session.objectInputMode;
   if (session.object?.localObjectId && config.objects.some((object: any) => object.id === session.object.localObjectId)) field('localObject').value = session.object.localObjectId;
   else if (session.object?.source === 'simbad') {
-    resolvedSimbad = session.object;
+    resolvedSimbad = { ...session.object, displayName: formatCatalogDesignations(session.object.displayName) };
     field('simbadQuery').value = session.object.canonicalName ?? session.object.displayName;
-    if (simbadResult) simbadResult.textContent = `${session.object.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
+    if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
   }
 
   const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];
@@ -226,7 +231,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     };
     if (objectMode === 'simbad' && resolvedSimbad) return resolvedSimbad;
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
-    return { displayName: selected.commonName ? `${selected.catalogName} · ${selected.commonName}` : selected.catalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
+    return { displayName: selected.commonName ? `${selected.displayCatalogName} · ${selected.commonName}` : selected.displayCatalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
   };
   const persist = () => {
     const location = locationValue();
@@ -248,7 +253,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       const local = findLocalObject(config.objects, query);
       if (local) {
         field('localObject').value = local.id; resolvedSimbad = null;
-        if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.catalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
+        if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.displayCatalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
       } else {
         resolvedSimbad = await resolveSimbad(query);
         if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${resolvedSimbad.raDeg.toFixed(6)}° · Dec ${resolvedSimbad.decDeg.toFixed(6)}°`;

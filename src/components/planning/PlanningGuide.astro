@@ -1,0 +1,69 @@
+---
+import type { Lang } from '../../i18n';
+import { languageLinks, planningHref } from '../../i18n';
+import Layout from '../../layouts/Layout.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const content = {
+  ca: {
+    title: 'Guia de Planificació', eyebrow: 'Eina avançada · UTC', back: 'Tornar a Planificació', index: 'En aquesta guia',
+    intro: 'Planificació estudia amb detall un únic objecte durant set nits des d’una ubicació concreta. És independent de Visibilitat i tots els seus càlculs, dates, eixos i avisos s’expressen en UTC.',
+    sections: [
+      ['diferencia', 'Planificació i Visibilitat', ['Visibilitat serveix per descobrir ràpidament quins objectes es poden fotografiar durant una setmana des del centre de Catalunya. Planificació està pensada per a l’estudi tècnic d’un objecte concret, amb ubicació lliure, comparació nocturna i mostres cada cinc minuts.']],
+      ['ubicacio', '1 · Ubicació', ['L’Ampolla —40,80194° N, 0,69361° E— és la ubicació inicial. Pots introduir qualsevol latitud i longitud i un nom opcional.', 'La ubicació es conserva només mentre la sessió del navegador continua oberta. Qualsevol canvi deixa el càlcul pendent i obliga a recalcular les dades dependents de l’observador.']],
+      ['objecte', '2 · Objecte', ['Només pot estar actiu un mode d’entrada: objecte local, SIMBAD o coordenades AR/Dec manuals J2000.', 'L’ordre de resolució és: galeria, objectius pendents, SIMBAD i coordenades manuals. SIMBAD només retorna nom i coordenades durant la sessió; no incorpora res a la galeria. Si hi ha coordenades locals, no es fa una consulta externa.']],
+      ['setmana', '3 · Setmana i any', ['La setmana és ISO, de dilluns a diumenge. L’interval exacte de dates UTC es mostra immediatament sota els selectors, sense haver de calcular.', 'En modificar la ubicació, l’objecte, la setmana o l’any, «Calcular nits» parpelleja. El càlcul només s’executa quan el prems, de manera que pots explorar els selectors sense provocar càlculs continus.']],
+      ['comparacio', '4 · Comparació de les set nits', ['Cada fila resumeix la nit astronòmica, l’altura màxima nocturna, la finestra efectiva per sobre de 30°, el temps efectiu sense Lluna i les millors hores amb la Lluna sota o sobre l’horitzó.', 'La il·luminació i la separació corresponen a la millor hora amb Lluna. Un guió indica que aquella dada no és aplicable. La nit oberta a la gràfica queda marcada amb un contorn.']],
+      ['lluna', 'Com interpretar la Lluna', ['«Sense Lluna» significa que la Lluna és sota l’horitzó dins de la finestra efectiva >30°. Quan és visible, valora conjuntament la il·luminació, l’altura lunar i la separació angular amb l’objecte.', 'Una separació gran sol ser més favorable, però el resultat real també depèn del filtre, la transparència i la brillantor superficial de l’objecte.']],
+      ['detall', '5 · Detall nocturn', ['La gràfica cobreix 24 hores i mostra les corbes completes de l’objecte i la Lluna entre −90° i +90°. La zona sombrejada és la nit astronòmica; la línia discontínua marca 30° i els trams fora de la foscor apareixen atenuats.', 'Mou el cursor —o toca i arrossega en mòbil— per consultar la mostra més pròxima: hora UTC, altura i azimut de l’objecte, altura i il·luminació lunar, separació Lluna–objecte i altura del Sol. Les mostres estan separades cinc minuts.']],
+      ['model', 'Model i límits', ['Les posicions són topocèntriques geomètriques i no incorporen refracció atmosfèrica. La separació Luna–objecte també és topocèntrica.', 'L’eina no modela meteorologia, núvols, humitat, relleu, obstacles, contaminació lumínica local, transparència ni turbulència. Comprova sempre les condicions reals abans de la sessió.']],
+    ],
+  },
+  es: {
+    title: 'Guía de Planificación', eyebrow: 'Herramienta avanzada · UTC', back: 'Volver a Planificación', index: 'En esta guía',
+    intro: 'Planificación estudia en detalle un único objeto durante siete noches desde una ubicación concreta. Es independiente de Visibilidad y todos sus cálculos, fechas, ejes y avisos se expresan en UTC.',
+    sections: [
+      ['diferencia', 'Planificación y Visibilidad', ['Visibilidad sirve para descubrir rápidamente qué objetos pueden fotografiarse durante una semana desde el centro de Cataluña. Planificación está pensada para el estudio técnico de un objeto concreto, con ubicación libre, comparación nocturna y muestras cada cinco minutos.']],
+      ['ubicacion', '1 · Ubicación', ['L’Ampolla —40,80194° N, 0,69361° E— es la ubicación inicial. Puedes introducir cualquier latitud y longitud, además de un nombre opcional.', 'La ubicación se conserva solo mientras la sesión del navegador permanece abierta. Cualquier cambio deja el cálculo pendiente y obliga a recalcular los datos dependientes del observador.']],
+      ['objeto', '2 · Objeto', ['Solo puede estar activo un modo de entrada: objeto local, SIMBAD o coordenadas AR/Dec manuales J2000.', 'El orden de resolución es: galería, objetivos pendientes, SIMBAD y coordenadas manuales. SIMBAD solo devuelve nombre y coordenadas durante la sesión; no incorpora nada a la galería. Si existen coordenadas locales, no se realiza una consulta externa.']],
+      ['semana', '3 · Semana y año', ['La semana es ISO, de lunes a domingo. El intervalo exacto de fechas UTC aparece inmediatamente bajo los selectores, sin necesidad de calcular.', 'Al modificar la ubicación, el objeto, la semana o el año, «Calcular noches» parpadea. El cálculo solo se ejecuta al pulsarlo, por lo que puedes explorar los selectores sin provocar cálculos continuos.']],
+      ['comparacion', '4 · Comparación de las siete noches', ['Cada fila resume la noche astronómica, la altura máxima nocturna, la ventana efectiva por encima de 30°, el tiempo efectivo sin Luna y las mejores horas con la Luna bajo o sobre el horizonte.', 'La iluminación y la separación corresponden a la mejor hora con Luna. Un guion indica que ese dato no es aplicable. La noche abierta en la gráfica queda identificada mediante un contorno.']],
+      ['luna', 'Cómo interpretar la Luna', ['«Tiempo sin Luna» significa que la Luna está bajo el horizonte dentro de la ventana efectiva >30°. Cuando es visible, valora conjuntamente su iluminación, su altura y la separación angular respecto al objeto.', 'Una separación grande suele ser más favorable, pero el resultado real también depende del filtro, la transparencia y el brillo superficial del objeto.']],
+      ['detalle', '5 · Detalle de la noche', ['La gráfica cubre 24 horas y muestra las curvas completas del objeto y la Luna entre −90° y +90°. La zona sombreada es la noche astronómica; la línea discontinua marca 30° y los tramos fuera de la oscuridad aparecen atenuados.', 'Mueve el cursor —o toca y arrastra en móvil— para consultar la muestra más cercana: hora UTC, altura y azimut del objeto, altura e iluminación lunar, separación Luna–objeto y altura del Sol. Las muestras están separadas cinco minutos.']],
+      ['modelo', 'Modelo y límites', ['Las posiciones son topocéntricas geométricas y no incorporan refracción atmosférica. La separación Luna–objeto también es topocéntrica.', 'La herramienta no modela meteorología, nubes, humedad, relieve, obstáculos, contaminación lumínica local, transparencia ni turbulencia. Comprueba siempre las condiciones reales antes de la sesión.']],
+    ],
+  },
+  en: {
+    title: 'Planning guide', eyebrow: 'Advanced tool · UTC', back: 'Back to Planning', index: 'In this guide',
+    intro: 'Planning studies one object in detail over seven nights from a specific location. It is independent from Visibility, and all calculations, dates, axes and notices use UTC.',
+    sections: [
+      ['difference', 'Planning and Visibility', ['Visibility quickly discovers which objects can be photographed during a week from central Catalonia. Planning is for the technical study of one target, with a custom location, night-by-night comparison and five-minute samples.']],
+      ['location', '1 · Location', ['L’Ampolla —40.80194° N, 0.69361° E— is the initial location. You can enter any latitude and longitude and an optional name.', 'The location lasts only for the current browser session. Any change marks the calculation as pending and requires observer-dependent data to be recalculated.']],
+      ['object', '2 · Object', ['Only one input mode can be active: local object, SIMBAD, or manual J2000 RA/Dec.', 'Resolution order is gallery, pending targets, SIMBAD, then manual coordinates. SIMBAD returns only a name and coordinates for the session and adds nothing to the gallery. Local coordinates prevent an external lookup.']],
+      ['week', '3 · Week and year', ['Weeks follow ISO Monday-to-Sunday rules. The exact UTC date range appears below the selectors before calculation.', 'After a change, “Calculate nights” pulses. Calculation runs only when pressed, so selectors can be explored without continuous computation.']],
+      ['comparison', '4 · Seven-night comparison', ['Each row summarises astronomical night, maximum night altitude, the effective window above 30°, Moon-down effective time, and the best times with the Moon below or above the horizon.', 'Illumination and separation refer to the best Moon-up time. A dash means the value does not apply. An outline identifies the night shown in the chart.']],
+      ['moon', 'Interpreting the Moon', ['“Moon down” means the Moon is below the horizon within the effective >30° window. When visible, consider illumination, lunar altitude and angular separation together.', 'Greater separation is usually favourable, but filters, transparency and the target’s surface brightness also matter.']],
+      ['detail', '5 · Night detail', ['The 24-hour chart shows the complete object and Moon curves from −90° to +90°. Shading marks astronomical night, the dashed line marks 30°, and segments outside darkness are dimmed.', 'Move the pointer—or touch and drag—to inspect the nearest sample: UTC time, object altitude and azimuth, lunar altitude and illumination, Moon–object separation and Sun altitude. Samples are five minutes apart.']],
+      ['model', 'Model and limits', ['Positions are geometric and topocentric, without atmospheric refraction. Moon–object separation is topocentric as well.', 'Weather, clouds, humidity, terrain, obstructions, local light pollution, transparency and seeing are not modelled. Always check real conditions before a session.']],
+    ],
+  },
+} as const;
+const t = content[lang];
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planningGuide(base)} focused>
+  <article class="planning-guide">
+    <a class="planning-guide__back" href={planningHref(lang, base)}>← {t.back}</a>
+    <header><p>{t.eyebrow}</p><h1>{t.title}</h1></header>
+    <p class="planning-guide__intro">{t.intro}</p>
+    <nav aria-label={t.index}><strong>{t.index}</strong><ol>{t.sections.map((section, index) => <li><a href={`#${section[0]}`}><span>{String(index + 1).padStart(2, '0')}</span>{section[1]}</a></li>)}</ol></nav>
+    <div class="planning-guide__sections">{t.sections.map((section, index) => <section id={section[0]}><i>{String(index + 1).padStart(2, '0')}</i><div><h2>{section[1]}</h2>{section[2].map((paragraph) => <p>{paragraph}</p>)}</div></section>)}</div>
+    <a class="planning-guide__return" href={planningHref(lang, base)}>← {t.back}</a>
+  </article>
+</Layout>
+
+<style>
+  .planning-guide{max-width:58rem;margin:0 auto;padding:.5rem 0 3rem}.planning-guide__back{display:inline-block;margin-bottom:1.1rem;color:var(--color-muted);font-size:.78rem;text-decoration:none}.planning-guide>header{padding-bottom:1.1rem;border-bottom:1px solid var(--color-border)}.planning-guide>header p{margin:0 0 .2rem;color:var(--color-accent);font:.72rem var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.planning-guide h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem)}.planning-guide__intro{max-width:50rem;margin:1.25rem 0;color:var(--color-text);font-size:clamp(1rem,2vw,1.14rem);line-height:1.7}.planning-guide nav{margin:1.5rem 0 2.4rem;padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide nav>strong{display:block;margin-bottom:.65rem;color:var(--color-muted);font-size:.72rem;text-transform:uppercase}.planning-guide nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .8rem;margin:0;padding:0;list-style:none}.planning-guide nav a{display:flex;gap:.5rem;padding:.35rem .4rem;color:var(--color-text);font-size:.85rem;text-decoration:none}.planning-guide nav span,.planning-guide section>i{color:var(--color-accent);font:.68rem var(--font-mono)}.planning-guide__sections{display:grid;gap:1rem}.planning-guide section{display:grid;grid-template-columns:2.8rem 1fr;scroll-margin-top:1rem;overflow:hidden;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide section>i{padding:1.2rem .55rem;border-right:1px solid var(--color-border);font-weight:700;text-align:center;font-style:normal}.planning-guide section>div{padding:1.1rem 1.2rem 1.2rem}.planning-guide h2{margin:0 0 .65rem;font-size:1.25rem}.planning-guide section p{margin:.55rem 0;color:var(--color-muted);line-height:1.65}.planning-guide__return{display:inline-flex;margin-top:1rem;padding:.65rem .8rem;border:1px solid var(--color-border);border-radius:.55rem;color:var(--color-text);font-size:.82rem;font-weight:700;text-decoration:none}@media(max-width:600px){.planning-guide nav ol{grid-template-columns:1fr}.planning-guide section{grid-template-columns:2.35rem 1fr}}
+</style>

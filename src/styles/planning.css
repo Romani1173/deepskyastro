@@ -1,9 +1,12 @@
 .planning { --planning-gold: #e5a93f; --planning-moon: #55d9b3; max-width: 1180px; margin: 0 auto; }
 .planning [hidden] { display: none !important; }
-.planning__header { max-width: 760px; margin: 2rem 0 1.55rem; }
+.planning__header { margin: 2rem 0 1.55rem; }
 .planning__header h1 { margin: .2rem 0 .55rem; font-size: clamp(1.75rem, 3vw, 2.2rem); }
 .planning__header > p:not(.planning__eyebrow) { max-width: 680px; margin-bottom: .65rem; color: var(--color-muted); font-size: 1.05rem; line-height: 1.6; }
 .planning__header small, .planning-panel small { color: var(--color-muted); line-height: 1.45; }
+.planning-guide-link { display: flex; align-items: center; gap: .55rem; width: fit-content; margin: .9rem 0 0 auto; padding: .52rem .72rem; border: 1px solid rgba(229, 169, 63, .45); border-radius: .55rem; color: var(--color-text); font-size: .75rem; font-weight: 700; text-decoration: none; }
+.planning-guide-link svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
+.planning-guide-link:hover { background: rgba(229, 169, 63, .1); border-color: var(--planning-gold); }
 .planning__eyebrow, .planning-section-heading > p { margin: 0; color: var(--planning-gold); font: .72rem var(--font-technical); letter-spacing: .12em; text-transform: uppercase; }
 .planning-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
 .planning-panel { min-width: 0; margin: 0; padding: 1.1rem; border: 1px solid var(--color-border); border-radius: .9rem; background: rgba(17, 24, 39, .68); }

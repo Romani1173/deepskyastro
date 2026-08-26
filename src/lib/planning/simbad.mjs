@@ -1,3 +1,5 @@
+import { formatCatalogDesignations } from '../catalog-formatting.mjs';
+
 const compact = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9+-]/gi, '').toLocaleLowerCase();
 
 export function findLocalObject(objects, query) {
@@ -14,7 +16,8 @@ export function parseSesameXml(xml, fallbackName = '') {
   const raDeg = Number(value('jradeg'));
   const decDeg = Number(value('jdedeg'));
   if (!Number.isFinite(raDeg) || !Number.isFinite(decDeg)) throw new Error('unresolved');
-  return { displayName: value('oname') || fallbackName, canonicalName: value('oname') || fallbackName, raDeg, decDeg, epoch: 'J2000', frame: 'ICRS', source: 'simbad' };
+  const canonicalName = value('oname') || fallbackName;
+  return { displayName: formatCatalogDesignations(canonicalName), canonicalName, raDeg, decDeg, epoch: 'J2000', frame: 'ICRS', source: 'simbad' };
 }
 
 export async function resolveSimbad(query, fetchImpl = fetch) {

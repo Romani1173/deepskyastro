@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n';
 import { languageLinks, photoHref, visibilityGuideHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
+import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import Layout from '../layouts/Layout.astro';
 import visibility from '../data/visibility.generated.json';
 
@@ -40,8 +41,8 @@ const cards = Object.entries(visibility.objects).map(([id, object]) => {
   const foto = latestByObject.get(id);
   const commonName = object.commonNames?.[lang];
   const text = foto ? photoText(foto, lang) : undefined;
-  const displayAlias = commonName ?? (text ? photographedAlias(object.catalogName, text.objecte) : undefined);
-  return { id, object, displayAlias, foto, text };
+  const displayAlias = formatCatalogDesignations(commonName ?? (text ? photographedAlias(object.catalogName, text.objecte) : undefined));
+  return { id, object, displayAlias, displayCatalogName: formatCatalogDesignations(object.catalogName), foto, text };
 });
 const photographedCount = cards.filter(({ object }) => object.status === 'photographed').length;
 const pendingCount = cards.filter(({ object }) => object.status === 'pending').length;
@@ -115,21 +116,21 @@ const weekRange = (week: number) => {
 
     {showPending && <section class="pending-explorer" data-pending-explorer hidden>
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
-        {cards.filter(({ object }) => object.status === 'pending').map(({ id, object, displayAlias }) => <button type="button" data-pending-select data-object-id={id} data-object-name={displayAlias ? `${object.catalogName} · ${displayAlias}` : object.catalogName} data-ra={object.raDeg} data-dec={object.decDeg} data-status="pending" data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{object.catalogName}{displayAlias && <small class="pending-explorer__alias">{displayAlias}</small>}</span><small data-pending-altitude>—</small></button>)}
+        {cards.filter(({ object }) => object.status === 'pending').map(({ id, object, displayAlias, displayCatalogName }) => <button type="button" data-pending-select data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-ra={object.raDeg} data-dec={object.decDeg} data-status="pending" data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{displayCatalogName}{displayAlias && <small class="pending-explorer__alias">{displayAlias}</small>}</span><small data-pending-altitude>—</small></button>)}
       </div></div>
       <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p><button type="button" class="pending-explorer__detail" data-open-pending-chart>{t.viewChart} →</button></div>
     </section>}
 
     <div class="visibility-grid" data-visibility-grid>
-      {visibleCards.map(({ id, object, displayAlias, foto, text }) => {
+      {visibleCards.map(({ id, object, displayAlias, displayCatalogName, foto, text }) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
-        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={displayAlias ? `${object.catalogName} · ${displayAlias}` : object.catalogName} data-ra={object.raDeg} data-dec={object.decDeg} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
+        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-ra={object.raDeg} data-dec={object.decDeg} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
             ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
-            : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}><span aria-hidden="true">P</span></button>}
+            : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}><span aria-hidden="true">P</span></button>}
           <div class="visibility-card__body">
             <div class="visibility-card__heading">
-              <div><p>{foto ? foto.data.constellacio : t.pendingTarget}</p><h2>{object.catalogName}</h2>{displayAlias && <p class="visibility-card__alias">{displayAlias}</p>}</div>
+              <div><p>{foto ? foto.data.constellacio : t.pendingTarget}</p><h2>{displayCatalogName}</h2>{displayAlias && <p class="visibility-card__alias">{displayAlias}</p>}</div>
               <div class="visibility-card__badges">{object.status === 'pending' && <span class="pending-badge">{t.pending}</span>}<span data-quality></span></div>
             </div>
             <dl>
@@ -140,7 +141,7 @@ const weekRange = (week: number) => {
             </dl>
             <div class="visibility-card__actions">
               {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view}<span aria-hidden="true">→</span></a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
-              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${object.catalogName}`}>{t.viewChart}</button>
+              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}>{t.viewChart}</button>
             </div>
           </div>
         </article>;

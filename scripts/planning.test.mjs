@@ -3,8 +3,15 @@ import assert from 'node:assert/strict';
 import { DEFAULT_LOCATION, analyzeNight, analyzeWeek, isoWeekStart, isoWeeksInYear, sampleInstant, thresholdIntervals } from '../src/lib/planning/engine.mjs';
 import { loadPlanningSession, savePlanningSession } from '../src/lib/planning/session.mjs';
 import { findLocalObject, parseSesameXml } from '../src/lib/planning/simbad.mjs';
+import { formatCatalogDesignations } from '../src/lib/catalog-formatting.mjs';
 
 const m42 = { displayName: 'M42', raDeg: 83.82208, decDeg: -5.39111, source: 'gallery' };
+
+test('catalogue designations receive display spaces without changing surrounding text', () => {
+  assert.equal(formatCatalogDesignations('M31, NGC2237, IC434, LDN1235 y Sh2-119'), 'M 31, NGC 2237, IC 434, LDN 1235 y Sh 2-119');
+  assert.equal(formatCatalogDesignations('PK064+05.1 · VdB152 · WR134 · PN G080.3-10.4'), 'PK 064+05.1 · VdB 152 · WR 134 · PN G 080.3-10.4');
+  assert.equal(formatCatalogDesignations('12P/Pons-Brooks'), '12P/Pons-Brooks');
+});
 
 test('L’Ampolla is the default observer', () => {
   assert.equal(DEFAULT_LOCATION.latitudeDeg, 40.80194);
