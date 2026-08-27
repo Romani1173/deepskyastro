@@ -13,7 +13,7 @@
 .planning-panel legend { padding: 0 .45rem; color: var(--color-text); font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
 .planning-panel--object { padding: 1.3rem 1.4rem 1.35rem; }
 .planning-panel--period { grid-column: 1 / -1; }
-.planning-panel--period .planning-fields { grid-template-columns: 7rem 6rem minmax(13rem, 1fr) auto; }
+.planning-panel--period .planning-fields { grid-template-columns: 11rem 10rem minmax(13rem, 1fr) auto; }
 .planning-panel--period .planning-button { justify-self: end; align-self: end; }
 .planning-week-range { align-self: end; min-height: 2.65rem; display: flex; align-items: center; padding: .55rem .7rem; border-left: 2px solid rgba(229, 169, 63, .55); color: var(--planning-gold); font: .82rem/1.4 var(--font-technical); }
 .planning-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; align-items: end; }
@@ -24,8 +24,13 @@
 .planning-panel input[type="number"]::-webkit-inner-spin-button, .planning-panel input[type="number"]::-webkit-outer-spin-button { margin: 0; appearance: none; }
 .planning-panel input[name="year"], .planning-panel input[name="week"] { appearance: auto; -moz-appearance: auto; color-scheme: dark; }
 .planning-panel input[name="year"]::-webkit-inner-spin-button, .planning-panel input[name="week"]::-webkit-inner-spin-button { appearance: auto; opacity: 1; }
-.planning-stepper { display: grid; grid-template-columns: minmax(0, 1fr); }
-.planning-stepper > button { display: none; min-width: 2.65rem; min-height: 2.65rem; padding: 0; border: 1px solid var(--color-border); background: rgba(8, 11, 18, .9); color: var(--planning-gold); font: 700 1.35rem var(--font-technical); cursor: pointer; }
+.planning-stepper { display: grid; grid-template-columns: 2.65rem minmax(0, 1fr) 2.65rem; }
+.planning-stepper > button { display: block; min-width: 2.65rem; min-height: 2.65rem; padding: 0; border: 1px solid var(--color-border); background: rgba(8, 11, 18, .9); color: var(--planning-gold); font: 700 1.35rem var(--font-technical); cursor: pointer; }
+.planning-stepper > button:first-child { border-radius: .55rem 0 0 .55rem; border-right: 0; }
+.planning-stepper > button:last-child { border-radius: 0 .55rem .55rem 0; border-left: 0; }
+.planning-stepper > input, .planning-stepper > select { min-width: 0; border-radius: 0; text-align: center; }
+.planning-panel input[name="year"], .planning-panel input[name="week"] { appearance: textfield; -moz-appearance: textfield; }
+.planning-panel input[name="year"]::-webkit-inner-spin-button, .planning-panel input[name="week"]::-webkit-inner-spin-button { appearance: none; }
 .planning-panel > label { margin-bottom: .75rem; }
 .planning-object-modes { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 1.1rem; }
 .planning-object-modes button { min-height: 2.1rem; padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .45); color: var(--color-muted); font-size: .76rem; cursor: pointer; }
@@ -94,19 +99,14 @@
 .planning-tooltip { position: absolute; z-index: 2; top: .7rem; display: grid; gap: .28rem; width: max-content; max-width: min(27rem, 84%); padding: .68rem .78rem; border: 1px solid var(--color-border); border-radius: .6rem; background: rgba(5, 8, 14, .96); color: var(--color-muted); font: .78rem/1.4 var(--font-technical); transform: translateX(-50%); pointer-events: none; box-shadow: 0 8px 25px rgba(0,0,0,.4); }
 .planning-tooltip strong { color: #fff; font-size: .84rem; }.planning-tooltip span { display: block; }
 .planning-chart-help { margin: .7rem 0 0; color: var(--color-muted); font-size: .78rem; line-height: 1.5; }
-@media (max-width: 760px) {
+@media (max-width: 1024px) {
   .planning-controls { grid-template-columns: 1fr; }.planning-panel--period { grid-column: auto; }.planning-fields, .planning-fields--location { grid-template-columns: 1fr; }
   .planning-panel--period .planning-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .planning-week-range { grid-column: 1 / -1; }
   .planning-panel--period .planning-button { grid-column: 1 / -1; justify-self: end; }
   .planning-panel__footer { align-items: flex-start; flex-direction: column; }.planning-night { padding: .7rem; }.planning-chart { overflow-x: auto; }
 }
-@media (max-width: 1024px) {
-  .planning-stepper { grid-template-columns: 2.65rem minmax(0, 1fr) 2.65rem; }
-  .planning-stepper > button { display: block; }
-  .planning-stepper > button:first-child { border-radius: .55rem 0 0 .55rem; border-right: 0; }
-  .planning-stepper > button:last-child { border-radius: 0 .55rem .55rem 0; border-left: 0; }
-  .planning-stepper > input, .planning-stepper > select { min-width: 0; border-radius: 0; text-align: center; }
-  .planning-panel input[name="year"], .planning-panel input[name="week"] { appearance: textfield; -moz-appearance: textfield; }
-  .planning-panel input[name="year"]::-webkit-inner-spin-button, .planning-panel input[name="week"]::-webkit-inner-spin-button { appearance: none; }
+@media (max-width: 520px) {
+  .planning-panel--period .planning-fields { grid-template-columns: 1fr; }
+  .planning-week-range, .planning-panel--period .planning-button { grid-column: auto; }
 }
