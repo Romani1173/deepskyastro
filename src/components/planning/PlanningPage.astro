@@ -16,7 +16,7 @@ const texts = {
   ca: {
     title: 'Planificació', intro: 'Analitza un únic objecte durant set nits des de la ubicació que triïs. Utilitza aquesta eina quan ja sàpigues què vols fotografiar; tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
     location: '1 · Ubicació', locationName: 'Nom opcional', savedLocations: 'Cercar ubicació', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicació es conserva només durant aquesta sessió.',
-    object: '2 · Objecte', localObject: 'Objecte local', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
+    object: '2 · Objecte', localObject: 'Objecte local', searchObject: 'Cercar un objecte', searchObjectPlaceholder: 'M 31, NGC 7000, nebulosa…', noObjectMatches: 'No hi ha coincidències', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
     period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
     comparison: '4 · Comparació de les set nits', night: 'Nit UTC', darkness: 'Nit astronòmica', maxAltitude: 'Alt. màx. nocturna', effective: 'Finestra >30°', moonDown: 'Sense Lluna', bestMoonDown: 'Millor hora sense Lluna', bestMoonUp: 'Millor hora amb Lluna', moon: 'Lluna', separation: 'Separació', unavailable: 'No supera 30° durant la nit astronòmica', none: '—', select: 'Seleccionar nit',
     detail: '5 · Detall nocturn', objectCurve: 'Objecte', moonCurve: 'Lluna', threshold: 'Límit 30°', astronomyNight: 'Nit astronòmica', chartHelp: 'Mou el cursor o toca i arrossega per inspeccionar mostres cada cinc minuts. Els trams fora de la nit astronòmica es mostren atenuats.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Il·luminació', sun: 'Sol', engine: 'Coordenades topocèntriques geomètriques, sense refracció atmosfèrica.', error: 'Revisa la ubicació, l’objecte i el període.',
@@ -24,7 +24,7 @@ const texts = {
   es: {
     title: 'Planificación', intro: 'Analiza un único objeto durante siete noches desde la ubicación que elijas. Utiliza esta herramienta cuando ya sepas qué quieres fotografiar; todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
     location: '1 · Ubicación', locationName: 'Nombre opcional', savedLocations: 'Buscar ubicación', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicación se conserva únicamente durante esta sesión.',
-    object: '2 · Objeto', localObject: 'Objeto local', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
+    object: '2 · Objeto', localObject: 'Objeto local', searchObject: 'Buscar un objeto', searchObjectPlaceholder: 'M 31, NGC 7000, nebulosa…', noObjectMatches: 'No hay coincidencias', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
     period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
     comparison: '4 · Comparación de las siete noches', night: 'Noche UTC', darkness: 'Noche astronómica', maxAltitude: 'Altura máxima', effective: 'Ventana >30°', moonDown: 'Tiempo sin Luna', bestMoonDown: 'Mejor hora sin Luna', bestMoonUp: 'Mejor hora con Luna', moon: 'Luna', separation: 'Separación', unavailable: 'No supera 30° durante la noche astronómica', none: '—', select: 'Ver esta noche',
     detail: '5 · Detalle de la noche', objectCurve: 'Objeto', moonCurve: 'Luna', threshold: 'Límite 30°', astronomyNight: 'Noche astronómica', chartHelp: 'Mueve el cursor —o toca y arrastra— para consultar los datos cada cinco minutos. Los tramos fuera de la noche astronómica aparecen atenuados.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Iluminación', sun: 'Sol', engine: 'Posiciones topocéntricas geométricas, sin refracción atmosférica.', error: 'Revisa la ubicación, el objeto y la semana.',
@@ -32,7 +32,7 @@ const texts = {
   en: {
     title: 'Planning', intro: 'Analyse one object over seven nights from the location you choose. Use this tool once you know what you want to photograph; all calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
     location: '1 · Location', locationName: 'Optional name', savedLocations: 'Find location', latitude: 'Latitude', longitude: 'Longitude', session: 'The location is retained only for this browser session.',
-    object: '2 · Object', localObject: 'Local object', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
+    object: '2 · Object', localObject: 'Local object', searchObject: 'Find an object', searchObjectPlaceholder: 'M 31, NGC 7000, nebula…', noObjectMatches: 'No matches found', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
     period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
     comparison: '4 · Seven-night comparison', night: 'UTC night', darkness: 'Astronomical night', maxAltitude: 'Night max. alt.', effective: '>30° window', moonDown: 'Moon down', bestMoonDown: 'Best Moon-down time', bestMoonUp: 'Best Moon-up time', moon: 'Moon', separation: 'Separation', unavailable: 'Never above 30° during astronomical night', none: '—', select: 'Select night',
     detail: '5 · Night detail', objectCurve: 'Object', moonCurve: 'Moon', threshold: '30° limit', astronomyNight: 'Astronomical night', chartHelp: 'Move the pointer or touch and drag to inspect five-minute samples. Segments outside astronomical night are dimmed.', altitude: 'Altitude', azimuth: 'Azimuth', illumination: 'Illumination', sun: 'Sun', engine: 'Geometric topocentric coordinates without atmospheric refraction.', error: 'Check the location, object, and period.',
@@ -108,10 +108,14 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
           <button type="button" data-object-mode="manual" aria-pressed="false">{t.manual}</button>
         </nav>
         <div data-object-panel="local">
-          <label><span>{t.localObject}</span><select name="localObject">
+          <div class="planning-object-picker" data-object-picker>
+            <label><span>{t.searchObject}</span><input name="localObjectSearch" type="search" list="planning-object-options" placeholder={t.searchObjectPlaceholder} autocomplete="off" /></label>
+            <datalist id="planning-object-options">{objects.map((object) => <option value={`${object.displayCatalogName}${object.commonName ? ` · ${object.commonName}` : ''}`} />)}</datalist>
+          </div>
+          <select name="localObject" hidden aria-hidden="true" tabindex="-1">
             <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
             {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
-          </select></label>
+          </select>
         </div>
         <div class="planning-simbad" data-object-panel="simbad" hidden>
           <p data-simbad-result aria-live="polite"></p>
@@ -205,11 +209,14 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   })();
 
   const session = loadPlanningSession(sessionStorage);
+  const requestUrl = new URL(window.location.href);
+  const requestedYear = Number(requestUrl.searchParams.get('year'));
+  const requestedWeek = Number(requestUrl.searchParams.get('week'));
   field('locationName').value = session.location.name ?? '';
   field('latitude').value = String(session.location.latitudeDeg);
   field('longitude').value = String(session.location.longitudeDeg);
-  field('year').value = String(session.isoYear ?? iso.year);
-  field('week').value = String(session.isoWeek ?? iso.week);
+  field('year').value = String(Number.isInteger(requestedYear) && requestedYear >= 1900 && requestedYear <= 2200 ? requestedYear : session.isoYear ?? iso.year);
+  field('week').value = String(Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= 53 ? requestedWeek : session.isoWeek ?? iso.week);
   const locationPresets: Record<string, { name: string; latitudeDeg: number; longitudeDeg: number }> = {
     lampolla: { name: 'L’Ampolla', latitudeDeg: 40.80194, longitudeDeg: 0.69361 },
     barcelona: { name: 'Barcelona', latitudeDeg: 41.3926, longitudeDeg: 2.1865 },
@@ -231,7 +238,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     weekRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(start, end) : `${formatter.format(start)} — ${formatter.format(end)}`} · UTC`;
   };
   updateWeekRange();
-  const requestedObject = new URL(window.location.href).searchParams.get('object');
+  const requestedObject = requestUrl.searchParams.get('object');
   const hasRequestedObject = requestedObject && config.objects.some((object: any) => object.id === requestedObject);
   if (hasRequestedObject) {
     objectMode = 'local';
@@ -245,6 +252,27 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
     }
   }
+
+  const localObjectSearch = field('localObjectSearch') as HTMLInputElement;
+  const objectLabel = (object: any) => object.commonName ? `${object.displayCatalogName} · ${object.commonName}` : object.displayCatalogName;
+  const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
+  const syncLocalObjectSearch = () => {
+    const selected = config.objects.find((object: any) => object.id === field('localObject').value);
+    localObjectSearch.value = selected ? objectLabel(selected) : '';
+  };
+  syncLocalObjectSearch();
+  const selectLocalObjectFromSearch = () => {
+    const query = normalizeSearch(localObjectSearch.value);
+    const selected = config.objects.find((object: any) => normalizeSearch(objectLabel(object)) === query);
+    if (!selected || selected.id === field('localObject').value) return Boolean(selected);
+    field('localObject').value = selected.id;
+    field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
+    return true;
+  };
+  localObjectSearch.addEventListener('input', selectLocalObjectFromSearch);
+  localObjectSearch.addEventListener('change', () => {
+    if (!selectLocalObjectFromSearch()) syncLocalObjectSearch();
+  });
 
   const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];
   const modePanels = [...root.querySelectorAll<HTMLElement>('[data-object-panel]')];
@@ -331,6 +359,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       const local = findLocalObject(config.objects, query);
       if (local) {
         field('localObject').value = local.id;
+        syncLocalObjectSearch();
         resolvedSimbad = { displayName: local.commonName ? `${local.displayCatalogName} · ${local.commonName}` : local.displayCatalogName, canonicalName: local.catalogName, raDeg: local.raDeg, decDeg: local.decDeg, epoch: 'J2000', frame: 'ICRS', source: local.source, localObjectId: local.id };
         if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.displayCatalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
       } else {
@@ -400,15 +429,21 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       label.textContent = `${samples[index].timestampUtc.slice(11, 16)}`; chart.append(label);
     }
     const utc = svgNode('text', { x: String(right), y: '422', 'text-anchor': 'end', class: 'planning-chart__utc' }); utc.textContent = 'UTC'; chart.append(utc);
-    const cursor = svgNode('line', { x1: String(left), x2: String(left), y1: String(top), y2: String(bottom), class: 'planning-chart__cursor', hidden: '' }); chart.append(cursor);
+    const cursor = svgNode('line', { x1: String(left), x2: String(left), y1: String(top), y2: String(bottom), class: 'planning-chart__cursor' }); chart.append(cursor);
+    const showSample = (index: number, tooltipLeft: number) => {
+      const sample = samples[index]; const cursorX = x(index); cursor.removeAttribute('hidden'); cursor.setAttribute('x1', String(cursorX)); cursor.setAttribute('x2', String(cursorX));
+      if (tooltip) { tooltip.hidden = false; tooltip.style.left = `${Math.min(82, Math.max(4, tooltipLeft))}%`; tooltip.innerHTML = `<strong>${time(sample.timestampUtc)}</strong><span>${config.texts.objectCurve}: ${degrees(sample.objectAltitudeDeg)} · ${config.texts.azimuth}: ${degrees(sample.objectAzimuthDeg)}</span><span>${config.texts.moonCurve}: ${degrees(sample.moonAltitudeDeg)} · ${config.texts.illumination}: ${percent(sample.moonIlluminationFraction)}</span><span>${config.texts.separation}: ${degrees(sample.moonSeparationDeg)} · ${config.texts.sun}: ${degrees(sample.sunAltitudeDeg)}</span>`; }
+    };
     const inspect = (event: PointerEvent) => {
       const rect = chart.getBoundingClientRect();
       const viewX = (event.clientX - rect.left) / rect.width * 1000;
       const index = Math.max(0, Math.min(samples.length - 1, Math.round((viewX - left) / (right - left) * (samples.length - 1))));
-      const sample = samples[index]; const cursorX = x(index); cursor.removeAttribute('hidden'); cursor.setAttribute('x1', String(cursorX)); cursor.setAttribute('x2', String(cursorX));
-      if (tooltip) { tooltip.hidden = false; tooltip.style.left = `${Math.min(82, Math.max(4, event.clientX - rect.left) / rect.width * 100)}%`; tooltip.innerHTML = `<strong>${time(sample.timestampUtc)}</strong><span>${config.texts.objectCurve}: ${degrees(sample.objectAltitudeDeg)} · ${config.texts.azimuth}: ${degrees(sample.objectAzimuthDeg)}</span><span>${config.texts.moonCurve}: ${degrees(sample.moonAltitudeDeg)} · ${config.texts.illumination}: ${percent(sample.moonIlluminationFraction)}</span><span>${config.texts.separation}: ${degrees(sample.moonSeparationDeg)} · ${config.texts.sun}: ${degrees(sample.sunAltitudeDeg)}</span>`; }
+      showSample(index, (event.clientX - rect.left) / rect.width * 100);
     };
     chart.onpointermove = inspect; chart.onpointerdown = (event) => { chart.setPointerCapture(event.pointerId); inspect(event); };
+    const initialIndex = samples.reduce((best: number, sample: any, index: number) => sample.isAstronomicalNight && sample.objectAltitudeDeg > samples[best].objectAltitudeDeg ? index : best, samples.findIndex((sample: any) => sample.isAstronomicalNight));
+    const safeInitialIndex = initialIndex >= 0 ? initialIndex : Math.floor(samples.length / 2);
+    showSample(safeInitialIndex, x(safeInitialIndex) / 10);
   };
   const selectNight = (date?: string) => {
     selectedNight = analysis?.nights.find((night: any) => night.nightDateUtc === date) ?? analysis?.nights[0];

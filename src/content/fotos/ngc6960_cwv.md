@@ -1,6 +1,6 @@
 ---
-objecte: "NGC6960 – Part Central Oest del Vel (Central Western Veil Nebula)"
-objecte_astronomic: "ngc6960"
+objecte: "NGC6960-W – Part central-oest del Vel (Central Western Veil Nebula)"
+objecte_astronomic: "ngc6960-w"
 imatge: "NGC6960_CWV.jpg"
 visibilitat:
   imatge: "ngc6960-elevacion-anual.png"
@@ -32,10 +32,10 @@ entorn:
   bortle: "4"
 traduccions:
   es:
-    objecte: "NGC6960 – Parte central oeste del Velo"
+    objecte: "NGC6960-W – Parte central oeste del Velo"
     caracteristiques: "Esta imagen muestra la sección centro-occidental del complejo filamentoso de gas conocido como la nebulosa del Velo, en la constelación del Cisne. Esta red de filamentos forma parte de los restos de una supernova que explotó hace unos 10.000 años. La zona fotografiada se extiende por el interior del gran bucle en expansión, al este de la estrella 52 Cygni y alejándose del borde occidental. La estructura está dominada por intensas emisiones de [O III] (5007 Å), responsables del color azulado, finamente entrelazadas con líneas de Hα y [S II], visibles en rojo, como resultado de la excitación del gas por el violento paso de la onda de choque a través del medio interestelar. Esta región central se encuentra a unos 1.470 años luz y forma parte de un remanente que, en su totalidad, abarca una vasta área angular de unos 3 grados en el cielo."
   en:
-    objecte: "NGC6960 – Central Western Veil"
+    objecte: "NGC6960-W – Central Western Veil"
     caracteristiques: "This image shows the central-western section of the filamentary gas complex known as the Veil Nebula in the constellation Cygnus. This network of filaments is part of the remains of a supernova that exploded around 10,000 years ago. The photographed area extends through the interior of the large expanding loop, east of the star 52 Cygni and away from the western edge. The structure is dominated by intense [O III] emission at 5007 Å, responsible for the bluish colour, finely interwoven with Hα and [S II] lines visible in red. These emissions result from gas excited by the violent passage of the shock wave through the interstellar medium. This central region lies about 1,470 light-years away and forms part of a remnant that spans a vast angular area of roughly 3 degrees across the sky."
 imatges_addicionals:
   - tipus: "starless"

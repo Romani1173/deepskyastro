@@ -35,6 +35,8 @@
 .planning-object-modes { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 1.1rem; }
 .planning-object-modes button { min-height: 2.1rem; padding: .42rem .7rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .45); color: var(--color-muted); font-size: .76rem; cursor: pointer; }
 .planning-object-modes button[aria-pressed="true"] { border-color: rgba(229, 169, 63, .62); color: var(--planning-gold); background: rgba(229, 169, 63, .1); }
+.planning-object-picker { position: relative; }
+.planning-object-picker input[type="search"] { padding-left: 2.35rem; background-image: radial-gradient(circle, transparent 46%, var(--color-muted) 48% 57%, transparent 59%), linear-gradient(45deg, transparent 44%, var(--color-muted) 45% 56%, transparent 57%); background-position: .78rem 1rem, 1.48rem 1.62rem; background-repeat: no-repeat; background-size: .82rem .82rem, .5rem .5rem; }
 .planning-simbad { margin: .35rem 0 .15rem; }
 .planning-simbad__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
 .planning-simbad p { min-height: 1.35rem; margin: 0 0 .85rem; color: var(--planning-moon); font: 700 .9rem var(--font-technical); }

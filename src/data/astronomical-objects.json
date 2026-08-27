@@ -935,14 +935,28 @@
     "status": "photographed"
   },
   {
-    "id": "ngc6960",
-    "catalogName": "NGC6960",
+    "id": "ngc6960-e",
+    "catalogName": "NGC6960-E",
     "aliases": [
-      "NGC  6960"
+      "NGC 6960-E",
+      "NGC6960 eastern section"
     ],
     "raDeg": 311.40833333,
     "decDeg": 30.70833333,
-    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateSource": "CDS Sesame / SIMBAD (NGC 6960 reference coordinates)",
+    "coordinateEpoch": "J2000",
+    "status": "photographed"
+  },
+  {
+    "id": "ngc6960-w",
+    "catalogName": "NGC6960-W",
+    "aliases": [
+      "NGC 6960-W",
+      "NGC6960 central-western section"
+    ],
+    "raDeg": 311.40833333,
+    "decDeg": 30.70833333,
+    "coordinateSource": "CDS Sesame / SIMBAD (NGC 6960 reference coordinates)",
     "coordinateEpoch": "J2000",
     "status": "photographed"
   },
