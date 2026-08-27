@@ -14,7 +14,7 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
   ca: {
-    title: 'Planificació', intro: 'Eina avançada per estudiar un únic objecte des d’una ubicació concreta. Tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
+    title: 'Planificació', intro: 'Analitza un únic objecte durant set nits des de la ubicació que triïs. Utilitza aquesta eina quan ja sàpigues què vols fotografiar; tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
     location: '1 · Ubicació', locationName: 'Nom opcional', savedLocations: 'Cercar ubicació', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicació es conserva només durant aquesta sessió.',
     object: '2 · Objecte', localObject: 'Objecte local', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
     period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
@@ -22,7 +22,7 @@ const texts = {
     detail: '5 · Detall nocturn', objectCurve: 'Objecte', moonCurve: 'Lluna', threshold: 'Límit 30°', astronomyNight: 'Nit astronòmica', chartHelp: 'Mou el cursor o toca i arrossega per inspeccionar mostres cada cinc minuts. Els trams fora de la nit astronòmica es mostren atenuats.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Il·luminació', sun: 'Sol', engine: 'Coordenades topocèntriques geomètriques, sense refracció atmosfèrica.', error: 'Revisa la ubicació, l’objecte i el període.',
   },
   es: {
-    title: 'Planificación', intro: 'Estudia un objeto durante siete noches desde una ubicación concreta. Todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
+    title: 'Planificación', intro: 'Analiza un único objeto durante siete noches desde la ubicación que elijas. Utiliza esta herramienta cuando ya sepas qué quieres fotografiar; todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
     location: '1 · Ubicación', locationName: 'Nombre opcional', savedLocations: 'Buscar ubicación', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicación se conserva únicamente durante esta sesión.',
     object: '2 · Objeto', localObject: 'Objeto local', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Objeto local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
     period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
@@ -30,7 +30,7 @@ const texts = {
     detail: '5 · Detalle de la noche', objectCurve: 'Objeto', moonCurve: 'Luna', threshold: 'Límite 30°', astronomyNight: 'Noche astronómica', chartHelp: 'Mueve el cursor —o toca y arrastra— para consultar los datos cada cinco minutos. Los tramos fuera de la noche astronómica aparecen atenuados.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Iluminación', sun: 'Sol', engine: 'Posiciones topocéntricas geométricas, sin refracción atmosférica.', error: 'Revisa la ubicación, el objeto y la semana.',
   },
   en: {
-    title: 'Planning', intro: 'Advanced tool for studying one object from a specific location. All calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
+    title: 'Planning', intro: 'Analyse one object over seven nights from the location you choose. Use this tool once you know what you want to photograph; all calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
     location: '1 · Location', locationName: 'Optional name', savedLocations: 'Find location', latitude: 'Latitude', longitude: 'Longitude', session: 'The location is retained only for this browser session.',
     object: '2 · Object', localObject: 'Local object', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
     period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
@@ -231,12 +231,19 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     weekRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(start, end) : `${formatter.format(start)} — ${formatter.format(end)}`} · UTC`;
   };
   updateWeekRange();
-  if (session.objectInputMode) objectMode = session.objectInputMode;
-  if (session.object?.localObjectId && config.objects.some((object: any) => object.id === session.object.localObjectId)) field('localObject').value = session.object.localObjectId;
-  else if (session.object?.source === 'simbad' && Number.isFinite(session.object.raDeg) && Number.isFinite(session.object.decDeg)) {
-    resolvedSimbad = { ...session.object, displayName: formatCatalogDesignations(session.object.displayName) };
-    field('simbadQuery').value = session.object.canonicalName ?? session.object.displayName;
-    if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
+  const requestedObject = new URL(window.location.href).searchParams.get('object');
+  const hasRequestedObject = requestedObject && config.objects.some((object: any) => object.id === requestedObject);
+  if (hasRequestedObject) {
+    objectMode = 'local';
+    field('localObject').value = requestedObject!;
+  } else {
+    if (session.objectInputMode) objectMode = session.objectInputMode;
+    if (session.object?.localObjectId && config.objects.some((object: any) => object.id === session.object.localObjectId)) field('localObject').value = session.object.localObjectId;
+    else if (session.object?.source === 'simbad' && Number.isFinite(session.object.raDeg) && Number.isFinite(session.object.decDeg)) {
+      resolvedSimbad = { ...session.object, displayName: formatCatalogDesignations(session.object.displayName) };
+      field('simbadQuery').value = session.object.canonicalName ?? session.object.displayName;
+      if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${session.object.raDeg.toFixed(6)}° · Dec ${session.object.decDeg.toFixed(6)}°`;
+    }
   }
 
   const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];

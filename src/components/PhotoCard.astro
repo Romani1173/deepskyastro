@@ -24,14 +24,8 @@ const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
 ---
 
 <article class="photo-card">
-	<a class="photo-card__link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
+	<a class="photo-card__image-link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
 		<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} loading="lazy" decoding="async" />
-		<div class="photo-card__body">
-			<h2>{text.objecte}</h2>
-			<p><b>{t.constellation}:</b> {technical.constellacio}</p>
-			<p><b>{t.exposure}:</b> {technical.tempsTotal}</p>
-			<p>{date}</p>
-		</div>
 	</a>
 	{(hasProcess || hasVisibility) && <span class="photo-card__features">
 		{processImage && <span class="context-tooltip context-tooltip--feature">
@@ -43,4 +37,12 @@ const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
 			<span class="context-tooltip__bubble" id={`visibility-tip-${foto.id}`} role="tooltip">{t.visibilityTooltip(visibilityPeriod)}</span>
 		</span>}
 	</span>}
+	<a class="photo-card__body-link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
+		<div class="photo-card__body">
+			<h2>{text.objecte}</h2>
+			<p><b>{t.constellation}:</b> {technical.constellacio}</p>
+			<p><b>{t.exposure}:</b> {technical.tempsTotal}</p>
+			<p>{date}</p>
+		</div>
+	</a>
 </article>
