@@ -93,7 +93,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       <fieldset class="planning-panel">
         <legend>{t.location}</legend>
         <div class="planning-fields planning-fields--location">
-          <label><span>{t.locationName}</span><select name="locationName" title={t.savedLocations}><option value="">—</option><option value="L’Ampolla" selected>L’Ampolla</option><option value="Barcelona">Barcelona</option></select></label>
+          <label><span>{t.locationName}</span><span class="planning-stepper"><button type="button" data-step-field="locationName" data-step-direction="-1" aria-label={`◀ ${t.locationName}`}>‹</button><select name="locationName" title={t.savedLocations}><option value="">—</option><option value="L’Ampolla" selected>L’Ampolla</option><option value="Barcelona">Barcelona</option><option value="Pujalt">Pujalt</option><option value="Huesca">Huesca</option><option value="Lleida">Lleida</option><option value="Tarragona">Tarragona</option><option value="Girona">Girona</option><option value="Vilanova i la Geltrú">Vilanova i la Geltrú</option></select><button type="button" data-step-field="locationName" data-step-direction="1" aria-label={`${t.locationName} ▶`}>›</button></span></label>
           <label><span>{t.latitude}</span><input name="latitude" type="text" inputmode="decimal" pattern="-?[0-9]+(?:[.,][0-9]+)?" value="40.80194" required /></label>
           <label><span>{t.longitude}</span><input name="longitude" type="text" inputmode="decimal" pattern="-?[0-9]+(?:[.,][0-9]+)?" value="0.69361" required /></label>
         </div>
@@ -128,8 +128,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       <fieldset class="planning-panel planning-panel--period">
         <legend>{t.period}</legend>
         <div class="planning-fields">
-          <label><span>{t.year}</span><input name="year" type="number" min="1900" max="2200" required /></label>
-          <label><span>{t.week}</span><input name="week" type="number" min="1" max="53" required /></label>
+          <label><span>{t.year}</span><span class="planning-stepper"><button type="button" data-step-field="year" data-step-direction="-1" aria-label={`◀ ${t.year}`}>‹</button><input name="year" type="number" min="1900" max="2200" required /><button type="button" data-step-field="year" data-step-direction="1" aria-label={`${t.year} ▶`}>›</button></span></label>
+          <label><span>{t.week}</span><span class="planning-stepper"><button type="button" data-step-field="week" data-step-direction="-1" aria-label={`◀ ${t.week}`}>‹</button><input name="week" type="number" min="1" max="53" required /><button type="button" data-step-field="week" data-step-direction="1" aria-label={`${t.week} ▶`}>›</button></span></label>
           <output class="planning-week-range" data-week-range aria-live="polite"></output>
           <button class="planning-button" type="submit" data-calculate>{t.calculate}</button>
         </div>
@@ -213,6 +213,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const locationPresets: Record<string, { name: string; latitudeDeg: number; longitudeDeg: number }> = {
     lampolla: { name: 'L’Ampolla', latitudeDeg: 40.80194, longitudeDeg: 0.69361 },
     barcelona: { name: 'Barcelona', latitudeDeg: 41.3926, longitudeDeg: 2.1865 },
+    pujalt: { name: 'Pujalt', latitudeDeg: 41.717479, longitudeDeg: 1.424563 },
+    huesca: { name: 'Huesca', latitudeDeg: 42.139166, longitudeDeg: -0.407826 },
+    lleida: { name: 'Lleida', latitudeDeg: 41.617207, longitudeDeg: 0.625766 },
+    tarragona: { name: 'Tarragona', latitudeDeg: 41.119005, longitudeDeg: 1.245268 },
+    girona: { name: 'Girona', latitudeDeg: 41.9738, longitudeDeg: 2.817016 },
+    vilanova: { name: 'Vilanova i la Geltrú', latitudeDeg: 41.222704, longitudeDeg: 1.72398 },
   };
   const updateWeekRange = () => {
     if (!weekRange) return;
@@ -281,6 +287,30 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   };
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
   ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
+  root.querySelectorAll<HTMLButtonElement>('[data-step-field]').forEach((button) => button.addEventListener('click', () => {
+    const name = button.dataset.stepField ?? '';
+    const direction = Number(button.dataset.stepDirection) < 0 ? -1 : 1;
+    const control = field(name);
+    if (control instanceof HTMLSelectElement) {
+      const selectable = [...control.options].filter((option) => option.value);
+      const current = selectable.findIndex((option) => option.value === control.value);
+      const next = current < 0
+        ? (direction > 0 ? 0 : selectable.length - 1)
+        : (current + direction + selectable.length) % selectable.length;
+      control.value = selectable[next]?.value ?? '';
+    } else if (name === 'week') {
+      let year = Number(field('year').value);
+      let week = Number(control.value) + direction;
+      if (week < 1) { year -= 1; week = isoWeeksInYear(year); }
+      else if (week > isoWeeksInYear(year)) { year += 1; week = 1; }
+      field('year').value = String(year);
+      control.value = String(week);
+    } else if (control instanceof HTMLInputElement) {
+      direction > 0 ? control.stepUp() : control.stepDown();
+    }
+    control.dispatchEvent(new Event('input', { bubbles: true }));
+    control.dispatchEvent(new Event('change', { bubbles: true }));
+  }));
   field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
   field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
   field('simbadQuery').addEventListener('input', () => simbadButton?.classList.add('is-dirty'));
