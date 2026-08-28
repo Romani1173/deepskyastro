@@ -67,7 +67,7 @@ const structuredData = {
 		</div>
 		<p class="photo-detail__summary">{text.caracteristiques}</p>
 		{foto.data.objecte_astronomic && <nav class="photo-detail__actions" aria-label={lang === 'ca' ? 'Eines per a aquest objecte' : lang === 'es' ? 'Herramientas para este objeto' : 'Tools for this object'}>
-			{foto.data.visibilitat && <a class="annual-visibility__detail-link" data-detailed-visibility href={`${visibilityHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&chart=annual`}>{t.detailedVisibility} <span aria-hidden="true">→</span></a>}
+			{foto.data.visibilitat && <a class="annual-visibility__detail-link" data-detailed-visibility href={`${visibilityHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&chart=annual&from=photo`}>{t.detailedVisibility} <span aria-hidden="true">→</span></a>}
 			<a class="annual-visibility__detail-link annual-visibility__detail-link--planning" href={`${planningHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&from=photo`}>{t.planFromLocation} <span aria-hidden="true">→</span></a>
 		</nav>}
 		<div class="data-grid">
@@ -95,8 +95,8 @@ const structuredData = {
 		)}
 		{(previousPhoto || nextPhoto) && (
 			<nav class="photo-navigation" aria-label={t.photoNavigation}>
-				{previousPhoto ? <a class="photo-navigation__previous" href={photoHref(lang, previousPhoto.id, base)}><span>← {t.previousObject}</span><strong>{previousText?.objecte}</strong></a> : <span />}
-				{nextPhoto ? <a class="photo-navigation__next" href={photoHref(lang, nextPhoto.id, base)}><span>{t.nextObject} →</span><strong>{nextText?.objecte}</strong></a> : <span />}
+				{previousPhoto ? <a class="photo-navigation__previous" data-photo-navigation-link data-focus-object={previousPhoto.data.objecte_astronomic} href={photoHref(lang, previousPhoto.id, base)}><span>← {t.previousObject}</span><strong>{previousText?.objecte}</strong></a> : <span />}
+				{nextPhoto ? <a class="photo-navigation__next" data-photo-navigation-link data-focus-object={nextPhoto.data.objecte_astronomic} href={photoHref(lang, nextPhoto.id, base)}><span>{t.nextObject} →</span><strong>{nextText?.objecte}</strong></a> : <span />}
 			</nav>
 		)}
 	</article>
@@ -117,9 +117,11 @@ const structuredData = {
 <script>
 	const photoBackLink = document.querySelector<HTMLAnchorElement>('[data-photo-back]');
 	const photoParams = new URL(window.location.href).searchParams;
+	const visibilityContextKeys = ['year', 'week', 'view', 'layout', 'hours', 'constellation'];
+	const returnContextKeys = [...visibilityContextKeys, 'focus'];
 	if (photoBackLink && photoParams.get('from') === 'visibility') {
 		const returnUrl = new URL(photoBackLink.dataset.visibilityHref!, window.location.origin);
-		for (const key of ['year', 'week', 'view', 'layout', 'hours']) {
+		for (const key of returnContextKeys) {
 			const value = photoParams.get(key);
 			if (value) returnUrl.searchParams.set(key, value);
 		}
@@ -129,12 +131,22 @@ const structuredData = {
 	const detailedVisibilityLink = document.querySelector<HTMLAnchorElement>('[data-detailed-visibility]');
 	if (detailedVisibilityLink) {
 		const detailedUrl = new URL(detailedVisibilityLink.href);
-		for (const key of ['year', 'week', 'view', 'layout', 'hours']) {
+		for (const key of visibilityContextKeys) {
 			const value = photoParams.get(key);
 			if (value) detailedUrl.searchParams.set(key, value);
 		}
 		detailedVisibilityLink.href = `${detailedUrl.pathname}${detailedUrl.search}`;
 	}
+	document.querySelectorAll<HTMLAnchorElement>('[data-photo-navigation-link]').forEach((link) => {
+		const navigationUrl = new URL(link.href);
+		for (const key of ['from', ...returnContextKeys]) {
+			const value = photoParams.get(key);
+			if (value) navigationUrl.searchParams.set(key, value);
+		}
+		if (link.dataset.focusObject) navigationUrl.searchParams.set('focus', link.dataset.focusObject);
+		else navigationUrl.searchParams.delete('focus');
+		link.href = `${navigationUrl.pathname}${navigationUrl.search}`;
+	});
 	const lightbox = document.querySelector<HTMLDialogElement>('.image-lightbox');
 	const lightboxImage = lightbox?.querySelector<HTMLImageElement>('img');
 	const closeButton = lightbox?.querySelector<HTMLButtonElement>('.image-lightbox__close');

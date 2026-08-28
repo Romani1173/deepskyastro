@@ -7,6 +7,7 @@
     ],
     "raDeg": 112.26129027,
     "decDeg": 13.24682988,
+    "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -19,6 +20,7 @@
     ],
     "raDeg": 292.68031501,
     "decDeg": 27.95967363,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -31,6 +33,7 @@
     ],
     "raDeg": 312.775,
     "decDeg": 60.18333333,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -41,6 +44,7 @@
     "aliases": [],
     "raDeg": 291.35,
     "decDeg": 20.183,
+    "constellation": "Vulpecula",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -56,6 +60,7 @@
     },
     "raDeg": 36.43125,
     "decDeg": 62.10361111,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -73,6 +78,7 @@
     ],
     "raDeg": 14.42666667,
     "decDeg": 61.08327778,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -85,6 +91,7 @@
     ],
     "raDeg": 14.75570833,
     "decDeg": 60.88827778,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -97,6 +104,7 @@
     ],
     "raDeg": 79.35,
     "decDeg": 34.38333333,
+    "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -109,6 +117,7 @@
     ],
     "raDeg": 80.5,
     "decDeg": 33.48333333,
+    "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -121,6 +130,7 @@
     ],
     "raDeg": 85.25,
     "decDeg": -2.5,
+    "constellation": "Orion",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -133,6 +143,7 @@
     ],
     "raDeg": 94.25,
     "decDeg": 22.56999969,
+    "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -147,6 +158,7 @@
     "coordinateTarget": "Gamma Cygni (Sadr)",
     "raDeg": 305.557091,
     "decDeg": 40.256679,
+    "constellation": "Cygnus",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -157,6 +169,7 @@
     "aliases": [],
     "raDeg": 324.745,
     "decDeg": 57.51389,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -167,6 +180,7 @@
     "aliases": [],
     "raDeg": 38.21,
     "decDeg": 61.47111,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -177,6 +191,7 @@
     "aliases": [],
     "raDeg": 42.855,
     "decDeg": 60.41889,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -189,6 +204,7 @@
     ],
     "raDeg": 75.5,
     "decDeg": -7.9,
+    "constellation": "Eridanus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -199,6 +215,7 @@
     "aliases": [],
     "raDeg": 106.10416667,
     "decDeg": -10.455,
+    "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -209,6 +226,7 @@
     "aliases": [],
     "raDeg": 312.75,
     "decDeg": 44.36666667,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -219,6 +237,7 @@
     "aliases": [],
     "raDeg": 328.372,
     "decDeg": 47.246,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -236,6 +255,7 @@
     ],
     "raDeg": 310.5,
     "decDeg": 67.9,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -253,6 +273,7 @@
     ],
     "raDeg": 290.22666667,
     "decDeg": 11.22,
+    "constellation": "Aquila",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -270,6 +291,7 @@
     ],
     "raDeg": 292.025,
     "decDeg": 22.6,
+    "constellation": "Vulpecula",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -287,6 +309,7 @@
     ],
     "raDeg": 312.95,
     "decDeg": 41.68333333,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -297,6 +320,7 @@
     "aliases": [],
     "raDeg": 333.72916667,
     "decDeg": 73.41666667,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -307,6 +331,7 @@
     "aliases": [],
     "raDeg": 66.25,
     "decDeg": 54.95,
+    "constellation": "Camelopardalis",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -319,6 +344,7 @@
     ],
     "raDeg": 83.6324,
     "decDeg": 22.0174,
+    "constellation": "Taurus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -331,6 +357,7 @@
     ],
     "raDeg": 205.54841667,
     "decDeg": 28.37727778,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -344,6 +371,7 @@
     ],
     "raDeg": 270.904167,
     "decDeg": -24.386667,
+    "constellation": "Sagittarius",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -356,6 +384,7 @@
     ],
     "raDeg": 250.423475,
     "decDeg": 36.46131944,
+    "constellation": "Hercules",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -368,6 +397,7 @@
     ],
     "raDeg": 322.49304167,
     "decDeg": 12.167,
+    "constellation": "Pegasus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -380,6 +410,7 @@
     ],
     "raDeg": 274.688,
     "decDeg": -13.792,
+    "constellation": "Serpens",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -392,6 +423,7 @@
     ],
     "raDeg": 270.675,
     "decDeg": -22.97166667,
+    "constellation": "Sagittarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -404,6 +436,7 @@
     ],
     "raDeg": 271.04208333,
     "decDeg": -22.5,
+    "constellation": "Sagittarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -416,6 +449,7 @@
     ],
     "raDeg": 299.90151327,
     "decDeg": 22.72119779,
+    "constellation": "Vulpecula",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -428,6 +462,7 @@
     ],
     "raDeg": 305.92875,
     "decDeg": 38.49027778,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -440,6 +475,7 @@
     ],
     "raDeg": 10.68470833,
     "decDeg": 41.26875,
+    "constellation": "Andromeda",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -452,6 +488,7 @@
     ],
     "raDeg": 23.46206906,
     "decDeg": 30.66017511,
+    "constellation": "Triangulum",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -464,6 +501,7 @@
     ],
     "raDeg": 92.28125,
     "decDeg": 24.3375,
+    "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -476,6 +514,7 @@
     ],
     "raDeg": 84.0825,
     "decDeg": 34.13388889,
+    "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -488,6 +527,7 @@
     ],
     "raDeg": 88.0775,
     "decDeg": 32.54333333,
+    "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -500,6 +540,7 @@
     ],
     "raDeg": 82.16666667,
     "decDeg": 35.81888889,
+    "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -512,6 +553,7 @@
     ],
     "raDeg": 322.76666667,
     "decDeg": 48.29638889,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -525,6 +567,7 @@
     ],
     "raDeg": 83.82,
     "decDeg": -5.3875,
+    "constellation": "Orion",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -537,6 +580,7 @@
     ],
     "raDeg": 129.99333333,
     "decDeg": 19.60916667,
+    "constellation": "Cancer",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -549,6 +593,7 @@
     ],
     "raDeg": 56.65833333,
     "decDeg": 24.17805556,
+    "constellation": "Taurus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -561,6 +606,7 @@
     ],
     "raDeg": 202.469575,
     "decDeg": 47.19525833,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -573,6 +619,7 @@
     ],
     "raDeg": 351.19666667,
     "decDeg": 61.59222222,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -585,6 +632,7 @@
     ],
     "raDeg": 289.14820833,
     "decDeg": 30.18347222,
+    "constellation": "Lyra",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -597,6 +645,7 @@
     ],
     "raDeg": 283.39623652,
     "decDeg": 33.02913425,
+    "constellation": "Lyra",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -609,6 +658,7 @@
     ],
     "raDeg": 198.95530912,
     "decDeg": 42.02936891,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -621,6 +671,7 @@
     ],
     "raDeg": 169.73295194,
     "decDeg": 13.09230575,
+    "constellation": "Leo",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -633,6 +684,7 @@
     ],
     "raDeg": 298.44370833,
     "decDeg": 18.77919444,
+    "constellation": "Sagitta",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -646,6 +698,7 @@
     ],
     "raDeg": 148.888219,
     "decDeg": 69.065295,
+    "constellation": "Ursa Major",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -658,6 +711,7 @@
     ],
     "raDeg": 186.26559721,
     "decDeg": 12.88698314,
+    "constellation": "Virgo",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -670,6 +724,7 @@
     ],
     "raDeg": 259.28079167,
     "decDeg": 43.13594444,
+    "constellation": "Hercules",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -682,6 +737,7 @@
     ],
     "raDeg": 192.72114082,
     "decDeg": 41.12025025,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -692,6 +748,7 @@
     "aliases": [],
     "raDeg": 210.80242917,
     "decDeg": 54.34875,
+    "constellation": "Ursa Major",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -702,6 +759,7 @@
     "aliases": [],
     "raDeg": 23.33791667,
     "decDeg": 60.65361111,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -715,6 +773,7 @@
     ],
     "raDeg": 189.997625,
     "decDeg": -11.623056,
+    "constellation": "Virgo",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -725,6 +784,7 @@
     "aliases": [],
     "raDeg": 184.74008333,
     "decDeg": 47.30371944,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -740,6 +800,7 @@
     },
     "raDeg": 60.81625,
     "decDeg": 51.315,
+    "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -757,6 +818,7 @@
     ],
     "raDeg": 10.805,
     "decDeg": 61.77388889,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -769,6 +831,7 @@
     ],
     "raDeg": 13.10458333,
     "decDeg": 56.565,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -781,6 +844,7 @@
     ],
     "raDeg": 34.7375,
     "decDeg": 57.13388889,
+    "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -793,6 +857,7 @@
     ],
     "raDeg": 60.825,
     "decDeg": 36.42166667,
+    "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -805,6 +870,7 @@
     ],
     "raDeg": 92.425,
     "decDeg": 20.5,
+    "constellation": "Orion",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -817,6 +883,7 @@
     ],
     "raDeg": 97.65041667,
     "decDeg": 4.98072222,
+    "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -829,6 +896,7 @@
     ],
     "raDeg": 100.22375,
     "decDeg": 9.87555556,
+    "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -841,6 +909,7 @@
     ],
     "raDeg": 109.625,
     "decDeg": -13.22666667,
+    "constellation": "Canis Major",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -853,6 +922,7 @@
     ],
     "raDeg": 184.37357917,
     "decDeg": 37.80711111,
+    "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -865,6 +935,7 @@
     ],
     "raDeg": 189.08668333,
     "decDeg": 25.98739167,
+    "constellation": "Coma Berenices",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -882,6 +953,7 @@
     ],
     "raDeg": 272.5,
     "decDeg": -24,
+    "constellation": "Sagittarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -894,6 +966,7 @@
     ],
     "raDeg": 302.82916667,
     "decDeg": 35.83166667,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -906,6 +979,7 @@
     ],
     "raDeg": 303.02725787,
     "decDeg": 38.35494005,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -918,6 +992,7 @@
     ],
     "raDeg": 306.25,
     "decDeg": 42.3,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -930,6 +1005,7 @@
     ],
     "raDeg": 308.71805,
     "decDeg": 60.15367778,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -943,6 +1019,7 @@
     ],
     "raDeg": 311.40833333,
     "decDeg": 30.70833333,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD (NGC 6960 reference coordinates)",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -956,6 +1033,7 @@
     ],
     "raDeg": 311.40833333,
     "decDeg": 30.70833333,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD (NGC 6960 reference coordinates)",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -968,6 +1046,7 @@
     ],
     "raDeg": 314.25,
     "decDeg": 31.21666667,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -980,6 +1059,7 @@
     ],
     "raDeg": 314.69583333,
     "decDeg": 44.33,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -992,6 +1072,7 @@
     ],
     "raDeg": 315.40375,
     "decDeg": 68.16333333,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1004,6 +1085,7 @@
     ],
     "raDeg": 337.41060585,
     "decDeg": -20.83715201,
+    "constellation": "Aquarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1016,6 +1098,7 @@
     ],
     "raDeg": 341.8475,
     "decDeg": 58.11527778,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1028,6 +1111,7 @@
     ],
     "raDeg": 350.20125,
     "decDeg": 61.20166667,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1040,6 +1124,7 @@
     ],
     "raDeg": 293.68847401,
     "decDeg": 30.51637518,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1058,6 +1143,7 @@
     },
     "raDeg": 319.28450741,
     "decDeg": 34.20761555,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1075,6 +1161,7 @@
     ],
     "raDeg": 295.8,
     "decDeg": 23.25,
+    "constellation": "Vulpecula",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1093,6 +1180,7 @@
     },
     "raDeg": 293.9,
     "decDeg": 29.6,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1105,6 +1193,7 @@
     ],
     "raDeg": 299.97916667,
     "decDeg": 35.27666667,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1117,6 +1206,7 @@
     ],
     "raDeg": 320.3,
     "decDeg": 38.7,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1129,6 +1219,7 @@
     ],
     "raDeg": 308.75833333,
     "decDeg": 47.04,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1147,6 +1238,7 @@
     },
     "raDeg": 319.625,
     "decDeg": 43.93333333,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1159,6 +1251,7 @@
     ],
     "raDeg": 317.95,
     "decDeg": 59.95,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1176,6 +1269,7 @@
     },
     "raDeg": 334.78749815,
     "decDeg": 56.07912137,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1188,6 +1282,7 @@
     ],
     "raDeg": 344.27461618,
     "decDeg": 62.63591586,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1200,6 +1295,7 @@
     ],
     "raDeg": 349.01641667,
     "decDeg": 60.03358333,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1212,6 +1308,7 @@
     ],
     "raDeg": 5.31666667,
     "decDeg": 61.725,
+    "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1224,6 +1321,7 @@
     ],
     "raDeg": 92.18333333,
     "decDeg": 15.675,
+    "constellation": "Orion",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1241,6 +1339,7 @@
     ],
     "raDeg": 103.55434984,
     "decDeg": -23.92833981,
+    "constellation": "Canis Major",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1253,6 +1352,7 @@
     ],
     "raDeg": 333.3522021,
     "decDeg": 70.25141155,
+    "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
@@ -1270,6 +1370,7 @@
     ],
     "raDeg": 354.46498984,
     "decDeg": 48.49656599,
+    "constellation": "Andromeda",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "pending"
@@ -1282,6 +1383,7 @@
     ],
     "raDeg": 302.55913669,
     "decDeg": 36.17640852,
+    "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"

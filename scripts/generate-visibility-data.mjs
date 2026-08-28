@@ -19,6 +19,7 @@ const generatedObjects = Object.fromEntries(objects.map((object) => {
   return [object.id, {
     catalogName: object.catalogName,
     commonNames: object.commonNames,
+    constellation: object.constellation,
     status: object.status,
     raDeg: object.raDeg,
     decDeg: object.decDeg,
