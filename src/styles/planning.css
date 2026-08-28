@@ -90,7 +90,7 @@
 .planning-legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-bottom: .6rem; color: var(--color-muted); font: .68rem var(--font-technical); }
 .planning-legend__object { color: var(--planning-gold); }.planning-legend__moon { color: var(--planning-moon); }
 .planning-chart { position: relative; overflow: hidden; border: 1px solid var(--color-border); border-radius: .7rem; background: rgba(5, 8, 14, .92); }
-.planning-chart svg { display: block; width: 100%; min-width: 700px; touch-action: none; }
+.planning-chart svg { display: block; width: 100%; min-width: 700px; touch-action: pan-x pan-y; }
 .planning-chart__darkness { fill: rgba(72, 91, 132, .18); }
 .planning-chart__grid { stroke: rgba(124, 143, 172, .2); stroke-width: 1; }.planning-chart__threshold { stroke: rgba(229, 169, 63, .55); stroke-width: 1.4; stroke-dasharray: 7 6; }
 .planning-chart__object, .planning-chart__moon, .planning-chart__object-context, .planning-chart__moon-context { fill: none; vector-effect: non-scaling-stroke; }
