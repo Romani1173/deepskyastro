@@ -109,8 +109,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
         </nav>
         <div data-object-panel="local">
           <div class="planning-object-picker" data-object-picker>
-            <label><span>{t.searchObject}</span><input name="localObjectSearch" type="search" list="planning-object-options" placeholder={t.searchObjectPlaceholder} autocomplete="off" /></label>
-            <datalist id="planning-object-options">{objects.map((object) => <option value={`${object.displayCatalogName}${object.commonName ? ` · ${object.commonName}` : ''}`} />)}</datalist>
+            <label><span>{t.searchObject}</span><input name="localObjectSearch" type="search" placeholder={t.searchObjectPlaceholder} autocomplete="off" aria-autocomplete="list" aria-controls="planning-object-results" aria-expanded="false" /></label>
+            <div class="planning-object-results" id="planning-object-results" data-object-results role="listbox" hidden></div>
           </div>
           <select name="localObject" hidden aria-hidden="true" tabindex="-1">
             <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
@@ -254,6 +254,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   }
 
   const localObjectSearch = field('localObjectSearch') as HTMLInputElement;
+  const localObjectResults = root.querySelector<HTMLElement>('[data-object-results]');
   const objectLabel = (object: any) => object.commonName ? `${object.displayCatalogName} · ${object.commonName}` : object.displayCatalogName;
   const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
   const syncLocalObjectSearch = () => {
@@ -261,18 +262,68 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     localObjectSearch.value = selected ? objectLabel(selected) : '';
   };
   syncLocalObjectSearch();
-  const selectLocalObjectFromSearch = () => {
-    const query = normalizeSearch(localObjectSearch.value);
-    const selected = config.objects.find((object: any) => normalizeSearch(objectLabel(object)) === query);
-    if (!selected || selected.id === field('localObject').value) return Boolean(selected);
-    field('localObject').value = selected.id;
-    field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
-    return true;
+  const closeLocalObjectResults = () => {
+    if (localObjectResults) localObjectResults.hidden = true;
+    localObjectSearch.setAttribute('aria-expanded', 'false');
   };
-  localObjectSearch.addEventListener('input', selectLocalObjectFromSearch);
-  localObjectSearch.addEventListener('change', () => {
-    if (!selectLocalObjectFromSearch()) syncLocalObjectSearch();
+  const chooseLocalObject = (selected: any) => {
+    if (!selected) return;
+    field('localObject').value = selected.id;
+    localObjectSearch.value = objectLabel(selected);
+    field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
+    closeLocalObjectResults();
+  };
+  const matchingLocalObjects = (showAll = false) => {
+    const query = normalizeSearch(localObjectSearch.value);
+    if (showAll || !query) return config.objects;
+    return config.objects
+      .filter((object: any) => normalizeSearch(`${objectLabel(object)} ${object.catalogName} ${object.id}`).includes(query));
+  };
+  const renderLocalObjectResults = (showAll = false) => {
+    if (!localObjectResults) return;
+    const matches = matchingLocalObjects(showAll);
+    localObjectResults.replaceChildren();
+    if (!matches.length) {
+      const empty = document.createElement('p');
+      empty.className = 'planning-object-results__empty';
+      empty.textContent = config.texts.noObjectMatches;
+      localObjectResults.append(empty);
+    } else {
+      matches.forEach((object: any) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.role = 'option';
+        button.dataset.objectId = object.id;
+        button.textContent = objectLabel(object);
+        button.addEventListener('pointerdown', (event) => event.preventDefault());
+        button.addEventListener('click', () => chooseLocalObject(object));
+        localObjectResults.append(button);
+      });
+    }
+    localObjectResults.hidden = false;
+    localObjectSearch.setAttribute('aria-expanded', 'true');
+  };
+  localObjectSearch.addEventListener('focus', () => renderLocalObjectResults(true));
+  localObjectSearch.addEventListener('click', () => renderLocalObjectResults(true));
+  localObjectSearch.addEventListener('input', renderLocalObjectResults);
+  localObjectSearch.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { closeLocalObjectResults(); return; }
+    if (event.key === 'Enter') {
+      const firstMatch = matchingLocalObjects()[0];
+      if (firstMatch) { event.preventDefault(); chooseLocalObject(firstMatch); }
+    }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (localObjectResults?.hidden) renderLocalObjectResults();
+      localObjectResults?.querySelector<HTMLButtonElement>('button')?.focus();
+    }
   });
+  localObjectSearch.addEventListener('change', () => {
+    const query = normalizeSearch(localObjectSearch.value);
+    const exact = config.objects.find((object: any) => normalizeSearch(objectLabel(object)) === query);
+    if (exact) chooseLocalObject(exact);
+  });
+  localObjectSearch.addEventListener('blur', () => window.setTimeout(closeLocalObjectResults, 120));
 
   const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];
   const modePanels = [...root.querySelectorAll<HTMLElement>('[data-object-panel]')];
