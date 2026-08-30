@@ -303,6 +303,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     localObjectResults.hidden = false;
     localObjectSearch.setAttribute('aria-expanded', 'true');
   };
+  localObjectSearch.addEventListener('pointerdown', () => renderLocalObjectResults(true));
+  localObjectSearch.addEventListener('touchstart', () => renderLocalObjectResults(true), { passive: true });
   localObjectSearch.addEventListener('focus', () => renderLocalObjectResults(true));
   localObjectSearch.addEventListener('click', () => renderLocalObjectResults(true));
   localObjectSearch.addEventListener('input', renderLocalObjectResults);
