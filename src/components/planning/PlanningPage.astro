@@ -266,6 +266,21 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     if (localObjectResults) localObjectResults.hidden = true;
     localObjectSearch.setAttribute('aria-expanded', 'false');
   };
+  const positionMobileObjectResults = () => {
+    if (!localObjectResults || !window.matchMedia('(max-width: 520px)').matches || localObjectResults.hidden) return;
+    const viewport = window.visualViewport;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const viewportHeight = viewport?.height ?? window.innerHeight;
+    const viewportBottom = viewportTop + viewportHeight;
+    const inputBottom = localObjectSearch.getBoundingClientRect().bottom;
+    const spaceBelowInput = viewportBottom - inputBottom - 8;
+    const panelHeight = Math.min(viewportHeight * .42, 288, Math.max(spaceBelowInput, 144));
+    const preferredTop = inputBottom + 6;
+    const top = preferredTop + panelHeight <= viewportBottom - 8 ? preferredTop : viewportBottom - panelHeight - 8;
+    localObjectResults.style.top = `${Math.max(viewportTop + 8, top)}px`;
+    localObjectResults.style.bottom = 'auto';
+    localObjectResults.style.maxHeight = `${panelHeight}px`;
+  };
   const chooseLocalObject = (selected: any) => {
     if (!selected) return;
     field('localObject').value = selected.id;
@@ -281,6 +296,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   };
   const renderLocalObjectResults = (showAll = false) => {
     if (!localObjectResults) return;
+    if (window.matchMedia('(max-width: 520px)').matches && localObjectResults.parentElement !== document.body) document.body.append(localObjectResults);
     const matches = matchingLocalObjects(showAll);
     localObjectResults.replaceChildren();
     if (!matches.length) {
@@ -302,7 +318,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     }
     localObjectResults.hidden = false;
     localObjectSearch.setAttribute('aria-expanded', 'true');
+    window.requestAnimationFrame(positionMobileObjectResults);
   };
+  window.visualViewport?.addEventListener('resize', positionMobileObjectResults);
+  window.visualViewport?.addEventListener('scroll', positionMobileObjectResults);
   localObjectSearch.addEventListener('pointerdown', () => renderLocalObjectResults(true));
   localObjectSearch.addEventListener('touchstart', () => renderLocalObjectResults(true), { passive: true });
   localObjectSearch.addEventListener('focus', () => renderLocalObjectResults(true));
