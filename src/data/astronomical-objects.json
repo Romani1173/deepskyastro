@@ -120,6 +120,19 @@
     "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
+    "id": "ic410-ic417",
+    "catalogName": "IC410-IC417",
+    "aliases": [
+      "IC 410 + IC 417"
+    ],
+    "raDeg": 80.5,
+    "decDeg": 33.48333333,
+    "constellation": "Auriga",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
     "status": "photographed"
   },
   {
@@ -688,6 +701,19 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "m78",
+    "catalogName": "M78",
+    "aliases": [
+      "NGC2068"
+    ],
+    "raDeg": 86.69083333,
+    "decDeg": 0.07916667,
+    "constellation": "Orion",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
   },
   {
     "id": "m81",

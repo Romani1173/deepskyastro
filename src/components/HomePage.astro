@@ -10,16 +10,22 @@ const t = copy[lang];
 const homeUrl = new URL(lang === 'ca' ? base : `${base}${lang}/`, Astro.site).href;
 const authorName = 'Juan José Romero';
 const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName);
-const coverRotationDays = 2;
+const coverRotationDays = 1;
 const coverRotationAnchor = Date.UTC(2026, 7, 21);
 const coverPreviewEnabled = import.meta.env.DEV;
 const rotatingCovers = [
 	{ src: withBase('imagenes/portadas/portada-rotativa-01.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-02.webp', base), shadeLeft: .45, shadeRight: .08 }, // rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-03.webp', base), shadeLeft: .55, shadeRight: .17 }, // verde
-	{ src: withBase('imagenes/portadas/portada-rotativa-04.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-07.webp', base), shadeLeft: .55, shadeRight: .17 }, // NGC 2237 verde
 	{ src: withBase('imagenes/portadas/portada-rotativa-05.webp', base), shadeLeft: .53, shadeRight: .15 }, // rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-11.webp', base), shadeLeft: .48, shadeRight: .11 }, // neutro/oscuro
 	{ src: withBase('imagenes/portadas/portada-rotativa-06.webp', base), shadeLeft: .50, shadeRight: .13 }, // dorado/azul
+	{ src: withBase('imagenes/portadas/portada-rotativa-08.webp', base), shadeLeft: .48, shadeRight: .11 }, // NGC 2237 rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-03.webp', base), shadeLeft: .55, shadeRight: .17 }, // verde
+	{ src: withBase('imagenes/portadas/portada-rotativa-02.webp', base), shadeLeft: .45, shadeRight: .08 }, // rojo oscuro
+	{ src: withBase('imagenes/portadas/portada-rotativa-12.webp', base), shadeLeft: .55, shadeRight: .16 }, // magenta/azul
+	{ src: withBase('imagenes/portadas/portada-rotativa-09.webp', base), shadeLeft: .47, shadeRight: .10 }, // NGC 2237 azul/dorado
+	{ src: withBase('imagenes/portadas/portada-rotativa-10.webp', base), shadeLeft: .49, shadeRight: .11 }, // rojo
+	{ src: withBase('imagenes/portadas/portada-rotativa-04.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
 ];
 const structuredData = {
 	'@context': 'https://schema.org',
