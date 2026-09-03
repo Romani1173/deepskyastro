@@ -80,7 +80,6 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
   <main class="planning" data-planning-root>
     <header class="planning__header">
-      <p class="planning__eyebrow">UTC · 5 min · J2000</p>
       <h1>{t.title}</h1>
       <p>{t.intro}</p>
       <a class="planning-guide-link" href={planningGuideHref(lang, base)} title={t.guideTooltip}>
