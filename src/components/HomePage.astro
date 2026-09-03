@@ -43,14 +43,39 @@ const structuredData = {
 
 <Layout title={t.homeSeoTitle} description={t.homeSeoDescription} image={withBase('imagenes/portada.webp', base)} structuredData={structuredData} hero lang={lang} languageLinks={languageLinks.home(base)}>
 	<script is:inline define:vars={{ rotatingCovers, coverRotationDays, coverRotationAnchor, coverPreviewEnabled }}>
-		const elapsedDays = Math.floor((Date.now() - coverRotationAnchor) / 86400000);
-		const cycleIndex = ((Math.floor(elapsedDays / coverRotationDays) % rotatingCovers.length) + rotatingCovers.length) % rotatingCovers.length;
 		const requestedCover = coverPreviewEnabled ? Number(new URLSearchParams(window.location.search).get('cover')) : 0;
-		const selectedIndex = Number.isInteger(requestedCover) && requestedCover >= 1 && requestedCover <= rotatingCovers.length ? requestedCover - 1 : cycleIndex;
-		const selectedCover = rotatingCovers[selectedIndex];
-		document.documentElement.style.setProperty('--rotating-hero-image', `url("${selectedCover.src}")`);
-		document.documentElement.style.setProperty('--rotating-hero-shade-left', String(selectedCover.shadeLeft));
-		document.documentElement.style.setProperty('--rotating-hero-shade-right', String(selectedCover.shadeRight));
+		const madridDateParts = (date) => Object.fromEntries(
+			new Intl.DateTimeFormat('en-CA', {
+				timeZone: 'Europe/Madrid',
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+			}).formatToParts(date).filter(({ type }) => type !== 'literal').map(({ type, value }) => [type, Number(value)]),
+		);
+		const dayNumber = (date) => {
+			const { year, month, day } = madridDateParts(date);
+			return Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+		};
+		const anchorDay = Math.floor(coverRotationAnchor / 86400000);
+		let appliedDay;
+		const applyRotatingCover = () => {
+			const currentDay = dayNumber(new Date());
+			if (currentDay === appliedDay) return;
+			appliedDay = currentDay;
+			const elapsedDays = currentDay - anchorDay;
+			const cycleIndex = ((Math.floor(elapsedDays / coverRotationDays) % rotatingCovers.length) + rotatingCovers.length) % rotatingCovers.length;
+			const selectedIndex = Number.isInteger(requestedCover) && requestedCover >= 1 && requestedCover <= rotatingCovers.length ? requestedCover - 1 : cycleIndex;
+			const selectedCover = rotatingCovers[selectedIndex];
+			document.documentElement.style.setProperty('--rotating-hero-image', `url("${selectedCover.src}")`);
+			document.documentElement.style.setProperty('--rotating-hero-shade-left', String(selectedCover.shadeLeft));
+			document.documentElement.style.setProperty('--rotating-hero-shade-right', String(selectedCover.shadeRight));
+		};
+		applyRotatingCover();
+		window.addEventListener('pageshow', applyRotatingCover);
+		document.addEventListener('visibilitychange', () => {
+			if (!document.hidden) applyRotatingCover();
+		});
+		window.setInterval(applyRotatingCover, 60000);
 	</script>
 	<section class="welcome-hero" style={`--hero-image: var(--rotating-hero-image, url('${withBase('imagenes/portada.webp', base)}')); --hero-shade-left: var(--rotating-hero-shade-left, .45); --hero-shade-right: var(--rotating-hero-shade-right, .08)`} aria-labelledby="welcome-title">
 		<div class="welcome-hero__content">
