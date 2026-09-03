@@ -50,6 +50,26 @@
     "status": "photographed"
   },
   {
+    "id": "hcg92",
+    "catalogName": "HCG 92",
+    "aliases": [
+      "Hickson 92",
+      "HCG 092",
+      "Arp 319"
+    ],
+    "commonNames": {
+      "ca": "Quintet de Stephan",
+      "es": "Quinteto de Stephan",
+      "en": "Stephan’s Quintet"
+    },
+    "raDeg": 338.98958333,
+    "decDeg": 33.96,
+    "constellation": "Pegasus",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ic1795",
     "catalogName": "IC1795",
     "aliases": [],
