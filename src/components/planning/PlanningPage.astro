@@ -504,7 +504,16 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const cursor = svgNode('line', { x1: String(left), x2: String(left), y1: String(top), y2: String(bottom), class: 'planning-chart__cursor' }); chart.append(cursor);
     const showSample = (index: number, tooltipLeft: number) => {
       const sample = samples[index]; const cursorX = x(index); cursor.removeAttribute('hidden'); cursor.setAttribute('x1', String(cursorX)); cursor.setAttribute('x2', String(cursorX));
-      if (tooltip) { tooltip.hidden = false; tooltip.style.left = `${Math.min(82, Math.max(4, tooltipLeft))}%`; tooltip.innerHTML = `<strong>${time(sample.timestampUtc)}</strong><span>${config.texts.objectCurve}: ${degrees(sample.objectAltitudeDeg)} · ${config.texts.azimuth}: ${degrees(sample.objectAzimuthDeg)}</span><span>${config.texts.moonCurve}: ${degrees(sample.moonAltitudeDeg)} · ${config.texts.illumination}: ${percent(sample.moonIlluminationFraction)}</span><span>${config.texts.separation}: ${degrees(sample.moonSeparationDeg)} · ${config.texts.sun}: ${degrees(sample.sunAltitudeDeg)}</span>`; }
+      if (tooltip && chart) {
+        tooltip.hidden = false;
+        tooltip.innerHTML = `<strong>${time(sample.timestampUtc)}</strong><span>${config.texts.objectCurve}: ${degrees(sample.objectAltitudeDeg)} · ${config.texts.azimuth}: ${degrees(sample.objectAzimuthDeg)}</span><span>${config.texts.moonCurve}: ${degrees(sample.moonAltitudeDeg)} · ${config.texts.illumination}: ${percent(sample.moonIlluminationFraction)}</span><span>${config.texts.separation}: ${degrees(sample.moonSeparationDeg)} · ${config.texts.sun}: ${degrees(sample.sunAltitudeDeg)}</span>`;
+        const edgePadding = 12;
+        const desiredLeft = tooltipLeft / 100 * chart.clientWidth;
+        const halfTooltipWidth = tooltip.offsetWidth / 2;
+        const minimumLeft = halfTooltipWidth + edgePadding;
+        const maximumLeft = chart.clientWidth - halfTooltipWidth - edgePadding;
+        tooltip.style.left = `${Math.max(minimumLeft, Math.min(maximumLeft, desiredLeft))}px`;
+      }
     };
     const inspect = (event: PointerEvent) => {
       const rect = chart.getBoundingClientRect();

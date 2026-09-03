@@ -102,7 +102,7 @@
 .planning-chart__object, .planning-chart__moon { stroke-width: 2.8; }.planning-chart__object { stroke: var(--planning-gold); }.planning-chart__moon { stroke: var(--planning-moon); stroke-dasharray: 7 5; }
 .planning-chart__label, .planning-chart__utc { fill: #91a0b8; font: 12px var(--font-technical); }.planning-chart__utc { fill: var(--planning-gold); font-weight: 700; }
 .planning-chart__cursor { stroke: #fff; stroke-width: 1; pointer-events: none; }
-.planning-tooltip { position: absolute; z-index: 2; top: .7rem; display: grid; gap: .28rem; width: max-content; max-width: min(27rem, 84%); padding: .68rem .78rem; border: 1px solid var(--color-border); border-radius: .6rem; background: rgba(5, 8, 14, .96); color: var(--color-muted); font: .78rem/1.4 var(--font-technical); transform: translateX(-50%); pointer-events: none; box-shadow: 0 8px 25px rgba(0,0,0,.4); }
+.planning-tooltip { position: absolute; z-index: 2; bottom: 2.9rem; display: grid; gap: .28rem; width: max-content; max-width: min(27rem, 84%); padding: .68rem .78rem; border: 1px solid rgba(124, 143, 172, .58); border-radius: .6rem; background: rgba(5, 8, 14, .58); color: var(--color-muted); font: .78rem/1.4 var(--font-technical); transform: translateX(-50%); pointer-events: none; box-shadow: 0 8px 25px rgba(0,0,0,.4); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 .planning-tooltip strong { color: #fff; font-size: .84rem; }.planning-tooltip span { display: block; }
 .planning-chart-help { margin: .7rem 0 0; color: var(--color-muted); font-size: .78rem; line-height: 1.5; }
 @media (max-width: 1024px) {
