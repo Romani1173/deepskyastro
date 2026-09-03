@@ -510,7 +510,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
         const edgePadding = 12;
         const desiredLeft = tooltipLeft / 100 * chart.clientWidth;
         const halfTooltipWidth = tooltip.offsetWidth / 2;
-        const minimumLeft = halfTooltipWidth + edgePadding;
+        const ordinateAxisWidth = chart.clientWidth * (left / 1000);
+        const minimumLeft = ordinateAxisWidth + halfTooltipWidth + edgePadding;
         const maximumLeft = chart.clientWidth - halfTooltipWidth - edgePadding;
         tooltip.style.left = `${Math.max(minimumLeft, Math.min(maximumLeft, desiredLeft))}px`;
       }
