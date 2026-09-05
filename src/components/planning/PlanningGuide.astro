@@ -8,7 +8,7 @@ const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const content = {
   ca: {
-    title: 'Guia de Planificació', eyebrow: 'Eina avançada · UTC', back: 'Tornar a Planificació', index: 'En aquesta guia',
+    title: 'Guia de Planificació', back: 'Tornar a Planificació', index: 'En aquesta guia',
     intro: 'Planificació estudia amb detall un únic objecte durant set nits des d’una ubicació concreta. Complementa Visibilitat i tots els seus càlculs, dates, eixos i avisos s’expressen en UTC.',
     sections: [
       ['diferencia', 'Planificació i Visibilitat', ['Visibilitat serveix per descobrir ràpidament quins objectes es poden fotografiar durant una setmana des del centre de Catalunya. Planificació està pensada per a l’estudi tècnic d’un objecte concret, amb ubicació lliure, comparació nocturna i mostres cada cinc minuts.', 'Si arribes amb el botó «Planificar» de Visibilitat, l’objecte, la setmana i l’any es carreguen automàticament. Només cal confirmar o canviar la ubicació i revisar el càlcul detallat.']],
@@ -22,7 +22,7 @@ const content = {
     ],
   },
   es: {
-    title: 'Guía de Planificación', eyebrow: 'Herramienta avanzada · UTC', back: 'Volver a Planificación', index: 'En esta guía',
+    title: 'Guía de Planificación', back: 'Volver a Planificación', index: 'En esta guía',
     intro: 'Planificación estudia en detalle un único objeto durante siete noches desde una ubicación concreta. Complementa Visibilidad y todos sus cálculos, fechas, ejes y avisos se expresan en UTC.',
     sections: [
       ['diferencia', 'Planificación y Visibilidad', ['Visibilidad sirve para descubrir rápidamente qué objetos pueden fotografiarse durante una semana desde el centro de Cataluña. Planificación está pensada para el estudio técnico de un objeto concreto, con ubicación libre, comparación nocturna y muestras cada cinco minutos.', 'Si llegas mediante el botón «Planificar» de Visibilidad, el objeto, la semana y el año se cargan automáticamente. Solo necesitas confirmar o cambiar la ubicación y revisar el cálculo detallado.']],
@@ -36,7 +36,7 @@ const content = {
     ],
   },
   en: {
-    title: 'Planning guide', eyebrow: 'Advanced tool · UTC', back: 'Back to Planning', index: 'In this guide',
+    title: 'Planning guide', back: 'Back to Planning', index: 'In this guide',
     intro: 'Planning studies one object in detail over seven nights from a specific location. It complements Visibility, and all calculations, dates, axes and notices use UTC.',
     sections: [
       ['difference', 'Planning and Visibility', ['Visibility quickly discovers which objects can be photographed during a week from central Catalonia. Planning is for the technical study of one target, with a custom location, night-by-night comparison and five-minute samples.', 'When opened with the “Plan” button in Visibility, the object, week and year load automatically. You only need to confirm or change the location and review the detailed calculation.']],
@@ -56,7 +56,10 @@ const t = content[lang];
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planningGuide(base)} focused>
   <article class="planning-guide">
     <a class="planning-guide__back" href={planningHref(lang, base)}>← {t.back}</a>
-    <header><p>{t.eyebrow}</p><h1>{t.title}</h1></header>
+    <header class="planning-guide__hero">
+      <div class="planning-guide__book" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg></div>
+      <h1>{t.title}</h1>
+    </header>
     <p class="planning-guide__intro">{t.intro}</p>
     <nav aria-label={t.index}><strong>{t.index}</strong><ol>{t.sections.map((section, index) => <li><a href={`#${section[0]}`}><span>{String(index + 1).padStart(2, '0')}</span>{section[1]}</a></li>)}</ol></nav>
     <div class="planning-guide__sections">{t.sections.map((section, index) => <section id={section[0]}><i>{String(index + 1).padStart(2, '0')}</i><div><h2>{section[1]}</h2>{section[2].map((paragraph) => <p>{paragraph}</p>)}</div></section>)}</div>
@@ -65,5 +68,5 @@ const t = content[lang];
 </Layout>
 
 <style>
-  .planning-guide{max-width:58rem;margin:0 auto;padding:.5rem 0 3rem}.planning-guide__back{display:inline-block;margin-bottom:1.1rem;color:var(--color-muted);font-size:.78rem;text-decoration:none}.planning-guide>header{padding-bottom:1.1rem;border-bottom:1px solid var(--color-border)}.planning-guide>header p{margin:0 0 .2rem;color:var(--color-accent);font:.72rem var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.planning-guide h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem)}.planning-guide__intro{max-width:50rem;margin:1.25rem 0;color:var(--color-text);font-size:clamp(1rem,2vw,1.14rem);line-height:1.7}.planning-guide nav{margin:1.5rem 0 2.4rem;padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide nav>strong{display:block;margin-bottom:.65rem;color:var(--color-muted);font-size:.72rem;text-transform:uppercase}.planning-guide nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .8rem;margin:0;padding:0;list-style:none}.planning-guide nav a{display:flex;gap:.5rem;padding:.35rem .4rem;color:var(--color-text);font-size:.85rem;text-decoration:none}.planning-guide nav span,.planning-guide section>i{color:var(--color-accent);font:.68rem var(--font-mono)}.planning-guide__sections{display:grid;gap:1rem}.planning-guide section{display:grid;grid-template-columns:2.8rem 1fr;scroll-margin-top:1rem;overflow:hidden;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide section>i{padding:1.2rem .55rem;border-right:1px solid var(--color-border);font-weight:700;text-align:center;font-style:normal}.planning-guide section>div{padding:1.1rem 1.2rem 1.2rem}.planning-guide h2{margin:0 0 .65rem;font-size:1.25rem}.planning-guide section p{margin:.55rem 0;color:var(--color-muted);line-height:1.65}.planning-guide__return{display:inline-flex;margin-top:1rem;padding:.65rem .8rem;border:1px solid var(--color-border);border-radius:.55rem;color:var(--color-text);font-size:.82rem;font-weight:700;text-decoration:none}@media(max-width:600px){.planning-guide nav ol{grid-template-columns:1fr}.planning-guide section{grid-template-columns:2.35rem 1fr}}
+  .planning-guide{max-width:58rem;margin:0 auto;padding:.5rem 0 3rem}.planning-guide__back{display:inline-block;margin-bottom:1.1rem;color:var(--color-muted);font-size:.78rem;text-decoration:none}.planning-guide__hero{display:flex;align-items:center;gap:1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--color-border)}.planning-guide__book{display:grid;flex:0 0 auto;width:2.8rem;height:2.8rem;place-items:center;border:1px solid color-mix(in srgb,var(--color-accent) 58%,transparent);border-radius:.65rem;background:color-mix(in srgb,var(--color-accent) 10%,transparent);color:var(--color-text)}.planning-guide__book svg{width:1.6rem;height:1.6rem;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.45}.planning-guide h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem);letter-spacing:-.035em;line-height:1.05}.planning-guide__intro{max-width:50rem;margin:1.25rem 0;color:var(--color-text);font-size:clamp(1rem,2vw,1.14rem);line-height:1.7}.planning-guide nav{margin:1.5rem 0 2.4rem;padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide nav>strong{display:block;margin-bottom:.65rem;color:var(--color-muted);font-size:.72rem;text-transform:uppercase}.planning-guide nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .8rem;margin:0;padding:0;list-style:none}.planning-guide nav a{display:flex;gap:.5rem;padding:.35rem .4rem;color:var(--color-text);font-size:.85rem;text-decoration:none}.planning-guide nav span,.planning-guide section>i{color:var(--color-accent);font:.68rem var(--font-mono)}.planning-guide__sections{display:grid;gap:1rem}.planning-guide section{display:grid;grid-template-columns:2.8rem 1fr;scroll-margin-top:1rem;overflow:hidden;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.planning-guide section>i{padding:1.2rem .55rem;border-right:1px solid var(--color-border);font-weight:700;text-align:center;font-style:normal}.planning-guide section>div{padding:1.1rem 1.2rem 1.2rem}.planning-guide h2{margin:0 0 .65rem;font-size:1.25rem}.planning-guide section p{margin:.55rem 0;color:var(--color-muted);line-height:1.65}.planning-guide__return{display:inline-flex;margin-top:1rem;padding:.65rem .8rem;border:1px solid var(--color-border);border-radius:.55rem;color:var(--color-text);font-size:.82rem;font-weight:700;text-decoration:none}@media(max-width:600px){.planning-guide nav ol{grid-template-columns:1fr}.planning-guide section{grid-template-columns:2.35rem 1fr}}
 </style>

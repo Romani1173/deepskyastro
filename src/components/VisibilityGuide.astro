@@ -9,7 +9,6 @@ const base = import.meta.env.BASE_URL;
 const content = {
   ca: {
     title: 'Guia de Visibilitat',
-    eyebrow: 'Ajuda de planificació astronòmica',
     intro: 'Aquesta eina ajuda a escollir objectes de cel profund segons la setmana, la durada de la visibilitat i la presència de la Lluna. Els càlculs estan referits al centre de Catalunya: 41° N, 1,5° E.',
     index: 'En aquesta guia',
     back: 'Tornar a Visibilitat',
@@ -32,7 +31,6 @@ const content = {
   },
   es: {
     title: 'Guía de Visibilidad',
-    eyebrow: 'Ayuda de planificación astronómica',
     intro: 'Esta herramienta ayuda a elegir objetos de cielo profundo según la semana, la duración de su visibilidad y la presencia de la Luna. Los cálculos están referidos al centro de Cataluña: 41° N, 1,5° E.',
     index: 'En esta guía',
     back: 'Volver a Visibilidad',
@@ -62,7 +60,7 @@ const t = content[lang];
     <a class="visibility-guide__back" href={visibilityHref(lang, base)}>← {t.back}</a>
     <header class="visibility-guide__hero">
       <div class="visibility-guide__book" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg></div>
-      <div><p>{t.eyebrow}</p><h1>{t.title}</h1></div>
+      <h1>{t.title}</h1>
     </header>
     <p class="visibility-guide__intro">{t.intro}</p>
 
@@ -103,7 +101,6 @@ const t = content[lang];
   .visibility-guide__back { display: inline-block; margin-bottom: 1.1rem; color: var(--color-muted); font-size: .78rem; text-decoration: none; }
   .visibility-guide__back:hover { color: var(--color-text); }
   .visibility-guide__hero { display: flex; align-items: center; gap: 1rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-border); }
-  .visibility-guide__hero p { margin: 0 0 .2rem; color: var(--color-accent); font: .72rem var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
   .visibility-guide__hero h1 { margin: 0; font-size: clamp(1.45rem, 3vw, 2.2rem); letter-spacing: -.035em; line-height: 1.05; }
   .visibility-guide__book { display: grid; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent); border-radius: .65rem; background: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-text); }
   .visibility-guide__book svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }

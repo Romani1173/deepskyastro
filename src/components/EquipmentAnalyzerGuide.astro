@@ -1,0 +1,72 @@
+---
+import type { Lang } from '../i18n';
+import { equipmentAnalyzerHref, languageLinks } from '../i18n';
+import Layout from '../layouts/Layout.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const content = {
+  ca: {
+    title: 'Guia de l’Analitzador d’equip', back: 'Tornar a l’Analitzador', index: 'En aquesta guia',
+    intro: 'L’Analitzador t’ajuda a entendre quin camp de visió, escala d’imatge i resolució ofereix el teu equip, i a comprovar com encaixa un objecte astronòmic en l’enquadrament.',
+    sections: [
+      ['recorregut', '1 · Tria el recorregut', ['«Analitza el meu equip» calcula les característiques del conjunt òptic i després mostra l’enquadrament. «Ja conec el meu FOV» permet anar directament a l’enquadrament introduint l’amplada i l’alçada del camp.', 'Pots tornar a la primera elecció en qualsevol moment.']],
+      ['equip', '2 · Equip per components o telescopi intel·ligent', ['En un equip per components introdueixes les dades del tub i la càmera. Els telescopis intel·ligents utilitzen perfils predeterminats basats en especificacions oficials.', 'Les dades inicials són un exemple complet. Utilitza «Reinicia les dades» a cada apartat si vols començar amb el teu propi equip.']],
+      ['tub-camera', '3 · Tub òptic i càmera', ['Indica l’obertura i la distància focal del tub, o bé l’obertura i la seva relació focal. El factor òptic permet representar un corrector, un reductor o una Barlow: per exemple, 0,8× redueix la focal i 2× la duplica.', 'Pots seleccionar una càmera de la llista o introduir manualment la mida de píxel i la resolució del sensor. No cal indicar cap marca ni dada personal.']],
+      ['resultats', '4 · Com s’obtenen els resultats', ['La focal efectiva és la focal del tub multiplicada pel factor òptic. La relació focal efectiva divideix aquesta focal per l’obertura. La mida de píxel, la resolució del sensor i la focal determinen l’escala d’imatge i el camp de visió.', 'La resolució teòrica de Dawes depèn de l’obertura. És un límit geomètric orientatiu: l’atmosfera, el focus, el seguiment i el processament també influeixen en la imatge real.']],
+      ['mostreig', '5 · Mostreig i qualitat del cel', ['El seeing és opcional i permet comparar la turbulència atmosfèrica amb l’escala d’imatge. Si no en coneixes el valor, pots deixar-lo en blanc.', 'SQM i Bortle són referències opcionals diferents. Un mesurament SQM no es converteix de manera exacta en una classe Bortle.']],
+      ['guiatge', '6 · Guiatge', ['En equips per components pots afegir el tub i la càmera de guiatge. L’Analitzador compara la seva escala amb la de la càmera principal i explica de manera orientativa el marge disponible per detectar petits desplaçaments.', 'La qualitat real s’ha de comprovar durant una sessió mitjançant l’error RMS i la forma de les estrelles.']],
+      ['enquadrament', '7 · Què cap en el teu enquadrament?', ['El rectangle representa el teu camp de visió (Field of View, FOV). El contorn de l’objecte utilitza la seva mida angular aproximada per mostrar si hi cap, si queda ajustat o si surt del camp.', 'La fotografia lateral només serveix per identificar l’objecte i no està representada a escala respecte del FOV. Pots girar el sensor per comparar les dues orientacions.']],
+      ['exportacio', '8 · Copiar o descarregar', ['«Copia els resultats» envia el resum numèric al porta-retalls. «Descarrega els resultats» crea un fitxer de text a la carpeta de descàrregues.', 'El resum inclou l’objecte seleccionat i la conclusió de l’enquadrament, però no incorpora gràfiques. Tot es calcula al navegador i no es desen dades personals.']],
+    ],
+  },
+  es: {
+    title: 'Guía del Analizador de equipo', back: 'Volver al Analizador', index: 'En esta guía',
+    intro: 'El Analizador te ayuda a entender qué campo de visión, escala de imagen y resolución ofrece tu equipo, y a comprobar cómo encaja un objeto astronómico en el encuadre.',
+    sections: [
+      ['recorrido', '1 · Elige el recorrido', ['«Analizar mi equipo» calcula las características del conjunto óptico y después muestra el encuadre. «Ya conozco mi FOV» permite ir directamente al encuadre introduciendo la anchura y la altura del campo.', 'Puedes volver a la primera elección en cualquier momento.']],
+      ['equipo', '2 · Equipo por componentes o telescopio inteligente', ['En un equipo por componentes introduces los datos del tubo y la cámara. Los telescopios inteligentes utilizan perfiles predeterminados basados en especificaciones oficiales.', 'Los datos iniciales son un ejemplo completo. Utiliza «Reset de datos» en cada apartado si quieres empezar con tu propio equipo.']],
+      ['tubo-camara', '3 · Tubo óptico y cámara', ['Indica la apertura y la distancia focal del tubo, o bien la apertura y su relación focal. El factor óptico permite representar un corrector, un reductor o una Barlow: por ejemplo, 0,8× reduce la focal y 2× la duplica.', 'Puedes seleccionar una cámara de la lista o introducir manualmente el tamaño de píxel y la resolución del sensor. No es necesario indicar ninguna marca ni dato personal.']],
+      ['resultados', '4 · Cómo se obtienen los resultados', ['La focal efectiva es la focal del tubo multiplicada por el factor óptico. La relación focal efectiva divide esa focal entre la apertura. El tamaño de píxel, la resolución del sensor y la focal determinan la escala de imagen y el campo de visión.', 'La resolución teórica de Dawes depende de la apertura. Es un límite geométrico orientativo: la atmósfera, el enfoque, el seguimiento y el procesado también influyen en la imagen real.']],
+      ['muestreo', '5 · Muestreo y calidad del cielo', ['El seeing es opcional y permite comparar la turbulencia atmosférica con la escala de imagen. Si no conoces su valor, puedes dejarlo en blanco.', 'SQM y Bortle son referencias opcionales diferentes. Una medición SQM no se convierte de forma exacta en una clase Bortle.']],
+      ['guiado', '6 · Guiado', ['En equipos por componentes puedes añadir el tubo y la cámara de guiado. El Analizador compara su escala con la de la cámara principal y explica de forma orientativa el margen disponible para detectar pequeños desplazamientos.', 'La calidad real debe comprobarse durante una sesión mediante el error RMS y la forma de las estrellas.']],
+      ['encuadre', '7 · ¿Qué cabe en tu encuadre?', ['El rectángulo representa tu campo de visión (Field of View, FOV). El contorno del objeto utiliza su tamaño angular aproximado para mostrar si cabe, si queda ajustado o si sale del campo.', 'La fotografía lateral solo sirve para identificar el objeto y no está representada a escala respecto al FOV. Puedes girar el sensor para comparar las dos orientaciones.']],
+      ['exportacion', '8 · Copiar o descargar', ['«Copiar resultados» envía el resumen numérico al portapapeles. «Descargar resultados» crea un archivo de texto en la carpeta de descargas.', 'El resumen incluye el objeto seleccionado y la conclusión del encuadre, pero no incorpora gráficas. Todo se calcula en el navegador y no se guardan datos personales.']],
+    ],
+  },
+  en: {
+    title: 'Equipment Analyser guide', back: 'Back to the Analyser', index: 'In this guide',
+    intro: 'The Analyser helps you understand the field of view, image scale and resolution provided by your equipment, and check how an astronomical object fits within the frame.',
+    sections: [
+      ['path', '1 · Choose a path', ['“Analyse my equipment” calculates the optical setup and then displays the framing. “I already know my FOV” goes directly to framing after you enter the field width and height.', 'You can return to the first choice at any time.']],
+      ['equipment', '2 · Component setup or smart telescope', ['For a component setup, enter the telescope and camera details. Smart telescopes use built-in profiles based on official specifications.', 'The initial values provide a complete example. Use “Reset data” in each section to start with your own equipment.']],
+      ['scope-camera', '3 · Optical tube and camera', ['Enter the aperture and focal length, or the aperture and focal ratio. The optical factor represents a corrector, reducer or Barlow: for example, 0.8× shortens the focal length and 2× doubles it.', 'Choose a listed camera or enter the pixel size and sensor resolution manually. No brand or personal information is required.']],
+      ['results', '4 · How results are calculated', ['Effective focal length is the telescope focal length multiplied by the optical factor. Effective focal ratio divides that value by the aperture. Pixel size, sensor resolution and focal length determine image scale and field of view.', 'The theoretical Dawes resolution depends on aperture. It is an indicative geometric limit; atmosphere, focus, tracking and processing also affect the real image.']],
+      ['sampling', '5 · Sampling and sky quality', ['Seeing is optional and compares atmospheric turbulence with image scale. Leave it blank if you do not know the value.', 'SQM and Bortle are different optional references. An SQM measurement does not convert exactly to a Bortle class.']],
+      ['guiding', '6 · Guiding', ['For component setups, add a guide scope and camera. The Analyser compares guiding scale with the main-camera scale and gives an indicative explanation of the margin for detecting small shifts.', 'Actual guiding quality must be checked during a session using RMS error and star shape.']],
+      ['framing', '7 · What fits in your frame?', ['The rectangle represents your field of view (FOV). The object outline uses its approximate angular size to show whether it fits comfortably, tightly, or extends outside the field.', 'The side photograph identifies the object only and is not shown to scale relative to the FOV. Rotate the sensor to compare both orientations.']],
+      ['export', '8 · Copy or download', ['“Copy results” sends the numerical summary to the clipboard. “Download results” creates a text file in the Downloads folder.', 'The summary includes the selected object and framing conclusion, but no charts. Everything is calculated in the browser and no personal data is stored.']],
+    ],
+  },
+} as const;
+const t = content[lang];
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.equipmentAnalyzerGuide(base)} focused>
+  <article class="analyser-guide">
+    <a class="analyser-guide__back" href={equipmentAnalyzerHref(lang, base)}>← {t.back}</a>
+    <header class="analyser-guide__hero">
+      <div class="analyser-guide__book" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg></div>
+      <h1>{t.title}</h1>
+    </header>
+    <p class="analyser-guide__intro">{t.intro}</p>
+    <nav aria-label={t.index}><strong>{t.index}</strong><ol>{t.sections.map((section, index) => <li><a href={`#${section[0]}`}><span>{String(index + 1).padStart(2, '0')}</span>{section[1]}</a></li>)}</ol></nav>
+    <div class="analyser-guide__sections">{t.sections.map((section, index) => <section id={section[0]}><i>{String(index + 1).padStart(2, '0')}</i><div><h2>{section[1]}</h2>{section[2].map((paragraph) => <p>{paragraph}</p>)}</div></section>)}</div>
+    <a class="analyser-guide__return" href={equipmentAnalyzerHref(lang, base)}>← {t.back}</a>
+  </article>
+</Layout>
+
+<style>
+  .analyser-guide{max-width:58rem;margin:0 auto;padding:.5rem 0 3rem}.analyser-guide__back{display:inline-block;margin-bottom:1.1rem;color:var(--color-muted);font-size:.78rem;text-decoration:none}.analyser-guide__hero{display:flex;align-items:center;gap:1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--color-border)}.analyser-guide__book{display:grid;flex:0 0 auto;width:2.8rem;height:2.8rem;place-items:center;border:1px solid color-mix(in srgb,var(--color-accent) 58%,transparent);border-radius:.65rem;background:color-mix(in srgb,var(--color-accent) 10%,transparent);color:var(--color-text)}.analyser-guide__book svg{width:1.6rem;height:1.6rem;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.45}.analyser-guide h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem);letter-spacing:-.035em;line-height:1.05}.analyser-guide__intro{max-width:50rem;margin:1.25rem 0;color:var(--color-text);font-size:clamp(1rem,2vw,1.14rem);line-height:1.7}.analyser-guide nav{margin:1.5rem 0 2.4rem;padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.analyser-guide nav>strong{display:block;margin-bottom:.65rem;color:var(--color-muted);font-size:.72rem;text-transform:uppercase}.analyser-guide nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .8rem;margin:0;padding:0;list-style:none}.analyser-guide nav a{display:flex;gap:.5rem;padding:.35rem .4rem;color:var(--color-text);font-size:.85rem;text-decoration:none}.analyser-guide nav span,.analyser-guide section>i{color:var(--color-accent);font:.68rem var(--font-mono)}.analyser-guide__sections{display:grid;gap:1rem}.analyser-guide section{display:grid;grid-template-columns:2.8rem 1fr;scroll-margin-top:1rem;overflow:hidden;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.analyser-guide section>i{padding:1.2rem .55rem;border-right:1px solid var(--color-border);font-weight:700;text-align:center;font-style:normal}.analyser-guide section>div{padding:1.1rem 1.2rem 1.2rem}.analyser-guide h2{margin:0 0 .65rem;font-size:1.25rem}.analyser-guide section p{margin:.55rem 0;color:var(--color-muted);line-height:1.65}.analyser-guide__return{display:inline-flex;margin-top:1rem;padding:.65rem .8rem;border:1px solid var(--color-border);border-radius:.55rem;color:var(--color-text);font-size:.82rem;font-weight:700;text-decoration:none}@media(max-width:600px){.analyser-guide nav ol{grid-template-columns:1fr}.analyser-guide section{grid-template-columns:2.35rem 1fr}}
+</style>

@@ -98,6 +98,9 @@ export const visibilityGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 export const equipmentAnalyzerHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('laboratori/analitzador-equip', base)
 	: lang === 'es' ? pageHref('es/laboratorio/analizador-equipo', base) : pageHref('en/lab/equipment-analyser', base);
+export const equipmentAnalyzerGuideHref = (lang: Lang, base = '/') => lang === 'ca'
+	? pageHref('laboratori/analitzador-equip/guia', base)
+	: lang === 'es' ? pageHref('es/laboratorio/analizador-equipo/guia', base) : pageHref('en/lab/equipment-analyser/guide', base);
 export const articleHref = (lang: Lang, slug: string, base = '/') => pageHref(`${lang === 'ca' ? 'articles' : `${lang}/${lang === 'en' ? 'articles' : 'articulos'}`}/${slug}`, base);
 export const photoHref = (lang: Lang, id: string, base = '/') => lang === 'ca' ? pageHref(`foto/${id}`, base) : pageHref(`${lang}/${lang === 'en' ? 'photo' : 'foto'}/${id}`, base);
 export const categoryHref = (lang: Lang, key: CategoryKey, base = '/') => {
@@ -117,6 +120,7 @@ export const languageLinks = {
 	sessionPreparation: (base = '/') => ({ ca: sessionPreparationHref('ca', base), es: sessionPreparationHref('es', base), en: sessionPreparationHref('en', base) }),
 	planningGuide: (base = '/') => ({ ca: planningGuideHref('ca', base), es: planningGuideHref('es', base), en: planningGuideHref('en', base) }),
 	equipmentAnalyzer: (base = '/') => ({ ca: equipmentAnalyzerHref('ca', base), es: equipmentAnalyzerHref('es', base), en: equipmentAnalyzerHref('en', base) }),
+	equipmentAnalyzerGuide: (base = '/') => ({ ca: equipmentAnalyzerGuideHref('ca', base), es: equipmentAnalyzerGuideHref('es', base), en: equipmentAnalyzerGuideHref('en', base) }),
 	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityHref('en', base) }),
 	category: (key: CategoryKey, base = '/') => ({ ca: categoryHref('ca', key, base), es: categoryHref('es', key, base), en: categoryHref('en', key, base) }),
 	photo: (id: string, base = '/') => ({ ca: photoHref('ca', id, base), es: photoHref('es', id, base), en: photoHref('en', id, base) }),
