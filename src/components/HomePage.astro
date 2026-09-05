@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, planningHref, visibilityHref, withBase } from '../i18n';
+import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, sessionPreparationHref, withBase } from '../i18n';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -86,8 +86,7 @@ const structuredData = {
 			<div class="welcome-hero__actions">
 				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={equipmentHref(lang, base)}>{t.myEquipment} <span aria-hidden="true">＋</span></a>
 				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={articlesHref(lang, base)}>{t.articles} <span aria-hidden="true">＋</span></a>
-				<a class="welcome-hero__cta welcome-hero__cta--equipment context-tooltip context-tooltip--home" href={visibilityHref(lang, base)} aria-describedby="home-visibility-tip">{t.visibilityPlanner} <span aria-hidden="true">⌖</span><span class="context-tooltip__bubble" id="home-visibility-tip" role="tooltip">{t.homeVisibilityTooltip}</span></a>
-				<a class="welcome-hero__cta welcome-hero__cta--equipment context-tooltip context-tooltip--home" href={planningHref(lang, base)} aria-describedby="home-planning-tip">{t.planning} <span aria-hidden="true">◎</span><span class="context-tooltip__bubble" id="home-planning-tip" role="tooltip">{t.homePlanningTooltip}</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--equipment context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip">{t.homeSessionPreparation} <span aria-hidden="true">✦</span><span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
 				<a class="welcome-hero__cta" href={galleryHref(lang, base)}>{t.explore} <span aria-hidden="true">→</span></a>
 			</div>
 		</div>

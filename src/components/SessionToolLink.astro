@@ -1,0 +1,48 @@
+---
+import type { Lang } from '../i18n';
+import { sessionPreparationCopy } from '../i18n';
+
+interface Props {
+	href: string;
+	lang: Lang;
+	visibilityHref?: string;
+}
+
+const { href, lang, visibilityHref } = Astro.props;
+const text = sessionPreparationCopy[lang];
+const navLabel = { ca: 'Navegació de preparació', es: 'Navegación de preparación', en: 'Preparation navigation' }[lang];
+---
+
+<nav class="session-tool-link" aria-label={navLabel} data-session-tool-link data-visibility-href={visibilityHref}>
+	<a href={href} data-session-return data-hub-label={text.openSession} data-hub-return-label={text.returnToSession} data-visibility-return-label={text.returnToVisibility}><span aria-hidden="true" data-session-return-icon>◇</span><span data-session-return-label>{text.openSession}</span></a>
+</nav>
+
+<style>
+	.session-tool-link{margin:0 0 .85rem}.session-tool-link a{display:inline-flex;align-items:center;gap:.45rem;padding:.48rem .68rem;border:1px solid #3b4a63;border-radius:.55rem;background:#0b111d;color:#b8c2d2;font-size:.78rem;font-weight:700;line-height:1.2;text-decoration:none;transition:border-color .2s ease,color .2s ease,background .2s ease}.session-tool-link a:hover{border-color:var(--color-accent);background:rgba(228,198,106,.06);color:var(--color-accent);opacity:1}.session-tool-link [data-session-return-icon]{color:var(--color-accent);font-family:var(--font-technical)}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-session-tool-link]').forEach((navigation) => {
+		const link = navigation.querySelector<HTMLAnchorElement>('[data-session-return]');
+		const icon = navigation.querySelector<HTMLElement>('[data-session-return-icon]');
+		const label = navigation.querySelector<HTMLElement>('[data-session-return-label]');
+		if (!link || !icon || !label) return;
+		const current = new URL(window.location.href);
+		const origin = current.searchParams.get('from');
+		if (origin === 'prepara-sesion') {
+			icon.textContent = '←';
+			label.textContent = link.dataset.hubReturnLabel ?? label.textContent;
+		} else if (origin === 'visibility' && navigation.dataset.visibilityHref) {
+			const destination = new URL(navigation.dataset.visibilityHref, window.location.origin);
+			for (const key of ['week', 'year', 'constellation']) {
+				const value = current.searchParams.get(key);
+				if (value) destination.searchParams.set(key, value);
+			}
+			const object = current.searchParams.get('object');
+			if (object) destination.searchParams.set('focus', object);
+			link.href = destination.toString();
+			icon.textContent = '←';
+			label.textContent = link.dataset.visibilityReturnLabel ?? label.textContent;
+		}
+	});
+</script>

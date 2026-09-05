@@ -1,7 +1,8 @@
 ---
 import type { Lang } from '../../i18n';
-import { languageLinks, planningGuideHref } from '../../i18n';
+import { languageLinks, planningGuideHref, sessionPreparationHref, visibilityHref } from '../../i18n';
 import Layout from '../../layouts/Layout.astro';
+import SessionToolLink from '../SessionToolLink.astro';
 import objectsData from '../../data/astronomical-objects.json';
 import { PUBLIC_PENDING_OBJECTS } from '../../config/features';
 import { getCollection } from 'astro:content';
@@ -79,6 +80,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
   <main class="planning" data-planning-root>
+    <SessionToolLink lang={lang} href={sessionPreparationHref(lang, base)} visibilityHref={visibilityHref(lang, base)} />
     <header class="planning__header">
       <h1>{t.title}</h1>
       <p>{t.intro}</p>

@@ -1,10 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n';
-import { languageLinks, photoHref, planningHref, visibilityGuideHref, withBase } from '../i18n';
+import { languageLinks, photoHref, planningHref, sessionPreparationHref, visibilityGuideHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import Layout from '../layouts/Layout.astro';
+import SessionToolLink from './SessionToolLink.astro';
 import visibility from '../data/visibility.generated.json';
 
 interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: boolean; }
@@ -76,6 +77,7 @@ const weekRange = (week: number) => {
 
 <Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
   <section class="visibility-planner" aria-labelledby="visibility-title">
+    <SessionToolLink lang={lang} href={sessionPreparationHref(lang, base)} />
     <header class="visibility-planner__header">
       <div class="visibility-planner__meta"><p class="visibility-planner__eyebrow">{t.analysed(visibleCards.length)}</p><p class="visibility-planner__location">⌖ {t.location}</p></div>
       <h1 id="visibility-title">{t.title}</h1>
