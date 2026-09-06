@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, planningHref, visibilityHref, withBase } from '../i18n';
+import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, myNightHref, normalizeBase, planningHref, visibilityHref, withBase } from '../i18n';
 
 interface Props {
 	title?: string;
@@ -33,6 +33,7 @@ const nav = [
 	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner, tone: 'visibility' },
 	{ href: equipmentAnalyzerHref(lang, base), label: copy[lang].equipmentAnalyzer, tone: 'analyser' },
 	{ href: planningHref(lang, base), label: copy[lang].planning, tone: 'planning' },
+	{ href: myNightHref(lang, base), label: copy[lang].myNight, tone: 'planning' },
 	{ href: articlesHref(lang, base), label: copy[lang].articles, tone: 'articles' },
 ];
 const isCategoryPage = /\/(?:categoria|category)\//.test(currentPath);

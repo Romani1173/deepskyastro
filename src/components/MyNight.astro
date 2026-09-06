@@ -1,0 +1,132 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type { Lang } from '../i18n';
+import { languageLinks, myNightHref, sessionPreparationHref } from '../i18n';
+import objectsData from '../data/astronomical-objects.json';
+import { PUBLIC_PENDING_OBJECTS } from '../config/features';
+import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const texts = {
+  ca: { title: 'La meva nit', intro: 'Reuneix els objectius de la sessió i decideix quins filtres vols dedicar a cadascun. L’ordre astronòmic segons visibilitat i Lluna s’afegirà en el pas següent.', back: 'Torna a Prepara la teva sessió', session: '1 · La sessió', date: 'Nit que planifiques', ready: 'A punt per fotografiar', readyHelp: 'Equip en estació, fitxers de correcció preparats i càmeres refredades.', finish: 'Finalitza les captures', finishHelp: 'Moment d’apagar les càmeres. Reserva després el temps necessari per tancar i guardar l’equip.', equipment: '2 · Equip', smart: 'Telescopi intel·ligent', osc: 'Càmera OSC', mono: 'Càmera monocroma', filters: 'Filtres disponibles aquesta nit', targets: '3 · Cistella d’objectius', search: 'Cerca un objecte', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Afegeix a La meva nit', empty: 'La cistella encara és buida.', selectAll: 'Tots', clearAll: 'Cap', remove: 'Elimina', summary: 'Resum provisional', duration: 'Temps disponible', combinations: 'Combinacions objecte + filtre', next: 'Següent pas: ordenar aquestes combinacions per altura, finestra útil i incidència de la Lluna.', hours: 'h', noFilter: 'Captura en color' },
+  es: { title: 'Mi noche', intro: 'Reúne los objetivos de la sesión y decide qué filtros quieres dedicar a cada uno. El orden astronómico según visibilidad y Luna se añadirá en el siguiente paso.', back: 'Volver a Prepara tu sesión', session: '1 · La sesión', date: 'Noche que planificas', ready: 'Listo para fotografiar', readyHelp: 'Equipo puesto en estación, ficheros de corrección preparados y cámaras enfriadas.', finish: 'Finalizar las capturas', finishHelp: 'Momento de apagar las cámaras. Reserva después el tiempo necesario para cerrar y guardar el equipo.', equipment: '2 · Equipo', smart: 'Telescopio inteligente', osc: 'Cámara OSC', mono: 'Cámara monocroma', filters: 'Filtros disponibles esta noche', targets: '3 · Cesta de objetivos', search: 'Buscar un objeto', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Añadir a Mi noche', empty: 'La cesta todavía está vacía.', selectAll: 'Todos', clearAll: 'Ninguno', remove: 'Eliminar', summary: 'Resumen provisional', duration: 'Tiempo disponible', combinations: 'Combinaciones objeto + filtro', next: 'Siguiente paso: ordenar estas combinaciones por altura, ventana útil e incidencia de la Luna.', hours: 'h', noFilter: 'Captura en color' },
+  en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Next step: order these combinations by altitude, useful window and Moon impact.', hours: 'h', noFilter: 'Colour capture' },
+} as const;
+const t = texts[lang];
+const objects = objectsData
+  .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
+  .map((object) => ({ id: object.id, label: `${formatCatalogDesignations(object.catalogName)}${object.commonNames?.[lang] ? ` · ${formatCatalogDesignations(object.commonNames[lang])}` : ''}` }))
+  .sort((a, b) => a.label.localeCompare(b.label, lang, { numeric: true }));
+const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c');
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNight(base)} focused>
+  <main class="my-night" data-my-night>
+    <a class="my-night__back" href={sessionPreparationHref(lang, base)}>← {t.back}</a>
+    <header class="my-night__header"><p>Laboratorio</p><h1>{t.title}</h1><span>{t.intro}</span></header>
+    <div class="my-night__grid">
+      <section class="my-night__panel">
+        <h2>{t.session}</h2>
+        <div class="my-night__fields">
+          <label><span>{t.date}</span><input type="date" data-night-date /></label>
+          <label><span>{t.ready}</span><input type="time" value="21:30" data-ready /></label>
+          <label><span>{t.finish}</span><input type="time" value="03:00" data-finish /></label>
+        </div>
+        <small>{t.readyHelp}</small><small>{t.finishHelp}</small>
+      </section>
+
+      <section class="my-night__panel">
+        <h2>{t.equipment}</h2>
+        <div class="my-night__equipment" data-equipment>
+          <label><input type="radio" name="equipment" value="smart" checked /><span>{t.smart}</span></label>
+          <label><input type="radio" name="equipment" value="osc" /><span>{t.osc}</span></label>
+          <label><input type="radio" name="equipment" value="mono" /><span>{t.mono}</span></label>
+        </div>
+        <div class="my-night__global-filters" data-global-filters hidden>
+          <strong>{t.filters}</strong>
+          <div>{['L','R','G','B','Hα','OIII','SII'].map((filter) => <label><input type="checkbox" value={filter} checked /><span>{filter}</span></label>)}</div>
+        </div>
+      </section>
+
+      <section class="my-night__panel my-night__panel--basket">
+        <h2>{t.targets}</h2>
+        <form class="my-night__picker" data-picker>
+          <label><span>{t.search}</span><input type="search" list="my-night-objects" placeholder={t.placeholder} data-object-search autocomplete="off" /></label>
+          <datalist id="my-night-objects">{objects.map((object) => <option value={object.label} />)}</datalist>
+          <button type="submit">+ {t.add}</button>
+        </form>
+        <p class="my-night__empty" data-empty>{t.empty}</p>
+        <div class="my-night__basket" data-basket></div>
+      </section>
+
+      <aside class="my-night__summary">
+        <h2>{t.summary}</h2>
+        <dl><div><dt>{t.duration}</dt><dd data-duration>—</dd></div><div><dt>{t.combinations}</dt><dd data-combinations>0</dd></div></dl>
+        <p>{t.next}</p>
+      </aside>
+    </div>
+  </main>
+</Layout>
+
+<script type="application/json" id="my-night-data" set:html={clientData}></script>
+<script>
+  const config = JSON.parse(document.querySelector('#my-night-data')?.textContent ?? '{}');
+  const root = document.querySelector<HTMLElement>('[data-my-night]');
+  if (!root) throw new Error('My night interface not found');
+  const date = root.querySelector<HTMLInputElement>('[data-night-date]')!;
+  const ready = root.querySelector<HTMLInputElement>('[data-ready]')!;
+  const finish = root.querySelector<HTMLInputElement>('[data-finish]')!;
+  const globalFilters = root.querySelector<HTMLElement>('[data-global-filters]')!;
+  const picker = root.querySelector<HTMLFormElement>('[data-picker]')!;
+  const search = root.querySelector<HTMLInputElement>('[data-object-search]')!;
+  const basket = root.querySelector<HTMLElement>('[data-basket]')!;
+  const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+  const duration = root.querySelector<HTMLElement>('[data-duration]')!;
+  const combinations = root.querySelector<HTMLElement>('[data-combinations]')!;
+  let items: Array<{id:string,label:string,filters:string[]}> = [];
+  date.value = new Date().toISOString().slice(0, 10);
+  const equipment = () => root.querySelector<HTMLInputElement>('input[name="equipment"]:checked')?.value ?? 'smart';
+  const availableFilters = () => equipment() === 'mono' ? [...globalFilters.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.value) : [config.texts.noFilter];
+  const updateSummary = () => {
+    const [rh, rm] = ready.value.split(':').map(Number), [fh, fm] = finish.value.split(':').map(Number);
+    let minutes = fh * 60 + fm - (rh * 60 + rm); if (minutes <= 0) minutes += 1440;
+    duration.textContent = `${Math.floor(minutes / 60)} ${config.texts.hours} ${String(minutes % 60).padStart(2, '0')} min`;
+    combinations.textContent = String(items.reduce((total, item) => total + item.filters.length, 0));
+  };
+  const render = () => {
+    empty.hidden = items.length > 0;
+    basket.innerHTML = '';
+    items.forEach((item) => {
+      const article = document.createElement('article'); article.className = 'my-night-item';
+      const header = document.createElement('header'); const title = document.createElement('strong'); title.textContent = item.label;
+      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = config.texts.remove; remove.addEventListener('click', () => { items = items.filter((entry) => entry.id !== item.id); render(); });
+      header.append(title, remove); article.append(header);
+      const actions = document.createElement('div'); actions.className = 'my-night-item__actions';
+      const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); render(); });
+      const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; render(); }); actions.append(all, none); article.append(actions);
+      const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox); basket.append(article);
+    });
+    updateSummary();
+  };
+  root.querySelectorAll<HTMLInputElement>('input[name="equipment"]').forEach((input) => input.addEventListener('change', () => { globalFilters.hidden = equipment() !== 'mono'; const filters = availableFilters(); items.forEach((item) => item.filters = [...filters]); render(); }));
+  globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => input.addEventListener('change', () => { const filters = availableFilters(); items.forEach((item) => item.filters = item.filters.filter((filter) => filters.includes(filter))); render(); }));
+  picker.addEventListener('submit', (event) => { event.preventDefault(); const query = search.value.trim().toLocaleLowerCase(); const object = config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase() === query) ?? config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase().includes(query)); if (!object || items.some((item) => item.id === object.id)) return; items.push({ id: object.id, label: object.label, filters: availableFilters() }); search.value = ''; render(); });
+  [ready, finish].forEach((input) => input.addEventListener('change', updateSummary));
+  render();
+</script>
+
+<style>
+  .my-night{width:min(1180px,100%);margin:0 auto 4rem}.my-night__back{display:inline-block;margin-bottom:1.2rem;color:var(--color-muted);font-size:.82rem;text-decoration:none}.my-night__header{position:relative;margin-bottom:1.4rem;padding:1.5rem;border:1px solid #3a3152;border-radius:1rem;background:radial-gradient(circle at 90% 0,rgba(168,131,220,.18),transparent 38%),#0c111d}.my-night__header p{margin:0;color:#b79be2;font-family:var(--font-technical);font-size:.72rem;text-transform:uppercase}.my-night__header h1{margin:.2rem 0 .45rem;font-size:clamp(2rem,5vw,3.5rem)}.my-night__header span{display:block;max-width:850px;color:var(--color-muted);line-height:1.6}.my-night__grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.my-night__panel,.my-night__summary{padding:1.25rem;border:1px solid var(--color-border);border-radius:.85rem;background:rgba(13,19,31,.88)}.my-night__panel h2,.my-night__summary h2{margin:0 0 1rem;font-size:1rem}.my-night__fields{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:.8rem}.my-night label{display:grid;gap:.38rem;color:#b7c1d1;font-size:.76rem}.my-night input{box-sizing:border-box;width:100%;padding:.7rem;border:1px solid #354156;border-radius:.5rem;background:#080c14;color:#f0f3f8;font:inherit}.my-night__panel small{display:block;margin-top:.7rem;color:var(--color-muted);line-height:1.5}.my-night__equipment{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}.my-night__equipment label,.my-night__global-filters label,.my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}.my-night__equipment input,.my-night__global-filters input,.my-night-item__filters input{width:auto}.my-night__global-filters{margin-top:1rem}.my-night__global-filters>div,.my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}.my-night__panel--basket{grid-column:1/-1}.my-night__picker{display:grid;grid-template-columns:1fr auto;gap:.7rem;align-items:end}.my-night button{padding:.7rem .9rem;border:1px solid #765ca1;border-radius:.5rem;background:#251a38;color:#e8dcfa;cursor:pointer}.my-night__empty{color:var(--color-muted)}.my-night__basket{display:grid;gap:.65rem;margin-top:1rem}.my-night-item{padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}.my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}.my-night-item header button,.my-night-item__actions button{padding:.35rem .55rem;background:transparent;font-size:.7rem}.my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}.my-night__summary{grid-column:1/-1;border-color:#594671}.my-night__summary dl{display:flex;gap:2rem;margin:0}.my-night__summary dl div{display:grid;gap:.2rem}.my-night__summary dt{color:var(--color-muted);font-size:.75rem}.my-night__summary dd{margin:0;color:#d9c5f5;font-family:var(--font-technical);font-size:1.15rem}.my-night__summary p{margin:1rem 0 0;color:#b79be2;font-size:.82rem}.my-night [hidden]{display:none!important}@media(max-width:760px){.my-night__grid{grid-template-columns:1fr}.my-night__fields,.my-night__equipment{grid-template-columns:1fr}.my-night__picker{grid-template-columns:1fr}.my-night__panel--basket,.my-night__summary{grid-column:auto}.my-night__summary dl{flex-direction:column;gap:.8rem}}
+</style>
+
+<style is:global>
+  .my-night .my-night-item{padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}
+  .my-night .my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  .my-night .my-night-item header button,.my-night .my-night-item__actions button{padding:.35rem .55rem;border:1px solid #765ca1;border-radius:.45rem;background:transparent;color:#d9c5f5;font-size:.7rem;cursor:pointer}
+  .my-night .my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}
+  .my-night .my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}
+  .my-night .my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14;color:#b7c1d1;font-size:.76rem}
+  .my-night .my-night-item__filters input{width:auto}
+</style>
