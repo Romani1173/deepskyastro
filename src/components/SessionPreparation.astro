@@ -9,9 +9,9 @@ const base = import.meta.env.BASE_URL;
 const text = sessionPreparationCopy[lang];
 const origin = '?from=prepara-sesion';
 const steps = [
-	{ number: '01', title: text.visibility, description: text.visibilityHelp, action: text.openVisibility, href: `${visibilityHref(lang, base)}${origin}`, symbol: '⌖' },
-	{ number: '02', title: text.analyser, description: text.analyserHelp, action: text.openAnalyser, href: `${equipmentAnalyzerHref(lang, base)}${origin}`, symbol: '▣' },
-	{ number: '03', title: text.planning, description: text.planningHelp, action: text.openPlanning, href: `${planningHref(lang, base)}${origin}`, symbol: '◎' },
+	{ number: '01', tone: 'navigation', title: text.visibility, description: text.visibilityHelp, action: text.openVisibility, href: `${visibilityHref(lang, base)}${origin}`, symbol: '⌖' },
+	{ number: '02', tone: 'result', title: text.analyser, description: text.analyserHelp, action: text.openAnalyser, href: `${equipmentAnalyzerHref(lang, base)}${origin}`, symbol: '▣' },
+	{ number: '03', tone: 'review', title: text.planning, description: text.planningHelp, action: text.openPlanning, href: `${planningHref(lang, base)}${origin}`, symbol: '◎' },
 ];
 ---
 
@@ -25,7 +25,7 @@ const steps = [
 		<div class="session-path__steps">
 			{steps.map((step, index) => (
 				<>
-					<a class="session-path__card" href={step.href}>
+					<a class="session-path__card" data-tone={step.tone} href={step.href}>
 						<span class="session-path__number">{step.number}</span>
 						<span class="session-path__symbol" aria-hidden="true">{step.symbol}</span>
 						<strong>{step.title}</strong>
@@ -43,6 +43,6 @@ const steps = [
 	.session-path{width:min(100%,1040px);margin:1rem auto 0;padding:1.4rem;border:1px solid var(--color-border);border-radius:.9rem;background:rgba(17,24,39,.82);box-shadow:0 18px 42px rgba(0,0,0,.2)}
 	.session-path__header{max-width:760px}.session-path__header h1{margin:0;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.045em}.session-path__header span{display:block;margin-top:.55rem;color:var(--color-muted);font-size:.92rem;line-height:1.6}
 	.session-path__freedom{margin:1.4rem 0 .75rem;color:var(--color-accent-soft);font-size:.8rem;font-weight:700}
-	.session-path__steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.7rem;align-items:stretch}.session-path__card{display:grid;grid-template-columns:auto 1fr;gap:.35rem .7rem;min-width:0;padding:1.15rem;border:1px solid #3b4a63;border-radius:.7rem;background:#090e18;color:var(--color-text);text-decoration:none;transition:border-color .2s ease,transform .2s ease,background .2s ease}.session-path__card:hover{border-color:var(--color-accent);background:rgba(228,198,106,.06);opacity:1;transform:translateY(-2px)}.session-path__number{color:var(--color-accent);font-family:var(--font-technical);font-size:.75rem}.session-path__symbol{justify-self:end;color:var(--color-accent);font-size:1.45rem;font-weight:700;line-height:1}.session-path__card strong,.session-path__card small,.session-path__card b{grid-column:1/-1}.session-path__card strong{margin-top:.45rem;color:var(--color-accent-soft);font-size:1.05rem}.session-path__card small{min-height:5.2em;color:#aeb8c9;font-size:.78rem;font-weight:400;line-height:1.55}.session-path__card b{align-self:end;margin-top:.65rem;color:var(--color-accent);font-size:.73rem}.session-path__connector{align-self:center;color:var(--color-accent);font-family:var(--font-technical);font-size:1.25rem;font-weight:700;-webkit-text-stroke:.3px currentColor}
+	.session-path__steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.7rem;align-items:stretch}.session-path__card{--tone:#7890ac;--tone-rgb:120,144,172;position:relative;display:grid;grid-template-columns:auto 1fr;gap:.35rem .7rem;min-width:0;overflow:hidden;padding:1.15rem;border:1px solid color-mix(in srgb,var(--tone) 72%,#263246);border-radius:.7rem;background:radial-gradient(circle at 92% 8%,rgba(var(--tone-rgb),.2),transparent 34%),linear-gradient(145deg,rgba(var(--tone-rgb),.12),transparent 58%),#090e18;box-shadow:inset 0 1px 0 rgba(var(--tone-rgb),.1),0 12px 28px rgba(0,0,0,.16);color:var(--color-text);text-decoration:none;transition:border-color .2s ease,transform .2s ease,background .2s ease,box-shadow .2s ease}.session-path__card::before{position:absolute;inset:0 auto 0 0;width:3px;background:var(--tone);content:''}.session-path__card[data-tone="navigation"]{--tone:#438ea0;--tone-rgb:67,142,160}.session-path__card[data-tone="result"]{--tone:#55bda4;--tone-rgb:85,189,164}.session-path__card[data-tone="review"]{--tone:#d49b4d;--tone-rgb:212,155,77}.session-path__card:hover,.session-path__card:focus-visible{border-color:var(--tone);background:radial-gradient(circle at 88% 10%,rgba(var(--tone-rgb),.3),transparent 38%),linear-gradient(145deg,rgba(var(--tone-rgb),.17),transparent 60%),#0a101b;box-shadow:0 15px 34px rgba(0,0,0,.28),0 0 24px rgba(var(--tone-rgb),.1);opacity:1;outline:none;transform:translateY(-2px)}.session-path__number{color:var(--tone);font-family:var(--font-technical);font-size:.75rem}.session-path__symbol{justify-self:end;color:var(--tone);font-size:1.45rem;font-weight:700;line-height:1}.session-path__card strong,.session-path__card small,.session-path__card b{grid-column:1/-1}.session-path__card strong{margin-top:.45rem;color:#e5ebf4;font-size:1.05rem}.session-path__card small{min-height:5.2em;color:#aeb8c9;font-size:.78rem;font-weight:400;line-height:1.55}.session-path__card b{align-self:end;margin-top:.65rem;color:var(--tone);font-size:.73rem}.session-path__connector{align-self:center;color:#8b99ad;font-family:var(--font-technical);font-size:1.25rem;font-weight:700;-webkit-text-stroke:.3px currentColor}
 	@media(max-width:760px){.session-path{padding:1rem}.session-path__steps{grid-template-columns:1fr}.session-path__connector{justify-self:center;transform:rotate(90deg)}.session-path__card small{min-height:0}}
 </style>

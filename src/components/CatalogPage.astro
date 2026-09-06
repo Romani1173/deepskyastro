@@ -17,7 +17,7 @@ const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))]
 ---
 
 <Layout title={t.catalogue} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
-	<section aria-labelledby="collection-heading">
+	<section class="gallery-theme" aria-labelledby="collection-heading">
 		<div class="catalog-controls">
 			<CatalogHeader lang={lang} catalogue />
 			<h1 class="sr-only" id="collection-heading">{t.catalogue}</h1>

@@ -84,10 +84,10 @@ const structuredData = {
 				<p class="welcome-hero__description">{introBeforeAuthor}<span class="welcome-hero__author">{authorName}</span>{introAfterAuthor}</p>
 			</div>
 			<div class="welcome-hero__actions">
-				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={equipmentHref(lang, base)}>{t.myEquipment} <span aria-hidden="true">＋</span></a>
-				<a class="welcome-hero__cta welcome-hero__cta--equipment" href={articlesHref(lang, base)}>{t.articles} <span aria-hidden="true">＋</span></a>
-				<a class="welcome-hero__cta welcome-hero__cta--equipment context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip">{t.homeSessionPreparation} <span aria-hidden="true">✦</span><span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
-				<a class="welcome-hero__cta" href={galleryHref(lang, base)}>{t.explore} <span aria-hidden="true">→</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--result" href={equipmentHref(lang, base)}>{t.myEquipment} <span aria-hidden="true">＋</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--articles" href={articlesHref(lang, base)}>{t.articles} <span aria-hidden="true">＋</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--review context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip">{t.homeSessionPreparation} <span aria-hidden="true">✦</span><span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
+				<a class="welcome-hero__cta welcome-hero__cta--primary welcome-hero__cta--gallery" href={galleryHref(lang, base)}>{t.explore} <span aria-hidden="true">→</span></a>
 			</div>
 		</div>
 	</section>

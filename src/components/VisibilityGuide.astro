@@ -97,20 +97,20 @@ const t = content[lang];
 </Layout>
 
 <style>
-  .visibility-guide { max-width: 58rem; margin: 0 auto; padding: .5rem 0 3rem; }
-  .visibility-guide__back { display: inline-block; margin-bottom: 1.1rem; color: var(--color-muted); font-size: .78rem; text-decoration: none; }
-  .visibility-guide__back:hover { color: var(--color-text); }
+  .visibility-guide { --visibility-link: #438ea0; --visibility-link-soft: #74b2c0; max-width: 58rem; margin: 0 auto; padding: .5rem 0 3rem; }
+  .visibility-guide__back { display: inline-block; margin-bottom: 1.1rem; color: var(--visibility-link-soft); font-size: .78rem; text-decoration: none; }
+  .visibility-guide__back:hover { color: #99d2dd; }
   .visibility-guide__hero { display: flex; align-items: center; gap: 1rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--color-border); }
   .visibility-guide__hero h1 { margin: 0; font-size: clamp(1.45rem, 3vw, 2.2rem); letter-spacing: -.035em; line-height: 1.05; }
-  .visibility-guide__book { display: grid; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent); border-radius: .65rem; background: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-text); }
+  .visibility-guide__book { display: grid; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid rgba(67, 142, 160, .66); border-radius: .65rem; background: rgba(67, 142, 160, .12); color: var(--visibility-link-soft); }
   .visibility-guide__book svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
   .visibility-guide__intro { max-width: 48rem; margin: 1.25rem 0; color: var(--color-text); font-size: clamp(1rem, 2vw, 1.14rem); line-height: 1.7; }
   .visibility-guide__index { margin: 1.5rem 0 2.4rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
   .visibility-guide__index > strong { display: block; margin-bottom: .65rem; color: var(--color-muted); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
   .visibility-guide__index ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .3rem .8rem; margin: 0; padding: 0; list-style: none; }
   .visibility-guide__index a { display: flex; align-items: baseline; gap: .5rem; padding: .35rem .4rem; border-radius: .35rem; color: var(--color-text); font-size: .85rem; text-decoration: none; }
-  .visibility-guide__index a:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
-  .visibility-guide__index a span { color: var(--color-accent); font: .68rem var(--font-mono); }
+  .visibility-guide__index a:hover { background: rgba(67, 142, 160, .13); }
+  .visibility-guide__index a span { color: var(--visibility-link-soft); font: .68rem var(--font-mono); }
   .visibility-guide__sections { display: grid; gap: 1rem; }
   .visibility-guide__sections > section { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); scroll-margin-top: 1rem; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
   .visibility-guide__number { padding: 1.2rem .55rem; border-right: 1px solid var(--color-border); color: var(--color-accent); font: 700 .72rem var(--font-mono); text-align: center; }
@@ -133,8 +133,8 @@ const t = content[lang];
   .visibility-guide__summary { margin-top: 1.4rem; padding: 1.3rem 1.4rem; border: 1px solid color-mix(in srgb, var(--color-accent) 52%, transparent); border-radius: .8rem; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 13%, transparent), var(--color-surface)); }
   .visibility-guide__summary p { margin: 0 0 .4rem; color: var(--color-accent); font: .72rem var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
   .visibility-guide__summary h2 { margin: 0; color: var(--color-text); font-size: clamp(1.05rem, 2.4vw, 1.35rem); line-height: 1.5; }
-  .visibility-guide__return { display: inline-flex; margin-top: 1rem; padding: .65rem .8rem; border: 1px solid var(--color-border); border-radius: .55rem; color: var(--color-text); font-size: .82rem; font-weight: 700; text-decoration: none; }
-  .visibility-guide__return:hover { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+  .visibility-guide__return { display: inline-flex; margin-top: 1rem; padding: .65rem .8rem; border: 1px solid rgba(67, 142, 160, .66); border-radius: .55rem; background: radial-gradient(circle at 94% 8%, rgba(67, 142, 160, .21), transparent 48%), rgba(67, 142, 160, .09); color: var(--visibility-link-soft); font-size: .82rem; font-weight: 700; text-decoration: none; }
+  .visibility-guide__return:hover { border-color: var(--visibility-link); background: rgba(67, 142, 160, .16); color: #99d2dd; }
   @media (max-width: 600px) {
     .visibility-guide__index ol { grid-template-columns: 1fr; }
     .visibility-guide__sections > section { grid-template-columns: 2.35rem minmax(0, 1fr); }

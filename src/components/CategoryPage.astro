@@ -19,7 +19,7 @@ const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))]
 ---
 
 <Layout title={label} description={t.categoryDescription(label)} focused lang={lang} languageLinks={languageLinks.category(categoryKey, base)}>
-	<section aria-labelledby="category-heading">
+	<section class="gallery-theme" aria-labelledby="category-heading">
 		<div class="catalog-controls">
 			<CatalogHeader lang={lang} currentCategory={categoryKey} />
 			<div class="catalog-controls__search">
