@@ -14,10 +14,15 @@ const texts = {
   es: { title: 'Mi noche', intro: 'Reúne los objetivos de la sesión y decide qué filtros quieres dedicar a cada uno. El orden astronómico según visibilidad y Luna se añadirá en el siguiente paso.', back: 'Volver a Prepara tu sesión', session: '1 · La sesión', date: 'Noche que planificas', ready: 'Listo para fotografiar', readyHelp: 'Equipo puesto en estación, ficheros de corrección preparados y cámaras enfriadas.', finish: 'Finalizar las capturas', finishHelp: 'Momento de apagar las cámaras. Reserva después el tiempo necesario para cerrar y guardar el equipo.', equipment: '2 · Equipo', smart: 'Telescopio inteligente', osc: 'Cámara OSC', mono: 'Cámara monocroma', filters: 'Filtros disponibles esta noche', targets: '3 · Cesta de objetivos', search: 'Buscar un objeto', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Añadir a Mi noche', empty: 'La cesta todavía está vacía.', selectAll: 'Todos', clearAll: 'Ninguno', remove: 'Eliminar', summary: 'Resumen provisional', duration: 'Tiempo disponible', combinations: 'Combinaciones objeto + filtro', next: 'Siguiente paso: ordenar estas combinaciones por altura, ventana útil e incidencia de la Luna.', hours: 'h', noFilter: 'Captura en color' },
   en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Next step: order these combinations by altitude, useful window and Moon impact.', hours: 'h', noFilter: 'Colour capture' },
 } as const;
-const t = texts[lang];
+const sourceTexts = {
+  ca: { local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.' },
+  es: { local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.' },
+  en: { local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.' },
+} as const;
+const t = { ...texts[lang], ...sourceTexts[lang] };
 const objects = objectsData
   .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
-  .map((object) => ({ id: object.id, label: `${formatCatalogDesignations(object.catalogName)}${object.commonNames?.[lang] ? ` · ${formatCatalogDesignations(object.commonNames[lang])}` : ''}` }))
+  .map((object) => ({ id: object.id, catalogName: object.catalogName, commonName: object.commonNames?.[lang], label: `${formatCatalogDesignations(object.catalogName)}${object.commonNames?.[lang] ? ` · ${formatCatalogDesignations(object.commonNames[lang])}` : ''}`, raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' }))
   .sort((a, b) => a.label.localeCompare(b.label, lang, { numeric: true }));
 const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c');
 ---
@@ -51,11 +56,26 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
 
       <section class="my-night__panel my-night__panel--basket">
         <h2>{t.targets}</h2>
-        <form class="my-night__picker" data-picker>
-          <label><span>{t.search}</span><input type="search" list="my-night-objects" placeholder={t.placeholder} data-object-search autocomplete="off" /></label>
-          <datalist id="my-night-objects">{objects.map((object) => <option value={object.label} />)}</datalist>
-          <button type="submit">+ {t.add}</button>
-        </form>
+        <nav class="my-night__sources" aria-label={t.targets}>
+          <button type="button" data-object-mode="local" aria-pressed="true">{t.local}</button>
+          <button type="button" data-object-mode="simbad" aria-pressed="false">{t.simbad}</button>
+        </nav>
+        <div data-object-panel="local">
+          <form class="my-night__picker" data-picker>
+            <label><span>{t.search}</span><input type="search" list="my-night-objects" placeholder={t.placeholder} data-object-search autocomplete="off" /></label>
+            <datalist id="my-night-objects">{objects.map((object) => <option value={object.label} />)}</datalist>
+            <button type="submit">+ {t.add}</button>
+          </form>
+        </div>
+        <div class="my-night__simbad" data-object-panel="simbad" hidden>
+          <form class="my-night__picker" data-simbad-form>
+            <label><span>{t.simbadSearch}</span><input type="search" placeholder="NGC 7000, LDN 1235…" data-simbad-query autocomplete="off" /></label>
+            <button type="submit" data-resolve-simbad>{t.resolve}</button>
+          </form>
+          <small>{t.simbadHelp}</small>
+          <div class="my-night__simbad-result" data-simbad-result hidden><strong data-simbad-name></strong><span data-simbad-coordinates></span><button type="button" data-add-simbad>+ {t.add}</button></div>
+          <p class="my-night__simbad-error" data-simbad-error hidden>{t.simbadError}</p>
+        </div>
         <p class="my-night__empty" data-empty>{t.empty}</p>
         <div class="my-night__basket" data-basket></div>
       </section>
@@ -71,6 +91,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
 
 <script type="application/json" id="my-night-data" set:html={clientData}></script>
 <script>
+  import { findLocalObject, resolveSimbad } from '../lib/planning/simbad.mjs';
   const config = JSON.parse(document.querySelector('#my-night-data')?.textContent ?? '{}');
   const root = document.querySelector<HTMLElement>('[data-my-night]');
   if (!root) throw new Error('My night interface not found');
@@ -80,11 +101,21 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   const globalFilters = root.querySelector<HTMLElement>('[data-global-filters]')!;
   const picker = root.querySelector<HTMLFormElement>('[data-picker]')!;
   const search = root.querySelector<HTMLInputElement>('[data-object-search]')!;
+  const simbadForm = root.querySelector<HTMLFormElement>('[data-simbad-form]')!;
+  const simbadQuery = root.querySelector<HTMLInputElement>('[data-simbad-query]')!;
+  const simbadButton = root.querySelector<HTMLButtonElement>('[data-resolve-simbad]')!;
+  const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]')!;
+  const simbadName = root.querySelector<HTMLElement>('[data-simbad-name]')!;
+  const simbadCoordinates = root.querySelector<HTMLElement>('[data-simbad-coordinates]')!;
+  const simbadError = root.querySelector<HTMLElement>('[data-simbad-error]')!;
+  const addSimbad = root.querySelector<HTMLButtonElement>('[data-add-simbad]')!;
   const basket = root.querySelector<HTMLElement>('[data-basket]')!;
   const empty = root.querySelector<HTMLElement>('[data-empty]')!;
   const duration = root.querySelector<HTMLElement>('[data-duration]')!;
   const combinations = root.querySelector<HTMLElement>('[data-combinations]')!;
-  let items: Array<{id:string,label:string,filters:string[]}> = [];
+  type NightTarget = { id:string; label:string; filters:string[]; raDeg?:number; decDeg?:number; source?:string };
+  let items: NightTarget[] = [];
+  let resolvedSimbad: { displayName:string; canonicalName?:string; raDeg:number; decDeg:number; source:string; localObjectId?:string } | null = null;
   date.value = new Date().toISOString().slice(0, 10);
   const equipment = () => root.querySelector<HTMLInputElement>('input[name="equipment"]:checked')?.value ?? 'smart';
   const availableFilters = () => equipment() === 'mono' ? [...globalFilters.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.value) : [config.texts.noFilter];
@@ -111,7 +142,23 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   };
   root.querySelectorAll<HTMLInputElement>('input[name="equipment"]').forEach((input) => input.addEventListener('change', () => { globalFilters.hidden = equipment() !== 'mono'; const filters = availableFilters(); items.forEach((item) => item.filters = [...filters]); render(); }));
   globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => input.addEventListener('change', () => { const filters = availableFilters(); items.forEach((item) => item.filters = item.filters.filter((filter) => filters.includes(filter))); render(); }));
-  picker.addEventListener('submit', (event) => { event.preventDefault(); const query = search.value.trim().toLocaleLowerCase(); const object = config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase() === query) ?? config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase().includes(query)); if (!object || items.some((item) => item.id === object.id)) return; items.push({ id: object.id, label: object.label, filters: availableFilters() }); search.value = ''; render(); });
+  const addTarget = (target: NightTarget) => { if (items.some((item) => item.id === target.id)) return; items.push(target); render(); };
+  picker.addEventListener('submit', (event) => { event.preventDefault(); const query = search.value.trim().toLocaleLowerCase(); const object = config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase() === query) ?? config.objects.find((entry:{label:string}) => entry.label.toLocaleLowerCase().includes(query)); if (!object) return; addTarget({ id: object.id, label: object.label, filters: availableFilters(), raDeg: object.raDeg, decDeg: object.decDeg, source: object.source }); search.value = ''; });
+  root.querySelectorAll<HTMLButtonElement>('[data-object-mode]').forEach((button) => button.addEventListener('click', () => { const mode = button.dataset.objectMode; root.querySelectorAll<HTMLButtonElement>('[data-object-mode]').forEach((entry) => entry.setAttribute('aria-pressed', String(entry === button))); root.querySelectorAll<HTMLElement>('[data-object-panel]').forEach((panel) => panel.hidden = panel.dataset.objectPanel !== mode); }));
+  simbadQuery.addEventListener('input', () => { resolvedSimbad = null; simbadResult.hidden = true; simbadError.hidden = true; });
+  simbadForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); const query = simbadQuery.value.trim(); if (!query) return;
+    simbadButton.disabled = true; simbadButton.textContent = config.texts.resolving; simbadResult.hidden = true; simbadError.hidden = true;
+    try {
+      const local = findLocalObject(config.objects, query);
+      resolvedSimbad = local ? { displayName: local.label, canonicalName: local.catalogName, raDeg: local.raDeg, decDeg: local.decDeg, source: local.source, localObjectId: local.id } : await resolveSimbad(query);
+      simbadName.textContent = `${config.texts.resolved}: ${resolvedSimbad.displayName}`;
+      simbadCoordinates.textContent = `AR ${resolvedSimbad.raDeg.toFixed(6)}° · Dec ${resolvedSimbad.decDeg.toFixed(6)}°`;
+      simbadResult.hidden = false;
+    } catch (error) { console.error(error); simbadError.hidden = false; }
+    finally { simbadButton.disabled = false; simbadButton.textContent = config.texts.resolve; }
+  });
+  addSimbad.addEventListener('click', () => { if (!resolvedSimbad) return; addTarget({ id: resolvedSimbad.localObjectId ?? `simbad:${resolvedSimbad.canonicalName ?? resolvedSimbad.displayName}`, label: resolvedSimbad.displayName, filters: availableFilters(), raDeg: resolvedSimbad.raDeg, decDeg: resolvedSimbad.decDeg, source: resolvedSimbad.source }); });
   [ready, finish].forEach((input) => input.addEventListener('change', updateSummary));
   render();
 </script>
@@ -121,6 +168,15 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
 </style>
 
 <style is:global>
+  .my-night .my-night__sources{display:flex;gap:.5rem;margin-bottom:1rem}
+  .my-night .my-night__sources button{padding:.55rem .8rem;background:#0a0e17;color:#aeb8c9}
+  .my-night .my-night__sources button[aria-pressed="true"]{border-color:#9b72d1;background:#251a38;color:#e8dcfa}
+  .my-night .my-night__simbad small{display:block;margin-top:.6rem;color:var(--color-muted);line-height:1.45}
+  .my-night .my-night__simbad-result{display:grid;grid-template-columns:1fr auto;gap:.25rem 1rem;align-items:center;margin-top:1rem;padding:.85rem;border:1px solid #594671;border-radius:.6rem;background:#100c19}
+  .my-night .my-night__simbad-result span{grid-column:1;color:var(--color-muted);font-family:var(--font-technical);font-size:.72rem}
+  .my-night .my-night__simbad-result button{grid-column:2;grid-row:1/3}
+  .my-night .my-night__simbad-error{color:#e58d8d;font-size:.8rem}
+  @media(max-width:760px){.my-night .my-night__simbad-result{grid-template-columns:1fr}.my-night .my-night__simbad-result button{grid-column:1;grid-row:auto}}
   .my-night .my-night__field-title{display:flex;align-items:center;gap:.4rem}
   .my-night .my-night__info{position:relative;width:1.15rem;height:1.15rem;padding:0;border:1px solid #765ca1;border-radius:50%;background:#171124;color:#d9c5f5;font-family:var(--font-technical);font-size:.68rem;line-height:1}
   .my-night .my-night__info::after{position:absolute;z-index:5;left:50%;bottom:calc(100% + .55rem);width:230px;padding:.65rem .75rem;border:1px solid #765ca1;border-radius:.55rem;background:#161020;box-shadow:0 10px 24px rgba(0,0,0,.35);color:#d7dce6;content:attr(data-tooltip);font-family:var(--font-body);font-size:.73rem;font-weight:400;line-height:1.45;text-align:left;opacity:0;pointer-events:none;transform:translate(-50%,.25rem);transition:opacity .15s ease,transform .15s ease}
