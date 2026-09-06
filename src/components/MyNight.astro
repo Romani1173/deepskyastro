@@ -15,9 +15,9 @@ const texts = {
   en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Next step: order these combinations by altitude, useful window and Moon impact.', hours: 'h', noFilter: 'Colour capture' },
 } as const;
 const sourceTexts = {
-  ca: { local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.' },
-  es: { local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.' },
-  en: { local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.' },
+  ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.' },
+  es: { equipmentHelp: 'Selecciona un único tipo de cámara para toda la sesión.', local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.' },
+  en: { equipmentHelp: 'Choose one camera type for the whole session.', local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.' },
 } as const;
 const t = { ...texts[lang], ...sourceTexts[lang] };
 const objects = objectsData
@@ -48,6 +48,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
           <label><input type="radio" name="equipment" value="osc" /><span>{t.osc}</span></label>
           <label><input type="radio" name="equipment" value="mono" /><span>{t.mono}</span></label>
         </div>
+        <small class="my-night__equipment-help">{t.equipmentHelp}</small>
         <div class="my-night__global-filters" data-global-filters hidden>
           <strong>{t.filters}</strong>
           <div>{['L','R','G','B','Hα','OIII','SII'].map((filter) => <label><input type="checkbox" value={filter} checked /><span>{filter}</span></label>)}</div>
@@ -127,7 +128,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
     const [rh, rm] = ready.value.split(':').map(Number), [fh, fm] = finish.value.split(':').map(Number);
     let minutes = fh * 60 + fm - (rh * 60 + rm); if (minutes <= 0) minutes += 1440;
     duration.textContent = `${Math.floor(minutes / 60)} ${config.texts.hours} ${String(minutes % 60).padStart(2, '0')} min`;
-    combinations.textContent = String(items.reduce((total, item) => total + item.filters.length, 0));
+    combinations.textContent = String(equipment() === 'mono' ? items.reduce((total, item) => total + item.filters.length, 0) : items.length);
   };
   const render = () => {
     empty.hidden = items.length > 0;
@@ -137,10 +138,13 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
       const header = document.createElement('header'); const title = document.createElement('strong'); title.textContent = item.label;
       const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = config.texts.remove; remove.addEventListener('click', () => { items = items.filter((entry) => entry.id !== item.id); render(); });
       header.append(title, remove); article.append(header);
-      const actions = document.createElement('div'); actions.className = 'my-night-item__actions';
-      const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); render(); });
-      const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; render(); }); actions.append(all, none); article.append(actions);
-      const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox); basket.append(article);
+      if (equipment() === 'mono') {
+        const actions = document.createElement('div'); actions.className = 'my-night-item__actions';
+        const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); render(); });
+        const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; render(); }); actions.append(all, none); article.append(actions);
+        const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox);
+      }
+      basket.append(article);
     });
     updateSummary();
   };
