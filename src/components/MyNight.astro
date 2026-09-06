@@ -12,9 +12,9 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'La meva nit', intro: 'Reuneix els objectius de la sessió i decideix quins filtres vols dedicar a cadascun. L’ordre astronòmic segons visibilitat i Lluna s’afegirà en el pas següent.', back: 'Torna a Prepara la teva sessió', session: '1 · La sessió', date: 'Nit que planifiques', ready: 'A punt per fotografiar', readyHelp: 'Equip en estació, fitxers de correcció preparats i càmeres refredades.', finish: 'Finalitza les captures', finishHelp: 'Moment d’apagar les càmeres. Reserva després el temps necessari per tancar i guardar l’equip.', equipment: '2 · Equip', smart: 'Telescopi intel·ligent', osc: 'Càmera OSC', mono: 'Càmera monocroma', filters: 'Filtres disponibles aquesta nit', targets: '3 · Cistella d’objectius', search: 'Cerca un objecte', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Afegeix a La meva nit', empty: 'La cistella encara és buida.', selectAll: 'Tots', clearAll: 'Cap', remove: 'Elimina', summary: 'Resum provisional', duration: 'Temps disponible', combinations: 'Combinacions objecte + filtre', next: 'Següent pas: ordenar aquestes combinacions per altura, finestra útil i incidència de la Lluna.', hours: 'h', noFilter: 'Captura en color' },
-  es: { title: 'Mi noche', intro: 'Reúne los objetivos de la sesión y decide qué filtros quieres dedicar a cada uno. El orden astronómico según visibilidad y Luna se añadirá en el siguiente paso.', back: 'Volver a Prepara tu sesión', session: '1 · La sesión', date: 'Noche que planificas', ready: 'Listo para fotografiar', readyHelp: 'Equipo puesto en estación, ficheros de corrección preparados y cámaras enfriadas.', finish: 'Finalizar las capturas', finishHelp: 'Momento de apagar las cámaras. Reserva después el tiempo necesario para cerrar y guardar el equipo.', equipment: '2 · Equipo', smart: 'Telescopio inteligente', osc: 'Cámara OSC', mono: 'Cámara monocroma', filters: 'Filtros disponibles esta noche', targets: '3 · Cesta de objetivos', search: 'Buscar un objeto', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Añadir a Mi noche', empty: 'La cesta todavía está vacía.', selectAll: 'Todos', clearAll: 'Ninguno', remove: 'Eliminar', summary: 'Resumen provisional', duration: 'Tiempo disponible', combinations: 'Combinaciones objeto + filtro', next: 'Siguiente paso: ordenar estas combinaciones por altura, ventana útil e incidencia de la Luna.', hours: 'h', noFilter: 'Captura en color' },
-  en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Next step: order these combinations by altitude, useful window and Moon impact.', hours: 'h', noFilter: 'Colour capture' },
+  ca: { title: 'La meva nit', intro: 'Reuneix els objectius de la sessió i decideix quins filtres vols dedicar a cadascun. L’ordre astronòmic segons visibilitat i Lluna s’afegirà en el pas següent.', back: 'Torna a Prepara la teva sessió', session: '1 · La sessió', date: 'Nit que planifiques', ready: 'A punt per fotografiar', readyHelp: 'Equip en estació, fitxers de correcció preparats i càmeres refredades.', finish: 'Finalitza les captures', finishHelp: 'Moment d’apagar les càmeres. Reserva després el temps necessari per tancar i guardar l’equip.', equipment: '2 · Equip', smart: 'Telescopi intel·ligent', osc: 'Càmera OSC', mono: 'Càmera monocroma', filters: 'Filtres disponibles aquesta nit', targets: '3 · Cistella d’objectius', search: 'Cerca un objecte', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Afegeix a La meva nit', empty: 'La cistella encara és buida.', selectAll: 'Tots', clearAll: 'Cap', remove: 'Elimina', summary: 'Resum provisional', duration: 'Temps disponible', combinations: 'Combinacions objecte + filtre', next: 'Ordena la cistella per altura i incidència de la Lluna.', createPlan: 'Crea el pla de la meva nit', plan: '4 · Ordre de la nit', reference: 'Càlcul provisional per al centre de Catalunya.', altitude: 'altura', moonDistance: 'Lluna', recalculate: 'Recalcula el pla', hours: 'h', noFilter: 'Captura en color' },
+  es: { title: 'Mi noche', intro: 'Reúne los objetivos de la sesión y decide qué filtros quieres dedicar a cada uno. El orden astronómico según visibilidad y Luna se añadirá en el siguiente paso.', back: 'Volver a Prepara tu sesión', session: '1 · La sesión', date: 'Noche que planificas', ready: 'Listo para fotografiar', readyHelp: 'Equipo puesto en estación, ficheros de corrección preparados y cámaras enfriadas.', finish: 'Finalizar las capturas', finishHelp: 'Momento de apagar las cámaras. Reserva después el tiempo necesario para cerrar y guardar el equipo.', equipment: '2 · Equipo', smart: 'Telescopio inteligente', osc: 'Cámara OSC', mono: 'Cámara monocroma', filters: 'Filtros disponibles esta noche', targets: '3 · Cesta de objetivos', search: 'Buscar un objeto', placeholder: 'M 31, NGC 7000, nebulosa…', add: 'Añadir a Mi noche', empty: 'La cesta todavía está vacía.', selectAll: 'Todos', clearAll: 'Ninguno', remove: 'Eliminar', summary: 'Resumen provisional', duration: 'Tiempo disponible', combinations: 'Combinaciones objeto + filtro', next: 'Ordena la cesta por altura e incidencia de la Luna.', createPlan: 'Crear el plan de mi noche', plan: '4 · Orden de la noche', reference: 'Cálculo provisional para el centro de Cataluña.', altitude: 'altura', moonDistance: 'Luna', recalculate: 'Recalcular el plan', hours: 'h', noFilter: 'Captura en color' },
+  en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Order the basket by altitude and Moon impact.', createPlan: 'Create my night plan', plan: '4 · Night order', reference: 'Provisional calculation for central Catalonia.', altitude: 'altitude', moonDistance: 'Moon', recalculate: 'Recalculate plan', hours: 'h', noFilter: 'Colour capture' },
 } as const;
 const sourceTexts = {
   ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.' },
@@ -105,7 +105,14 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
         <h2>{t.summary}</h2>
         <dl><div><dt>{t.duration}</dt><dd data-duration>—</dd></div><div><dt>{t.combinations}</dt><dd data-combinations>0</dd></div></dl>
         <p>{t.next}</p>
+        <button type="button" data-create-plan disabled>{t.createPlan}</button>
       </aside>
+
+      <section class="my-night__panel my-night__plan" data-plan hidden>
+        <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div><button type="button" data-recalculate>{t.recalculate}</button></header>
+        <div class="my-night__timeline" data-timeline></div>
+        <ol class="my-night__schedule" data-schedule></ol>
+      </section>
     </div>
   </main>
 </Layout>
@@ -113,6 +120,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
 <script type="application/json" id="my-night-data" set:html={clientData}></script>
 <script>
   import { findLocalObject, resolveSimbad } from '../lib/planning/simbad.mjs';
+  import { sampleInstant } from '../lib/planning/engine.mjs';
   const config = JSON.parse(document.querySelector('#my-night-data')?.textContent ?? '{}');
   const root = document.querySelector<HTMLElement>('[data-my-night]');
   if (!root) throw new Error('My night interface not found');
@@ -135,6 +143,11 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   const empty = root.querySelector<HTMLElement>('[data-empty]')!;
   const duration = root.querySelector<HTMLElement>('[data-duration]')!;
   const combinations = root.querySelector<HTMLElement>('[data-combinations]')!;
+  const createPlan = root.querySelector<HTMLButtonElement>('[data-create-plan]')!;
+  const plan = root.querySelector<HTMLElement>('[data-plan]')!;
+  const timeline = root.querySelector<HTMLElement>('[data-timeline]')!;
+  const schedule = root.querySelector<HTMLOListElement>('[data-schedule]')!;
+  const recalculate = root.querySelector<HTMLButtonElement>('[data-recalculate]')!;
   type NightTarget = { id:string; label:string; filters:string[]; raDeg?:number; decDeg?:number; source?:string };
   let items: NightTarget[] = [];
   let selectedLocal: any = null;
@@ -147,28 +160,30 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
     let minutes = fh * 60 + fm - (rh * 60 + rm); if (minutes <= 0) minutes += 1440;
     duration.textContent = `${Math.floor(minutes / 60)} ${config.texts.hours} ${String(minutes % 60).padStart(2, '0')} min`;
     combinations.textContent = String(equipment() === 'mono' ? items.reduce((total, item) => total + item.filters.length, 0) : items.length);
+    createPlan.disabled = items.length === 0 || (equipment() === 'mono' && items.every((item) => item.filters.length === 0));
   };
+  const invalidatePlan = () => { plan.hidden = true; timeline.replaceChildren(); schedule.replaceChildren(); };
   const render = () => {
     empty.hidden = items.length > 0;
     basket.innerHTML = '';
     items.forEach((item) => {
       const article = document.createElement('article'); article.className = 'my-night-item';
       const header = document.createElement('header'); const title = document.createElement('strong'); title.textContent = item.label;
-      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = config.texts.remove; remove.addEventListener('click', () => { items = items.filter((entry) => entry.id !== item.id); render(); });
+      const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = config.texts.remove; remove.addEventListener('click', () => { items = items.filter((entry) => entry.id !== item.id); invalidatePlan(); render(); });
       header.append(title, remove); article.append(header);
       if (equipment() === 'mono') {
         const actions = document.createElement('div'); actions.className = 'my-night-item__actions';
-        const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); render(); });
-        const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; render(); }); actions.append(all, none); article.append(actions);
-        const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox);
+        const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); invalidatePlan(); render(); });
+        const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; invalidatePlan(); render(); }); actions.append(all, none); article.append(actions);
+        const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); invalidatePlan(); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox);
       }
       basket.append(article);
     });
     updateSummary();
   };
-  root.querySelectorAll<HTMLInputElement>('input[name="equipment"]').forEach((input) => input.addEventListener('change', () => { globalFilters.hidden = equipment() !== 'mono'; const filters = availableFilters(); items.forEach((item) => item.filters = [...filters]); render(); }));
-  globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => input.addEventListener('change', () => { const filters = availableFilters(); items.forEach((item) => item.filters = item.filters.filter((filter) => filters.includes(filter))); render(); }));
-  const addTarget = (target: NightTarget) => { if (items.some((item) => item.id === target.id)) return; items.push(target); render(); };
+  root.querySelectorAll<HTMLInputElement>('input[name="equipment"]').forEach((input) => input.addEventListener('change', () => { globalFilters.hidden = equipment() !== 'mono'; const filters = availableFilters(); items.forEach((item) => item.filters = [...filters]); invalidatePlan(); render(); }));
+  globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => input.addEventListener('change', () => { const filters = availableFilters(); items.forEach((item) => item.filters = item.filters.filter((filter) => filters.includes(filter))); invalidatePlan(); render(); }));
+  const addTarget = (target: NightTarget) => { if (items.some((item) => item.id === target.id)) return; items.push(target); invalidatePlan(); render(); };
   const normalizeSearch = (value:string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
   const matchingLocalObjects = (showAll = false) => { const query = normalizeSearch(search.value); return showAll || !query ? config.objects : config.objects.filter((object:any) => normalizeSearch(`${object.label} ${object.catalogName} ${object.id}`).includes(query)); };
   const closeObjectResults = () => { objectResults.hidden = true; search.setAttribute('aria-expanded', 'false'); };
@@ -212,7 +227,53 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
     clearSimbad();
     simbadQuery.focus();
   });
-  [ready, finish].forEach((input) => input.addEventListener('change', updateSummary));
+  const centralCatalonia = { name: 'Catalunya central', latitudeDeg: 41.7, longitudeDeg: 1.5, elevationM: 0 };
+  const sessionBounds = () => {
+    const start = new Date(`${date.value}T${ready.value}:00`);
+    const end = new Date(`${date.value}T${finish.value}:00`);
+    if (end <= start) end.setDate(end.getDate() + 1);
+    return { start, end };
+  };
+  const filterMoonWeight = (filter:string) => ({ B: 34, L: 30, G: 24, R: 15, Hα: 4, OIII: 7, SII: 4 }[filter] ?? 30);
+  const scoreAt = (task:any, instant:Date) => {
+    const reading = sampleInstant({ date: instant, location: centralCatalonia, object: task });
+    const moonProximity = reading.isMoonUp ? Math.max(0, (100 - reading.moonSeparationDeg) / 100) : 0;
+    const moonPenalty = moonProximity * reading.moonIlluminationFraction * filterMoonWeight(task.filter);
+    return { reading, score: reading.objectAltitudeDeg - moonPenalty - (reading.objectAltitudeDeg < 20 ? 120 : 0) };
+  };
+  const clock = (instant:Date) => instant.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const makePlan = () => {
+    const tasks = items.flatMap((item) => (equipment() === 'mono' ? item.filters : [config.texts.noFilter]).map((filter) => ({ ...item, filter })));
+    if (!tasks.length) return;
+    const { start, end } = sessionBounds();
+    const slotMs = (end.getTime() - start.getTime()) / tasks.length;
+    const remaining = [...tasks];
+    const ordered = Array.from({ length: tasks.length }, (_, index) => {
+      const slotStart = new Date(start.getTime() + index * slotMs);
+      const slotEnd = new Date(start.getTime() + (index + 1) * slotMs);
+      const midpoint = new Date((slotStart.getTime() + slotEnd.getTime()) / 2);
+      const candidates = remaining.map((task) => ({ task, ...scoreAt(task, midpoint) })).sort((a, b) => b.score - a.score);
+      const selected = candidates[0];
+      remaining.splice(remaining.indexOf(selected.task), 1);
+      return { ...selected, start: slotStart, end: slotEnd };
+    });
+    timeline.replaceChildren(); schedule.replaceChildren();
+    ordered.forEach((slot, index) => {
+      const segment = document.createElement('div');
+      segment.style.setProperty('--night-colour', `hsl(${270 + (index * 31) % 65} 48% ${42 + (index % 2) * 8}%)`);
+      segment.innerHTML = `<strong>${slot.task.label}</strong><span>${equipment() === 'mono' ? slot.task.filter : ''}</span><small>${clock(slot.start)}–${clock(slot.end)}</small>`;
+      timeline.append(segment);
+      const row = document.createElement('li');
+      const filter = equipment() === 'mono' ? ` · ${slot.task.filter}` : '';
+      row.innerHTML = `<time>${clock(slot.start)}–${clock(slot.end)}</time><strong>${slot.task.label}${filter}</strong><span>${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°</span>`;
+      schedule.append(row);
+    });
+    plan.hidden = false;
+    plan.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  createPlan.addEventListener('click', makePlan);
+  recalculate.addEventListener('click', makePlan);
+  [date, ready, finish].forEach((input) => input.addEventListener('change', () => { invalidatePlan(); updateSummary(); }));
   render();
 </script>
 
@@ -251,4 +312,25 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   .my-night .my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}
   .my-night .my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14;color:#b7c1d1;font-size:.76rem}
   .my-night .my-night-item__filters input{width:auto}
+</style>
+
+<style is:global>
+  .my-night .my-night__summary>button{margin-top:1rem;font-weight:700}
+  .my-night .my-night__summary>button:disabled{opacity:.42;cursor:not-allowed}
+  .my-night .my-night__plan{grid-column:1/-1;border-color:#6e5295;background:linear-gradient(145deg,rgba(25,18,39,.96),rgba(11,17,29,.96))}
+  .my-night .my-night__plan>header{display:flex;justify-content:space-between;align-items:start;gap:1rem;margin-bottom:1rem}
+  .my-night .my-night__plan h2{margin:0 0 .3rem}
+  .my-night .my-night__plan header p{margin:0;color:var(--color-muted);font-size:.76rem}
+  .my-night .my-night__plan header button{padding:.55rem .7rem;background:transparent;font-size:.72rem}
+  .my-night .my-night__timeline{display:flex;min-height:7.2rem;overflow:hidden;border:1px solid #765ca1;border-radius:.65rem;background:#080c14}
+  .my-night .my-night__timeline>div{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:.18rem;padding:.65rem;border-left:1px solid rgba(255,255,255,.16);background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
+  .my-night .my-night__timeline>div:first-child{border-left:0}
+  .my-night .my-night__timeline strong{overflow:hidden;font-size:.74rem;text-overflow:ellipsis;white-space:nowrap}
+  .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.68rem}
+  .my-night .my-night__timeline small{margin:0;color:#d2c7df;font-family:var(--font-technical);font-size:.62rem}
+  .my-night .my-night__schedule{display:grid;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none}
+  .my-night .my-night__schedule li{display:grid;grid-template-columns:8rem 1fr auto;gap:.8rem;align-items:center;padding:.65rem .75rem;border:1px solid #3d3450;border-radius:.5rem;background:rgba(8,12,20,.66)}
+  .my-night .my-night__schedule time,.my-night .my-night__schedule span{color:var(--color-muted);font-family:var(--font-technical);font-size:.69rem}
+  .my-night .my-night__schedule span{text-align:right}
+  @media(max-width:760px){.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__schedule li{grid-template-columns:1fr}.my-night .my-night__schedule span{text-align:left}}
 </style>
