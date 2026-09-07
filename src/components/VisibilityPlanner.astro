@@ -17,9 +17,9 @@ const texts = {
   en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Photographed', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const exportTexts = {
-  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Ajusta el període', previousDay: 'Un dia abans', nextDay: 'Un dia després' },
-  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.', shiftPeriod: 'Ajustar periodo', previousDay: 'Un día antes', nextDay: 'Un día después' },
-  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.', shiftPeriod: 'Adjust period', previousDay: 'One day earlier', nextDay: 'One day later' },
+  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', minimumVisibility: 'Hores mínimes sobre 30°' },
+  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', minimumVisibility: 'Horas mínimas sobre 30°' },
+  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', minimumVisibility: 'Minimum hours above 30°' },
 } as const;
 const t = { ...texts[lang], ...exportTexts[lang] };
 const enhancedVisibility = lang !== 'en';
@@ -94,21 +94,23 @@ const weekRange = (week: number) => {
     </header>
 
     <div class="visibility-toolbar"><div class="visibility-toolbar__selectors"><div class="week-control">
-      <label for="visibility-week">{t.week}</label>
+      <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><label for="visibility-year">{t.year}</label></div>
       <div class="week-control__row">
         <button type="button" data-week-step="-1" aria-label="−1">−</button>
         <select id="visibility-week">
           {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
         </select>
         <button type="button" data-week-step="1" aria-label="+1">+</button>
-        <select id="visibility-year" aria-label={lang === 'ca' ? 'Any' : lang === 'es' ? 'Año' : 'Year'}>
+        <select id="visibility-year" aria-label={t.year}>
           {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
         </select>
       </div>
+      <div class="period-shift__labels" aria-hidden="true"><span></span><span>{t.shiftPeriod}</span><span></span><span></span></div>
       <div class="period-shift" aria-label={t.shiftPeriod}>
-        <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
+        <button type="button" data-day-step="-1" aria-label={t.previousDay}>−</button>
         <output data-period-range aria-live="polite">{weekRange(currentWeek)}</output>
-        <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
+        <button type="button" data-day-step="1" aria-label={t.nextDay}>+</button>
+        <span aria-hidden="true"></span>
       </div>
     </div>
     <label class="visibility-select-control constellation-control" for="visibility-constellation"><span>{t.constellation}</span><select id="visibility-constellation"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select></label>
@@ -780,21 +782,25 @@ const weekRange = (week: number) => {
   .visibility-toolbar__selectors { display: flex; align-items: end; gap: .9rem; }
   .week-control { display: grid; gap: .22rem; margin: 0; }
   .week-control label, .visibility-select-control span { font-size: .7rem; font-weight: 700; line-height: 1.15; }
+  .week-control__labels, .period-shift__labels { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; text-align: center; }
+  .week-control__labels label, .period-shift__labels span { display: block; color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
   .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; }
-  .period-shift { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 2rem; align-items: center; gap: .4rem; margin-top: .18rem; }
-  .period-shift button { width: 2rem; min-height: 1.8rem; color: #86c2cf; font-size: 1.05rem; }
+  .period-shift__labels { margin-top: .34rem; }
+  .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; align-items: center; gap: .5rem; }
+  .period-shift button { width: 2.7rem; min-height: 2.7rem; color: #86c2cf; font-size: 1.05rem; }
   .period-shift button:disabled { opacity: .32; cursor: not-allowed; }
-  .period-shift output { color: var(--color-muted); font: 700 .7rem var(--font-mono); text-align: center; }
+  .period-shift output { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control select { font-size: .82rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
   .week-control #visibility-year { min-width: 0; }
   .week-control button { width: 2.7rem; cursor: pointer; }
   .visibility-select-control { display: grid; gap: .22rem; font-weight: 700; }
+  .visibility-select-control > span { text-align: center; }
   :global(#visibility-constellation), :global(#visibility-hours) { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .55rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font-family: var(--font-mono); font-size: .82rem; font-weight: 400; }
   .week-control select, :global(#visibility-constellation), :global(#visibility-hours) { appearance: none; -webkit-appearance: none; padding-right: 1.65rem; background-color: #0d121c; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 5 3 3 3-3' fill='none' stroke='%23aab5c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.25'/%3E%3C/svg%3E"); background-position: right .5rem center; background-repeat: no-repeat; background-size: .75rem; }
   .constellation-control { width: 8.8rem; flex: 0 0 8.8rem; }
-  .hours-control { width: 5.2rem; flex: 0 0 5.2rem; }
+  .hours-control { width: 8.6rem; flex: 0 0 8.6rem; }
   .hours-control span { text-align: center; }
   :global(#visibility-hours) { padding: 0 1.55rem 0 .4rem; text-align: center; text-align-last: center; }
   .visibility-layout, .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
@@ -937,6 +943,7 @@ const weekRange = (week: number) => {
     .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
     .visibility-planner__location { text-align: left; }
     .week-control__row { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
+    .week-control__labels, .period-shift__labels, .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
     .week-control select { width: 100%; min-width: 0; }
     .visibility-select-control { width: 100%; flex-basis: auto; }
     .visibility-card { grid-template-columns: 1fr; }
