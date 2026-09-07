@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../../i18n';
-import { languageLinks, planningGuideHref, sessionPreparationHref, visibilityHref } from '../../i18n';
+import { languageLinks, planningGuideHref, sessionPreparationHref, visibilityHref, withBase } from '../../i18n';
 import Layout from '../../layouts/Layout.astro';
 import SessionToolLink from '../SessionToolLink.astro';
 import objectsData from '../../data/astronomical-objects.json';
@@ -48,6 +48,7 @@ const periodShiftText = {
   es: { label: 'Desplazamiento de días', previous: 'Un día antes', next: 'Un día después' },
   en: { label: 'Day shift', previous: 'One day earlier', next: 'One day later' },
 }[lang];
+const photoLinkText = { ca: 'Veure fotografia', es: 'Ver fotografía', en: 'View photograph' }[lang];
 const moonGuide = {
   ca: {
     title: 'Com interpretar la Lluna', separation: 'Separació', effect: 'Efecte probable',
@@ -80,7 +81,10 @@ const photoAlias = (id: string, catalogName: string) => {
 };
 const objects = objectsData
   .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
-  .map((object) => ({ id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' }));
+  .map((object) => {
+    const photo = latestPhotoByObject.get(object.id);
+    return { id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery', photoSrc: photo ? withBase(`imagenes/cielo-profundo/${photo.data.imatge}`, base) : undefined };
+  });
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
 const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\u003c');
@@ -125,6 +129,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
             <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
             {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
           </select>
+          <button class="planning-photo-link" data-planning-photo type="button" hidden>{photoLinkText} <span aria-hidden="true">↗</span></button>
         </div>
         <div class="planning-simbad" data-object-panel="simbad" hidden>
           <p data-simbad-result aria-live="polite"></p>
@@ -155,6 +160,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
         <p class="planning-error" data-planning-error hidden>{t.error}</p>
       </fieldset>
     </form>
+
+    <dialog class="planning-photo-dialog" data-planning-photo-dialog>
+      <button class="planning-photo-dialog__close" type="button" data-close-planning-photo aria-label={lang === 'ca' ? 'Tancar la fotografia' : lang === 'es' ? 'Cerrar la fotografía' : 'Close photograph'}>×</button>
+      <img data-planning-photo-image src="" alt="" />
+      <p data-planning-photo-caption></p>
+    </dialog>
 
     <section class="planning-results" data-results hidden>
       <section class="planning-conclusion" data-planning-conclusion hidden aria-live="polite">
@@ -229,6 +240,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
   const weekRange = root.querySelector<HTMLOutputElement>('[data-week-range]');
   const shiftedRange = root.querySelector<HTMLOutputElement>('[data-shifted-range]');
+  const planningPhotoButton = root.querySelector<HTMLButtonElement>('[data-planning-photo]');
+  const planningPhotoDialog = root.querySelector<HTMLDialogElement>('[data-planning-photo-dialog]');
+  const planningPhotoImage = root.querySelector<HTMLImageElement>('[data-planning-photo-image]');
+  const planningPhotoCaption = root.querySelector<HTMLElement>('[data-planning-photo-caption]');
   const conclusion = root.querySelector<HTMLElement>('[data-planning-conclusion]');
   const copyPlanningButton = root.querySelector<HTMLButtonElement>('[data-copy-planning]');
   const downloadPlanningButton = root.querySelector<HTMLButtonElement>('[data-download-planning]');
@@ -305,6 +320,24 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     localObjectSearch.value = selected ? objectLabel(selected) : '';
   };
   syncLocalObjectSearch();
+  const syncPhotoLink = () => {
+    if (!planningPhotoButton) return;
+    const selected = config.objects.find((object: any) => object.id === field('localObject').value);
+    const visible = objectMode === 'local' && selected?.source === 'gallery' && selected?.photoSrc;
+    planningPhotoButton.hidden = !visible;
+    planningPhotoButton.dataset.photoSrc = visible ? selected.photoSrc : '';
+    planningPhotoButton.dataset.photoAlt = visible ? (selected.commonName ? `${selected.displayCatalogName} · ${selected.commonName}` : selected.displayCatalogName) : '';
+  };
+  syncPhotoLink();
+  planningPhotoButton?.addEventListener('click', () => {
+    if (!planningPhotoDialog || !planningPhotoImage) return;
+    planningPhotoImage.src = planningPhotoButton.dataset.photoSrc ?? '';
+    planningPhotoImage.alt = planningPhotoButton.dataset.photoAlt ?? '';
+    if (planningPhotoCaption) planningPhotoCaption.textContent = planningPhotoButton.dataset.photoAlt ?? '';
+    planningPhotoDialog.showModal();
+  });
+  root.querySelector<HTMLButtonElement>('[data-close-planning-photo]')?.addEventListener('click', () => planningPhotoDialog?.close());
+  planningPhotoDialog?.addEventListener('click', (event) => { if (event.target === planningPhotoDialog) planningPhotoDialog.close(); });
   const closeLocalObjectResults = () => {
     if (localObjectResults) localObjectResults.hidden = true;
     localObjectSearch.setAttribute('aria-expanded', 'false');
@@ -329,6 +362,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     field('localObject').value = selected.id;
     localObjectSearch.value = objectLabel(selected);
     field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
+    syncPhotoLink();
     closeLocalObjectResults();
   };
   const matchingLocalObjects = (showAll = false) => {
@@ -396,6 +430,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     modeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.objectMode === objectMode)));
     modePanels.forEach((panel) => { panel.hidden = panel.dataset.objectPanel !== objectMode; });
     sessionStorage.setItem('deepskyastro:planning-object-mode', objectMode);
+    syncPhotoLink();
     if (changed) { invalidateObjectResults(); markDirty(); persist(); }
   };
   modeButtons.forEach((button) => button.addEventListener('click', () => setObjectMode(button.dataset.objectMode ?? 'local', true)));
@@ -436,6 +471,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     savePlanningSession(sessionStorage, { version: 1, location, object: objectValue(), objectInputMode: objectMode, isoYear: Number(field('year').value), isoWeek: Number(field('week').value), selectedNightDateUtc: selectedNight?.nightDateUtc });
   };
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
+  ['localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', syncPhotoLink));
   ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
   ['year', 'week'].forEach((name) => field(name).addEventListener('change', () => { dayOffset = 0; updateWeekRange(); }));
   root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => button.addEventListener('click', () => {
@@ -443,7 +479,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const url = new URL(window.location.href);
     if (dayOffset) url.searchParams.set('offset', String(dayOffset)); else url.searchParams.delete('offset');
     window.history.replaceState(null, '', url);
-    updateWeekRange(); markDirty(); invalidateObjectResults();
+    updateWeekRange(); syncPhotoLink(); markDirty(); invalidateObjectResults();
   }));
   root.querySelectorAll<HTMLButtonElement>('[data-step-field]').forEach((button) => button.addEventListener('click', () => {
     const name = button.dataset.stepField ?? '';
