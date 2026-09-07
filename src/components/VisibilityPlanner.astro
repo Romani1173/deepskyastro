@@ -123,8 +123,8 @@ const weekRange = (week: number) => {
     <div class="visibility-output">
       <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
       <div class="visibility-output__actions">
-        <button type="button" data-copy-visibility title={t.reportHint}>{t.copyResults}</button>
-        <button type="button" data-download-visibility title={t.reportHint}>{t.downloadPdf}</button>
+        <button type="button" data-copy-visibility title={t.reportHint}><span>{t.copyResults}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+        <button type="button" data-download-visibility title={t.reportHint}><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
       </div>
     </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
@@ -428,10 +428,14 @@ const weekRange = (week: number) => {
     return { lines, reportCards, labels, week, year, minimumHours, selectedConstellation };
   };
   const confirmButton = (button, textValue) => {
-    const original = button.textContent;
-    button.textContent = textValue;
+    const originalLabel = button.getAttribute('aria-label');
     button.classList.add('is-confirmed');
-    window.setTimeout(() => { button.textContent = original; button.classList.remove('is-confirmed'); }, 2200);
+    button.setAttribute('aria-label', textValue);
+    window.setTimeout(() => {
+      button.classList.remove('is-confirmed');
+      if (originalLabel) button.setAttribute('aria-label', originalLabel);
+      else button.removeAttribute('aria-label');
+    }, 2800);
   };
   copyReportButton?.addEventListener('click', async () => {
     const value = buildVisibilityReport().lines.join('\n');
@@ -752,12 +756,14 @@ const weekRange = (week: number) => {
   .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
   .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
   .visibility-output { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: -.35rem 0 .8rem; }
-  .visibility-output__actions { display: flex; justify-content: flex-end; gap: .45rem; flex-wrap: wrap; }
+  .visibility-output__actions { display: flex; justify-content: flex-end; gap: .55rem; flex-wrap: wrap; }
   .visibility-results { margin: 0; color: var(--color-muted); font-size: .82rem; }
   .visibility-results strong { color: var(--color-accent); font: 700 1rem var(--font-mono); }
-  .visibility-output button { padding: .5rem .7rem; border: 1px solid rgba(67,142,160,.66); border-radius: .5rem; background: rgba(67,142,160,.09); color: #86c2cf; font: 700 .74rem var(--font-sans); cursor: pointer; }
+  .visibility-output button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2rem; padding: .38rem .62rem; border: 1px solid rgba(67,142,160,.48); border-radius: .5rem; background: rgba(5,8,14,.42); color: #9bcbd5; font: 700 .68rem var(--font-sans); cursor: pointer; transition: border-color .16s ease, color .16s ease, background .16s ease; }
   .visibility-output button:hover, .visibility-output button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
-  .visibility-output button.is-confirmed { border-color: #54aa7c; background: rgba(84,170,124,.14); color: #9cddb9; }
+  .visibility-output__check { width: .8rem; color: #75e3c4; opacity: 0; transform: scale(.6); transition: opacity .16s ease, transform .16s ease; }
+  .visibility-output button.is-confirmed { border-color: #55d9b3; background: rgba(85,217,179,.14); color: #75e3c4; }
+  .visibility-output button.is-confirmed .visibility-output__check { opacity: 1; transform: scale(1); }
   .visibility-output button:disabled { opacity: .4; cursor: not-allowed; }
   .visibility-empty { padding: 1rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); color: var(--color-muted); text-align: center; }
   [hidden] { display: none !important; }
