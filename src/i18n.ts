@@ -94,7 +94,7 @@ export const planningGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	: pageHref(`${lang}/${lang === 'en' ? 'planning/guide' : 'planificacion/guia'}`, base);
 export const visibilityGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('visibilitat/guia', base)
-	: lang === 'es' ? pageHref('es/visibilidad/guia', base) : visibilityHref('en', base);
+	: lang === 'es' ? pageHref('es/visibilidad/guia', base) : pageHref('en/visibility/guide', base);
 export const equipmentAnalyzerHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('laboratori/analitzador-equip', base)
 	: lang === 'es' ? pageHref('es/laboratorio/analizador-equipo', base) : pageHref('en/lab/equipment-analyser', base);
@@ -121,7 +121,7 @@ export const languageLinks = {
 	planningGuide: (base = '/') => ({ ca: planningGuideHref('ca', base), es: planningGuideHref('es', base), en: planningGuideHref('en', base) }),
 	equipmentAnalyzer: (base = '/') => ({ ca: equipmentAnalyzerHref('ca', base), es: equipmentAnalyzerHref('es', base), en: equipmentAnalyzerHref('en', base) }),
 	equipmentAnalyzerGuide: (base = '/') => ({ ca: equipmentAnalyzerGuideHref('ca', base), es: equipmentAnalyzerGuideHref('es', base), en: equipmentAnalyzerGuideHref('en', base) }),
-	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityHref('en', base) }),
+	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityGuideHref('en', base) }),
 	category: (key: CategoryKey, base = '/') => ({ ca: categoryHref('ca', key, base), es: categoryHref('es', key, base), en: categoryHref('en', key, base) }),
 	photo: (id: string, base = '/') => ({ ca: photoHref('ca', id, base), es: photoHref('es', id, base), en: photoHref('en', id, base) }),
 };
