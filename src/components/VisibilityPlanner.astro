@@ -17,9 +17,9 @@ const texts = {
   en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Photographed', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const exportTexts = {
-  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.' },
-  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.' },
-  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.' },
+  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Ajusta el període', previousDay: 'Un dia abans', nextDay: 'Un dia després' },
+  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.', shiftPeriod: 'Ajustar periodo', previousDay: 'Un día antes', nextDay: 'Un día después' },
+  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.', shiftPeriod: 'Adjust period', previousDay: 'One day earlier', nextDay: 'One day later' },
 } as const;
 const t = { ...texts[lang], ...exportTexts[lang] };
 const enhancedVisibility = lang !== 'en';
@@ -105,6 +105,11 @@ const weekRange = (week: number) => {
           {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
         </select>
       </div>
+      <div class="period-shift" aria-label={t.shiftPeriod}>
+        <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
+        <output data-period-range aria-live="polite">{weekRange(currentWeek)}</output>
+        <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
+      </div>
     </div>
     <label class="visibility-select-control constellation-control" for="visibility-constellation"><span>{t.constellation}</span><select id="visibility-constellation"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select></label>
     {enhancedVisibility && <label class="visibility-select-control hours-control" for="visibility-hours"><span>{t.minimumVisibility}</span><select id="visibility-hours">{[2, 3, 4, 5, 6].map((hours) => <option value={hours} selected={hours === 4}>{hours} h</option>)}</select></label>}
@@ -176,6 +181,8 @@ const weekRange = (week: number) => {
 <script define:vars={{ t, lang, showPending, enhancedVisibility }}>
   const selector = document.querySelector('#visibility-week');
   const yearSelector = document.querySelector('#visibility-year');
+  const periodRange = document.querySelector('[data-period-range]');
+  const dayStepButtons = [...document.querySelectorAll('[data-day-step]')];
   const hoursSelector = document.querySelector('#visibility-hours');
   const constellationSelector = document.querySelector('#visibility-constellation');
   const grid = document.querySelector('[data-visibility-grid]');
@@ -205,13 +212,14 @@ const weekRange = (week: number) => {
   };
   const isoWeeksInYear = (year) => Math.round((firstIsoMonday(year + 1).getTime() - firstIsoMonday(year).getTime()) / (7 * millisecondsPerDay));
   const isoDate = (year, week, day = 0) => new Date(firstIsoMonday(year).getTime() + ((week - 1) * 7 + day) * millisecondsPerDay);
-  const formatWeekRange = (year, week) => {
-    const start = isoDate(year, week), end = isoDate(year, week, 6);
+  const formatPeriodRange = (year, week, offset = 0) => {
+    const start = isoDate(year, week, offset), end = isoDate(year, week, offset + 6);
     const month = (date) => new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'UTC' }).format(date).replace('.', '');
     return month(start) === month(end)
       ? `${start.getUTCDate()}–${end.getUTCDate()} ${month(end)}`
       : `${start.getUTCDate()} ${month(start)}–${end.getUTCDate()} ${month(end)}`;
   };
+  const formatWeekRange = (year, week) => formatPeriodRange(year, week);
   const ensureYearOption = (year) => {
     if ([...yearSelector.options].some((option) => Number(option.value) === year)) return;
     yearSelector.add(new Option(String(year), String(year)));
@@ -229,6 +237,8 @@ const weekRange = (week: number) => {
   let currentView = showPending && requestedView === 'pending' ? 'pending' : 'photographed';
   const requestedLayout = new URL(window.location.href).searchParams.get('layout');
   let currentLayout = ['photos', 'list'].includes(requestedLayout) ? requestedLayout : 'photos';
+  const requestedOffset = Number(new URL(window.location.href).searchParams.get('offset'));
+  let dayOffset = Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : 0;
   const weekStorageKey = 'deepskyastro.visibility.week';
   const yearStorageKey = 'deepskyastro.visibility.year';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
@@ -252,6 +262,29 @@ const weekRange = (week: number) => {
   const requestedConstellation = new URL(window.location.href).searchParams.get('constellation');
   if (requestedConstellation && [...constellationSelector.options].some((option) => option.value === requestedConstellation)) constellationSelector.value = requestedConstellation;
   const requestedFocus = new URL(window.location.href).searchParams.get('focus');
+  const shiftedMetricsCache = new Map();
+  const shiftedPeriodMetrics = (source, year, week, offset) => {
+    if (offset === 0) return JSON.parse(source.dataset.weeks)[week - 1];
+    const cacheKey = `${source.dataset.objectId}:${year}:${week}:${offset}`;
+    if (shiftedMetricsCache.has(cacheKey)) return shiftedMetricsCache.get(cacheKey);
+    const nights = Array.from({ length: 7 }, (_, day) => {
+      const date = isoDate(year, week, offset + day);
+      const start = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12);
+      const samples = [];
+      for (let timestamp = start; timestamp < start + millisecondsPerDay; timestamp += 600000) {
+        const instant = new Date(timestamp), sun = sunPosition(instant);
+        if (altitudeAt(instant, sun.ra, sun.dec) <= -18) samples.push({ instant, altitude: altitudeAt(instant, Number(source.dataset.ra), Number(source.dataset.dec)) });
+      }
+      if (!samples.length) return null;
+      const best = samples.reduce((current, sample) => sample.altitude > current.altitude ? sample : current);
+      return { date, altitude: best.altitude, bestTime: best.instant, hours30: samples.filter((sample) => sample.altitude >= 30).length / 6 };
+    }).filter(Boolean);
+    const bestNight = nights.reduce((current, night) => night.altitude > current.altitude ? night : current);
+    const hours30 = Math.max(...nights.map((night) => night.hours30));
+    const value = [Number(bestNight.altitude.toFixed(1)), bestNight.bestTime.toISOString(), Number(hours30.toFixed(1)), hours30 >= 8 ? 'excellent' : hours30 >= 4 ? 'good' : null, bestNight.date.toISOString().slice(0, 10)];
+    shiftedMetricsCache.set(cacheKey, value);
+    return value;
+  };
   const update = () => {
     const week = Number(selector.value);
     const year = Number(yearSelector.value);
@@ -264,10 +297,14 @@ const weekRange = (week: number) => {
     currentUrl.searchParams.set('year', String(year));
     currentUrl.searchParams.set('view', currentView);
     currentUrl.searchParams.set('layout', currentLayout);
+    if (dayOffset) currentUrl.searchParams.set('offset', String(dayOffset));
+    else currentUrl.searchParams.delete('offset');
     if (hoursSelector) currentUrl.searchParams.set('hours', String(minimumHours));
     if (selectedConstellation) currentUrl.searchParams.set('constellation', selectedConstellation);
     else currentUrl.searchParams.delete('constellation');
     window.history.replaceState(null, '', currentUrl);
+    periodRange.textContent = formatPeriodRange(year, week, dayOffset);
+    dayStepButtons.forEach((button) => { button.disabled = dayOffset + Number(button.dataset.dayStep) < -3 || dayOffset + Number(button.dataset.dayStep) > 3; });
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
       const photoUrl = new URL(link.href);
       const sourceCard = link.closest('[data-visibility-card]');
@@ -277,6 +314,8 @@ const weekRange = (week: number) => {
       photoUrl.searchParams.set('year', String(year));
       photoUrl.searchParams.set('view', currentView);
       photoUrl.searchParams.set('layout', currentLayout);
+      if (dayOffset) photoUrl.searchParams.set('offset', String(dayOffset));
+      else photoUrl.searchParams.delete('offset');
       if (hoursSelector) photoUrl.searchParams.set('hours', String(minimumHours));
       if (selectedConstellation) photoUrl.searchParams.set('constellation', selectedConstellation);
       else photoUrl.searchParams.delete('constellation');
@@ -298,6 +337,8 @@ const weekRange = (week: number) => {
       languageUrl.searchParams.set('year', String(year));
       languageUrl.searchParams.set('view', currentView);
       languageUrl.searchParams.set('layout', currentLayout);
+      if (dayOffset) languageUrl.searchParams.set('offset', String(dayOffset));
+      else languageUrl.searchParams.delete('offset');
       if (hoursSelector && !languageUrl.pathname.includes('/en/')) languageUrl.searchParams.set('hours', String(minimumHours));
       else languageUrl.searchParams.delete('hours');
       if (selectedConstellation) languageUrl.searchParams.set('constellation', selectedConstellation);
@@ -305,7 +346,7 @@ const weekRange = (week: number) => {
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
-      const value = JSON.parse(card.dataset.weeks)[week - 1];
+      const value = shiftedPeriodMetrics(card, year, week, dayOffset);
       const [altitude, bestTimeUtc, hours30, qualityCode, representativeNight] = value;
       const meetsThreshold = hours30 >= minimumHours;
       const matchesConstellation = !selectedConstellation || card.dataset.constellation === selectedConstellation;
@@ -316,8 +357,7 @@ const weekRange = (week: number) => {
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
       card.querySelector('[data-hours]').textContent = `${hours30.toLocaleString(locale)} h`;
       const referenceNight = new Date(`${representativeNight}T12:00:00Z`);
-      const referenceDay = (referenceNight.getUTCDay() + 6) % 7;
-      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(isoDate(year, week, referenceDay));
+      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(referenceNight);
       const quality = card.querySelector('[data-quality]');
       quality.hidden = !qualityCode;
       quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
@@ -329,7 +369,7 @@ const weekRange = (week: number) => {
     layoutButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityLayout === currentLayout)));
     if (pendingExplorer) pendingExplorer.hidden = currentView !== 'pending';
     pendingButtons.forEach((button) => {
-      const [altitude, , hours30, quality] = JSON.parse(button.dataset.weeks)[week - 1];
+      const [altitude, , hours30, quality] = shiftedPeriodMetrics(button, year, week, dayOffset);
       button.dataset.altitude = altitude;
       button.hidden = hours30 < minimumHours || Boolean(selectedConstellation && button.dataset.constellation !== selectedConstellation);
       button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}°${quality ? ` · ${t.qualities[quality]}` : ''}`;
@@ -355,8 +395,9 @@ const weekRange = (week: number) => {
     if (pendingChart) pendingChart.hidden = !selectedPending;
     if (selectedPending) selectPending(selectedPending);
   };
-  selector?.addEventListener('change', update);
+  selector?.addEventListener('change', () => { dayOffset = 0; update(); });
   yearSelector?.addEventListener('change', () => {
+    dayOffset = 0;
     rebuildWeekOptions(Number(yearSelector.value));
     update();
   });
@@ -371,6 +412,7 @@ const weekRange = (week: number) => {
     update();
   }));
   document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
+    dayOffset = 0;
     const step = Number(button.dataset.weekStep);
     const nextWeek = Number(selector.value) + step;
     let year = Number(yearSelector.value);
@@ -385,6 +427,10 @@ const weekRange = (week: number) => {
       yearSelector.value = String(year);
       rebuildWeekOptions(year, 1);
     } else selector.value = String(nextWeek);
+    update();
+  }));
+  dayStepButtons.forEach((button) => button.addEventListener('click', () => {
+    dayOffset = Math.max(-3, Math.min(3, dayOffset + Number(button.dataset.dayStep)));
     update();
   }));
   const buildVisibilityReport = () => {
@@ -404,7 +450,7 @@ const weekRange = (week: number) => {
       labels.title,
       '='.repeat(labels.title.length),
       `${labels.generated}: ${new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date())}`,
-      `${t.week}: ${week}/${year} · ${formatWeekRange(year, week)}`,
+      `${t.week}: ${week}/${year} · ${formatPeriodRange(year, week, dayOffset)}`,
       t.location,
       `${labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending}`,
       `${t.constellation}: ${selectedConstellation}`,
@@ -481,7 +527,7 @@ const weekRange = (week: number) => {
       context.fillStyle = '#102033'; context.font = '700 38px Arial'; context.fillText(report.labels.title, margin, 84);
       context.fillStyle = '#438ea0'; context.fillRect(margin, 110, pageWidth - margin * 2, 4);
       context.fillStyle = '#405268'; context.font = '21px Arial';
-      context.fillText(`${t.week}: ${report.week}/${report.year} · ${formatWeekRange(report.year, report.week)}`, margin, 154);
+      context.fillText(`${t.week}: ${report.week}/${report.year} · ${formatPeriodRange(report.year, report.week, dayOffset)}`, margin, 154);
       context.fillText(t.location, margin, 188);
       context.fillText(`${report.labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending} · ${t.constellation}: ${report.selectedConstellation} · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 222);
       let y = 285;
@@ -523,7 +569,7 @@ const weekRange = (week: number) => {
     const selected = Number(selector.value) - 1;
     const weekData = JSON.parse(source.dataset.weeks)[selected];
     const selectedYear = Number(yearSelector.value);
-    const middleDate = isoDate(selectedYear, selected + 1, 3);
+    const middleDate = isoDate(selectedYear, selected + 1, 3 + dayOffset);
     const maximumDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(middleDate);
     const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 62;
     const x = (index) => left + index * (width - left - right) / (values.length - 1);
@@ -611,7 +657,7 @@ const weekRange = (week: number) => {
     return { altitude: geocentric - parallax, phaseAngle: moon.phaseAngle };
   };
   const renderNightChart = (source) => {
-    const selectedDate = isoDate(Number(yearSelector.value), Number(selector.value), selectedNightDay);
+    const selectedDate = isoDate(Number(yearSelector.value), Number(selector.value), dayOffset + selectedNightDay);
     const date = selectedDate.toISOString().slice(0, 10);
     const dayStart = Date.parse(`${date}T12:00:00Z`), darkMinutes = [];
     for (let time = dayStart; time < dayStart + 86400000; time += 60000) {
@@ -651,7 +697,7 @@ const weekRange = (week: number) => {
       chartDialog.querySelector('[data-moon-phase-label]').textContent = t.moonPhases[phaseIndex];
       nightDayButtons.forEach((button) => {
         const day = Number(button.dataset.nightDay);
-        const buttonDate = isoDate(Number(yearSelector.value), Number(selector.value), day);
+        const buttonDate = isoDate(Number(yearSelector.value), Number(selector.value), dayOffset + day);
         button.title = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(buttonDate);
       });
     }
@@ -735,6 +781,10 @@ const weekRange = (week: number) => {
   .week-control { display: grid; gap: .22rem; margin: 0; }
   .week-control label, .visibility-select-control span { font-size: .7rem; font-weight: 700; line-height: 1.15; }
   .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; }
+  .period-shift { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 2rem; align-items: center; gap: .4rem; margin-top: .18rem; }
+  .period-shift button { width: 2rem; min-height: 1.8rem; color: #86c2cf; font-size: 1.05rem; }
+  .period-shift button:disabled { opacity: .32; cursor: not-allowed; }
+  .period-shift output { color: var(--color-muted); font: 700 .7rem var(--font-mono); text-align: center; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control select { font-size: .82rem; }
   .week-control select { min-width: 11rem; padding: 0 .8rem; }
