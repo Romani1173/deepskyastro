@@ -129,7 +129,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
             <optgroup label={t.gallery}>{photographed.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>
             {pending.length > 0 && <optgroup label={t.pending}>{pending.map((object) => <option value={object.id}>{object.displayCatalogName}{object.commonName ? ` · ${object.commonName}` : ''}</option>)}</optgroup>}
           </select>
-          <button class="planning-photo-link" data-planning-photo type="button" hidden>{photoLinkText} <span aria-hidden="true">↗</span></button>
+          <button class="planning-photo-link" data-planning-photo type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m5 17 4.5-4.5 3.2 3.2 2.4-2.4 3.9 3.9" /></svg><span>{photoLinkText}</span></button>
         </div>
         <div class="planning-simbad" data-object-panel="simbad" hidden>
           <p data-simbad-result aria-live="polite"></p>
