@@ -724,7 +724,7 @@ const weekRange = (week: number) => {
   .visibility-card__plan-link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; gap: .4rem; padding: .52rem .72rem; border: 1px solid rgba(229,169,63,.58); border-radius: .6rem; background: rgba(229,169,63,.09); color: #e8ba62; font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; white-space: nowrap; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
   .visibility-card__plan-link:hover, .visibility-card__plan-link:focus-visible { border-color: #e8ba62; background: rgba(229,169,63,.16); color: #f2cf89; text-decoration: none; transform: translateY(-1px); }
   .visibility-grid--list { gap: .4rem; }
-  .visibility-grid--list .visibility-card { display: block; border-radius: .55rem; }
+  .visibility-grid--list .visibility-card { display: block; min-height: 0; border-radius: .55rem; }
   .visibility-grid--list .visibility-card__image { display: none; }
   .visibility-grid--list .visibility-card__body { display: grid; grid-template-columns: minmax(11rem, 1.2fr) minmax(29rem, 2fr) auto; align-items: center; gap: .8rem; padding: .6rem .75rem; }
   .visibility-grid--list .visibility-card__heading { align-items: center; }
@@ -795,9 +795,26 @@ const weekRange = (week: number) => {
     .visibility-card dl { grid-template-columns: 1fr 1fr; }
     .visibility-card dl .visibility-card__primary { grid-row: auto; }
     .pending-explorer:not([hidden]) { grid-template-columns: 1fr; }
-    .visibility-grid--list .visibility-card__body { display: block; }
-    .visibility-grid--list .visibility-card dl { grid-template-columns: 1fr 1fr; margin: .6rem 0; }
-    .visibility-grid--list .visibility-card__actions { justify-content: space-between; }
+    .visibility-grid--list { gap: .28rem; }
+    .visibility-grid--list .visibility-card__body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .28rem .5rem; padding: .38rem .5rem; }
+    .visibility-grid--list .visibility-card__heading { grid-column: 1 / -1; min-width: 0; }
+    .visibility-grid--list .visibility-card__heading > div:first-child { min-width: 0; }
+    .visibility-grid--list .visibility-card__heading p:first-child { display: none; }
+    .visibility-grid--list .visibility-card h2 { display: inline; font-size: .82rem; }
+    .visibility-grid--list .visibility-card__heading .visibility-card__alias { display: inline; margin: 0 0 0 .35rem; font-size: .65rem; white-space: nowrap; }
+    .visibility-grid--list .visibility-card__heading .visibility-card__alias::before { content: '· '; }
+    .visibility-grid--list .visibility-card__badges span { padding: .2rem .38rem; font-size: .56rem; }
+    .visibility-grid--list .visibility-card dl { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .2rem; margin: 0; }
+    .visibility-grid--list .visibility-card dl div { min-width: 0; padding: .22rem .3rem; }
+    .visibility-grid--list .visibility-card dt { overflow: hidden; font-size: .5rem; text-overflow: ellipsis; white-space: nowrap; }
+    .visibility-grid--list .visibility-card dd,
+    .visibility-grid--list .visibility-card__primary dd { margin-top: .05rem; font-size: .66rem; white-space: nowrap; }
+    .visibility-grid--list .visibility-card dd small { display: none; }
+    .visibility-grid--list .visibility-card__actions { grid-column: 1 / -1; justify-content: flex-end; min-width: 0; gap: .25rem; }
+    .visibility-grid--list .visibility-card__link { margin-right: auto; }
+    .visibility-grid--list .visibility-card__link,
+    .visibility-grid--list .visibility-card__chart-link,
+    .visibility-grid--list .visibility-card__plan-link { padding: .3rem .42rem; border-radius: .4rem; font-size: .61rem; }
     .night-legend strong { width: 100%; margin-left: 0; }
   }
   @media (prefers-reduced-motion: reduce) { .visibility-card--return-focus { animation: none; } }
