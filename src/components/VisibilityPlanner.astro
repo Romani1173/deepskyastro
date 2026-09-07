@@ -96,21 +96,21 @@ const weekRange = (week: number) => {
     <div class="visibility-toolbar"><div class="visibility-toolbar__selectors"><div class="week-control">
       <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><span></span><label for="visibility-year">{t.year}</label></div>
       <div class="week-control__row">
-        <button type="button" data-week-step="-1" aria-label="−1">−</button>
+        <button type="button" data-week-step="-1" aria-label="−1">‹</button>
         <select id="visibility-week">
           {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
         </select>
         <output class="week-control__range" data-week-range>{weekRange(currentWeek)}</output>
-        <button type="button" data-week-step="1" aria-label="+1">+</button>
+        <button type="button" data-week-step="1" aria-label="+1">›</button>
         <select id="visibility-year" aria-label={t.year}>
           {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
         </select>
       </div>
       <div class="period-shift__labels" aria-hidden="true"><span></span><span>{t.shiftPeriod}</span><span></span><span></span></div>
       <div class="period-shift" aria-label={t.shiftPeriod}>
-        <button type="button" data-day-step="-1" aria-label={t.previousDay}>−</button>
+        <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
         <output data-period-range aria-live="polite">{weekRange(currentWeek)}</output>
-        <button type="button" data-day-step="1" aria-label={t.nextDay}>+</button>
+        <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
         <span aria-hidden="true"></span>
       </div>
     </div>
@@ -136,8 +136,8 @@ const weekRange = (week: number) => {
     <div class="visibility-output">
       <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
       <div class="visibility-output__actions">
-        <button type="button" data-copy-visibility title={t.reportHint}><span>{t.copyResults}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
-        <button type="button" data-download-visibility title={t.reportHint}><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+        <button class="report-action report-action--visibility" type="button" data-copy-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.copyResults}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+        <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
       </div>
     </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
@@ -834,6 +834,9 @@ const weekRange = (week: number) => {
   .week-control select { min-width: 0; padding: 0 .8rem; }
   .week-control #visibility-year { min-width: 0; }
   .week-control button { width: 2.7rem; cursor: pointer; }
+  .week-control button[data-week-step], .period-shift button[data-day-step] { color: #54c8ff; font-size: 1.35rem; font-weight: 700; text-shadow: 0 0 .65rem rgba(84, 200, 255, .24); }
+  .week-control button[data-week-step]:hover, .week-control button[data-week-step]:focus-visible,
+  .period-shift button[data-day-step]:hover, .period-shift button[data-day-step]:focus-visible { border-color: rgba(84, 200, 255, .72); background-color: rgba(67, 142, 160, .2); color: #8bdcff; }
   .visibility-select-control { display: grid; gap: .22rem; font-weight: 700; }
   .visibility-select-control > span { text-align: left; }
   :global(#visibility-constellation), :global(#visibility-threshold), :global(#visibility-hours) { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .55rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font-family: var(--font-mono); font-size: .82rem; font-weight: 400; }
@@ -855,6 +858,7 @@ const weekRange = (week: number) => {
   .visibility-filters button:hover, .visibility-filters button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
   @media (max-width: 1180px) and (min-width: 701px) {
     .visibility-toolbar { grid-template-columns: 1fr; }
+    .visibility-toolbar__selectors { min-width: 0; flex-wrap: wrap; }
     .visibility-toolbar__modes { justify-content: end; width: 100%; min-width: 0; }
   }
   .visibility-output { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: -.35rem 0 .8rem; }
@@ -1025,6 +1029,16 @@ const weekRange = (week: number) => {
     .visibility-grid--list .visibility-card__chart-link,
     .visibility-grid--list .visibility-card__plan-link { padding: .3rem .42rem; border-radius: .4rem; font-size: .61rem; }
     .night-legend strong { width: 100%; margin-left: 0; }
+  }
+  @media (max-width: 520px) {
+    .visibility-toolbar { padding: .6rem; }
+    .week-control { min-width: 0; }
+    .week-control__row, .week-control__labels { grid-template-columns: 2.35rem minmax(2.75rem, .65fr) minmax(0, 1.35fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
+    .period-shift__labels, .period-shift { grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
+    .week-control button, .period-shift button { width: 2.35rem; }
+    .week-control select, .week-control__range, .period-shift output { padding-right: 1.15rem; padding-left: .35rem; }
+    .week-control__labels label, .period-shift__labels span { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
+    .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .visibility-card--return-focus { animation: none; } }
 </style>

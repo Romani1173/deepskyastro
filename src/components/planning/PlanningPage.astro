@@ -43,6 +43,11 @@ const texts = {
   },
 } as const;
 const t = texts[lang];
+const periodShiftText = {
+  ca: { label: 'Desplaçament de dies', previous: 'Un dia abans', next: 'Un dia després' },
+  es: { label: 'Desplazamiento de días', previous: 'Un día antes', next: 'Un día después' },
+  en: { label: 'Day shift', previous: 'One day earlier', next: 'One day later' },
+}[lang];
 const moonGuide = {
   ca: {
     title: 'Com interpretar la Lluna', separation: 'Separació', effect: 'Efecte probable',
@@ -141,6 +146,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
           <output class="planning-week-range" data-week-range aria-live="polite"></output>
           <button class="planning-button" type="submit" data-calculate>{t.calculate}</button>
         </div>
+        <div class="planning-day-shift" aria-label={periodShiftText.label}>
+          <span class="planning-day-shift__label">{periodShiftText.label}</span>
+          <button type="button" data-planning-day-step="-1" aria-label={periodShiftText.previous}>‹</button>
+          <output data-shifted-range aria-live="polite"></output>
+          <button type="button" data-planning-day-step="1" aria-label={periodShiftText.next}>›</button>
+        </div>
         <p class="planning-error" data-planning-error hidden>{t.error}</p>
       </fieldset>
     </form>
@@ -151,8 +162,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
           <h2>{t.conclusionTitle}</h2>
           <div class="planning-conclusion__tools">
             <strong data-conclusion-rating></strong>
-            <button type="button" data-copy-planning title={t.exportHelp}>{t.copyResults}</button>
-            <button type="button" data-download-planning title={t.exportHelp}>{t.downloadPdf}</button>
+            <button class="report-action report-action--planning" type="button" data-copy-planning title={t.exportHelp}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.copyResults}</span></button>
+            <button class="report-action report-action--planning" type="button" data-download-planning title={t.exportHelp}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span></button>
           </div>
         </header>
         <div class="planning-conclusion__metrics">
@@ -217,6 +228,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const simbadButton = root.querySelector<HTMLButtonElement>('[data-resolve-simbad]');
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
   const weekRange = root.querySelector<HTMLOutputElement>('[data-week-range]');
+  const shiftedRange = root.querySelector<HTMLOutputElement>('[data-shifted-range]');
   const conclusion = root.querySelector<HTMLElement>('[data-planning-conclusion]');
   const copyPlanningButton = root.querySelector<HTMLButtonElement>('[data-copy-planning]');
   const downloadPlanningButton = root.querySelector<HTMLButtonElement>('[data-download-planning]');
@@ -237,6 +249,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const requestUrl = new URL(window.location.href);
   const requestedYear = Number(requestUrl.searchParams.get('year'));
   const requestedWeek = Number(requestUrl.searchParams.get('week'));
+  const requestedOffset = Number(requestUrl.searchParams.get('offset'));
+  let dayOffset = Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : 0;
   field('locationName').value = session.location.name ?? '';
   field('latitude').value = String(session.location.latitudeDeg);
   field('longitude').value = String(session.location.longitudeDeg);
@@ -261,6 +275,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const end = new Date(start.getTime() + 6 * 86400000);
     const formatter = new Intl.DateTimeFormat({ ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[config.lang] ?? 'es-ES', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     weekRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(start, end) : `${formatter.format(start)} — ${formatter.format(end)}`} · UTC`;
+    const shiftedStart = new Date(start.getTime() + dayOffset * 86400000);
+    const shiftedEnd = new Date(shiftedStart.getTime() + 6 * 86400000);
+    if (shiftedRange) shiftedRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(shiftedStart, shiftedEnd) : `${formatter.format(shiftedStart)} — ${formatter.format(shiftedEnd)}`} · UTC`;
+    root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => { button.disabled = dayOffset + Number(button.dataset.planningDayStep) < -3 || dayOffset + Number(button.dataset.planningDayStep) > 3; });
   };
   updateWeekRange();
   const requestedObject = requestUrl.searchParams.get('object');
@@ -419,6 +437,14 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   };
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
   ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
+  ['year', 'week'].forEach((name) => field(name).addEventListener('change', () => { dayOffset = 0; updateWeekRange(); }));
+  root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => button.addEventListener('click', () => {
+    dayOffset = Math.max(-3, Math.min(3, dayOffset + Number(button.dataset.planningDayStep)));
+    const url = new URL(window.location.href);
+    if (dayOffset) url.searchParams.set('offset', String(dayOffset)); else url.searchParams.delete('offset');
+    window.history.replaceState(null, '', url);
+    updateWeekRange(); markDirty(); invalidateObjectResults();
+  }));
   root.querySelectorAll<HTMLButtonElement>('[data-step-field]').forEach((button) => button.addEventListener('click', () => {
     const name = button.dataset.stepField ?? '';
     const direction = Number(button.dataset.stepDirection) < 0 ? -1 : 1;
@@ -712,8 +738,11 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     return new Blob(chunks as BlobPart[], { type: 'application/pdf' });
   };
   const confirmButton = (button: HTMLButtonElement, textValue: string) => {
-    const original = button.textContent; button.textContent = textValue; button.classList.add('is-confirmed');
-    window.setTimeout(() => { button.textContent = original; button.classList.remove('is-confirmed'); }, 2800);
+    const label = button.querySelector<HTMLElement>('span:last-child');
+    const original = label?.textContent ?? '';
+    if (label) label.textContent = textValue;
+    button.classList.add('is-confirmed');
+    window.setTimeout(() => { if (label) label.textContent = original; button.classList.remove('is-confirmed'); }, 2800);
   };
   copyPlanningButton?.addEventListener('click', async () => {
     const value = planningText();
@@ -826,7 +855,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     if (calculateButton) { calculateButton.disabled = true; calculateButton.classList.remove('is-dirty'); calculateButton.textContent = config.texts.calculating; }
     await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
     try {
-      analysis = analyzeWeek({ isoYear, isoWeek, location, object });
+      const shiftedStart = new Date(isoWeekStart(isoYear, isoWeek).getTime() + dayOffset * 86400000).toISOString().slice(0, 10);
+      analysis = analyzeWeek({ isoYear, isoWeek, startDateUtc: shiftedStart, location, object });
       selectedNight = bestWeekNight() ?? analysis.nights[0];
       root.querySelector<HTMLElement>('[data-selected-object]')!.textContent = object.displayName;
       root.querySelector<HTMLElement>('[data-week-label]')!.textContent = `${location.name} · ${analysis.weekStartUtc.slice(0, 10)} — ${new Date(Date.parse(analysis.weekEndUtc) - 86400000).toISOString().slice(0, 10)} UTC`;
