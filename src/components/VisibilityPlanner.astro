@@ -94,12 +94,13 @@ const weekRange = (week: number) => {
     </header>
 
     <div class="visibility-toolbar"><div class="visibility-toolbar__selectors"><div class="week-control">
-      <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><label for="visibility-year">{t.year}</label></div>
+      <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><span></span><label for="visibility-year">{t.year}</label></div>
       <div class="week-control__row">
         <button type="button" data-week-step="-1" aria-label="−1">−</button>
         <select id="visibility-week">
-          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
+          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
         </select>
+        <output class="week-control__range" data-week-range>{weekRange(currentWeek)}</output>
         <button type="button" data-week-step="1" aria-label="+1">+</button>
         <select id="visibility-year" aria-label={t.year}>
           {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
@@ -183,6 +184,7 @@ const weekRange = (week: number) => {
 <script define:vars={{ t, lang, showPending, enhancedVisibility }}>
   const selector = document.querySelector('#visibility-week');
   const yearSelector = document.querySelector('#visibility-year');
+  const weekRangeOutput = document.querySelector('[data-week-range]');
   const periodRange = document.querySelector('[data-period-range]');
   const dayStepButtons = [...document.querySelectorAll('[data-day-step]')];
   const hoursSelector = document.querySelector('#visibility-hours');
@@ -231,7 +233,7 @@ const weekRange = (week: number) => {
     const count = isoWeeksInYear(year);
     selector.replaceChildren(...Array.from({ length: count }, (_, index) => {
       const week = index + 1;
-      return new Option(`${week}\u2003\u2003${formatWeekRange(year, week)}`, String(week));
+      return new Option(String(week), String(week));
     }));
     selector.value = String(Math.max(1, Math.min(count, preferredWeek || 1)));
   };
@@ -305,6 +307,7 @@ const weekRange = (week: number) => {
     if (selectedConstellation) currentUrl.searchParams.set('constellation', selectedConstellation);
     else currentUrl.searchParams.delete('constellation');
     window.history.replaceState(null, '', currentUrl);
+    weekRangeOutput.textContent = formatWeekRange(year, week);
     periodRange.textContent = formatPeriodRange(year, week, dayOffset);
     dayStepButtons.forEach((button) => { button.disabled = dayOffset + Number(button.dataset.dayStep) < -3 || dayOffset + Number(button.dataset.dayStep) > 3; });
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
@@ -782,17 +785,19 @@ const weekRange = (week: number) => {
   .visibility-toolbar__selectors { display: flex; align-items: end; gap: .9rem; }
   .week-control { display: grid; gap: .22rem; margin: 0; }
   .week-control label, .visibility-select-control span { font-size: .7rem; font-weight: 700; line-height: 1.15; }
-  .week-control__labels, .period-shift__labels { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; text-align: left; }
+  .week-control__labels { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; text-align: left; }
+  .period-shift__labels { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; text-align: left; }
   .week-control__labels label, .period-shift__labels span { display: block; color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
-  .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; }
+  .week-control__row { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; }
   .period-shift__labels { margin-top: .34rem; }
   .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; align-items: center; gap: .5rem; }
   .period-shift button { width: 2.7rem; min-height: 2.7rem; color: #86c2cf; font-size: 1.05rem; }
   .period-shift button:disabled { opacity: .32; cursor: not-allowed; }
   .period-shift output { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
+  .week-control__range { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control select { font-size: .82rem; }
-  .week-control select { min-width: 11rem; padding: 0 .8rem; }
+  .week-control select { min-width: 0; padding: 0 .8rem; }
   .week-control #visibility-year { min-width: 0; }
   .week-control button { width: 2.7rem; cursor: pointer; }
   .visibility-select-control { display: grid; gap: .22rem; font-weight: 700; }
@@ -942,8 +947,8 @@ const weekRange = (week: number) => {
     .visibility-toolbar__selectors { align-items: stretch; flex-direction: column; }
     .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
     .visibility-planner__location { text-align: left; }
-    .week-control__row { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
-    .week-control__labels, .period-shift__labels, .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
+    .week-control__row, .week-control__labels { grid-template-columns: 2.7rem 4.2rem minmax(7.5rem, 1fr) 2.7rem 5.8rem; }
+    .period-shift__labels, .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
     .week-control select { width: 100%; min-width: 0; }
     .visibility-select-control { width: 100%; flex-basis: auto; }
     .visibility-card { grid-template-columns: 1fr; }
