@@ -124,4 +124,8 @@ const articulos = defineCollection({
 	}),
 });
 
-export const collections = { fotos, sol, articulos };
+const comentarisFotos = defineCollection({
+	loader: glob({ base: './src/content/comentaris-fotos', pattern: '**/*.{md,mdx}' }),
+});
+
+export const collections = { fotos, sol, articulos, comentarisFotos };

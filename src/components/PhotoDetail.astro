@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
@@ -13,6 +13,8 @@ const base = import.meta.env.BASE_URL;
 const t = copy[lang];
 const text = photoText(foto, lang);
 const technical = photoTechnicalText(foto, lang);
+const photoNote = (await getCollection('comentarisFotos')).find((entry) => entry.id === `${lang}/${foto.id}`);
+const PhotoNoteContent = photoNote ? (await render(photoNote)).Content : undefined;
 const category = categoryByValue(foto.data.categoria);
 const categoryLabel = category.labels[lang];
 const categoryPhotos = (await getCollection('fotos'))
@@ -78,6 +80,10 @@ const structuredData = {
 			{foto.data.visibilitat && <a class="annual-visibility__detail-link" data-detailed-visibility href={`${visibilityHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&chart=annual&from=photo`}><SiteMapIcon name="visibility" size="sm" />{t.detailedVisibility} <span aria-hidden="true">→</span></a>}
 			<a class="annual-visibility__detail-link annual-visibility__detail-link--planning" href={`${planningHref(lang, base)}?object=${encodeURIComponent(foto.data.objecte_astronomic)}&from=photo`}><SiteMapIcon name="planning" size="sm" />{t.planFromLocation} <span aria-hidden="true">→</span></a>
 		</nav>}
+		{PhotoNoteContent && <details class="photo-notebook">
+			<summary><SiteMapIcon name="articles" size="sm" /><span>{t.photoNotebook}</span><span class="photo-notebook__chevron" aria-hidden="true">⌄</span></summary>
+			<div class="photo-notebook__content"><PhotoNoteContent /></div>
+		</details>}
 		<div class="data-grid">
 			<section class="data-panel" aria-labelledby="general"><h2 id="general">{t.generalInfo}</h2><dl class="data-list"><div><dt>{t.constellation}</dt><dd>{technical.constellacio}</dd></div><div><dt>{t.category}</dt><dd>{categoryLabel}</dd></div><div><dt>{t.date}</dt><dd>{date}</dd></div>{sessions.length > 0 && <div><dt>{t.captureSessions}</dt><dd>{sessions.map((session, index) => <span>{session}{index < sessions.length - 1 && <br />}</span>)}</dd></div>}</dl></section>
 			<section class="data-panel" aria-labelledby="capture"><h2 id="capture">{t.capture}</h2><dl class="data-list"><div><dt>{t.totalTime}</dt><dd>{technical.tempsTotal}</dd></div><div><dt>{t.subframes}</dt><dd>{technical.subframes}</dd></div><div><dt>{t.gainOffset}</dt><dd>{technical.gain} / {technical.offset}</dd></div><div><dt>{t.calibration}</dt><dd>{technical.calibratge}</dd></div></dl></section>
