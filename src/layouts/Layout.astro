@@ -4,7 +4,7 @@ import { SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import SiteMapIcon from '../components/SiteMapIcon.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, planningHref, visibilityHref, withBase } from '../i18n';
+import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, planningHref, siteMapHref, visibilityHref, withBase } from '../i18n';
 
 interface Props {
 	title?: string;
@@ -37,6 +37,7 @@ const nav = [
 	{ href: articlesHref(lang, base), label: copy[lang].articles, tone: 'articles', icon: 'articles' as const },
 ];
 const isCategoryPage = /\/(?:categoria|category)\//.test(currentPath);
+const isSiteMapPage = /\/(?:mapa-web|site-map)\/?$/.test(currentPath);
 const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', en: 'Main navigation' }[lang];
 ---
 
@@ -80,6 +81,6 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 			<LanguageSelector lang={lang} links={languageLinks} />
 		</div>}
 		<main class:list={{ 'site-shell': true, 'home-main': hero, 'minimal-main': minimal, 'compact-main': compact }}><slot /></main>
-		<footer class="site-footer site-shell">© {new Date().getFullYear()} {SITE_TITLE}</footer>
+		<footer class="site-footer site-shell"><span>© {new Date().getFullYear()} {SITE_TITLE}</span>{!isSiteMapPage && <a href={siteMapHref(lang, base)}><SiteMapIcon name="sitemap" size="sm" /><span>{copy[lang].siteMap}</span></a>}</footer>
 	</body>
 </html>
