@@ -19,7 +19,7 @@ const texts = {
     title: 'Planificació', intro: 'Analitza un únic objecte durant set nits des de la ubicació que triïs. Utilitza aquesta eina quan ja sàpigues què vols fotografiar; tots els càlculs, dates i hores s’expressen en UTC.', guide: 'Guia de Planificació', guideTooltip: 'Manual complet de l’eina avançada de Planificació',
     location: '1 · Ubicació', locationName: 'Nom opcional', savedLocations: 'Cercar ubicació', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicació es conserva només durant aquesta sessió.',
     object: '2 · Objecte', localObject: 'Llista local', searchObject: 'Cercar un objecte', searchObjectPlaceholder: 'M 31, NGC 7000, nebulosa…', noObjectMatches: 'No hi ha coincidències', gallery: 'Galeria', pending: 'Pendents', simbad: 'SIMBAD', simbadQuery: 'Consulta SIMBAD', simbadPlaceholder: 'Nom o catàleg', resolve: 'Resoldre', resolving: 'Resolent…', simbadNote: 'Primer es comproven els objectes locals. SIMBAD només resol nom i coordenades durant aquesta sessió.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', localResolved: 'Coincidència local', manual: 'AR/Dec manuals', manualCoordinates: 'Coordenades manuals', ra: 'AR J2000 (graus)', dec: 'Dec J2000 (graus)',
-    period: '3 · Setmana i any', week: 'Setmana ISO', year: 'Any', calculate: 'Calcular nits', calculating: 'Calculant…',
+    period: '3 · Setmana, any i llindar', week: 'Setmana ISO', year: 'Any', altitudeThreshold: 'Llindar d’altura', calculate: 'Calcular nits', calculating: 'Calculant…',
     conclusionTitle: 'Lectura de la setmana', bestNight: 'Millor nit', usefulWindow: 'Finestra útil', moonlessTime: 'Temps sense Lluna', culmination: 'Culminació', excellent: 'Excel·lent', favourable: 'Favorable', limited: 'Limitada', notRecommended: 'No recomanable', geometryNotice: 'Valoració geomètrica: no inclou núvols, transparència, seeing, vent ni obstacles de l’horitzó local.', downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', exportHelp: 'Descarrega el resum en TXT o un informe PDF de dues pàgines.',
     comparison: '4 · Comparació de les set nits', night: 'Nit UTC', darkness: 'Nit astronòmica', maxAltitude: 'Alt. màx. nocturna', effective: 'Finestra >30°', moonDown: 'Sense Lluna', bestMoonDown: 'Millor hora sense Lluna', bestMoonUp: 'Millor hora amb Lluna', moon: 'Lluna', separation: 'Separació', unavailable: 'No supera 30° durant la nit astronòmica', none: '—', select: 'Seleccionar nit',
     detail: '5 · Detall nocturn', objectCurve: 'Objecte', moonCurve: 'Lluna', threshold: 'Límit 30°', astronomyNight: 'Nit astronòmica', chartHelp: 'Mou el cursor; en pantalles tàctils, toca per consultar i arrossega per desplaçar-te per la gràfica. Els trams fora de la nit astronòmica es mostren atenuats.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Il·luminació', sun: 'Sol', engine: 'Coordenades topocèntriques geomètriques, sense refracció atmosfèrica.', error: 'Revisa la ubicació, l’objecte i el període.',
@@ -28,7 +28,7 @@ const texts = {
     title: 'Planificación', intro: 'Analiza un único objeto durante siete noches desde la ubicación que elijas. Utiliza esta herramienta cuando ya sepas qué quieres fotografiar; todos los datos se muestran en UTC.', guide: 'Guía de Planificación', guideTooltip: 'Manual completo de la herramienta avanzada de Planificación',
     location: '1 · Ubicación', locationName: 'Nombre opcional', savedLocations: 'Buscar ubicación', latitude: 'Latitud', longitude: 'Longitud', session: 'La ubicación se conserva únicamente durante esta sesión.',
     object: '2 · Objeto', localObject: 'Lista local', searchObject: 'Buscar un objeto', searchObjectPlaceholder: 'M 31, NGC 7000, nebulosa…', noObjectMatches: 'No hay coincidencias', gallery: 'Galería', pending: 'Pendientes', simbad: 'SIMBAD', simbadQuery: 'Consulta en SIMBAD', simbadPlaceholder: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', simbadNote: 'Se buscan primero los objetos locales. SIMBAD solo devuelve el nombre y las coordenadas; no añade el objeto a la galería.', simbadError: 'SIMBAD no ha podido resolver este objeto.', localResolved: 'Coincidencia local', manual: 'AR/Dec manuales', manualCoordinates: 'Nombre opcional', ra: 'AR J2000 (grados)', dec: 'Dec J2000 (grados)',
-    period: '3 · Semana y año', week: 'Semana ISO', year: 'Año', calculate: 'Calcular noches', calculating: 'Calculando…',
+    period: '3 · Semana, año y umbral', week: 'Semana ISO', year: 'Año', altitudeThreshold: 'Umbral de altura', calculate: 'Calcular noches', calculating: 'Calculando…',
     conclusionTitle: 'Lectura de la semana', bestNight: 'Mejor noche', usefulWindow: 'Ventana útil', moonlessTime: 'Tiempo sin Luna', culmination: 'Culminación', excellent: 'Excelente', favourable: 'Favorable', limited: 'Limitada', notRecommended: 'No recomendable', geometryNotice: 'Valoración geométrica: no incluye nubes, transparencia, seeing, viento ni obstáculos del horizonte local.', downloadTxt: 'Descargar TXT', downloadedTxt: '✓ TXT descargado', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', exportHelp: 'Descarga el resumen en TXT o un informe PDF de dos páginas.',
     comparison: '4 · Comparación de las siete noches', night: 'Noche UTC', darkness: 'Noche astronómica', maxAltitude: 'Altura máxima', effective: 'Ventana >30°', moonDown: 'Tiempo sin Luna', bestMoonDown: 'Mejor hora sin Luna', bestMoonUp: 'Mejor hora con Luna', moon: 'Luna', separation: 'Separación', unavailable: 'No supera 30° durante la noche astronómica', none: '—', select: 'Ver esta noche',
     detail: '5 · Detalle de la noche', objectCurve: 'Objeto', moonCurve: 'Luna', threshold: 'Límite 30°', astronomyNight: 'Noche astronómica', chartHelp: 'Mueve el cursor; en pantallas táctiles, toca para consultar y arrastra para desplazarte por la gráfica. Los tramos fuera de la noche astronómica aparecen atenuados.', altitude: 'Altura', azimuth: 'Azimut', illumination: 'Iluminación', sun: 'Sol', engine: 'Posiciones topocéntricas geométricas, sin refracción atmosférica.', error: 'Revisa la ubicación, el objeto y la semana.',
@@ -37,7 +37,7 @@ const texts = {
     title: 'Planning', intro: 'Analyse one object over seven nights from the location you choose. Use this tool once you know what you want to photograph; all calculations, dates, and times are expressed in UTC.', guide: 'Planning guide', guideTooltip: 'Complete guide to the advanced Planning tool',
     location: '1 · Location', locationName: 'Optional name', savedLocations: 'Find location', latitude: 'Latitude', longitude: 'Longitude', session: 'The location is retained only for this browser session.',
     object: '2 · Object', localObject: 'Local list', searchObject: 'Find an object', searchObjectPlaceholder: 'M 31, NGC 7000, nebula…', noObjectMatches: 'No matches found', gallery: 'Gallery', pending: 'Pending', simbad: 'SIMBAD', simbadQuery: 'SIMBAD lookup', simbadPlaceholder: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', simbadNote: 'Local objects are checked first. SIMBAD resolves only a name and coordinates for this session.', simbadError: 'SIMBAD could not resolve this object.', localResolved: 'Local match', manual: 'Manual RA/Dec', manualCoordinates: 'Manual coordinates', ra: 'RA J2000 (degrees)', dec: 'Dec J2000 (degrees)',
-    period: '3 · Week and year', week: 'ISO week', year: 'Year', calculate: 'Calculate nights', calculating: 'Calculating…',
+    period: '3 · Week, year and threshold', week: 'ISO week', year: 'Year', altitudeThreshold: 'Altitude threshold', calculate: 'Calculate nights', calculating: 'Calculating…',
     conclusionTitle: 'Reading of the week', bestNight: 'Best night', usefulWindow: 'Useful window', moonlessTime: 'Moonless time', culmination: 'Culmination', excellent: 'Excellent', favourable: 'Favourable', limited: 'Limited', notRecommended: 'Not recommended', geometryNotice: 'Geometric assessment: it does not include cloud, transparency, seeing, wind or local-horizon obstructions.', downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', exportHelp: 'Download the summary as TXT or a two-page PDF report.',
     comparison: '4 · Seven-night comparison', night: 'UTC night', darkness: 'Astronomical night', maxAltitude: 'Night max. alt.', effective: '>30° window', moonDown: 'Moon down', bestMoonDown: 'Best Moon-down time', bestMoonUp: 'Best Moon-up time', moon: 'Moon', separation: 'Separation', unavailable: 'Never above 30° during astronomical night', none: '—', select: 'Select night',
     detail: '5 · Night detail', objectCurve: 'Object', moonCurve: 'Moon', threshold: '30° limit', astronomyNight: 'Astronomical night', chartHelp: 'Move the pointer; on touchscreens, tap to inspect and drag to scroll across the chart. Segments outside astronomical night are dimmed.', altitude: 'Altitude', azimuth: 'Azimuth', illumination: 'Illumination', sun: 'Sun', engine: 'Geometric topocentric coordinates without atmospheric refraction.', error: 'Check the location, object, and period.',
@@ -149,6 +149,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
         <div class="planning-fields">
           <label><span>{t.year}</span><span class="planning-stepper"><button type="button" data-step-field="year" data-step-direction="-1" aria-label={`◀ ${t.year}`}>‹</button><input name="year" type="number" min="1900" max="2200" required /><button type="button" data-step-field="year" data-step-direction="1" aria-label={`${t.year} ▶`}>›</button></span></label>
           <label><span>{t.week}</span><span class="planning-stepper"><button type="button" data-step-field="week" data-step-direction="-1" aria-label={`◀ ${t.week}`}>‹</button><input name="week" type="number" min="1" max="53" required /><button type="button" data-step-field="week" data-step-direction="1" aria-label={`${t.week} ▶`}>›</button></span></label>
+          <label><span>{t.altitudeThreshold}</span><select name="threshold">{[30, 35, 40, 45, 50, 55, 60].map((threshold) => <option value={threshold}>{threshold}°</option>)}</select></label>
           <output class="planning-week-range" data-week-range aria-live="polite"></output>
           <button class="planning-button" type="submit" data-calculate>{t.calculate}</button>
         </div>
@@ -190,7 +191,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       <div class="planning-section-heading"><h2>{t.comparison}</h2><strong class="planning-selected-object" data-selected-object></strong><span class="planning-week-context" data-week-label></span></div>
       <div class="planning-table-wrap">
         <table class="planning-table">
-          <thead><tr><th>{t.night}</th><th>{t.darkness}</th><th>{t.maxAltitude}</th><th>{t.effective}</th><th>{t.moonDown}</th><th>{t.bestMoonDown}</th><th>{t.bestMoonUp}</th><th>{t.moon}</th><th>{t.separation}</th></tr></thead>
+          <thead><tr><th>{t.night}</th><th>{t.darkness}</th><th>{t.maxAltitude}</th><th data-effective-heading>{t.effective}</th><th>{t.moonDown}</th><th>{t.bestMoonDown}</th><th>{t.bestMoonUp}</th><th>{t.moon}</th><th>{t.separation}</th></tr></thead>
           <tbody data-night-rows></tbody>
         </table>
       </div>
@@ -207,7 +208,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
             </div>
           </details>
         </div>
-        <div class="planning-legend"><span class="planning-legend__object">— {t.objectCurve}</span><span class="planning-legend__moon">— {t.moonCurve}</span><span class="planning-legend__threshold">┄ {t.threshold}</span><span class="planning-legend__darkness">■ {t.astronomyNight}</span></div>
+        <div class="planning-legend"><span class="planning-legend__object">— {t.objectCurve}</span><span class="planning-legend__moon">— {t.moonCurve}</span><span class="planning-legend__threshold" data-threshold-legend>┄ {t.threshold}</span><span class="planning-legend__darkness">■ {t.astronomyNight}</span></div>
         <div class="planning-chart" data-chart-wrap>
           <svg viewBox="0 0 1000 430" role="img" aria-label={t.detail} data-night-chart></svg>
           <div class="planning-tooltip" data-chart-tooltip hidden></div>
@@ -266,12 +267,15 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const requestedYear = Number(requestUrl.searchParams.get('year'));
   const requestedWeek = Number(requestUrl.searchParams.get('week'));
   const requestedOffset = Number(requestUrl.searchParams.get('offset'));
-  let dayOffset = Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : 0;
+  const requestedThreshold = Number(requestUrl.searchParams.get('threshold'));
+  const thresholdOptions = [30, 35, 40, 45, 50, 55, 60];
+  let dayOffset = requestUrl.searchParams.has('offset') && Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : Math.max(-3, Math.min(3, Number(session.dayOffset) || 0));
   field('locationName').value = session.location.name ?? '';
   field('latitude').value = String(session.location.latitudeDeg);
   field('longitude').value = String(session.location.longitudeDeg);
   field('year').value = String(Number.isInteger(requestedYear) && requestedYear >= 1900 && requestedYear <= 2200 ? requestedYear : session.isoYear ?? iso.year);
   field('week').value = String(Number.isInteger(requestedWeek) && requestedWeek >= 1 && requestedWeek <= 53 ? requestedWeek : session.isoWeek ?? iso.week);
+  field('threshold').value = String(thresholdOptions.includes(requestedThreshold) ? requestedThreshold : thresholdOptions.includes(Number(session.altitudeThreshold)) ? session.altitudeThreshold : 30);
   const locationPresets: Record<string, { name: string; latitudeDeg: number; longitudeDeg: number }> = {
     lampolla: { name: 'L’Ampolla', latitudeDeg: 40.80194, longitudeDeg: 0.69361 },
     barcelona: { name: 'Barcelona', latitudeDeg: 41.3926, longitudeDeg: 2.1865 },
@@ -296,7 +300,19 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     if (shiftedRange) shiftedRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(shiftedStart, shiftedEnd) : `${formatter.format(shiftedStart)} — ${formatter.format(shiftedEnd)}`} · UTC`;
     root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => { button.disabled = dayOffset + Number(button.dataset.planningDayStep) < -3 || dayOffset + Number(button.dataset.planningDayStep) > 3; });
   };
+  const altitudeThreshold = () => Number(field('threshold').value) || 30;
+  const thresholdText = (value: string) => value.replace('30', String(altitudeThreshold()));
+  const syncThresholdLabels = () => {
+    const effectiveHeading = root.querySelector<HTMLElement>('[data-effective-heading]');
+    const thresholdLegend = root.querySelector<HTMLElement>('[data-threshold-legend]');
+    if (effectiveHeading) effectiveHeading.textContent = thresholdText(config.texts.effective);
+    if (thresholdLegend) {
+      thresholdLegend.textContent = `┄ ${thresholdText(config.texts.threshold)}`;
+      thresholdLegend.classList.toggle('is-standard', altitudeThreshold() === 30);
+    }
+  };
   updateWeekRange();
+  syncThresholdLabels();
   const requestedObject = requestUrl.searchParams.get('object');
   const hasRequestedObject = requestedObject && config.objects.some((object: any) => object.id === requestedObject);
   if (hasRequestedObject) {
@@ -469,18 +485,24 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const persist = () => {
     const location = locationValue();
     if (!Number.isFinite(location.latitudeDeg) || !Number.isFinite(location.longitudeDeg)) return;
-    savePlanningSession(sessionStorage, { version: 1, location, object: objectValue(), objectInputMode: objectMode, isoYear: Number(field('year').value), isoWeek: Number(field('week').value), selectedNightDateUtc: selectedNight?.nightDateUtc });
+    savePlanningSession(sessionStorage, { version: 1, location, object: objectValue(), objectInputMode: objectMode, isoYear: Number(field('year').value), isoWeek: Number(field('week').value), dayOffset, altitudeThreshold: altitudeThreshold(), selectedNightDateUtc: selectedNight?.nightDateUtc });
   };
-  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', persist));
+  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'threshold'].forEach((name) => field(name).addEventListener('change', persist));
   ['localObject', 'year', 'week'].forEach((name) => field(name).addEventListener('change', syncPhotoLink));
   ['year', 'week'].forEach((name) => field(name).addEventListener('input', updateWeekRange));
-  ['year', 'week'].forEach((name) => field(name).addEventListener('change', () => { dayOffset = 0; updateWeekRange(); }));
+  ['year', 'week'].forEach((name) => field(name).addEventListener('change', () => { dayOffset = 0; const url = new URL(window.location.href); url.searchParams.delete('offset'); window.history.replaceState(null, '', url); updateWeekRange(); persist(); }));
+  field('threshold').addEventListener('change', () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('threshold', String(altitudeThreshold()));
+    window.history.replaceState(null, '', url);
+    syncThresholdLabels(); markDirty(); invalidateObjectResults();
+  });
   root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => button.addEventListener('click', () => {
     dayOffset = Math.max(-3, Math.min(3, dayOffset + Number(button.dataset.planningDayStep)));
     const url = new URL(window.location.href);
     if (dayOffset) url.searchParams.set('offset', String(dayOffset)); else url.searchParams.delete('offset');
     window.history.replaceState(null, '', url);
-    updateWeekRange(); syncPhotoLink(); markDirty(); invalidateObjectResults();
+    updateWeekRange(); syncPhotoLink(); markDirty(); invalidateObjectResults(); persist();
   }));
   root.querySelectorAll<HTMLButtonElement>('[data-step-field]').forEach((button) => button.addEventListener('click', () => {
     const name = button.dataset.stepField ?? '';
@@ -585,9 +607,9 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   };
   const weeklyComment = (night: any, object: any, location: any) => {
     if (!night) {
-      if (config.lang === 'ca') return `${object.displayName} no supera els 30° durant la nit astronòmica d’aquesta setmana des de ${location.name}. Convé triar una altra setmana o un altre objecte.`;
-      if (config.lang === 'en') return `${object.displayName} does not rise above 30° during astronomical night this week from ${location.name}. Choose another week or another target.`;
-      return `${object.displayName} no supera los 30° durante la noche astronómica de esta semana desde ${location.name}. Conviene elegir otra semana u otro objeto.`;
+      if (config.lang === 'ca') return `${object.displayName} no supera els ${altitudeThreshold()}° durant la nit astronòmica d’aquesta setmana des de ${location.name}. Convé triar una altra setmana o un altre objecte.`;
+      if (config.lang === 'en') return `${object.displayName} does not rise above ${altitudeThreshold()}° during astronomical night this week from ${location.name}. Choose another week or another target.`;
+      return `${object.displayName} no supera los ${altitudeThreshold()}° durante la noche astronómica de esta semana desde ${location.name}. Conviene elegir otra semana u otro objeto.`;
     }
     const useful = night.intervals.effective[0];
     const culmination = night.usefulCulmination;
@@ -648,6 +670,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       `${config.texts.title.toLocaleUpperCase()} — ${analysis.object.displayName}`,
       `${config.texts.location}: ${analysis.location.name} (${analysis.location.latitudeDeg.toFixed(5)}, ${analysis.location.longitudeDeg.toFixed(5)})`,
       `${config.texts.week}: ${analysis.isoWeek} · ${config.texts.year}: ${analysis.isoYear}`,
+      `${config.texts.altitudeThreshold}: ${altitudeThreshold()}°`,
       '',
       `${config.texts.conclusionTitle.toLocaleUpperCase()}`,
       best ? `${conclusionRating(best)} · ${config.texts.bestNight}: ${nightLabel(best)}` : config.texts.notRecommended,
@@ -658,7 +681,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       weeklyComment(best, analysis.object, analysis.location),
       '',
       config.texts.comparison.toLocaleUpperCase(),
-      ...analysis.nights.map((night: any) => `${night.nightDateUtc} · ${config.texts.effective}: ${minutes(night.effectiveMinutes)} · ${config.texts.moonDown}: ${minutes(night.effectiveMoonDownMinutes)} · ${config.texts.maxAltitude}: ${degrees(night.maxObjectAltitudeDeg)}`),
+      ...analysis.nights.map((night: any) => `${night.nightDateUtc} · ${thresholdText(config.texts.effective)}: ${minutes(night.effectiveMinutes)} · ${config.texts.moonDown}: ${minutes(night.effectiveMoonDownMinutes)} · ${config.texts.maxAltitude}: ${degrees(night.maxObjectAltitudeDeg)}`),
       '',
       `${config.texts.detail}: ${selectedNight?.nightDateUtc ?? config.texts.none}`,
       config.texts.geometryNotice,
@@ -701,7 +724,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const best = bestWeekNight(); let y = 224;
     context.fillStyle = '#111827'; context.font = '700 40px Arial'; y = wrapCanvasText(context, analysis.object.displayName, 80, y, 1080, 48) + 12;
     context.fillStyle = '#475467'; context.font = '22px Arial';
-    y = wrapCanvasText(context, `${analysis.location.name} · ${analysis.location.latitudeDeg.toFixed(5)}, ${analysis.location.longitudeDeg.toFixed(5)} · ${config.texts.week} ${analysis.isoWeek}, ${analysis.isoYear}`, 80, y, 1080, 32) + 34;
+    y = wrapCanvasText(context, `${analysis.location.name} · ${analysis.location.latitudeDeg.toFixed(5)}, ${analysis.location.longitudeDeg.toFixed(5)} · ${config.texts.week} ${analysis.isoWeek}, ${analysis.isoYear} · ${config.texts.altitudeThreshold} ${altitudeThreshold()}°`, 80, y, 1080, 32) + 34;
     context.fillStyle = '#9a6718'; context.font = '700 22px Arial'; context.fillText(config.texts.conclusionTitle.toLocaleUpperCase(), 80, y); y += 48;
     context.fillStyle = '#111827'; context.font = '700 30px Arial'; context.fillText(best ? conclusionRating(best) : config.texts.notRecommended, 80, y); y += 52;
     context.font = '700 22px Arial';
@@ -718,7 +741,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     });
     y += 112; context.fillStyle = '#344054'; context.font = '22px Arial'; y = wrapCanvasText(context, weeklyComment(best, analysis.object, analysis.location), 80, y, 1080, 32) + 34;
     context.fillStyle = '#9a6718'; context.font = '700 21px Arial'; context.fillText(config.texts.comparison.toLocaleUpperCase(), 80, y); y += 42;
-    context.fillStyle = '#667085'; context.font = '700 16px Arial'; context.fillText(config.texts.night, 80, y); context.fillText(config.texts.effective, 350, y); context.fillText(config.texts.moonDown, 650, y); context.fillText(config.texts.maxAltitude, 925, y); y += 24;
+    context.fillStyle = '#667085'; context.font = '700 16px Arial'; context.fillText(config.texts.night, 80, y); context.fillText(thresholdText(config.texts.effective), 350, y); context.fillText(config.texts.moonDown, 650, y); context.fillText(config.texts.maxAltitude, 925, y); y += 24;
     analysis.nights.forEach((night: any, index: number) => {
       if (index % 2 === 0) { context.fillStyle = '#eee9df'; context.fillRect(70, y - 22, 1100, 56); }
       context.fillStyle = '#1d2939'; context.font = '19px Arial'; context.fillText(night.nightDateUtc, 80, y + 12); context.fillText(minutes(night.effectiveMinutes), 350, y + 12); context.fillText(minutes(night.effectiveMoonDownMinutes), 650, y + 12); context.fillText(degrees(night.maxObjectAltitudeDeg), 925, y + 12); y += 58;
@@ -730,11 +753,11 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const { canvas, context } = reportCanvas(); reportHeader(context, 2);
     context.fillStyle = '#111827'; context.font = '700 36px Arial'; context.fillText(`${config.texts.detail} · ${selectedNight.nightDateUtc}`, 80, 230);
     context.fillStyle = '#475467'; context.font = '22px Arial';
-    context.fillText(`${config.texts.effective}: ${minutes(selectedNight.effectiveMinutes)} · ${config.texts.moonDown}: ${minutes(selectedNight.effectiveMoonDownMinutes)} · ${config.texts.maxAltitude}: ${degrees(selectedNight.maxObjectAltitudeDeg)}`, 80, 280);
+    context.fillText(`${thresholdText(config.texts.effective)}: ${minutes(selectedNight.effectiveMinutes)} · ${config.texts.moonDown}: ${minutes(selectedNight.effectiveMoonDownMinutes)} · ${config.texts.maxAltitude}: ${degrees(selectedNight.maxObjectAltitudeDeg)}`, 80, 280);
     context.fillStyle = '#080b12'; context.fillRect(80, 340, 1080, 520);
     const clonedChart = chart!.cloneNode(true) as SVGSVGElement;
     const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
-    style.textContent = `.planning-chart__darkness{fill:rgba(72,91,132,.25)}.planning-chart__grid{stroke:rgba(124,143,172,.28);stroke-width:1}.planning-chart__threshold{stroke:#c68418;stroke-width:1.4;stroke-dasharray:7 6}.planning-chart__object,.planning-chart__moon,.planning-chart__object-context,.planning-chart__moon-context{fill:none}.planning-chart__object-context,.planning-chart__moon-context{stroke-width:1.5;opacity:.24}.planning-chart__object-context,.planning-chart__object{stroke:#e5a93f}.planning-chart__moon-context,.planning-chart__moon{stroke:#55d9b3;stroke-dasharray:7 5}.planning-chart__object,.planning-chart__moon{stroke-width:2.8}.planning-chart__label,.planning-chart__utc{fill:#aeb9ca;font:12px monospace}.planning-chart__cursor{stroke:#fff}`;
+    style.textContent = `.planning-chart__darkness{fill:rgba(72,91,132,.25)}.planning-chart__grid{stroke:rgba(124,143,172,.28);stroke-width:1}.planning-chart__reference-30{stroke:#f2dd7b;stroke-width:1;stroke-dasharray:6 6}.planning-chart__threshold{stroke:#54c8ff;stroke-width:1.25;stroke-dasharray:3 7}.planning-chart__object,.planning-chart__moon,.planning-chart__object-context,.planning-chart__moon-context{fill:none}.planning-chart__object-context,.planning-chart__moon-context{stroke-width:1.5;opacity:.24}.planning-chart__object-context,.planning-chart__object{stroke:#55d9b3}.planning-chart__moon-context,.planning-chart__moon{stroke:#ff746c;stroke-dasharray:7 5}.planning-chart__object,.planning-chart__moon{stroke-width:2.8}.planning-chart__label,.planning-chart__utc{fill:#aeb9ca;font:12px monospace}.planning-chart__cursor{stroke:#fff}`;
     clonedChart.prepend(style); clonedChart.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const svgUrl = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clonedChart)], { type: 'image/svg+xml' }));
     try {
@@ -812,7 +835,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       return `<tr class="${selected ? 'is-selected' : ''}" data-night="${night.nightDateUtc}">
         <th><button type="button" data-select-night="${night.nightDateUtc}" aria-pressed="${selected}">${night.nightDateUtc}<span>${config.texts.select}</span></button></th>
         <td>${interval(night.intervals.astronomicalNight)}</td><td>${degrees(night.maxObjectAltitudeDeg)}</td>
-        <td>${night.status === 'available' ? `${minutes(night.effectiveMinutes)}<small>${interval(night.intervals.effective)}</small>` : config.texts.unavailable}</td>
+        <td>${night.status === 'available' ? `${minutes(night.effectiveMinutes)}<small>${interval(night.intervals.effective)}</small>` : thresholdText(config.texts.unavailable)}</td>
         <td>${minutes(night.effectiveMoonDownMinutes)}</td><td>${time(night.bestMoonDown?.timestampUtc)}</td><td>${time(moonMoment?.timestampUtc)}</td>
         <td>${percent(moonMoment?.moonIlluminationFraction)}</td><td>${degrees(moonMoment?.moonSeparationDeg)}</td></tr>`;
     }).join('');
@@ -837,9 +860,10 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       chart.append(svgNode('rect', { x: String(x(startIndex)), y: String(top), width: String(x(endIndex) - x(startIndex)), height: String(bottom - top), class: 'planning-chart__darkness' }));
     });
     [-90, -60, -30, 0, 30, 60, 90].forEach((tick) => {
-      chart.append(svgNode('line', { x1: String(left), x2: String(right), y1: String(y(tick)), y2: String(y(tick)), class: tick === 30 ? 'planning-chart__threshold' : 'planning-chart__grid' }));
+      chart.append(svgNode('line', { x1: String(left), x2: String(right), y1: String(y(tick)), y2: String(y(tick)), class: tick === 30 ? 'planning-chart__reference-30' : 'planning-chart__grid' }));
       const label = svgNode('text', { x: '48', y: String(y(tick) + 4), 'text-anchor': 'end', class: 'planning-chart__label' }); label.textContent = `${tick}°`; chart.append(label);
     });
+    if (altitudeThreshold() !== 30) chart.append(svgNode('line', { x1: String(left), x2: String(right), y1: String(y(altitudeThreshold())), y2: String(y(altitudeThreshold())), class: 'planning-chart__threshold' }));
     const path = (key: string, className: string, selectedSamples = samples) => chart.append(svgNode('polyline', { points: selectedSamples.map((sample: any) => `${x(samples.indexOf(sample))},${y(sample[key])}`).join(' '), class: className }));
     const nightSegments = (key: string, className: string) => {
       let segment: any[] = [];
@@ -897,7 +921,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
     try {
       const shiftedStart = new Date(isoWeekStart(isoYear, isoWeek).getTime() + dayOffset * 86400000).toISOString().slice(0, 10);
-      analysis = analyzeWeek({ isoYear, isoWeek, startDateUtc: shiftedStart, location, object });
+      analysis = analyzeWeek({ isoYear, isoWeek, startDateUtc: shiftedStart, location, object, objectLimitDeg: altitudeThreshold() });
       selectedNight = bestWeekNight() ?? analysis.nights[0];
       root.querySelector<HTMLElement>('[data-selected-object]')!.textContent = object.displayName;
       root.querySelector<HTMLElement>('[data-week-label]')!.textContent = `${location.name} · ${analysis.weekStartUtc.slice(0, 10)} — ${new Date(Date.parse(analysis.weekEndUtc) - 86400000).toISOString().slice(0, 10)} UTC`;
@@ -918,7 +942,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     if (rows) rows.replaceChildren();
     if (nightDetail) nightDetail.hidden = true;
   }
-  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
+  ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'threshold', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
   ['manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', invalidateObjectResults));
   form.addEventListener('submit', (event) => { event.preventDefault(); calculate(); });
   calculate();

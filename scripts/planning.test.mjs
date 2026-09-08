@@ -45,6 +45,14 @@ test('night analysis produces five-minute samples and effective intervals', () =
   assert.ok(night.usefulCulmination);
 });
 
+test('night analysis applies a configurable object altitude threshold', () => {
+  const defaultNight = analyzeNight({ nightDateUtc: '2026-01-15', location: DEFAULT_LOCATION, object: m42 });
+  const highThresholdNight = analyzeNight({ nightDateUtc: '2026-01-15', location: DEFAULT_LOCATION, object: m42, objectLimitDeg: 60 });
+  assert.equal(highThresholdNight.objectLimitDeg, 60);
+  assert.ok(highThresholdNight.effectiveMinutes < defaultNight.effectiveMinutes);
+  assert.ok(highThresholdNight.samples.every((sample) => sample.isEffective === (sample.isAstronomicalNight && sample.objectAltitudeDeg > 60)));
+});
+
 test('week analysis always compares seven UTC nights', () => {
   const week = analyzeWeek({ isoYear: 2026, isoWeek: 3, location: DEFAULT_LOCATION, object: m42 });
   assert.equal(week.nights.length, 7);

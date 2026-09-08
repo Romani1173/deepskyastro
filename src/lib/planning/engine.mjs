@@ -21,7 +21,7 @@ const angularSeparation = (a, b) => {
 
 const round = (value, decimals = 4) => Number(value.toFixed(decimals));
 
-export function sampleInstant({ date, location, object }) {
+export function sampleInstant({ date, location, object, objectLimitDeg = OBJECT_LIMIT_DEG }) {
   const observer = new Observer(location.latitudeDeg, location.longitudeDeg, location.elevationM ?? 0);
   DefineStar(STAR, object.raDeg / 15, object.decDeg, 1000);
   const target = horizontal(STAR, date, observer);
@@ -41,8 +41,9 @@ export function sampleInstant({ date, location, object }) {
     moonSeparationDeg: round(angularSeparation(target, moon)),
     sunAltitudeDeg,
     isAstronomicalNight: sunAltitudeDeg <= TWILIGHT_DEG,
-    isObjectAbove30: objectAltitudeDeg > OBJECT_LIMIT_DEG,
-    isEffective: sunAltitudeDeg <= TWILIGHT_DEG && objectAltitudeDeg > OBJECT_LIMIT_DEG,
+    isObjectAbove30: objectAltitudeDeg > objectLimitDeg,
+    isObjectAboveLimit: objectAltitudeDeg > objectLimitDeg,
+    isEffective: sunAltitudeDeg <= TWILIGHT_DEG && objectAltitudeDeg > objectLimitDeg,
     isMoonUp: moonAltitudeDeg >= 0,
   };
 }
@@ -106,14 +107,14 @@ const bestMoment = (samples, intervals, moonUp) => {
   };
 };
 
-export function analyzeNight({ nightDateUtc, location, object }) {
+export function analyzeNight({ nightDateUtc, location, object, objectLimitDeg = OBJECT_LIMIT_DEG }) {
   const startMs = Date.parse(`${nightDateUtc}T12:00:00.000Z`);
   const samples = [];
   for (let timestamp = startMs; timestamp <= startMs + 86_400_000; timestamp += STEP_MS) {
-    samples.push(sampleInstant({ date: new Date(timestamp), location, object }));
+    samples.push(sampleInstant({ date: new Date(timestamp), location, object, objectLimitDeg }));
   }
   const astronomicalNight = thresholdIntervals(samples, (sample) => sample.sunAltitudeDeg, TWILIGHT_DEG, 'below');
-  const objectAbove30 = thresholdIntervals(samples, (sample) => sample.objectAltitudeDeg, OBJECT_LIMIT_DEG, 'above');
+  const objectAbove30 = thresholdIntervals(samples, (sample) => sample.objectAltitudeDeg, objectLimitDeg, 'above');
   const moonDown = thresholdIntervals(samples, (sample) => sample.moonAltitudeDeg, 0, 'below');
   const moonUp = thresholdIntervals(samples, (sample) => sample.moonAltitudeDeg, 0, 'above');
   const effective = intersectIntervals(astronomicalNight, objectAbove30);
@@ -137,7 +138,8 @@ export function analyzeNight({ nightDateUtc, location, object }) {
     bestMoonUp: bestMoment(samples, effectiveMoonUp, true),
     moonIlluminationRange: range(values('moonIlluminationFraction')),
     moonSeparationRangeDeg: range(values('moonSeparationDeg')),
-    status: astronomicalNight.length === 0 ? 'no-astronomical-night' : effective.length === 0 ? 'never-above-30' : 'available',
+    objectLimitDeg,
+    status: astronomicalNight.length === 0 ? 'no-astronomical-night' : effective.length === 0 ? 'never-above-limit' : 'available',
   };
 }
 
@@ -156,17 +158,18 @@ export function isoWeeksInYear(year) {
   return Math.ceil((((thursday - yearStart) / 86_400_000) + 1) / 7);
 }
 
-export function analyzeWeek({ isoYear, isoWeek, startDateUtc, location, object }) {
+export function analyzeWeek({ isoYear, isoWeek, startDateUtc, location, object, objectLimitDeg = OBJECT_LIMIT_DEG }) {
   const start = startDateUtc ? new Date(`${startDateUtc}T00:00:00.000Z`) : isoWeekStart(isoYear, isoWeek);
   const nights = Array.from({ length: 7 }, (_, day) => {
     const date = new Date(start.getTime() + day * 86_400_000);
-    return analyzeNight({ nightDateUtc: date.toISOString().slice(0, 10), location, object });
+    return analyzeNight({ nightDateUtc: date.toISOString().slice(0, 10), location, object, objectLimitDeg });
   });
   return {
     isoYear,
     isoWeek,
     location,
     object,
+    objectLimitDeg,
     weekStartUtc: start.toISOString(),
     weekEndUtc: new Date(start.getTime() + 7 * 86_400_000).toISOString(),
     nights,
