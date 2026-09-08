@@ -6,17 +6,23 @@ import { photoText } from '../photoTranslations';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import Layout from '../layouts/Layout.astro';
 import SessionToolLink from './SessionToolLink.astro';
+import SiteMapIcon from './SiteMapIcon.astro';
 import visibility from '../data/visibility.generated.json';
 
 interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: boolean; }
 const { lang, fotos, showPending = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Descobreix i compara molts objectes des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18° · Hores: hora local', guide: 'Com funciona Visibilitat', guideTooltip: 'Guia per interpretar les gràfiques i planificar una nit', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana', constellation: 'Constel·lació', allConstellations: 'Totes', minimumVisibility: 'Mínim', photographed: 'Fotografiats', pending: 'Pendents', all: 'Tots', photos: 'Amb fotos', list: 'Llista', display: 'Visualització dels objectes fotografiats', selectedObject: 'objecte seleccionat', selectedObjects: 'objectes seleccionats', noResults: 'No hi ha objectes que compleixin els criteris aquesta setmana.', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Nit seleccionada', annualChart: 'Visibilitat anual · 00:00 UTC', nightChart: 'Altura durant la nit astronòmica', darkness: 'Foscor astronòmica', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedDay: 'Nit de la setmana', moonPhases: ['Lluna nova', 'Creixent fina', 'Quart creixent', 'Gibosa creixent', 'Lluna plena', 'Gibosa minvant', 'Quart minvant', 'Minvant fina'], dayShort: ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'], qualities: { excellent: 'Excel·lent', good: 'Bona' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Descubre y compara muchos objetos desde una ubicación de referencia en el centro de Cataluña. Cuando elijas uno, Planificación permite estudiarlo desde tu ubicación.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18° · Horas: hora local', guide: 'Cómo funciona Visibilidad', guideTooltip: 'Guía para interpretar las gráficas y planificar una noche', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana', constellation: 'Constelación', allConstellations: 'Todas', minimumVisibility: 'Mínimo', photographed: 'Fotografiados', pending: 'Pendientes', all: 'Todos', photos: 'Con fotos', list: 'Lista', display: 'Visualización de los objetos fotografiados', selectedObject: 'objeto seleccionado', selectedObjects: 'objetos seleccionados', noResults: 'No hay objetos que cumplan los criterios esta semana.', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Noche seleccionada', annualChart: 'Visibilidad anual · 00:00 UTC', nightChart: 'Altura durante la noche astronómica', darkness: 'Oscuridad astronómica', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', objectCurve: 'Objeto', moonCurve: 'Luna', selectedDay: 'Noche de la semana', moonPhases: ['Luna nueva', 'Creciente fina', 'Cuarto creciente', 'Gibosa creciente', 'Luna llena', 'Gibosa menguante', 'Cuarto menguante', 'Menguante fina'], dayShort: ['L', 'M', 'X', 'J', 'V', 'S', 'D'], qualities: { excellent: 'Excelente', good: 'Buena' } },
-  en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Photographed', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Descobreix i compara molts objectes des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18° · Hores: hora local', guide: 'Com funciona Visibilitat', guideTooltip: 'Guia per interpretar les gràfiques i planificar una nit', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana', constellation: 'Constel·lació', allConstellations: 'Totes', minimumVisibility: 'Mínim', photographed: 'Galeria', pending: 'Pendents', all: 'Tots', photos: 'Amb fotos', list: 'Llista', display: 'Visualització dels objectes fotografiats', selectedObject: 'objecte seleccionat', selectedObjects: 'objectes seleccionats', noResults: 'No hi ha objectes que compleixin els criteris aquesta setmana.', downloadReport: 'Descarrega informe TXT', reportHint: 'Descarrega els resultats visibles sense fotografies.', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre 30°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Nit seleccionada', annualChart: 'Visibilitat anual · 00:00 UTC', nightChart: 'Altura durant la nit astronòmica', darkness: 'Foscor astronòmica', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedDay: 'Nit de la setmana', moonPhases: ['Lluna nova', 'Creixent fina', 'Quart creixent', 'Gibosa creixent', 'Lluna plena', 'Gibosa minvant', 'Quart minvant', 'Minvant fina'], dayShort: ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'], qualities: { excellent: 'Excel·lent', good: 'Bona' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Descubre y compara muchos objetos desde una ubicación de referencia en el centro de Cataluña. Cuando elijas uno, Planificación permite estudiarlo desde tu ubicación.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18° · Horas: hora local', guide: 'Cómo funciona Visibilidad', guideTooltip: 'Guía para interpretar las gráficas y planificar una noche', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana', constellation: 'Constelación', allConstellations: 'Todas', minimumVisibility: 'Mínimo', photographed: 'Galería', pending: 'Pendientes', all: 'Todos', photos: 'Con fotos', list: 'Lista', display: 'Visualización de los objetos fotografiados', selectedObject: 'objeto seleccionado', selectedObjects: 'objetos seleccionados', noResults: 'No hay objetos que cumplan los criterios esta semana.', downloadReport: 'Descargar informe TXT', reportHint: 'Descarga los resultados visibles sin fotografías.', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre 30°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Noche seleccionada', annualChart: 'Visibilidad anual · 00:00 UTC', nightChart: 'Altura durante la noche astronómica', darkness: 'Oscuridad astronómica', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', objectCurve: 'Objeto', moonCurve: 'Luna', selectedDay: 'Noche de la semana', moonPhases: ['Luna nueva', 'Creciente fina', 'Cuarto creciente', 'Gibosa creciente', 'Luna llena', 'Gibosa menguante', 'Cuarto menguante', 'Menguante fina'], dayShort: ['L', 'M', 'X', 'J', 'V', 'S', 'D'], qualities: { excellent: 'Excelente', good: 'Buena' } },
+  en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Gallery', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above 30°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
-const t = texts[lang];
+const exportTexts = {
+  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar' },
+  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', altitudeThreshold: 'Umbral de altura', graphThreshold: 'Umbral', minimumVisibility: 'Horas mínimas sobre el umbral' },
+  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold' },
+} as const;
+const t = { ...texts[lang], ...exportTexts[lang] };
 const enhancedVisibility = lang !== 'en';
 const publicIntro = {
   ca: 'Descobreix i compara els objectes fotografiats d’aquesta web des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.',
@@ -89,40 +95,59 @@ const weekRange = (week: number) => {
     </header>
 
     <div class="visibility-toolbar"><div class="visibility-toolbar__selectors"><div class="week-control">
-      <label for="visibility-week">{t.week}</label>
+      <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><span></span><label for="visibility-year">{t.year}</label></div>
       <div class="week-control__row">
-        <button type="button" data-week-step="-1" aria-label="−1">−</button>
+        <button type="button" data-week-step="-1" aria-label="−1">‹</button>
         <select id="visibility-week">
-          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}  {weekRange(index + 1)}</option>)}
+          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
         </select>
-        <button type="button" data-week-step="1" aria-label="+1">+</button>
-        <select id="visibility-year" aria-label={lang === 'ca' ? 'Any' : lang === 'es' ? 'Año' : 'Year'}>
+        <output class="week-control__range" data-week-range>{weekRange(currentWeek)}</output>
+        <button type="button" data-week-step="1" aria-label="+1">›</button>
+        <select id="visibility-year" aria-label={t.year}>
           {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
         </select>
       </div>
+      <div class="period-shift__labels" aria-hidden="true"><span></span><span>{t.shiftPeriod}</span><span></span><span></span></div>
+      <div class="period-shift" aria-label={t.shiftPeriod}>
+        <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
+        <output data-period-range aria-live="polite">{weekRange(currentWeek)}</output>
+        <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
+        <span aria-hidden="true"></span>
+      </div>
     </div>
     <label class="visibility-select-control constellation-control" for="visibility-constellation"><span>{t.constellation}</span><select id="visibility-constellation"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select></label>
-    {enhancedVisibility && <label class="visibility-select-control hours-control" for="visibility-hours"><span>{t.minimumVisibility}</span><select id="visibility-hours">{[2, 3, 4, 5, 6].map((hours) => <option value={hours} selected={hours === 4}>{hours} h</option>)}</select></label>}
+    {enhancedVisibility && <div class="threshold-hours-control">
+      <label class="visibility-select-control threshold-control" for="visibility-threshold"><span>{t.altitudeThreshold}</span><select id="visibility-threshold">{[30, 35, 40, 45, 50, 55, 60].map((threshold) => <option value={threshold} selected={threshold === 30}>{threshold}°</option>)}</select></label>
+      <label class="visibility-select-control hours-control" for="visibility-hours"><span>{t.minimumVisibility}</span><select id="visibility-hours">{[2, 3, 4, 5, 6].map((hours) => <option value={hours} selected={hours === 4}>{hours} h</option>)}</select></label>
+    </div>}
     </div>
 
-    <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
-      <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
-      <button type="button" data-visibility-layout="list" aria-pressed="false">{t.list}</button>
-    </nav>
+    <div class="visibility-toolbar__modes">
+      <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
+        <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
+        <button type="button" data-visibility-layout="list" aria-pressed="false">{t.list}</button>
+      </nav>
 
-    {showPending && <nav class="visibility-filters" aria-label={t.title}>
-      <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
-      <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
-    </nav>}</div>
+      {showPending && <nav class="visibility-filters" aria-label={t.title}>
+        <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
+        <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
+      </nav>}
+    </div></div>
 
-    <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
+    <div class="visibility-output">
+      <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
+      <div class="visibility-output__actions">
+        <button class="report-action report-action--visibility" type="button" data-copy-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.copyResults}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+        <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+      </div>
+    </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
 
     {showPending && <section class="pending-explorer" data-pending-explorer hidden>
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
         {cards.filter(({ object }) => object.status === 'pending').map(({ id, object, displayAlias, displayCatalogName }) => <button type="button" data-pending-select data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-constellation={object.constellation} data-ra={object.raDeg} data-dec={object.decDeg} data-status="pending" data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{displayCatalogName}{displayAlias && <small class="pending-explorer__alias">{displayAlias}</small>}</span><small data-pending-altitude>—</small></button>)}
       </div></div>
-      <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p><button type="button" class="pending-explorer__detail" data-open-pending-chart>{t.viewChart} →</button></div>
+      <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p><button type="button" class="pending-explorer__detail" data-open-pending-chart><SiteMapIcon name="visibility" size="sm" />{t.viewChart} →</button></div>
     </section>}
 
     <div class="visibility-grid" data-visibility-grid>
@@ -140,13 +165,13 @@ const weekRange = (week: number) => {
             <dl>
               <div class="visibility-card__primary"><dt>{t.maxAltitude}</dt><dd data-altitude>—</dd></div>
               <div><dt>{t.bestTime}</dt><dd><span data-best-time>—</span> <small>{t.localTime}</small></dd></div>
-              <div><dt>{t.usefulTime}</dt><dd data-hours>—</dd></div>
+              <div><dt data-useful-time>{t.usefulTime}</dt><dd data-hours>—</dd></div>
               <div><dt>{t.night}</dt><dd data-night>—</dd></div>
             </dl>
             <div class="visibility-card__actions">
-              {foto ? <a class="visibility-card__link" data-photo-link href={photoHref(lang, foto.id, base)}>{t.view}<span aria-hidden="true">→</span></a> : <p class="visibility-card__pending-note">{t.pendingNote}</p>}
-              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}>{t.viewChart}</button>
-              <a class="visibility-card__plan-link" data-planning-link href={`${planningHref(lang, base)}?object=${encodeURIComponent(id)}&from=visibility`}>{t.plan}<span aria-hidden="true">→</span></a>
+              {!foto && <p class="visibility-card__pending-note">{t.pendingNote}</p>}
+              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}><SiteMapIcon name="visibility" size="sm" />{t.viewChart}</button>
+              <a class="visibility-card__plan-link" data-planning-link href={`${planningHref(lang, base)}?object=${encodeURIComponent(id)}&from=visibility`}><SiteMapIcon name="planning" size="sm" />{t.plan}<span aria-hidden="true">→</span></a>
             </div>
           </div>
         </article>;
@@ -155,7 +180,7 @@ const weekRange = (week: number) => {
     <dialog class="visibility-chart" data-visibility-chart>
       <div class="visibility-chart__header"><div><p data-chart-kicker>{t.annualChart}</p><h2 data-chart-title></h2></div><button type="button" data-close-chart aria-label={t.close}>×</button></div>
       <nav class="visibility-chart__tabs" data-chart-tabs hidden><button type="button" data-chart-mode="annual" aria-pressed="true">{t.annual}</button><button type="button" data-chart-mode="night" aria-pressed="false">{t.selectedNight}</button></nav>
-      {enhancedVisibility && <div class="night-controls" data-night-controls hidden><span>{t.selectedDay}</span><div class="night-controls__days" role="group" aria-label={t.selectedDay}>{t.dayShort.map((day, index) => <button type="button" data-night-day={index} aria-pressed={index === 3}>{day}</button>)}</div><div class="night-legend"><span class="night-legend__object">— {t.objectCurve}</span><span class="night-legend__moon">┄ {t.moonCurve}</span><strong data-moon-phase><span data-moon-phase-icon aria-hidden="true"></span><span data-moon-phase-label></span></strong></div></div>}
+      {enhancedVisibility && <div class="night-controls" data-night-controls hidden><span>{t.selectedDay}</span><div class="night-controls__days" role="group" aria-label={t.selectedDay}>{t.dayShort.map((day, index) => <button type="button" data-night-day={index} aria-pressed={index === 3}>{day}</button>)}</div><div class="night-legend"><span class="night-legend__object">— {t.objectCurve}</span><span class="night-legend__moon">┄ {t.moonCurve}</span><span class="night-legend__threshold" data-threshold-legend></span><strong data-moon-phase><span data-moon-phase-icon aria-hidden="true"></span><span data-moon-phase-label></span></strong></div></div>}
       <div class="visibility-chart__plot" data-chart-plot></div>
       <p class="visibility-chart__selection"><span></span> <b data-chart-week></b></p>
     </dialog>
@@ -165,6 +190,10 @@ const weekRange = (week: number) => {
 <script define:vars={{ t, lang, showPending, enhancedVisibility }}>
   const selector = document.querySelector('#visibility-week');
   const yearSelector = document.querySelector('#visibility-year');
+  const weekRangeOutput = document.querySelector('[data-week-range]');
+  const periodRange = document.querySelector('[data-period-range]');
+  const dayStepButtons = [...document.querySelectorAll('[data-day-step]')];
+  const thresholdSelector = document.querySelector('#visibility-threshold');
   const hoursSelector = document.querySelector('#visibility-hours');
   const constellationSelector = document.querySelector('#visibility-constellation');
   const grid = document.querySelector('[data-visibility-grid]');
@@ -174,6 +203,8 @@ const weekRange = (week: number) => {
   const layoutControls = document.querySelector('[data-visibility-layout-controls]');
   const visibleCount = document.querySelector('[data-visible-count]');
   const visibleLabel = document.querySelector('[data-visible-label]');
+  const copyReportButton = document.querySelector('[data-copy-visibility]');
+  const downloadReportButton = document.querySelector('[data-download-visibility]');
   const emptyMessage = document.querySelector('[data-visibility-empty]');
   const pendingExplorer = document.querySelector('[data-pending-explorer]');
   const pendingButtons = [...document.querySelectorAll('[data-pending-select]')];
@@ -192,13 +223,14 @@ const weekRange = (week: number) => {
   };
   const isoWeeksInYear = (year) => Math.round((firstIsoMonday(year + 1).getTime() - firstIsoMonday(year).getTime()) / (7 * millisecondsPerDay));
   const isoDate = (year, week, day = 0) => new Date(firstIsoMonday(year).getTime() + ((week - 1) * 7 + day) * millisecondsPerDay);
-  const formatWeekRange = (year, week) => {
-    const start = isoDate(year, week), end = isoDate(year, week, 6);
+  const formatPeriodRange = (year, week, offset = 0) => {
+    const start = isoDate(year, week, offset), end = isoDate(year, week, offset + 6);
     const month = (date) => new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'UTC' }).format(date).replace('.', '');
     return month(start) === month(end)
       ? `${start.getUTCDate()}–${end.getUTCDate()} ${month(end)}`
       : `${start.getUTCDate()} ${month(start)}–${end.getUTCDate()} ${month(end)}`;
   };
+  const formatWeekRange = (year, week) => formatPeriodRange(year, week);
   const ensureYearOption = (year) => {
     if ([...yearSelector.options].some((option) => Number(option.value) === year)) return;
     yearSelector.add(new Option(String(year), String(year)));
@@ -208,7 +240,7 @@ const weekRange = (week: number) => {
     const count = isoWeeksInYear(year);
     selector.replaceChildren(...Array.from({ length: count }, (_, index) => {
       const week = index + 1;
-      return new Option(`${week}\u2003\u2003${formatWeekRange(year, week)}`, String(week));
+      return new Option(String(week), String(week));
     }));
     selector.value = String(Math.max(1, Math.min(count, preferredWeek || 1)));
   };
@@ -216,6 +248,8 @@ const weekRange = (week: number) => {
   let currentView = showPending && requestedView === 'pending' ? 'pending' : 'photographed';
   const requestedLayout = new URL(window.location.href).searchParams.get('layout');
   let currentLayout = ['photos', 'list'].includes(requestedLayout) ? requestedLayout : 'photos';
+  const requestedOffset = Number(new URL(window.location.href).searchParams.get('offset'));
+  let dayOffset = Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : 0;
   const weekStorageKey = 'deepskyastro.visibility.week';
   const yearStorageKey = 'deepskyastro.visibility.year';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
@@ -236,14 +270,47 @@ const weekRange = (week: number) => {
   }
   const requestedHours = Number(new URL(window.location.href).searchParams.get('hours'));
   if (hoursSelector && [2, 3, 4, 5, 6].includes(requestedHours)) hoursSelector.value = String(requestedHours);
+  const requestedThreshold = Number(new URL(window.location.href).searchParams.get('threshold'));
+  if (thresholdSelector && [30, 35, 40, 45, 50, 55, 60].includes(requestedThreshold)) thresholdSelector.value = String(requestedThreshold);
   const requestedConstellation = new URL(window.location.href).searchParams.get('constellation');
   if (requestedConstellation && [...constellationSelector.options].some((option) => option.value === requestedConstellation)) constellationSelector.value = requestedConstellation;
   const requestedFocus = new URL(window.location.href).searchParams.get('focus');
+  const shiftedMetricsCache = new Map();
+  const shiftedPeriodMetrics = (source, year, week, offset, threshold = 30) => {
+    if (offset === 0 && threshold === 30) return JSON.parse(source.dataset.weeks)[week - 1];
+    const cacheKey = `${source.dataset.objectId}:${year}:${week}:${offset}:${threshold}`;
+    if (shiftedMetricsCache.has(cacheKey)) return shiftedMetricsCache.get(cacheKey);
+    const nights = Array.from({ length: 7 }, (_, day) => {
+      const date = isoDate(year, week, offset + day);
+      const start = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 12);
+      const samples = [];
+      for (let timestamp = start; timestamp < start + millisecondsPerDay; timestamp += 600000) {
+        const instant = new Date(timestamp), sun = sunPosition(instant);
+        if (altitudeAt(instant, sun.ra, sun.dec) <= -18) samples.push({ instant, altitude: altitudeAt(instant, Number(source.dataset.ra), Number(source.dataset.dec)) });
+      }
+      if (!samples.length) return null;
+      const best = samples.reduce((current, sample) => sample.altitude > current.altitude ? sample : current);
+      return {
+        date,
+        altitude: best.altitude,
+        bestTime: best.instant,
+        hoursThreshold: samples.filter((sample) => sample.altitude >= threshold).length / 6,
+        hours30: samples.filter((sample) => sample.altitude >= 30).length / 6,
+      };
+    }).filter(Boolean);
+    const bestNight = nights.reduce((current, night) => night.altitude > current.altitude ? night : current);
+    const hoursThreshold = Math.max(...nights.map((night) => night.hoursThreshold));
+    const hours30 = Math.max(...nights.map((night) => night.hours30));
+    const value = [Number(bestNight.altitude.toFixed(1)), bestNight.bestTime.toISOString(), Number(hoursThreshold.toFixed(1)), hours30 >= 8 ? 'excellent' : hours30 >= 4 ? 'good' : null, bestNight.date.toISOString().slice(0, 10)];
+    shiftedMetricsCache.set(cacheKey, value);
+    return value;
+  };
   const update = () => {
     const week = Number(selector.value);
     const year = Number(yearSelector.value);
     window.sessionStorage.setItem(weekStorageKey, String(week));
     window.sessionStorage.setItem(yearStorageKey, String(year));
+    const altitudeThreshold = thresholdSelector ? Number(thresholdSelector.value) : 30;
     const minimumHours = hoursSelector ? Number(hoursSelector.value) : 4;
     const selectedConstellation = constellationSelector?.value ?? '';
     const currentUrl = new URL(window.location.href);
@@ -251,10 +318,16 @@ const weekRange = (week: number) => {
     currentUrl.searchParams.set('year', String(year));
     currentUrl.searchParams.set('view', currentView);
     currentUrl.searchParams.set('layout', currentLayout);
+    if (dayOffset) currentUrl.searchParams.set('offset', String(dayOffset));
+    else currentUrl.searchParams.delete('offset');
     if (hoursSelector) currentUrl.searchParams.set('hours', String(minimumHours));
+    if (thresholdSelector) currentUrl.searchParams.set('threshold', String(altitudeThreshold));
     if (selectedConstellation) currentUrl.searchParams.set('constellation', selectedConstellation);
     else currentUrl.searchParams.delete('constellation');
     window.history.replaceState(null, '', currentUrl);
+    weekRangeOutput.textContent = formatWeekRange(year, week);
+    periodRange.textContent = formatPeriodRange(year, week, dayOffset);
+    dayStepButtons.forEach((button) => { button.disabled = dayOffset + Number(button.dataset.dayStep) < -3 || dayOffset + Number(button.dataset.dayStep) > 3; });
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
       const photoUrl = new URL(link.href);
       const sourceCard = link.closest('[data-visibility-card]');
@@ -264,7 +337,10 @@ const weekRange = (week: number) => {
       photoUrl.searchParams.set('year', String(year));
       photoUrl.searchParams.set('view', currentView);
       photoUrl.searchParams.set('layout', currentLayout);
+      if (dayOffset) photoUrl.searchParams.set('offset', String(dayOffset));
+      else photoUrl.searchParams.delete('offset');
       if (hoursSelector) photoUrl.searchParams.set('hours', String(minimumHours));
+      if (thresholdSelector) photoUrl.searchParams.set('threshold', String(altitudeThreshold));
       if (selectedConstellation) photoUrl.searchParams.set('constellation', selectedConstellation);
       else photoUrl.searchParams.delete('constellation');
       link.href = `${photoUrl.pathname}${photoUrl.search}`;
@@ -285,26 +361,30 @@ const weekRange = (week: number) => {
       languageUrl.searchParams.set('year', String(year));
       languageUrl.searchParams.set('view', currentView);
       languageUrl.searchParams.set('layout', currentLayout);
+      if (dayOffset) languageUrl.searchParams.set('offset', String(dayOffset));
+      else languageUrl.searchParams.delete('offset');
       if (hoursSelector && !languageUrl.pathname.includes('/en/')) languageUrl.searchParams.set('hours', String(minimumHours));
       else languageUrl.searchParams.delete('hours');
+      if (thresholdSelector && !languageUrl.pathname.includes('/en/')) languageUrl.searchParams.set('threshold', String(altitudeThreshold));
+      else languageUrl.searchParams.delete('threshold');
       if (selectedConstellation) languageUrl.searchParams.set('constellation', selectedConstellation);
       else languageUrl.searchParams.delete('constellation');
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
-      const value = JSON.parse(card.dataset.weeks)[week - 1];
-      const [altitude, bestTimeUtc, hours30, qualityCode, representativeNight] = value;
-      const meetsThreshold = hours30 >= minimumHours;
+      const value = shiftedPeriodMetrics(card, year, week, dayOffset, altitudeThreshold);
+      const [altitude, bestTimeUtc, hoursAboveThreshold, qualityCode, representativeNight] = value;
+      const meetsThreshold = hoursAboveThreshold >= minimumHours;
       const matchesConstellation = !selectedConstellation || card.dataset.constellation === selectedConstellation;
       card.dataset.selected = String(meetsThreshold && matchesConstellation);
       card.hidden = card.dataset.status !== currentView || !meetsThreshold || !matchesConstellation;
       card.dataset.altitude = altitude;
       card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
-      card.querySelector('[data-hours]').textContent = `${hours30.toLocaleString(locale)} h`;
+      card.querySelector('[data-useful-time]').textContent = `${t.above.charAt(0).toLocaleUpperCase(locale)}${t.above.slice(1)} ${altitudeThreshold}°`;
+      card.querySelector('[data-hours]').textContent = `${hoursAboveThreshold.toLocaleString(locale)} h`;
       const referenceNight = new Date(`${representativeNight}T12:00:00Z`);
-      const referenceDay = (referenceNight.getUTCDay() + 6) % 7;
-      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(isoDate(year, week, referenceDay));
+      card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(referenceNight);
       const quality = card.querySelector('[data-quality]');
       quality.hidden = !qualityCode;
       quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
@@ -316,9 +396,9 @@ const weekRange = (week: number) => {
     layoutButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.visibilityLayout === currentLayout)));
     if (pendingExplorer) pendingExplorer.hidden = currentView !== 'pending';
     pendingButtons.forEach((button) => {
-      const [altitude, , hours30, quality] = JSON.parse(button.dataset.weeks)[week - 1];
+      const [altitude, , hoursAboveThreshold, quality] = shiftedPeriodMetrics(button, year, week, dayOffset, altitudeThreshold);
       button.dataset.altitude = altitude;
-      button.hidden = hours30 < minimumHours || Boolean(selectedConstellation && button.dataset.constellation !== selectedConstellation);
+      button.hidden = hoursAboveThreshold < minimumHours || Boolean(selectedConstellation && button.dataset.constellation !== selectedConstellation);
       button.querySelector('[data-pending-altitude]').textContent = `${altitude.toLocaleString(locale)}°${quality ? ` · ${t.qualities[quality]}` : ''}`;
     });
     pendingButtons.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
@@ -331,6 +411,8 @@ const weekRange = (week: number) => {
     const currentCount = counts[currentView];
     visibleCount.textContent = String(currentCount);
     visibleLabel.textContent = currentCount === 1 ? t.selectedObject : t.selectedObjects;
+    copyReportButton.disabled = currentCount === 0;
+    downloadReportButton.disabled = currentCount === 0;
     emptyMessage.hidden = currentCount !== 0;
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);
@@ -340,12 +422,14 @@ const weekRange = (week: number) => {
     if (pendingChart) pendingChart.hidden = !selectedPending;
     if (selectedPending) selectPending(selectedPending);
   };
-  selector?.addEventListener('change', update);
+  selector?.addEventListener('change', () => { dayOffset = 0; update(); });
   yearSelector?.addEventListener('change', () => {
+    dayOffset = 0;
     rebuildWeekOptions(Number(yearSelector.value));
     update();
   });
   hoursSelector?.addEventListener('change', update);
+  thresholdSelector?.addEventListener('change', update);
   constellationSelector?.addEventListener('change', update);
   filterButtons.forEach((button) => button.addEventListener('click', () => {
     currentView = button.dataset.visibilityFilter;
@@ -356,6 +440,7 @@ const weekRange = (week: number) => {
     update();
   }));
   document.querySelectorAll('[data-week-step]').forEach((button) => button.addEventListener('click', () => {
+    dayOffset = 0;
     const step = Number(button.dataset.weekStep);
     const nextWeek = Number(selector.value) + step;
     let year = Number(yearSelector.value);
@@ -372,12 +457,149 @@ const weekRange = (week: number) => {
     } else selector.value = String(nextWeek);
     update();
   }));
+  dayStepButtons.forEach((button) => button.addEventListener('click', () => {
+    dayOffset = Math.max(-3, Math.min(3, dayOffset + Number(button.dataset.dayStep)));
+    update();
+  }));
+  const buildVisibilityReport = () => {
+    const week = Number(selector.value);
+    const year = Number(yearSelector.value);
+    const altitudeThreshold = thresholdSelector ? Number(thresholdSelector.value) : 30;
+    const minimumHours = hoursSelector ? Number(hoursSelector.value) : 4;
+    const selectedConstellation = constellationSelector?.value || t.allConstellations;
+    const reportCards = cards.filter((card) => card.dataset.status === currentView && card.dataset.selected === 'true');
+    const labels = {
+      title: { ca: 'INFORME DE VISIBILITAT', es: 'INFORME DE VISIBILIDAD', en: 'VISIBILITY REPORT' }[lang],
+      generated: { ca: 'Generat', es: 'Generado', en: 'Generated' }[lang],
+      selection: { ca: 'Selecció', es: 'Selección', en: 'Selection' }[lang],
+      objects: { ca: 'Objectes inclosos', es: 'Objetos incluidos', en: 'Included objects' }[lang],
+      quality: { ca: 'Qualitat', es: 'Calidad', en: 'Quality' }[lang],
+    };
+    const lines = [
+      labels.title,
+      '='.repeat(labels.title.length),
+      `${labels.generated}: ${new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date())}`,
+      `${t.week}: ${week}/${year} · ${formatPeriodRange(year, week, dayOffset)}`,
+      t.location,
+      `${labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending}`,
+      `${t.constellation}: ${selectedConstellation}`,
+      `${t.altitudeThreshold}: ${altitudeThreshold}°`,
+      `${t.minimumVisibility}: ${minimumHours} h`,
+      `${labels.objects}: ${reportCards.length}`,
+      '',
+    ];
+    reportCards.forEach((card, index) => {
+      const quality = card.querySelector('[data-quality]')?.textContent?.trim();
+      lines.push(
+        `${index + 1}. ${card.dataset.objectName}`,
+        `   ${t.constellation}: ${card.dataset.constellation || '—'}`,
+        `   ${t.maxAltitude}: ${card.querySelector('[data-altitude]')?.textContent?.trim() || '—'}`,
+        `   ${t.bestTime}: ${card.querySelector('[data-best-time]')?.textContent?.trim() || '—'} (${t.localTime})`,
+        `   ${t.usefulTime}: ${card.querySelector('[data-hours]')?.textContent?.trim() || '—'}`,
+        `   ${t.night}: ${card.querySelector('[data-night]')?.textContent?.trim() || '—'}`,
+        `   ${labels.quality}: ${quality || '—'}`,
+        '',
+      );
+    });
+    return { lines, reportCards, labels, week, year, altitudeThreshold, minimumHours, selectedConstellation };
+  };
+  const confirmButton = (button, textValue) => {
+    const originalLabel = button.getAttribute('aria-label');
+    button.classList.add('is-confirmed');
+    button.setAttribute('aria-label', textValue);
+    window.setTimeout(() => {
+      button.classList.remove('is-confirmed');
+      if (originalLabel) button.setAttribute('aria-label', originalLabel);
+      else button.removeAttribute('aria-label');
+    }, 2800);
+  };
+  copyReportButton?.addEventListener('click', async () => {
+    const value = buildVisibilityReport().lines.join('\n');
+    try { await navigator.clipboard.writeText(value); }
+    catch {
+      const area = document.createElement('textarea');
+      area.value = value;
+      document.body.append(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+    confirmButton(copyReportButton, t.copiedResults);
+  });
+  const canvasJpeg = (canvas) => new Promise((resolve, reject) => canvas.toBlob(async (blob) => blob ? resolve(new Uint8Array(await blob.arrayBuffer())) : reject(new Error('PDF image failed')), 'image/jpeg', .92));
+  const pdfFromJpegs = (images) => {
+    const encoder = new TextEncoder(); const objects = new Map();
+    const asBytes = (value) => encoder.encode(value);
+    const join = (parts) => { const size = parts.reduce((sum, part) => sum + part.length, 0); const result = new Uint8Array(size); let offset = 0; parts.forEach((part) => { result.set(part, offset); offset += part.length; }); return result; };
+    objects.set(1, asBytes('<< /Type /Catalog /Pages 2 0 R >>'));
+    objects.set(2, asBytes(`<< /Type /Pages /Count ${images.length} /Kids [${images.map((_, index) => `${3 + index * 3} 0 R`).join(' ')}] >>`));
+    images.forEach((image, index) => {
+      const page = 3 + index * 3, content = page + 1, picture = page + 2;
+      objects.set(page, asBytes(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 ${picture} 0 R >> >> /Contents ${content} 0 R >>`));
+      const drawing = asBytes('q\n595 0 0 842 0 0 cm\n/Im0 Do\nQ');
+      objects.set(content, join([asBytes(`<< /Length ${drawing.length} >>\nstream\n`), drawing, asBytes('\nendstream')]));
+      objects.set(picture, join([asBytes(`<< /Type /XObject /Subtype /Image /Width ${image.width} /Height ${image.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${image.bytes.length} >>\nstream\n`), image.bytes, asBytes('\nendstream')]));
+    });
+    const chunks = [new Uint8Array([37, 80, 68, 70, 45, 49, 46, 52, 10, 37, 226, 227, 207, 211, 10])]; const offsets = [0]; let position = chunks[0].length;
+    for (let number = 1; number <= objects.size; number += 1) { offsets[number] = position; const chunk = join([asBytes(`${number} 0 obj\n`), objects.get(number), asBytes('\nendobj\n')]); chunks.push(chunk); position += chunk.length; }
+    const xref = position; const entries = ['0000000000 65535 f ', ...offsets.slice(1).map((offset) => `${String(offset).padStart(10, '0')} 00000 n `)];
+    chunks.push(asBytes(`xref\n0 ${objects.size + 1}\n${entries.join('\n')}\ntrailer\n<< /Size ${objects.size + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`));
+    return new Blob(chunks, { type: 'application/pdf' });
+  };
+  const pdfPages = (report) => {
+    const pageWidth = 1240, pageHeight = 1754, margin = 76, itemsPerPage = 18;
+    const chunks = [];
+    for (let index = 0; index < report.reportCards.length; index += itemsPerPage) chunks.push(report.reportCards.slice(index, index + itemsPerPage));
+    return chunks.map((pageCards, pageIndex) => {
+      const canvas = document.createElement('canvas'); canvas.width = pageWidth; canvas.height = pageHeight;
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#ffffff'; context.fillRect(0, 0, pageWidth, pageHeight);
+      context.fillStyle = '#102033'; context.font = '700 38px Arial'; context.fillText(report.labels.title, margin, 84);
+      context.fillStyle = '#438ea0'; context.fillRect(margin, 110, pageWidth - margin * 2, 4);
+      context.fillStyle = '#405268'; context.font = '21px Arial';
+      context.fillText(`${t.week}: ${report.week}/${report.year} · ${formatPeriodRange(report.year, report.week, dayOffset)}`, margin, 154);
+      context.fillText(t.location, margin, 188);
+      context.fillText(`${report.labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending} · ${t.constellation}: ${report.selectedConstellation} · ${t.altitudeThreshold}: ${report.altitudeThreshold}° · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 222);
+      let y = 285;
+      pageCards.forEach((card, cardIndex) => {
+        const absoluteIndex = pageIndex * itemsPerPage + cardIndex + 1;
+        context.fillStyle = '#102033'; context.font = '700 24px Arial'; context.fillText(`${absoluteIndex}. ${card.dataset.objectName}`, margin, y);
+        context.fillStyle = '#536579'; context.font = '19px Arial';
+        const values = [
+          `${t.constellation}: ${card.dataset.constellation || '—'}`,
+          `${t.maxAltitude}: ${card.querySelector('[data-altitude]')?.textContent?.trim() || '—'}`,
+          `${t.bestTime}: ${card.querySelector('[data-best-time]')?.textContent?.trim() || '—'}`,
+          `${t.usefulTime}: ${card.querySelector('[data-hours]')?.textContent?.trim() || '—'}`,
+          `${t.night}: ${card.querySelector('[data-night]')?.textContent?.trim() || '—'}`,
+          `${report.labels.quality}: ${card.querySelector('[data-quality]')?.textContent?.trim() || '—'}`,
+        ];
+        context.fillText(values.join('  ·  '), margin, y + 31, pageWidth - margin * 2);
+        context.strokeStyle = '#dce4eb'; context.beginPath(); context.moveTo(margin, y + 52); context.lineTo(pageWidth - margin, y + 52); context.stroke();
+        y += 75;
+      });
+      context.fillStyle = '#718096'; context.font = '17px Arial'; context.fillText(`${pageIndex + 1} / ${chunks.length} · ${report.labels.generated}: ${new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date())}`, margin, pageHeight - 52);
+      return canvas;
+    });
+  };
+  downloadReportButton?.addEventListener('click', async () => {
+    const report = buildVisibilityReport();
+    downloadReportButton.disabled = true;
+    try {
+      const images = await Promise.all(pdfPages(report).map(async (page) => ({ bytes: await canvasJpeg(page), width: page.width, height: page.height })));
+      const url = URL.createObjectURL(pdfFromJpegs(images));
+      const link = document.createElement('a');
+      link.href = url; link.download = `visibilidad-${report.year}-S${String(report.week).padStart(2, '0')}-${currentView}.pdf`; link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+      confirmButton(downloadReportButton, t.downloadedPdf);
+    } catch (caught) { console.error(caught); }
+    finally { downloadReportButton.disabled = false; }
+  });
   const renderChart = (source, plot, title, weekLabel) => {
     const values = JSON.parse(source.dataset.chartValues);
     const selected = Number(selector.value) - 1;
     const weekData = JSON.parse(source.dataset.weeks)[selected];
     const selectedYear = Number(yearSelector.value);
-    const middleDate = isoDate(selectedYear, selected + 1, 3);
+    const middleDate = isoDate(selectedYear, selected + 1, 3 + dayOffset);
     const maximumDate = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(middleDate);
     const width = 760, height = 360, left = 48, right = 18, top = 22, bottom = 62;
     const x = (index) => left + index * (width - left - right) / (values.length - 1);
@@ -399,10 +621,10 @@ const weekRange = (week: number) => {
     selectedNightDay = 3;
     nightDayButtons.forEach((button) => button.setAttribute('aria-pressed', String(Number(button.dataset.nightDay) === selectedNightDay)));
     chartTabs.hidden = card.dataset.status !== 'photographed' && !enhancedVisibility;
-    if (nightControls) nightControls.hidden = true;
-    chartModeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.chartMode === 'annual')));
-    chartDialog.querySelector('[data-chart-kicker]').textContent = t.annualChart;
-    renderChart(card, chartDialog.querySelector('[data-chart-plot]'), chartDialog.querySelector('[data-chart-title]'), chartDialog.querySelector('[data-chart-week]'));
+    if (nightControls) nightControls.hidden = false;
+    chartModeButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.chartMode === 'night')));
+    chartDialog.querySelector('[data-chart-kicker]').textContent = t.nightChart;
+    renderNightChart(card);
     chartDialog.showModal();
   };
   const normalizeDegrees = (value) => ((value % 360) + 360) % 360;
@@ -465,7 +687,7 @@ const weekRange = (week: number) => {
     return { altitude: geocentric - parallax, phaseAngle: moon.phaseAngle };
   };
   const renderNightChart = (source) => {
-    const selectedDate = isoDate(Number(yearSelector.value), Number(selector.value), selectedNightDay);
+    const selectedDate = isoDate(Number(yearSelector.value), Number(selector.value), dayOffset + selectedNightDay);
     const date = selectedDate.toISOString().slice(0, 10);
     const dayStart = Date.parse(`${date}T12:00:00Z`), darkMinutes = [];
     for (let time = dayStart; time < dayStart + 86400000; time += 60000) {
@@ -488,12 +710,17 @@ const weekRange = (week: number) => {
     const points = samples.map((sample, index) => `${x(index).toFixed(1)},${y(sample.altitude).toFixed(1)}`).join(' ');
     const moonPoints = samples.map((sample, index) => `${x(index).toFixed(1)},${y(sample.moonAltitude).toFixed(1)}`).join(' ');
     const gridLines = [-60, -30, 0, 20, 30, 60, 90].map((altitude) => `<g><line x1="${left}" y1="${y(altitude)}" x2="${width-right}" y2="${y(altitude)}"/><text x="${left-9}" y="${y(altitude)+4}" text-anchor="end">${altitude}°</text></g>`).join('');
+    const selectedThreshold = thresholdSelector ? Number(thresholdSelector.value) : 30;
+    const thresholdLegend = chartDialog.querySelector('[data-threshold-legend]');
+    if (thresholdLegend) thresholdLegend.textContent = `┈ ${t.graphThreshold} ${selectedThreshold}°`;
+    const fixedThresholdLine = selectedThreshold === 30 ? '' : `<line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/>`;
+    const selectedThresholdLine = `<line class="chart-selected-threshold" x1="${left}" y1="${y(selectedThreshold)}" x2="${width-right}" y2="${y(selectedThreshold)}"/><text class="chart-selected-threshold-label" x="${width-right-7}" y="${y(selectedThreshold)-7}" text-anchor="end">${t.graphThreshold} ${selectedThreshold}°</text>`;
     const labelIndexes = [0, .25, .5, .75, 1].map((part) => Math.round((samples.length - 1) * part));
     const timeLabels = labelIndexes.map((index) => `<text x="${x(index)}" y="${height-14}" text-anchor="middle">${new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(samples[index].instant)}</text>`).join('');
     const best = samples.reduce((current, sample) => sample.altitude > current.altitude ? sample : current);
     const usefulHours = samples.filter((sample) => sample.altitude >= 30).length / 12;
     chartDialog.querySelector('[data-chart-title]').textContent = source.dataset.objectName;
-    chartDialog.querySelector('[data-chart-plot]').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.nightChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-night-boundary" x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}"/><line class="chart-night-boundary" x1="${width-right}" y1="${top}" x2="${width-right}" y2="${height-bottom}"/><line class="chart-horizon" x1="${left}" y1="${y(0)}" x2="${width-right}" y2="${y(0)}"/><line class="chart-threshold" x1="${left}" y1="${y(30)}" x2="${width-right}" y2="${y(30)}"/><polyline class="chart-line" points="${points}"/>${enhancedVisibility ? `<polyline class="chart-moon" points="${moonPoints}"/>` : ''}<g class="chart-weeks">${timeLabels}</g></svg>`;
+    chartDialog.querySelector('[data-chart-plot]').innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${t.nightChart}: ${source.dataset.objectName}"><g class="chart-grid">${gridLines}</g><line class="chart-night-boundary" x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}"/><line class="chart-night-boundary" x1="${width-right}" y1="${top}" x2="${width-right}" y2="${height-bottom}"/><line class="chart-horizon" x1="${left}" y1="${y(0)}" x2="${width-right}" y2="${y(0)}"/>${fixedThresholdLine}${selectedThresholdLine}<polyline class="chart-line" points="${points}"/>${enhancedVisibility ? `<polyline class="chart-moon" points="${moonPoints}"/>` : ''}<g class="chart-weeks">${timeLabels}</g></svg>`;
     const bestTime = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(best.instant);
     const timeFormat = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' });
     chartDialog.querySelector('[data-chart-week]').textContent = `${date} · ${t.darkness}: ${timeFormat.format(new Date(darknessStart))}–${timeFormat.format(new Date(darknessEnd))} · ${t.maxAltitude}: ${best.altitude.toLocaleString(locale, { maximumFractionDigits: 1 })}° (${bestTime}) · ${usefulHours.toLocaleString(locale, { maximumFractionDigits: 1 })} h ${t.above} 30°`;
@@ -505,7 +732,7 @@ const weekRange = (week: number) => {
       chartDialog.querySelector('[data-moon-phase-label]').textContent = t.moonPhases[phaseIndex];
       nightDayButtons.forEach((button) => {
         const day = Number(button.dataset.nightDay);
-        const buttonDate = isoDate(Number(yearSelector.value), Number(selector.value), day);
+        const buttonDate = isoDate(Number(yearSelector.value), Number(selector.value), dayOffset + day);
         button.title = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(buttonDate);
       });
     }
@@ -584,33 +811,67 @@ const weekRange = (week: number) => {
   .visibility-guide-link svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
   .visibility-guide-link:hover, .visibility-guide-link:focus-visible { border-color: #438ea0; background: radial-gradient(circle at 90% 8%, rgba(67, 142, 160, .32), transparent 52%), rgba(67, 142, 160, .16); color: #99d2dd; transform: translateY(-1px); }
   .visibility-planner__location { margin: 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .8rem; line-height: 1.5; text-align: right; }
-  .visibility-toolbar { display: flex; align-items: end; justify-content: space-between; gap: .75rem; margin: .75rem 0 1rem; padding: .65rem .75rem; border: 1px solid var(--color-border); border-radius: .7rem; background: linear-gradient(135deg, rgba(224,106,69,.1), var(--color-surface)); }
+  .visibility-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .9rem; margin: .75rem 0 1rem; padding: .65rem .75rem; border: 1px solid var(--color-border); border-radius: .7rem; background: linear-gradient(135deg, rgba(224,106,69,.1), var(--color-surface)); }
   .visibility-toolbar__selectors { display: flex; align-items: end; gap: .9rem; }
+  .visibility-toolbar__modes { display: grid; grid-auto-rows: max-content; align-content: end; justify-items: start; gap: .5rem; min-width: max-content; }
+  .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { display: grid; grid-template-columns: 7.2rem 7.2rem; gap: .5rem; width: 14.9rem; }
+  .visibility-toolbar__modes .visibility-layout button, .visibility-toolbar__modes .visibility-filters button { width: 100%; text-align: left; }
   .week-control { display: grid; gap: .22rem; margin: 0; }
   .week-control label, .visibility-select-control span { font-size: .7rem; font-weight: 700; line-height: 1.15; }
-  .week-control__row { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; }
+  .week-control__labels { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; text-align: left; }
+  .period-shift__labels { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; text-align: left; }
+  .week-control__labels label, .period-shift__labels span { display: block; color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
+  .week-control__row { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; }
+  .period-shift__labels { margin-top: .34rem; }
+  .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; align-items: center; gap: .5rem; }
+  .period-shift button { width: 2.7rem; min-height: 2.7rem; color: #86c2cf; font-size: 1.05rem; }
+  .period-shift button:disabled { opacity: 1; cursor: not-allowed; }
+  .period-shift output { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
+  .week-control__range { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 .57rem var(--font-mono); text-align: center; }
+  :global(.week-control__range) { color: var(--color-text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .82rem !important; font-weight: 400; line-height: 1.6; }
   .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control select { font-size: .82rem; }
-  .week-control select { min-width: 11rem; padding: 0 .8rem; }
+  .week-control #visibility-week { color: var(--color-muted); font-size: 1rem; text-align: center; text-align-last: center; }
+  .week-control select { min-width: 0; padding: 0 .8rem; }
   .week-control #visibility-year { min-width: 0; }
   .week-control button { width: 2.7rem; cursor: pointer; }
+  .week-control button[data-week-step], .period-shift button[data-day-step] { color: #54c8ff; font-size: 1.35rem; font-weight: 700; text-shadow: 0 0 .65rem rgba(84, 200, 255, .24); }
+  .week-control button[data-week-step]:hover, .week-control button[data-week-step]:focus-visible,
+  .period-shift button[data-day-step]:hover, .period-shift button[data-day-step]:focus-visible { border-color: rgba(84, 200, 255, .72); background-color: rgba(67, 142, 160, .2); color: #8bdcff; }
   .visibility-select-control { display: grid; gap: .22rem; font-weight: 700; }
-  :global(#visibility-constellation), :global(#visibility-hours) { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .55rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font-family: var(--font-mono); font-size: .82rem; font-weight: 400; }
-  .week-control select, :global(#visibility-constellation), :global(#visibility-hours) { appearance: none; -webkit-appearance: none; padding-right: 1.65rem; background-color: #0d121c; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 5 3 3 3-3' fill='none' stroke='%23aab5c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.25'/%3E%3C/svg%3E"); background-position: right .5rem center; background-repeat: no-repeat; background-size: .75rem; }
+  .visibility-select-control > span { text-align: left; }
+  :global(#visibility-constellation), :global(#visibility-threshold), :global(#visibility-hours) { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .55rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font-family: var(--font-mono); font-size: .82rem; font-weight: 400; }
+  .week-control select, :global(#visibility-constellation), :global(#visibility-threshold), :global(#visibility-hours) { appearance: none; -webkit-appearance: none; padding-right: 1.65rem; background-color: #0d121c; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 5 3 3 3-3' fill='none' stroke='%23aab5c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.25'/%3E%3C/svg%3E"); background-position: right .5rem center; background-repeat: no-repeat; background-size: .75rem; }
   .constellation-control { width: 8.8rem; flex: 0 0 8.8rem; }
-  .hours-control { width: 5.2rem; flex: 0 0 5.2rem; }
-  .hours-control span { text-align: center; }
-  :global(#visibility-hours) { padding: 0 1.55rem 0 .4rem; text-align: center; text-align-last: center; }
+  .threshold-hours-control { display: grid; width: 10.5rem; flex: 0 0 10.5rem; gap: .45rem; }
+  .threshold-control, .hours-control { width: 100%; }
+  .hours-control span { text-align: left; }
+  :global(#visibility-threshold), :global(#visibility-hours) { padding: 0 1.55rem 0 .4rem; text-align: center; text-align-last: center; }
   .visibility-layout, .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
-  .visibility-layout { margin-left: auto; padding-left: .5rem; border-left: 1px solid var(--color-border); }
+  .visibility-layout { margin-left: 0; }
   .visibility-layout::-webkit-scrollbar,
   .visibility-filters::-webkit-scrollbar { display: none; }
   .visibility-layout button,
-  .visibility-filters button { padding: .55rem .75rem; border: 1px solid var(--color-border); border-radius: .55rem; background: transparent; color: var(--color-muted); cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
+  .visibility-filters button { padding: .55rem .75rem; border: 1px solid rgba(67,142,160,.48); border-radius: .55rem; background: rgba(5,8,14,.42); color: #9bcbd5; cursor: pointer; font: 700 .78rem var(--font-sans); white-space: nowrap; }
   .visibility-filters button span { margin-left: .3rem; color: inherit; font-family: var(--font-mono); font-size: .68rem; }
-  .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: var(--color-accent); background: rgba(224,106,69,.13); color: var(--color-text); }
-  .visibility-results { margin: -.35rem 0 .8rem; color: var(--color-muted); font-size: .82rem; }
-  .visibility-results strong { color: var(--color-accent); font: 700 1rem var(--font-mono); }
+  .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: #54c8ff; background: rgba(67,142,160,.24); color: #d7f4fa; box-shadow: inset 0 0 0 1px rgba(84,200,255,.16); }
+  .visibility-layout button:hover, .visibility-layout button:focus-visible,
+  .visibility-filters button:hover, .visibility-filters button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
+  @media (max-width: 1180px) and (min-width: 701px) {
+    .visibility-toolbar { grid-template-columns: 1fr; }
+    .visibility-toolbar__selectors { min-width: 0; flex-wrap: wrap; }
+    .visibility-toolbar__modes { justify-content: end; width: 100%; min-width: 0; }
+  }
+  .visibility-output { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: -.35rem 0 .8rem; }
+  .visibility-output__actions { display: flex; justify-content: flex-end; gap: .55rem; flex-wrap: wrap; }
+  .visibility-results { margin: 0; color: var(--color-muted); font-size: 1rem; }
+  .visibility-results strong { color: var(--color-accent); font: 700 1.18rem var(--font-mono); }
+  .visibility-output button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2rem; padding: .38rem .62rem; border: 1px solid rgba(67,142,160,.48); border-radius: .5rem; background: rgba(5,8,14,.42); color: #9bcbd5; font: 700 .68rem var(--font-sans); cursor: pointer; transition: border-color .16s ease, color .16s ease, background .16s ease; }
+  .visibility-output button:hover, .visibility-output button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
+  .visibility-output__check { width: .8rem; color: #75e3c4; opacity: 0; transform: scale(.6); transition: opacity .16s ease, transform .16s ease; }
+  .visibility-output button.is-confirmed { border-color: #55d9b3; background: rgba(85,217,179,.14); color: #75e3c4; }
+  .visibility-output button.is-confirmed .visibility-output__check { opacity: 1; transform: scale(1); }
+  .visibility-output button:disabled { opacity: .4; cursor: not-allowed; }
   .visibility-empty { padding: 1rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); color: var(--color-muted); text-align: center; }
   [hidden] { display: none !important; }
   .pending-explorer { grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr); gap: 1rem; }
@@ -627,7 +888,7 @@ const weekRange = (week: number) => {
   .pending-explorer__chart { min-width: 0; padding: 1rem; }
   .pending-explorer__chart > p:first-child { margin: 0 0 .15rem; color: #78e8c7; font: .72rem var(--font-mono); text-transform: uppercase; }
   .pending-explorer__chart h2 { margin: 0; }
-  .pending-explorer__detail { margin-top: .6rem; padding: .45rem .7rem; border: 1px solid rgba(85,217,179,.55); border-radius: .45rem; background: rgba(85,217,179,.08); color: #78e8c7; cursor: pointer; font-weight: 700; }
+  .pending-explorer__detail { display:inline-flex;gap:.38rem;align-items:center;margin-top: .6rem; padding: .45rem .7rem; border: 1px solid rgba(85,217,179,.55); border-radius: .45rem; background: rgba(85,217,179,.08); color: #78e8c7; cursor: pointer; font-weight: 700; }
   .visibility-grid { display: grid; gap: 1rem; }
   .visibility-card { display: grid; min-height: 15rem; grid-template-columns: minmax(10rem, 28%) 1fr; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
   .visibility-card--return-focus { border-color: var(--color-accent); scroll-margin-block: 5rem; animation: return-focus-highlight 4s ease-out; }
@@ -654,22 +915,15 @@ const weekRange = (week: number) => {
   .visibility-card dt { color: var(--color-muted); font-size: .72rem; }
   .visibility-card dd { margin: .25rem 0 0; font-family: var(--font-mono); }
   .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
-  .visibility-card__link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; gap: .45rem; padding: .52rem .72rem; border: 1px solid color-mix(in srgb, var(--color-accent) 58%, transparent); border-radius: .6rem; background: color-mix(in srgb, var(--color-accent) 9%, transparent); color: var(--color-accent); font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
-  .visibility-card__link span { transition: transform .16s ease; }
-  .visibility-card__link:hover,
-  .visibility-card__link:focus-visible { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 16%, transparent); color: var(--color-accent-soft); text-decoration: none; transform: translateY(-1px); }
-  .visibility-card__link:hover span,
-  .visibility-card__link:focus-visible span { transform: translateX(.12rem); }
-  .visibility-card__pending-note { margin: 0; color: #78e8c7; font-size: .82rem; font-weight: 700; }
+  .visibility-card__pending-note { margin: 0 auto 0 0; color: #78e8c7; font-size: .82rem; font-weight: 700; }
   .visibility-card__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .55rem; }
-  .visibility-card__link { margin-right: auto; }
-  .visibility-card__chart-link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; padding: .52rem .72rem; border: 1px solid rgba(85,217,179,.58); border-radius: .6rem; background: rgba(85,217,179,.09); color: #78e8c7; cursor: pointer; font: 700 .82rem var(--font-sans); line-height: 1; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
+  .visibility-card__chart-link { display: inline-flex; width: fit-content; gap:.38rem; align-items: center; justify-content: center; padding: .52rem .72rem; border: 1px solid rgba(85,217,179,.58); border-radius: .6rem; background: rgba(85,217,179,.09); color: #78e8c7; cursor: pointer; font: 700 .82rem var(--font-sans); line-height: 1; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
   .visibility-card__chart-link:hover,
   .visibility-card__chart-link:focus-visible { border-color: #78e8c7; background: rgba(85,217,179,.16); color: #a4f4dc; transform: translateY(-1px); }
   .visibility-card__plan-link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; gap: .4rem; padding: .52rem .72rem; border: 1px solid rgba(229,169,63,.58); border-radius: .6rem; background: rgba(229,169,63,.09); color: #e8ba62; font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; white-space: nowrap; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
   .visibility-card__plan-link:hover, .visibility-card__plan-link:focus-visible { border-color: #e8ba62; background: rgba(229,169,63,.16); color: #f2cf89; text-decoration: none; transform: translateY(-1px); }
   .visibility-grid--list { gap: .4rem; }
-  .visibility-grid--list .visibility-card { display: block; border-radius: .55rem; }
+  .visibility-grid--list .visibility-card { display: block; min-height: 0; border-radius: .55rem; }
   .visibility-grid--list .visibility-card__image { display: none; }
   .visibility-grid--list .visibility-card__body { display: grid; grid-template-columns: minmax(11rem, 1.2fr) minmax(29rem, 2fr) auto; align-items: center; gap: .8rem; padding: .6rem .75rem; }
   .visibility-grid--list .visibility-card__heading { align-items: center; }
@@ -683,7 +937,6 @@ const weekRange = (week: number) => {
   .visibility-grid--list .visibility-card dd,
   .visibility-grid--list .visibility-card__primary dd { margin-top: .12rem; font-size: .82rem; }
   .visibility-grid--list .visibility-card__actions { justify-content: end; min-width: 15rem; }
-  .visibility-grid--list .visibility-card__link,
   .visibility-grid--list .visibility-card__chart-link,
   .visibility-grid--list .visibility-card__plan-link { font-size: .75rem; white-space: nowrap; }
   @media (max-width: 1050px) {
@@ -707,6 +960,7 @@ const weekRange = (week: number) => {
   .night-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem 1rem; color: var(--color-muted); font-size: .72rem; }
   .night-legend__object { color: #78e8c7; }
   .night-legend__moon { color: #ff746c; }
+  .night-legend__threshold { color: #76d6ff; }
   .night-legend strong { display: inline-flex; align-items: center; gap: .38rem; margin-left: auto; color: var(--color-text); font-weight: 600; }
   .night-legend [data-moon-phase-icon] { min-width: 2rem; color: var(--color-accent-soft); font-size: 2rem; line-height: 1; text-align: center; }
   .visibility-chart__plot { margin-top: 1rem; overflow-x: auto; }
@@ -714,6 +968,8 @@ const weekRange = (week: number) => {
   .visibility-chart__plot :global(.chart-grid line) { stroke: rgba(255,255,255,.1); }
   .visibility-chart__plot :global(.chart-grid text), .visibility-chart__plot :global(.chart-weeks text) { fill: #8d98aa; font: 11px var(--font-mono); }
   .visibility-chart__plot :global(.chart-threshold) { stroke: #e06a45; stroke-dasharray: 6 6; opacity: .75; }
+  .visibility-chart__plot :global(.chart-selected-threshold) { stroke: #54c8ff; stroke-width: 2.2; stroke-dasharray: 2 7; stroke-linecap: round; opacity: .98; }
+  .visibility-chart__plot :global(.chart-selected-threshold-label) { fill: #76d6ff; font-family: var(--font-mono); font-size: 9px !important; font-weight: 600; paint-order: stroke; stroke: #0d121c; stroke-width: 1.5px; stroke-linejoin: round; }
   .visibility-chart__plot :global(.chart-horizon) { stroke: #edf1f7; stroke-width: 1.5; opacity: .72; }
   .visibility-chart__plot :global(.chart-line) { fill: none; stroke: #55d9b3; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
   .visibility-chart__plot :global(.chart-moon) { fill: none; stroke: #ff746c; stroke-dasharray: 8 6; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.5; }
@@ -725,11 +981,18 @@ const weekRange = (week: number) => {
   .visibility-chart__selection span { width: .7rem; height: .7rem; border-radius: 50%; background: var(--color-accent); }
   @media (max-width: 700px) {
     .visibility-planner__meta, .visibility-toolbar { align-items: stretch; flex-direction: column; }
+    .visibility-toolbar { grid-template-columns: minmax(0, 1fr); }
+    .visibility-output { align-items: stretch; flex-direction: column; }
+    .visibility-output__actions { justify-content: flex-start; }
+    .visibility-output button { width: fit-content; }
     .visibility-guide-link { justify-self: start; }
     .visibility-toolbar__selectors { align-items: stretch; flex-direction: column; }
+    .threshold-hours-control { width: 100%; flex-basis: auto; }
+    .visibility-toolbar__modes { justify-items: start; width: 100%; min-width: 0; }
     .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
     .visibility-planner__location { text-align: left; }
-    .week-control__row { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
+    .week-control__row, .week-control__labels { grid-template-columns: 2.7rem 4.2rem minmax(7.5rem, 1fr) 2.7rem 5.8rem; }
+    .period-shift__labels, .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
     .week-control select { width: 100%; min-width: 0; }
     .visibility-select-control { width: 100%; flex-basis: auto; }
     .visibility-card { grid-template-columns: 1fr; }
@@ -738,10 +1001,35 @@ const weekRange = (week: number) => {
     .visibility-card dl { grid-template-columns: 1fr 1fr; }
     .visibility-card dl .visibility-card__primary { grid-row: auto; }
     .pending-explorer:not([hidden]) { grid-template-columns: 1fr; }
-    .visibility-grid--list .visibility-card__body { display: block; }
-    .visibility-grid--list .visibility-card dl { grid-template-columns: 1fr 1fr; margin: .6rem 0; }
-    .visibility-grid--list .visibility-card__actions { justify-content: space-between; }
+    .visibility-grid--list { gap: .28rem; }
+    .visibility-grid--list .visibility-card__body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .28rem .5rem; padding: .38rem .5rem; }
+    .visibility-grid--list .visibility-card__heading { grid-column: 1 / -1; min-width: 0; }
+    .visibility-grid--list .visibility-card__heading > div:first-child { min-width: 0; }
+    .visibility-grid--list .visibility-card__heading p:first-child { display: none; }
+    .visibility-grid--list .visibility-card h2 { display: inline; font-size: .82rem; }
+    .visibility-grid--list .visibility-card__heading .visibility-card__alias { display: inline; margin: 0 0 0 .35rem; font-size: .65rem; white-space: nowrap; }
+    .visibility-grid--list .visibility-card__heading .visibility-card__alias::before { content: '· '; }
+    .visibility-grid--list .visibility-card__badges span { padding: .2rem .38rem; font-size: .56rem; }
+    .visibility-grid--list .visibility-card dl { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .2rem; margin: 0; }
+    .visibility-grid--list .visibility-card dl div { min-width: 0; padding: .22rem .3rem; }
+    .visibility-grid--list .visibility-card dt { overflow: hidden; font-size: .5rem; text-overflow: ellipsis; white-space: nowrap; }
+    .visibility-grid--list .visibility-card dd,
+    .visibility-grid--list .visibility-card__primary dd { margin-top: .05rem; font-size: .66rem; white-space: nowrap; }
+    .visibility-grid--list .visibility-card dd small { display: none; }
+    .visibility-grid--list .visibility-card__actions { grid-column: 1 / -1; justify-content: flex-end; min-width: 0; gap: .25rem; }
+    .visibility-grid--list .visibility-card__chart-link,
+    .visibility-grid--list .visibility-card__plan-link { padding: .3rem .42rem; border-radius: .4rem; font-size: .61rem; }
     .night-legend strong { width: 100%; margin-left: 0; }
+  }
+  @media (max-width: 520px) {
+    .visibility-toolbar { padding: .6rem; }
+    .week-control { min-width: 0; }
+    .week-control__row, .week-control__labels { grid-template-columns: 2.35rem minmax(2.75rem, .65fr) minmax(0, 1.35fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
+    .period-shift__labels, .period-shift { grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
+    .week-control button, .period-shift button { width: 2.35rem; }
+    .week-control select, .week-control__range, .period-shift output { padding-right: 1.15rem; padding-left: .35rem; }
+    .week-control__labels label, .period-shift__labels span { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
+    .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .visibility-card--return-focus { animation: none; } }
 </style>

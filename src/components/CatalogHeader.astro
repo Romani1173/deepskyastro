@@ -1,18 +1,20 @@
 ---
 import type { CategoryKey, Lang } from '../i18n';
 import { categories, categoryHref, copy, galleryHref } from '../i18n';
+import SiteMapIcon from './SiteMapIcon.astro';
 
 interface Props { lang: Lang; currentCategory?: CategoryKey; catalogue?: boolean; }
 const { lang, currentCategory, catalogue = false } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
+const categoryIcons = { galaxies: 'galaxy', nebulae: 'nebula', clusters: 'cluster', sun: 'sun' } as const;
 ---
 
 <div class="catalog-controls__top">
 	<nav class="catalog-category-nav" aria-label={t.categoryNav}>
-		<a href={galleryHref(lang, base)} aria-current={catalogue ? 'page' : undefined}>{t.all}</a>
+		<a href={galleryHref(lang, base)} data-category-tone="all" aria-current={catalogue ? 'page' : undefined}><SiteMapIcon name="gallery" size="sm" /><span>{t.all}</span></a>
 		{categories.map((category) => (
-			<a href={categoryHref(lang, category.key, base)} aria-current={currentCategory === category.key ? 'page' : undefined}>{category.labels[lang]}</a>
+			<a href={categoryHref(lang, category.key, base)} data-category-tone={category.key} aria-current={currentCategory === category.key ? 'page' : undefined}><SiteMapIcon name={categoryIcons[category.key]} size="sm" /><span>{category.labels[lang]}</span></a>
 		))}
 	</nav>
 </div>

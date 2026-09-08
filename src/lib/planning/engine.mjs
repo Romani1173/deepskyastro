@@ -156,8 +156,8 @@ export function isoWeeksInYear(year) {
   return Math.ceil((((thursday - yearStart) / 86_400_000) + 1) / 7);
 }
 
-export function analyzeWeek({ isoYear, isoWeek, location, object }) {
-  const start = isoWeekStart(isoYear, isoWeek);
+export function analyzeWeek({ isoYear, isoWeek, startDateUtc, location, object }) {
+  const start = startDateUtc ? new Date(`${startDateUtc}T00:00:00.000Z`) : isoWeekStart(isoYear, isoWeek);
   const nights = Array.from({ length: 7 }, (_, day) => {
     const date = new Date(start.getTime() + day * 86_400_000);
     return analyzeNight({ nightDateUtc: date.toISOString().slice(0, 10), location, object });

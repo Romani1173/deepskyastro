@@ -21,7 +21,7 @@ export const copy = {
 		homeSeoTitle: 'Astrofotografia de cel profund',
 		homeSeoDescription: 'Galeria personal d’astrofotografia de Juan José Romero: nebuloses, galàxies, cúmuls estel·lars i el Sol, amb dades de captura, equip i processament.',
 		homeIntro: 'Una mirada al cel profund a través de l’astrofotografia de Juan José Romero.',
-		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', equipmentAnalyzer: 'Analitzador', planning: 'Planificació', myNight: 'La meva nit', myEquipment: 'El meu equip', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
+		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', equipmentAnalyzer: 'Analitzador', planning: 'Planificació', myNight: 'La meva nit', myEquipment: 'El meu equip', siteMap: 'Mapa de la web', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
 		explore: 'Explora la galeria', categoryNav: 'Filtra per categoria', search: 'Cerca a la galeria', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Ordena', recent: 'Data: recents', name: 'Nom: A–Z', allConstellations: 'Totes', object: 'objecte', objects: 'objectes', photographedObject: 'objecte fotografiat', photographedObjects: 'objectes fotografiats',
 		noResults: "No s'ha trobat cap objecte amb aquesta cerca.", emptyCategory: 'Encara no hi ha cap fotografia en aquesta categoria.',
@@ -37,7 +37,7 @@ export const copy = {
 		homeSeoTitle: 'Astrofotografía de cielo profundo',
 		homeSeoDescription: 'Galería personal de astrofotografía de Juan José Romero: nebulosas, galaxias, cúmulos estelares y el Sol, con datos de captura, equipo y procesado.',
 		homeIntro: 'Una mirada al cielo profundo a través de la astrofotografía de Juan José Romero.',
-		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', equipmentAnalyzer: 'Analizador', planning: 'Planificación', myNight: 'Mi noche', myEquipment: 'Mi equipo', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
+		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', equipmentAnalyzer: 'Analizador', planning: 'Planificación', myNight: 'Mi noche', myEquipment: 'Mi equipo', siteMap: 'Mapa de la web', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
 		explore: 'Explora la galería', categoryNav: 'Filtrar por categoría', search: 'Buscar en la galería', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Ordenar', recent: 'Fecha: recientes', name: 'Nombre: A–Z', allConstellations: 'Todas', object: 'objeto', objects: 'objetos', photographedObject: 'objeto fotografiado', photographedObjects: 'objetos fotografiados',
 		noResults: 'No se ha encontrado ningún objeto con esta búsqueda.', emptyCategory: 'Todavía no hay ninguna fotografía en esta categoría.',
@@ -53,7 +53,7 @@ export const copy = {
 		homeSeoTitle: 'Deep-Sky Astrophotography',
 		homeSeoDescription: 'Juan José Romero’s personal astrophotography gallery: nebulae, galaxies, star clusters and the Sun, with capture, equipment and processing details.',
 		homeIntro: 'A personal view of the deep sky through the astrophotography of Juan José Romero.',
-		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', equipmentAnalyzer: 'Analyser', planning: 'Planning', myNight: 'My night', myEquipment: 'My equipment', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
+		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', equipmentAnalyzer: 'Analyser', planning: 'Planning', myNight: 'My night', myEquipment: 'My equipment', siteMap: 'Site map', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
 		explore: 'Explore the gallery', categoryNav: 'Filter by category', search: 'Search the gallery', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Sort', recent: 'Date: newest', name: 'Name: A–Z', allConstellations: 'All', object: 'object', objects: 'objects', photographedObject: 'photographed object', photographedObjects: 'photographed objects',
 		noResults: 'No objects match this search.', emptyCategory: 'There are no photographs in this category yet.',
@@ -90,12 +90,13 @@ export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHr
 export const planningHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('planificacio', base) : pageHref(`${lang}/${lang === 'en' ? 'planning' : 'planificacion'}`, base);
 export const myNightHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('la-meva-nit', base) : pageHref(`${lang}/${lang === 'en' ? 'my-night' : 'mi-noche'}`, base);
 export const sessionPreparationHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('prepara-la-sessio', base) : pageHref(`${lang}/${lang === 'en' ? 'prepare-your-session' : 'prepara-tu-sesion'}`, base);
+export const siteMapHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('mapa-web', base) : pageHref(`${lang}/${lang === 'en' ? 'site-map' : 'mapa-web'}`, base);
 export const planningGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('planificacio/guia', base)
 	: pageHref(`${lang}/${lang === 'en' ? 'planning/guide' : 'planificacion/guia'}`, base);
 export const visibilityGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('visibilitat/guia', base)
-	: lang === 'es' ? pageHref('es/visibilidad/guia', base) : visibilityHref('en', base);
+	: lang === 'es' ? pageHref('es/visibilidad/guia', base) : pageHref('en/visibility/guide', base);
 export const equipmentAnalyzerHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('laboratori/analitzador-equip', base)
 	: lang === 'es' ? pageHref('es/laboratorio/analizador-equipo', base) : pageHref('en/lab/equipment-analyser', base);
@@ -120,10 +121,11 @@ export const languageLinks = {
 	planning: (base = '/') => ({ ca: planningHref('ca', base), es: planningHref('es', base), en: planningHref('en', base) }),
 	myNight: (base = '/') => ({ ca: myNightHref('ca', base), es: myNightHref('es', base), en: myNightHref('en', base) }),
 	sessionPreparation: (base = '/') => ({ ca: sessionPreparationHref('ca', base), es: sessionPreparationHref('es', base), en: sessionPreparationHref('en', base) }),
+	siteMap: (base = '/') => ({ ca: siteMapHref('ca', base), es: siteMapHref('es', base), en: siteMapHref('en', base) }),
 	planningGuide: (base = '/') => ({ ca: planningGuideHref('ca', base), es: planningGuideHref('es', base), en: planningGuideHref('en', base) }),
 	equipmentAnalyzer: (base = '/') => ({ ca: equipmentAnalyzerHref('ca', base), es: equipmentAnalyzerHref('es', base), en: equipmentAnalyzerHref('en', base) }),
 	equipmentAnalyzerGuide: (base = '/') => ({ ca: equipmentAnalyzerGuideHref('ca', base), es: equipmentAnalyzerGuideHref('es', base), en: equipmentAnalyzerGuideHref('en', base) }),
-	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityHref('en', base) }),
+	visibilityGuide: (base = '/') => ({ ca: visibilityGuideHref('ca', base), es: visibilityGuideHref('es', base), en: visibilityGuideHref('en', base) }),
 	category: (key: CategoryKey, base = '/') => ({ ca: categoryHref('ca', key, base), es: categoryHref('es', key, base), en: categoryHref('en', key, base) }),
 	photo: (id: string, base = '/') => ({ ca: photoHref('ca', id, base), es: photoHref('es', id, base), en: photoHref('en', id, base) }),
 };
