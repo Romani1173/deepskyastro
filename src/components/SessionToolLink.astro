@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '../i18n';
+import SiteMapIcon from './SiteMapIcon.astro';
 import { sessionPreparationCopy } from '../i18n';
 
 interface Props {
@@ -14,7 +15,7 @@ const navLabel = { ca: 'Navegació de preparació', es: 'Navegación de preparac
 ---
 
 <nav class="session-tool-link" aria-label={navLabel} data-session-tool-link data-visibility-href={visibilityHref}>
-	<a href={href} data-session-return data-hub-label={text.openSession} data-hub-return-label={text.returnToSession} data-visibility-return-label={text.returnToVisibility}><span aria-hidden="true" data-session-return-icon>◇</span><span data-session-return-label>{text.openSession}</span></a>
+	<a href={href} data-session-return data-hub-label={text.openSession} data-hub-return-label={text.returnToSession} data-visibility-return-label={text.returnToVisibility}><span data-session-return-icon><SiteMapIcon name="route" size="sm" /></span><span data-session-return-label>{text.openSession}</span></a>
 </nav>
 
 <style>

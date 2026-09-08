@@ -6,6 +6,7 @@ import { photoText } from '../photoTranslations';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import Layout from '../layouts/Layout.astro';
 import SessionToolLink from './SessionToolLink.astro';
+import SiteMapIcon from './SiteMapIcon.astro';
 import visibility from '../data/visibility.generated.json';
 
 interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: boolean; }
@@ -146,7 +147,7 @@ const weekRange = (week: number) => {
       <div class="pending-explorer__list"><h2>{t.choosePending}</h2><div data-pending-list>
         {cards.filter(({ object }) => object.status === 'pending').map(({ id, object, displayAlias, displayCatalogName }) => <button type="button" data-pending-select data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-constellation={object.constellation} data-ra={object.raDeg} data-dec={object.decDeg} data-status="pending" data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))} data-weeks={JSON.stringify(object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]))}><span>{displayCatalogName}{displayAlias && <small class="pending-explorer__alias">{displayAlias}</small>}</span><small data-pending-altitude>—</small></button>)}
       </div></div>
-      <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p><button type="button" class="pending-explorer__detail" data-open-pending-chart>{t.viewChart} →</button></div>
+      <div class="pending-explorer__chart"><p>{t.annualChart}</p><h2 data-pending-chart-title></h2><div class="visibility-chart__plot" data-pending-chart-plot></div><p class="visibility-chart__selection"><span></span> <b data-pending-chart-week></b></p><button type="button" class="pending-explorer__detail" data-open-pending-chart><SiteMapIcon name="visibility" size="sm" />{t.viewChart} →</button></div>
     </section>}
 
     <div class="visibility-grid" data-visibility-grid>
@@ -169,8 +170,8 @@ const weekRange = (week: number) => {
             </dl>
             <div class="visibility-card__actions">
               {!foto && <p class="visibility-card__pending-note">{t.pendingNote}</p>}
-              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}>{t.viewChart}</button>
-              <a class="visibility-card__plan-link" data-planning-link href={`${planningHref(lang, base)}?object=${encodeURIComponent(id)}&from=visibility`}>{t.plan}<span aria-hidden="true">→</span></a>
+              <button type="button" class="visibility-card__chart-link" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}><SiteMapIcon name="visibility" size="sm" />{t.viewChart}</button>
+              <a class="visibility-card__plan-link" data-planning-link href={`${planningHref(lang, base)}?object=${encodeURIComponent(id)}&from=visibility`}><SiteMapIcon name="planning" size="sm" />{t.plan}<span aria-hidden="true">→</span></a>
             </div>
           </div>
         </article>;
@@ -887,7 +888,7 @@ const weekRange = (week: number) => {
   .pending-explorer__chart { min-width: 0; padding: 1rem; }
   .pending-explorer__chart > p:first-child { margin: 0 0 .15rem; color: #78e8c7; font: .72rem var(--font-mono); text-transform: uppercase; }
   .pending-explorer__chart h2 { margin: 0; }
-  .pending-explorer__detail { margin-top: .6rem; padding: .45rem .7rem; border: 1px solid rgba(85,217,179,.55); border-radius: .45rem; background: rgba(85,217,179,.08); color: #78e8c7; cursor: pointer; font-weight: 700; }
+  .pending-explorer__detail { display:inline-flex;gap:.38rem;align-items:center;margin-top: .6rem; padding: .45rem .7rem; border: 1px solid rgba(85,217,179,.55); border-radius: .45rem; background: rgba(85,217,179,.08); color: #78e8c7; cursor: pointer; font-weight: 700; }
   .visibility-grid { display: grid; gap: 1rem; }
   .visibility-card { display: grid; min-height: 15rem; grid-template-columns: minmax(10rem, 28%) 1fr; overflow: hidden; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-surface); }
   .visibility-card--return-focus { border-color: var(--color-accent); scroll-margin-block: 5rem; animation: return-focus-highlight 4s ease-out; }
@@ -916,7 +917,7 @@ const weekRange = (week: number) => {
   .visibility-card__primary dd { color: var(--color-accent); font-size: 2rem; }
   .visibility-card__pending-note { margin: 0 auto 0 0; color: #78e8c7; font-size: .82rem; font-weight: 700; }
   .visibility-card__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .55rem; }
-  .visibility-card__chart-link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; padding: .52rem .72rem; border: 1px solid rgba(85,217,179,.58); border-radius: .6rem; background: rgba(85,217,179,.09); color: #78e8c7; cursor: pointer; font: 700 .82rem var(--font-sans); line-height: 1; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
+  .visibility-card__chart-link { display: inline-flex; width: fit-content; gap:.38rem; align-items: center; justify-content: center; padding: .52rem .72rem; border: 1px solid rgba(85,217,179,.58); border-radius: .6rem; background: rgba(85,217,179,.09); color: #78e8c7; cursor: pointer; font: 700 .82rem var(--font-sans); line-height: 1; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }
   .visibility-card__chart-link:hover,
   .visibility-card__chart-link:focus-visible { border-color: #78e8c7; background: rgba(85,217,179,.16); color: #a4f4dc; transform: translateY(-1px); }
   .visibility-card__plan-link { display: inline-flex; width: fit-content; align-items: center; justify-content: center; gap: .4rem; padding: .52rem .72rem; border: 1px solid rgba(229,169,63,.58); border-radius: .6rem; background: rgba(229,169,63,.09); color: #e8ba62; font-size: .82rem; font-weight: 700; line-height: 1; text-decoration: none; white-space: nowrap; transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease; }

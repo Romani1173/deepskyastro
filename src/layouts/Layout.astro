@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
+import SiteMapIcon from '../components/SiteMapIcon.astro';
 import type { Lang } from '../i18n';
 import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, normalizeBase, planningHref, visibilityHref, withBase } from '../i18n';
 
@@ -28,12 +29,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImage = image ? new URL(image, Astro.site) : undefined;
 const structuredDataJson = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 const nav = [
-	{ href: homeHref(lang, base), label: copy[lang].home, tone: 'home' },
-	{ href: galleryHref(lang, base), label: copy[lang].catalogue, tone: 'gallery' },
-	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner, tone: 'visibility' },
-	{ href: equipmentAnalyzerHref(lang, base), label: copy[lang].equipmentAnalyzer, tone: 'analyser' },
-	{ href: planningHref(lang, base), label: copy[lang].planning, tone: 'planning' },
-	{ href: articlesHref(lang, base), label: copy[lang].articles, tone: 'articles' },
+	{ href: homeHref(lang, base), label: copy[lang].home, tone: 'home', icon: 'home' as const },
+	{ href: galleryHref(lang, base), label: copy[lang].catalogue, tone: 'gallery', icon: 'gallery' as const },
+	{ href: visibilityHref(lang, base), label: copy[lang].visibilityPlanner, tone: 'visibility', icon: 'visibility' as const },
+	{ href: equipmentAnalyzerHref(lang, base), label: copy[lang].equipmentAnalyzer, tone: 'analyser', icon: 'analyser' as const },
+	{ href: planningHref(lang, base), label: copy[lang].planning, tone: 'planning', icon: 'planning' as const },
+	{ href: articlesHref(lang, base), label: copy[lang].articles, tone: 'articles', icon: 'articles' as const },
 ];
 const isCategoryPage = /\/(?:categoria|category)\//.test(currentPath);
 const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', en: 'Main navigation' }[lang];
@@ -70,7 +71,7 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		{!minimal && !hero && <header class:list={{ 'site-header': true, 'site-shell': true, 'site-header--compact': hero, 'site-header--focused': focused }}>
 			{!focused && (hero ? <a class="site-brand" href={rootHref}>{SITE_TITLE}</a> : <><h1 class="site-title"><a href={homeHref(lang, base)}>{SITE_TITLE}</a></h1><p class="site-tagline">{copy[lang].siteDescription}</p></>)}
 			{!hero && <nav class="site-nav" aria-label={mainNavLabel}>
-				{nav.map((item) => <a href={item.href} data-nav-tone={item.tone} aria-current={currentPath === decodeURIComponent(item.href) || (item.href === galleryHref(lang, base) && isCategoryPage) ? 'page' : undefined}>{item.label}</a>)}
+				{nav.map((item) => <a href={item.href} data-nav-tone={item.tone} aria-current={currentPath === decodeURIComponent(item.href) || (item.href === galleryHref(lang, base) && isCategoryPage) ? 'page' : undefined}><SiteMapIcon name={item.icon} size="sm" /><span>{item.label}</span></a>)}
 			</nav>}
 			{focused && <LanguageSelector lang={lang} links={languageLinks} />}
 		</header>}
