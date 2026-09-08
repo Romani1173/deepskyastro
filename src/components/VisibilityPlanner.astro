@@ -18,9 +18,9 @@ const texts = {
   en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Gallery', pending: 'Pending', all: 'All', photos: 'With photos', list: 'List', display: 'Photographed objects display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above {threshold}°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const exportTexts = {
-  ca: { copyResults: 'Copia els resultats', copiedResults: '✓ Resultats copiats', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Copia o descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar' },
-  es: { copyResults: 'Copiar resultados', copiedResults: '✓ Resultados copiados', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Copia o descarga los resultados visibles sin fotografías.', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', altitudeThreshold: 'Umbral de altura', graphThreshold: 'Umbral', minimumVisibility: 'Horas mínimas sobre el umbral' },
-  en: { copyResults: 'Copy results', copiedResults: '✓ Results copied', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Copy or download the visible results without photographs.', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold' },
+  ca: { downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar' },
+  es: { downloadTxt: 'Descargar TXT', downloadedTxt: '✓ TXT descargado', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Descarga los resultados visibles sin fotografías.', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', altitudeThreshold: 'Umbral de altura', graphThreshold: 'Umbral', minimumVisibility: 'Horas mínimas sobre el umbral' },
+  en: { downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Download the visible results without photographs.', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold' },
 } as const;
 const t = { ...texts[lang], ...exportTexts[lang] };
 const enhancedVisibility = lang !== 'en';
@@ -137,7 +137,7 @@ const weekRange = (week: number) => {
     <div class="visibility-output">
       <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
       <div class="visibility-output__actions">
-        <button class="report-action report-action--visibility" type="button" data-copy-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.copyResults}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+        <button class="report-action report-action--visibility" type="button" data-download-visibility-txt title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.downloadTxt}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
         <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
       </div>
     </div>
@@ -203,7 +203,7 @@ const weekRange = (week: number) => {
   const layoutControls = document.querySelector('[data-visibility-layout-controls]');
   const visibleCount = document.querySelector('[data-visible-count]');
   const visibleLabel = document.querySelector('[data-visible-label]');
-  const copyReportButton = document.querySelector('[data-copy-visibility]');
+  const downloadTxtButton = document.querySelector('[data-download-visibility-txt]');
   const downloadReportButton = document.querySelector('[data-download-visibility]');
   const emptyMessage = document.querySelector('[data-visibility-empty]');
   const pendingExplorer = document.querySelector('[data-pending-explorer]');
@@ -514,18 +514,15 @@ const weekRange = (week: number) => {
       else button.removeAttribute('aria-label');
     }, 2800);
   };
-  copyReportButton?.addEventListener('click', async () => {
-    const value = buildVisibilityReport().lines.join('\n');
-    try { await navigator.clipboard.writeText(value); }
-    catch {
-      const area = document.createElement('textarea');
-      area.value = value;
-      document.body.append(area);
-      area.select();
-      document.execCommand('copy');
-      area.remove();
-    }
-    confirmButton(copyReportButton, t.copiedResults);
+  downloadTxtButton?.addEventListener('click', () => {
+    const report = buildVisibilityReport();
+    const url = URL.createObjectURL(new Blob([report.lines.join('\n')], { type: 'text/plain;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `visibilidad-${report.year}-S${String(report.week).padStart(2, '0')}-${currentView}.txt`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+    confirmButton(downloadTxtButton, t.downloadedTxt);
   });
   const canvasJpeg = (canvas) => new Promise((resolve, reject) => canvas.toBlob(async (blob) => blob ? resolve(new Uint8Array(await blob.arrayBuffer())) : reject(new Error('PDF image failed')), 'image/jpeg', .92));
   const pdfFromJpegs = (images) => {
