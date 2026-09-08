@@ -204,6 +204,15 @@ main { padding: 1rem 0 4rem; }
 .photo-detail__actions { display: flex; flex-wrap: wrap; gap: .65rem; margin: -0.35rem 0 1.5rem; }
 .photo-detail__actions .annual-visibility__detail-link--planning { border-color: rgba(212, 155, 77, .62); background: radial-gradient(circle at 94% 8%, rgba(212, 155, 77, .2), transparent 48%), rgba(212, 155, 77, .09); color: #e0ad67; }
 .photo-detail__actions .annual-visibility__detail-link--planning:hover, .photo-detail__actions .annual-visibility__detail-link--planning:focus-visible { border-color: #d49b4d; background: radial-gradient(circle at 90% 8%, rgba(212, 155, 77, .3), transparent 52%), rgba(212, 155, 77, .16); color: #f0c984; }
+.photo-notebook { margin: 0 0 1.5rem; overflow: hidden; border: 1px solid rgba(221, 216, 201, .34); border-radius: .8rem; background: radial-gradient(circle at 96% 5%, rgba(221, 216, 201, .08), transparent 42%), var(--color-surface); }
+.photo-notebook summary { display: flex; align-items: center; gap: .6rem; padding: .9rem 1rem; color: #e5e1d5; font-size: .9rem; font-weight: 700; cursor: pointer; list-style: none; }
+.photo-notebook summary::-webkit-details-marker { display: none; }
+.photo-notebook summary:hover, .photo-notebook summary:focus-visible { color: #fffdf6; }
+.photo-notebook__chevron { margin-left: auto; font-size: 1.3rem; line-height: .8; transition: transform .18s ease; }
+.photo-notebook[open] .photo-notebook__chevron { transform: rotate(180deg); }
+.photo-notebook__content { padding: 0 1.15rem 1.15rem; border-top: 1px solid rgba(221, 216, 201, .15); color: var(--color-muted); line-height: 1.72; }
+.photo-notebook__content p { margin: 1rem 0 0; }
+.photo-notebook__content strong { color: var(--color-text); }
 @media (max-width: 600px) { .annual-visibility__header { align-items: flex-start; flex-direction: column; gap: .7rem; } }
 .data-list { margin: 0; }
 .data-list div { padding: .5rem 0; border-top: 1px solid rgba(43, 56, 80, .7); }
