@@ -14,6 +14,11 @@ const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName)
 const coverRotationDays = 1;
 const coverRotationAnchor = Date.UTC(2026, 7, 21);
 const coverPreviewEnabled = import.meta.env.DEV;
+const homeNavigationTitles = {
+	ca: { firstVisit: 'Primera visita', directAccess: 'Accessos directes' },
+	es: { firstVisit: 'Primera visita', directAccess: 'Accesos directos' },
+	en: { firstVisit: 'First visit', directAccess: 'Quick access' },
+}[lang];
 const rotatingCovers = [
 	{ src: withBase('imagenes/portadas/portada-rotativa-01.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
 	{ src: withBase('imagenes/portadas/portada-rotativa-07.webp', base), shadeLeft: .55, shadeRight: .17 }, // NGC 2237 verde
@@ -84,13 +89,23 @@ const structuredData = {
 				<h1 id="welcome-title">El meu Cel Profund</h1>
 				<p class="welcome-hero__description">{introBeforeAuthor}<span class="welcome-hero__author">{authorName}</span>{introAfterAuthor}</p>
 			</div>
-			<div class="welcome-hero__actions">
-				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--result" href={equipmentHref(lang, base)}><SiteMapIcon name="equipment" size="sm" />{t.myEquipment}</a>
-				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--articles" href={articlesHref(lang, base)}><SiteMapIcon name="articles" size="sm" />{t.articles}</a>
-				<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--review context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip"><SiteMapIcon name="route" size="sm" />{t.homeSessionPreparation}<span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
-				<a class="welcome-hero__cta welcome-hero__cta--primary welcome-hero__cta--gallery" href={galleryHref(lang, base)}><SiteMapIcon name="gallery" size="sm" />{t.explore}<span aria-hidden="true">→</span></a>
-			</div>
 		</div>
-		<a class="welcome-hero__map" href={siteMapHref(lang, base)}><SiteMapIcon name="sitemap" />{t.siteMap}</a>
+		<div class="welcome-hero__navigation">
+			<section class="welcome-hero__entry-group" aria-labelledby="home-first-visit-title">
+				<h2 id="home-first-visit-title">{homeNavigationTitles.firstVisit}</h2>
+				<div class="welcome-hero__entry-content welcome-hero__entry-content--first">
+					<a class="welcome-hero__map" href={siteMapHref(lang, base)}><SiteMapIcon name="sitemap" />{t.siteMap}</a>
+				</div>
+			</section>
+			<section class="welcome-hero__entry-group" aria-labelledby="home-direct-access-title">
+				<h2 id="home-direct-access-title">{homeNavigationTitles.directAccess}</h2>
+				<div class="welcome-hero__actions">
+					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--result" href={equipmentHref(lang, base)}><SiteMapIcon name="equipment" size="sm" />{t.myEquipment}</a>
+					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--articles" href={articlesHref(lang, base)}><SiteMapIcon name="articles" size="sm" />{t.articles}</a>
+					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--review context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip"><SiteMapIcon name="route" size="sm" />{t.homeSessionPreparation}<span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
+					<a class="welcome-hero__cta welcome-hero__cta--primary welcome-hero__cta--gallery" href={galleryHref(lang, base)}><SiteMapIcon name="gallery" size="sm" />{t.explore}<span aria-hidden="true">→</span></a>
+				</div>
+			</section>
+		</div>
 	</section>
 </Layout>

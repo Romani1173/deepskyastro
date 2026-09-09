@@ -31,11 +31,15 @@
 .planning-day-shift button:first-of-type { border-radius: .55rem 0 0 .55rem; border-right: 0; }
 .planning-day-shift button:last-of-type { border-radius: 0 .55rem .55rem 0; border-left: 0; }
 .planning-day-shift button:disabled { color: var(--color-muted); cursor: not-allowed; opacity: .45; }
-.planning-day-shift output { display: grid; min-width: 0; min-height: 2.65rem; place-items: center; padding: .45rem .65rem; border: 1px solid var(--color-border); background: rgba(8, 11, 18, .9); color: var(--color-muted); font: 400 1.125rem/1.6 var(--font-sans); text-align: center; }
+.planning-day-shift button.planning-day-shift__range { display: flex; min-width: 0; min-height: 2.65rem; align-items: center; justify-content: center; gap: .7rem; padding: 0 .8rem; border: 1px solid var(--color-border); background: rgba(8, 11, 18, .9); color: var(--color-muted); font: 400 1.125rem/1.6 var(--font-sans); text-align: center; cursor: pointer; }
+.planning-day-shift__range svg { width: 1.7rem; height: 1.7rem; flex: 0 0 auto; fill: none; stroke: var(--planning-gold); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.55; transition: transform .16s ease; }
+.planning-day-shift__range:hover svg, .planning-day-shift__range:focus-visible svg, .planning-day-shift__range[aria-expanded="true"] svg { transform: translateY(-1px); }
+.planning-period-calendar { --period-calendar-border: rgba(229,169,63,.36); --period-calendar-accent: var(--planning-gold); --period-calendar-accent-soft: #e6c58d; --period-calendar-line: rgba(229,169,63,.16); --period-calendar-weekend: rgba(229,169,63,.1); --period-calendar-selection-border: rgba(229,169,63,.72); --period-calendar-selection: rgba(229,169,63,.24); --period-calendar-selection-text: #fff4d7; }
 .planning-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; align-items: end; }
 .planning-fields--location { grid-template-columns: 1.4fr 1fr 1fr; }
 .planning-panel label { display: grid; gap: .4rem; color: var(--color-muted); font-size: .82rem; }
 .planning-panel input, .planning-panel select { width: 100%; min-height: 2.65rem; padding: .58rem .68rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .9); color: var(--color-text); font: .86rem var(--font-technical); }
+.planning-panel select[name="threshold"] { text-align: center; text-align-last: center; }
 .planning-panel input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
 .planning-panel input[type="number"]::-webkit-inner-spin-button, .planning-panel input[type="number"]::-webkit-outer-spin-button { margin: 0; appearance: none; }
 .planning-panel input[name="year"], .planning-panel input[name="week"] { appearance: auto; -moz-appearance: auto; color-scheme: dark; }

@@ -10,6 +10,7 @@ import { getCollection } from 'astro:content';
 import { photoText } from '../../photoTranslations';
 import { formatCatalogDesignations } from '../../lib/catalog-formatting.mjs';
 import '../../styles/planning.css';
+import '../../styles/period-calendar.css';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -156,11 +157,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
           <div class="planning-day-shift" aria-label={periodShiftText.label}>
             <span class="planning-day-shift__label">{t.selectedWeeklyPeriod}</span>
             <button type="button" data-planning-day-step="-1" aria-label={periodShiftText.previous}>‹</button>
-            <output data-shifted-range aria-live="polite"></output>
+            <button class="planning-day-shift__range" type="button" data-planning-calendar-toggle aria-expanded="false"><span data-shifted-range></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5v3M17.5 3.5v3M4 8.5h16M5.5 5h13A1.5 1.5 0 0 1 20 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-12A1.5 1.5 0 0 1 5.5 5Z"/><path d="M8 12h3v3H8zM14 12h2M14 15h2"/></svg></button>
             <button type="button" data-planning-day-step="1" aria-label={periodShiftText.next}>›</button>
           </div>
           <label><span>{t.altitudeThreshold}</span><select name="threshold">{[30, 35, 40, 45, 50, 55, 60].map((threshold) => <option value={threshold}>{threshold}°</option>)}</select></label>
         </div>
+        <div class="planning-period-calendar period-calendar-ui" data-planning-period-calendar hidden><p class="period-calendar-ui__caption" data-planning-calendar-caption></p><div class="planning-period-calendar__weekdays period-calendar-ui__weekdays" data-planning-calendar-weekdays></div><div class="planning-period-calendar__days period-calendar-ui__days" data-planning-calendar-days></div></div>
         <p class="planning-error" data-planning-error hidden>{t.error}</p>
       </fieldset>
       <div class="planning-period-actions">
@@ -256,7 +258,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
   const weekMonth = root.querySelector<HTMLOutputElement>('[data-week-month]');
   const weekDays = root.querySelector<HTMLOutputElement>('[data-week-days]');
-  const shiftedRange = root.querySelector<HTMLOutputElement>('[data-shifted-range]');
+  const shiftedRange = root.querySelector<HTMLElement>('[data-shifted-range]');
+  const calendarToggle = root.querySelector<HTMLButtonElement>('[data-planning-calendar-toggle]');
+  const periodCalendar = root.querySelector<HTMLElement>('[data-planning-period-calendar]');
+  const calendarCaption = root.querySelector<HTMLElement>('[data-planning-calendar-caption]');
+  const calendarWeekdays = root.querySelector<HTMLElement>('[data-planning-calendar-weekdays]');
+  const calendarDays = root.querySelector<HTMLElement>('[data-planning-calendar-days]');
   const planningPhotoButton = root.querySelector<HTMLButtonElement>('[data-planning-photo]');
   const planningPhotoDialog = root.querySelector<HTMLDialogElement>('[data-planning-photo-dialog]');
   const planningPhotoImage = root.querySelector<HTMLImageElement>('[data-planning-photo-image]');
@@ -286,6 +293,37 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const requestedThreshold = Number(requestUrl.searchParams.get('threshold'));
   const thresholdOptions = [30, 35, 40, 45, 50, 55, 60];
   let dayOffset = requestUrl.searchParams.has('offset') && Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : Math.max(-3, Math.min(3, Number(session.dayOffset) || 0));
+  const renderPeriodCalendar = (year: number, week: number) => {
+    if (!calendarDays || !calendarCaption || !calendarWeekdays) return;
+    const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[config.lang] ?? 'es-ES';
+    const start = isoWeekStart(year, week);
+    const first = new Date(start.getTime() - 3 * 86400000);
+    const last = new Date(start.getTime() + 9 * 86400000);
+    const monthLabel = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    calendarCaption.textContent = first.getUTCMonth() === last.getUTCMonth() ? monthLabel.format(first) : `${monthLabel.format(first)} — ${monthLabel.format(last)}`;
+    calendarWeekdays.replaceChildren(...Array.from({ length: 13 }, (_, index) => {
+      const date = new Date(first.getTime() + index * 86400000);
+      const item = document.createElement('span');
+      item.textContent = new Intl.DateTimeFormat(locale, { weekday: 'narrow', timeZone: 'UTC' }).format(date);
+      item.classList.toggle('is-weekend', [0, 6].includes(date.getUTCDay()));
+      return item;
+    }));
+    calendarDays.replaceChildren(...Array.from({ length: 13 }, (_, index) => {
+      const date = new Date(first.getTime() + index * 86400000);
+      const relativeDay = index - 3;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = String(date.getUTCDate());
+      button.title = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(date);
+      button.classList.toggle('is-weekend', [0, 6].includes(date.getUTCDay()));
+      button.classList.toggle('is-selected', relativeDay >= dayOffset && relativeDay <= dayOffset + 6);
+      button.classList.toggle('is-start', relativeDay === dayOffset);
+      button.classList.toggle('is-end', relativeDay === dayOffset + 6);
+      if (relativeDay >= -3 && relativeDay <= 3) button.addEventListener('click', () => { dayOffset = relativeDay; updateWeekRange(); syncPhotoLink(); markDirty(); invalidateObjectResults(); persist(); });
+      else button.disabled = true;
+      return button;
+    }));
+  };
   field('locationName').value = session.location.name ?? '';
   field('latitude').value = String(session.location.latitudeDeg);
   field('longitude').value = String(session.location.longitudeDeg);
@@ -318,6 +356,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     const shiftedStart = new Date(start.getTime() + dayOffset * 86400000);
     const shiftedEnd = new Date(shiftedStart.getTime() + 6 * 86400000);
     if (shiftedRange) shiftedRange.textContent = `${typeof formatter.formatRange === 'function' ? formatter.formatRange(shiftedStart, shiftedEnd) : `${formatter.format(shiftedStart)} — ${formatter.format(shiftedEnd)}`} · UTC`;
+    renderPeriodCalendar(year, week);
     root.querySelectorAll<HTMLButtonElement>('[data-planning-day-step]').forEach((button) => { button.disabled = dayOffset + Number(button.dataset.planningDayStep) < -3 || dayOffset + Number(button.dataset.planningDayStep) > 3; });
   };
   const altitudeThreshold = () => Number(field('threshold').value) || 30;
@@ -524,6 +563,12 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     window.history.replaceState(null, '', url);
     updateWeekRange(); syncPhotoLink(); markDirty(); invalidateObjectResults(); persist();
   }));
+  calendarToggle?.addEventListener('click', () => {
+    if (!periodCalendar) return;
+    const open = periodCalendar.hidden;
+    periodCalendar.hidden = !open;
+    calendarToggle.setAttribute('aria-expanded', String(open));
+  });
   root.querySelectorAll<HTMLButtonElement>('[data-step-field]').forEach((button) => button.addEventListener('click', () => {
     const name = button.dataset.stepField ?? '';
     const direction = Number(button.dataset.stepDirection) < 0 ? -1 : 1;

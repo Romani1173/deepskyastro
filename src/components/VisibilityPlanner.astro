@@ -8,6 +8,7 @@ import Layout from '../layouts/Layout.astro';
 import SessionToolLink from './SessionToolLink.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import visibility from '../data/visibility.generated.json';
+import '../styles/period-calendar.css';
 
 interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: boolean; }
 const { lang, fotos, showPending = true } = Astro.props;
@@ -114,9 +115,10 @@ const weekParts = (week: number) => {
       <div class="period-shift__label">{t.selectedWeeklyPeriod}</div>
       <div class="period-shift" aria-label={t.shiftPeriod}>
         <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
-        <output data-period-range aria-live="polite">{weekRange(currentWeek)} {currentIso.year} · {t.localTime}</output>
+        <button class="period-shift__range" type="button" data-calendar-toggle aria-expanded="false"><span data-period-range>{weekRange(currentWeek)} {currentIso.year} · {t.localTime}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5v3M17.5 3.5v3M4 8.5h16M5.5 5h13A1.5 1.5 0 0 1 20 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-12A1.5 1.5 0 0 1 5.5 5Z"/><path d="M8 12h3v3H8zM14 12h2M14 15h2"/></svg></button>
         <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
       </div>
+      <div class="period-calendar period-calendar-ui" data-period-calendar hidden><p class="period-calendar-ui__caption" data-calendar-caption></p><div class="period-calendar__weekdays period-calendar-ui__weekdays" data-calendar-weekdays></div><div class="period-calendar__days period-calendar-ui__days" data-calendar-days></div></div>
     </div></fieldset>
     <fieldset class="visibility-toolbar visibility-toolbar--filters"><legend>{t.filtersSection}</legend><div class="visibility-filter-grid">
     <label class="visibility-select-control constellation-control" for="visibility-constellation"><span>{t.constellation}</span><select id="visibility-constellation"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select></label>
@@ -194,6 +196,11 @@ const weekParts = (week: number) => {
   const weekMonthOutput = document.querySelector('[data-week-month]');
   const weekDaysOutput = document.querySelector('[data-week-days]');
   const periodRange = document.querySelector('[data-period-range]');
+  const calendarToggle = document.querySelector('[data-calendar-toggle]');
+  const periodCalendar = document.querySelector('[data-period-calendar]');
+  const calendarCaption = document.querySelector('[data-calendar-caption]');
+  const calendarWeekdays = document.querySelector('[data-calendar-weekdays]');
+  const calendarDays = document.querySelector('[data-calendar-days]');
   const dayStepButtons = [...document.querySelectorAll('[data-day-step]')];
   const thresholdSelector = document.querySelector('#visibility-threshold');
   const hoursSelector = document.querySelector('#visibility-hours');
@@ -273,6 +280,36 @@ const weekParts = (week: number) => {
   let currentLayout = ['photos', 'list'].includes(requestedLayout) ? requestedLayout : 'photos';
   const requestedOffset = Number(new URL(window.location.href).searchParams.get('offset'));
   let dayOffset = Number.isInteger(requestedOffset) ? Math.max(-3, Math.min(3, requestedOffset)) : 0;
+  const renderPeriodCalendar = (year, week) => {
+    if (!calendarDays || !calendarCaption || !calendarWeekdays) return;
+    const base = isoDate(year, week);
+    const first = isoDate(year, week, -3);
+    const last = isoDate(year, week, 9);
+    const monthLabel = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    calendarCaption.textContent = first.getUTCMonth() === last.getUTCMonth() ? monthLabel.format(first) : `${monthLabel.format(first)} — ${monthLabel.format(last)}`;
+    calendarWeekdays.replaceChildren(...Array.from({ length: 13 }, (_, index) => {
+      const date = new Date(first.getTime() + index * millisecondsPerDay);
+      const item = document.createElement('span');
+      item.textContent = new Intl.DateTimeFormat(locale, { weekday: 'narrow', timeZone: 'UTC' }).format(date);
+      item.classList.toggle('is-weekend', [0, 6].includes(date.getUTCDay()));
+      return item;
+    }));
+    calendarDays.replaceChildren(...Array.from({ length: 13 }, (_, index) => {
+      const date = new Date(first.getTime() + index * millisecondsPerDay);
+      const relativeDay = index - 3;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = String(date.getUTCDate());
+      button.title = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(date);
+      button.classList.toggle('is-weekend', [0, 6].includes(date.getUTCDay()));
+      button.classList.toggle('is-selected', relativeDay >= dayOffset && relativeDay <= dayOffset + 6);
+      button.classList.toggle('is-start', relativeDay === dayOffset);
+      button.classList.toggle('is-end', relativeDay === dayOffset + 6);
+      if (relativeDay >= -3 && relativeDay <= 3) button.addEventListener('click', () => { dayOffset = relativeDay; update(); });
+      else button.disabled = true;
+      return button;
+    }));
+  };
   const weekStorageKey = 'deepskyastro.visibility.week';
   const yearStorageKey = 'deepskyastro.visibility.year';
   const requestedWeek = Number(new URL(window.location.href).searchParams.get('week'));
@@ -361,6 +398,7 @@ const weekParts = (week: number) => {
     weekMonthOutput.textContent = periodParts.months;
     weekDaysOutput.textContent = periodParts.days;
     periodRange.textContent = `${formatPeriodRange(year, week, dayOffset)} ${formatPeriodYear(year, week, dayOffset)} · ${t.localTime}`;
+    renderPeriodCalendar(year, week);
     dayStepButtons.forEach((button) => { button.disabled = dayOffset + Number(button.dataset.dayStep) < -3 || dayOffset + Number(button.dataset.dayStep) > 3; });
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
       const photoUrl = new URL(link.href);
@@ -507,6 +545,11 @@ const weekParts = (week: number) => {
     dayOffset = Math.max(-3, Math.min(3, dayOffset + Number(button.dataset.dayStep)));
     update();
   }));
+  calendarToggle?.addEventListener('click', () => {
+    const open = periodCalendar.hidden;
+    periodCalendar.hidden = !open;
+    calendarToggle.setAttribute('aria-expanded', String(open));
+  });
   const buildVisibilityReport = () => {
     const week = Number(selector.value);
     const year = Number(yearSelector.value);
@@ -884,7 +927,10 @@ const weekParts = (week: number) => {
   .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem; align-items: center; gap: .5rem; }
   .period-shift button { width: 2.7rem; min-height: 2.7rem; color: #86c2cf; font-size: 1.05rem; }
   .period-shift button:disabled { opacity: 1; cursor: not-allowed; }
-  .period-shift output { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
+  .period-shift button.period-shift__range { display: flex; width: 100% !important; min-height: 2.7rem; align-items: center; justify-content: center; gap: .7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 400 1.125rem/1.6 var(--font-sans); text-align: center; cursor: pointer; }
+  .period-shift__range svg { width: 1.7rem; height: 1.7rem; flex: 0 0 auto; fill: none; stroke: #54c8ff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.55; transition: transform .16s ease; }
+  .period-shift__range:hover svg, .period-shift__range:focus-visible svg, .period-shift__range[aria-expanded="true"] svg { transform: translateY(-1px); }
+  .period-calendar { --period-calendar-border: rgba(67,142,160,.4); --period-calendar-accent: #54c8ff; --period-calendar-accent-soft: #b9dfe7; --period-calendar-line: rgba(67,142,160,.18); --period-calendar-weekend: rgba(67,142,160,.12); --period-calendar-selection-border: rgba(84,200,255,.7); --period-calendar-selection: rgba(67,142,160,.3); --period-calendar-selection-text: #e1f7fb; }
   .week-control__range { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 .57rem var(--font-mono); text-align: center; }
   :global(.week-control__range) { color: var(--color-text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .82rem !important; font-weight: 400; line-height: 1.6; }
   .week-control select, .week-control button { width: 100%; min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
@@ -1091,7 +1137,7 @@ const weekParts = (week: number) => {
     .week-control__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
     .period-shift { grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem; gap: .25rem; }
     .week-control button, .period-shift button { width: 2.35rem; }
-    .week-control select, .week-control__range, .period-shift output { padding-right: 1.15rem; padding-left: .35rem; }
+    .week-control select, .week-control__range, .period-shift__range { padding-right: .35rem; padding-left: .35rem; }
     .week-control label, .week-control__field > span, .period-shift__label { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
     .threshold-hours-control { grid-template-columns: 1fr; }
     .visibility-toolbar__modes { flex-direction: column; align-items: stretch; gap: .5rem; }
