@@ -18,9 +18,9 @@ const texts = {
   en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Gallery', pending: 'Pending', all: 'All', photos: 'View', list: 'List', display: 'Object display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above {threshold}°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const exportTexts = {
-  ca: { downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Descarrega els resultats visibles sense fotografies.', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar' },
-  es: { downloadTxt: 'Descargar TXT', downloadedTxt: '✓ TXT descargado', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Descarga los resultados visibles sin fotografías.', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', altitudeThreshold: 'Umbral de altura', graphThreshold: 'Umbral', minimumVisibility: 'Horas mínimas sobre el umbral' },
-  en: { downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Download the visible results without photographs.', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold' },
+  ca: { downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Descarrega els resultats visibles sense fotografies.', periodSection: '1. Període temporal', filtersSection: '2. Filtres', month: 'Mes', days: 'Dies', selectedWeeklyPeriod: 'Període setmanal seleccionat', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar', meridianPass: 'Pas pel meridià', north: 'Nord', south: 'Sud', both: 'Nord i sud' },
+  es: { downloadTxt: 'Descargar TXT', downloadedTxt: '✓ TXT descargado', downloadPdf: 'Descargar PDF', downloadedPdf: '✓ PDF descargado', reportHint: 'Descarga los resultados visibles sin fotografías.', periodSection: '1. Periodo temporal', filtersSection: '2. Filtros', month: 'Mes', days: 'Días', selectedWeeklyPeriod: 'Periodo semanal seleccionado', shiftPeriod: 'Desplazamiento de días', previousDay: 'Un día antes', nextDay: 'Un día después', year: 'Año', altitudeThreshold: 'Umbral de altura', graphThreshold: 'Umbral', minimumVisibility: 'Horas mínimas sobre el umbral', meridianPass: 'Paso por el meridiano', north: 'Norte', south: 'Sur', both: 'Norte y sur' },
+  en: { downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Download the visible results without photographs.', periodSection: '1. Time period', filtersSection: '2. Filters', month: 'Month', days: 'Days', selectedWeeklyPeriod: 'Selected weekly period', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold', meridianPass: 'Meridian transit', north: 'North', south: 'South', both: 'North and south' },
 } as const;
 const t = { ...texts[lang], ...exportTexts[lang] };
 const enhancedVisibility = lang !== 'en';
@@ -79,6 +79,15 @@ const weekRange = (week: number) => {
     ? `${start.getUTCDate()}–${end.getUTCDate()} ${endMonth}`
     : `${start.getUTCDate()} ${startMonth}–${end.getUTCDate()} ${endMonth}`;
 };
+const weekParts = (week: number) => {
+  const start = new Date(firstMonday.getTime() + (week - 1) * 7 * 86400000);
+  const end = new Date(start.getTime() + 6 * 86400000);
+  const month = (date: Date) => new Intl.DateTimeFormat(dateLocale, { month: 'short', timeZone: 'UTC' }).format(date).replace('.', '');
+  return {
+    months: month(start) === month(end) ? month(end) : `${month(start)}–${month(end)}`,
+    days: `${start.getUTCDate()}–${end.getUTCDate()}`,
+  };
+};
 ---
 
 <Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
@@ -94,34 +103,37 @@ const weekRange = (week: number) => {
       </a>}
     </header>
 
-    <div class="visibility-toolbar"><div class="visibility-toolbar__selectors"><div class="week-control">
-      <div class="week-control__labels" aria-hidden="true"><span></span><label for="visibility-week">{t.week}</label><span></span><span></span><label for="visibility-year">{t.year}</label></div>
+    <div class="visibility-controls">
+    <fieldset class="visibility-toolbar visibility-toolbar--period"><legend>{t.periodSection}</legend><div class="week-control">
       <div class="week-control__row">
-        <button type="button" data-week-step="-1" aria-label="−1">‹</button>
-        <select id="visibility-week">
-          {Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}
-        </select>
-        <output class="week-control__range" data-week-range>{weekRange(currentWeek)}</output>
-        <button type="button" data-week-step="1" aria-label="+1">›</button>
-        <select id="visibility-year" aria-label={t.year}>
-          {yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}
-        </select>
+        <label class="week-control__field week-control__field--year" for="visibility-year"><span>{t.year}</span><select id="visibility-year"><option value="" disabled>{t.year}</option>{yearOptions.map((year) => <option value={year} selected={year === currentIso.year}>{year}</option>)}</select></label>
+        <div class="week-control__field week-control__field--week"><label for="visibility-week">{t.week}</label><div class="week-control__stepper"><button type="button" data-week-step="-1" aria-label="−1">‹</button><select id="visibility-week">{Array.from({ length: weekCount }, (_, index) => <option value={index + 1} selected={index + 1 === currentWeek}>{index + 1}</option>)}</select><button type="button" data-week-step="1" aria-label="+1">›</button></div></div>
+        <div class="week-control__field"><span>{t.month}</span><output class="week-control__range" data-week-month>{weekParts(currentWeek).months}</output></div>
+        <div class="week-control__field"><span>{t.days}</span><output class="week-control__range" data-week-days>{weekParts(currentWeek).days}</output></div>
       </div>
-      <div class="period-shift__labels" aria-hidden="true"><span></span><span>{t.shiftPeriod}</span><span></span><span></span></div>
+      <div class="period-shift__label">{t.selectedWeeklyPeriod}</div>
       <div class="period-shift" aria-label={t.shiftPeriod}>
         <button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button>
-        <output data-period-range aria-live="polite">{weekRange(currentWeek)}</output>
+        <output data-period-range aria-live="polite">{weekRange(currentWeek)} {currentIso.year} · {t.localTime}</output>
         <button type="button" data-day-step="1" aria-label={t.nextDay}>›</button>
-        <span aria-hidden="true"></span>
       </div>
-    </div>
+    </div></fieldset>
+    <fieldset class="visibility-toolbar visibility-toolbar--filters"><legend>{t.filtersSection}</legend><div class="visibility-filter-grid">
     <label class="visibility-select-control constellation-control" for="visibility-constellation"><span>{t.constellation}</span><select id="visibility-constellation"><option value="">{t.allConstellations}</option>{constellations.map((constellation) => <option value={constellation}>{constellation}</option>)}</select></label>
     {enhancedVisibility && <div class="threshold-hours-control">
       <label class="visibility-select-control threshold-control" for="visibility-threshold"><span>{t.altitudeThreshold}</span><select id="visibility-threshold">{[30, 35, 40, 45, 50, 55, 60].map((threshold) => <option value={threshold} selected={threshold === 30}>{threshold}°</option>)}</select></label>
       <label class="visibility-select-control hours-control" for="visibility-hours"><span>{t.minimumVisibility}</span><select id="visibility-hours">{[2, 3, 4, 5, 6].map((hours) => <option value={hours} selected={hours === 4}>{hours} h</option>)}</select></label>
     </div>}
-    </div>
+    <div class="meridian-control" role="group" aria-labelledby="meridian-label"><span id="meridian-label">{t.meridianPass}</span><div class="meridian-control__options">
+      <label><input type="checkbox" value="north" data-meridian-filter checked /><span>{t.north}</span></label>
+      <label><input type="checkbox" value="south" data-meridian-filter checked /><span>{t.south}</span></label>
+    </div></div>
+    </div></fieldset>
 
+    <div class="visibility-toolbar__downloads">
+      <button class="report-action report-action--visibility" type="button" data-download-visibility-txt title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.downloadTxt}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+      <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
+    </div>
     <div class="visibility-toolbar__modes">
       <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
         <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
@@ -136,17 +148,13 @@ const weekRange = (week: number) => {
 
     <div class="visibility-output">
       <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
-      <div class="visibility-output__actions">
-        <button class="report-action report-action--visibility" type="button" data-download-visibility-txt title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.downloadTxt}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
-        <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
-      </div>
     </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
 
     <div class="visibility-grid" data-visibility-grid>
       {visibleCards.map(({ id, object, displayAlias, displayCatalogName, foto, text }) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
-        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-constellation={object.constellation} data-ra={object.raDeg} data-dec={object.decDeg} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
+        return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-constellation={object.constellation} data-ra={object.raDeg} data-dec={object.decDeg} data-meridian-side={object.decDeg >= 41 ? 'north' : 'south'} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
             ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
             : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}><span aria-hidden="true">P</span></button>}
@@ -183,12 +191,14 @@ const weekRange = (week: number) => {
 <script define:vars={{ t, lang, showPending, enhancedVisibility }}>
   const selector = document.querySelector('#visibility-week');
   const yearSelector = document.querySelector('#visibility-year');
-  const weekRangeOutput = document.querySelector('[data-week-range]');
+  const weekMonthOutput = document.querySelector('[data-week-month]');
+  const weekDaysOutput = document.querySelector('[data-week-days]');
   const periodRange = document.querySelector('[data-period-range]');
   const dayStepButtons = [...document.querySelectorAll('[data-day-step]')];
   const thresholdSelector = document.querySelector('#visibility-threshold');
   const hoursSelector = document.querySelector('#visibility-hours');
   const constellationSelector = document.querySelector('#visibility-constellation');
+  const meridianInputs = [...document.querySelectorAll('[data-meridian-filter]')];
   const grid = document.querySelector('[data-visibility-grid]');
   const cards = [...document.querySelectorAll('[data-visibility-card]')];
   const filterButtons = [...document.querySelectorAll('[data-visibility-filter]')];
@@ -206,6 +216,14 @@ const weekRange = (week: number) => {
   const chartModeButtons = [...document.querySelectorAll('[data-chart-mode]')];
   const nightControls = document.querySelector('[data-night-controls]');
   const nightDayButtons = [...document.querySelectorAll('[data-night-day]')];
+  const visibilityRoot = document.querySelector('.visibility-planner');
+  document.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' || !visibilityRoot) return;
+    const active = document.activeElement;
+    const target = event.target;
+    if (!(active instanceof HTMLElement) || !(target instanceof Element) || !visibilityRoot.contains(active)) return;
+    if (!target.closest('button, input, select, textarea, a, [tabindex]')) active.blur();
+  }, { passive: true });
   let currentChartSource;
   let selectedNightDay = 3;
   const locale = { ca: 'ca-ES', es: 'es-ES', en: 'en-GB' }[lang];
@@ -223,7 +241,19 @@ const weekRange = (week: number) => {
       ? `${start.getUTCDate()}–${end.getUTCDate()} ${month(end)}`
       : `${start.getUTCDate()} ${month(start)}–${end.getUTCDate()} ${month(end)}`;
   };
-  const formatWeekRange = (year, week) => formatPeriodRange(year, week);
+  const formatPeriodParts = (year, week) => {
+    const start = isoDate(year, week), end = isoDate(year, week, 6);
+    const month = (date) => new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'UTC' }).format(date).replace('.', '');
+    return {
+      months: month(start) === month(end) ? month(end) : `${month(start)}–${month(end)}`,
+      days: `${start.getUTCDate()}–${end.getUTCDate()}`,
+    };
+  };
+  const formatPeriodYear = (year, week, offset = 0) => {
+    const startYear = isoDate(year, week, offset).getUTCFullYear();
+    const endYear = isoDate(year, week, offset + 6).getUTCFullYear();
+    return startYear === endYear ? String(startYear) : `${startYear}–${endYear}`;
+  };
   const ensureYearOption = (year) => {
     if ([...yearSelector.options].some((option) => Number(option.value) === year)) return;
     yearSelector.add(new Option(String(year), String(year)));
@@ -267,6 +297,10 @@ const weekRange = (week: number) => {
   if (thresholdSelector && [30, 35, 40, 45, 50, 55, 60].includes(requestedThreshold)) thresholdSelector.value = String(requestedThreshold);
   const requestedConstellation = new URL(window.location.href).searchParams.get('constellation');
   if (requestedConstellation && [...constellationSelector.options].some((option) => option.value === requestedConstellation)) constellationSelector.value = requestedConstellation;
+  const requestedMeridian = new URL(window.location.href).searchParams.get('meridian');
+  if (requestedMeridian === 'north' || requestedMeridian === 'south') {
+    meridianInputs.forEach((input) => { input.checked = input.value === requestedMeridian; });
+  }
   const requestedFocus = new URL(window.location.href).searchParams.get('focus');
   const shiftedMetricsCache = new Map();
   const shiftedPeriodMetrics = (source, year, week, offset, threshold = 30) => {
@@ -305,6 +339,8 @@ const weekRange = (week: number) => {
     window.sessionStorage.setItem(yearStorageKey, String(year));
     const altitudeThreshold = thresholdSelector ? Number(thresholdSelector.value) : 30;
     const minimumHours = hoursSelector ? Number(hoursSelector.value) : 4;
+    const selectedMeridianSides = meridianInputs.filter((input) => input.checked).map((input) => input.value);
+    const selectedMeridian = selectedMeridianSides.length === 2 ? 'both' : selectedMeridianSides[0];
     document.querySelectorAll('[data-useful-time]').forEach((label) => { label.textContent = t.usefulTime.replace('{threshold}', String(altitudeThreshold)); });
     const selectedConstellation = constellationSelector?.value ?? '';
     const currentUrl = new URL(window.location.href);
@@ -318,9 +354,13 @@ const weekRange = (week: number) => {
     if (thresholdSelector) currentUrl.searchParams.set('threshold', String(altitudeThreshold));
     if (selectedConstellation) currentUrl.searchParams.set('constellation', selectedConstellation);
     else currentUrl.searchParams.delete('constellation');
+    if (selectedMeridian === 'both') currentUrl.searchParams.delete('meridian');
+    else currentUrl.searchParams.set('meridian', selectedMeridian);
     window.history.replaceState(null, '', currentUrl);
-    weekRangeOutput.textContent = formatWeekRange(year, week);
-    periodRange.textContent = formatPeriodRange(year, week, dayOffset);
+    const periodParts = formatPeriodParts(year, week);
+    weekMonthOutput.textContent = periodParts.months;
+    weekDaysOutput.textContent = periodParts.days;
+    periodRange.textContent = `${formatPeriodRange(year, week, dayOffset)} ${formatPeriodYear(year, week, dayOffset)} · ${t.localTime}`;
     dayStepButtons.forEach((button) => { button.disabled = dayOffset + Number(button.dataset.dayStep) < -3 || dayOffset + Number(button.dataset.dayStep) > 3; });
     document.querySelectorAll('[data-photo-link]').forEach((link) => {
       const photoUrl = new URL(link.href);
@@ -337,6 +377,8 @@ const weekRange = (week: number) => {
       if (thresholdSelector) photoUrl.searchParams.set('threshold', String(altitudeThreshold));
       if (selectedConstellation) photoUrl.searchParams.set('constellation', selectedConstellation);
       else photoUrl.searchParams.delete('constellation');
+      if (selectedMeridian === 'both') photoUrl.searchParams.delete('meridian');
+      else photoUrl.searchParams.set('meridian', selectedMeridian);
       link.href = `${photoUrl.pathname}${photoUrl.search}`;
     });
     document.querySelectorAll('[data-planning-link]').forEach((link) => {
@@ -366,6 +408,8 @@ const weekRange = (week: number) => {
       else languageUrl.searchParams.delete('threshold');
       if (selectedConstellation) languageUrl.searchParams.set('constellation', selectedConstellation);
       else languageUrl.searchParams.delete('constellation');
+      if (selectedMeridian === 'both') languageUrl.searchParams.delete('meridian');
+      else languageUrl.searchParams.set('meridian', selectedMeridian);
       link.href = `${languageUrl.pathname}${languageUrl.search}${languageUrl.hash}`;
     });
     cards.forEach((card) => {
@@ -373,8 +417,9 @@ const weekRange = (week: number) => {
       const [altitude, bestTimeUtc, hoursAboveThreshold, qualityCode, representativeNight] = value;
       const meetsThreshold = hoursAboveThreshold >= minimumHours;
       const matchesConstellation = !selectedConstellation || card.dataset.constellation === selectedConstellation;
-      card.dataset.selected = String(meetsThreshold && matchesConstellation);
-      card.hidden = card.dataset.status !== currentView || !meetsThreshold || !matchesConstellation;
+      const matchesMeridian = selectedMeridianSides.includes(card.dataset.meridianSide);
+      card.dataset.selected = String(meetsThreshold && matchesConstellation && matchesMeridian);
+      card.hidden = card.dataset.status !== currentView || !meetsThreshold || !matchesConstellation || !matchesMeridian;
       card.dataset.altitude = altitude;
       card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
@@ -408,7 +453,7 @@ const weekRange = (week: number) => {
     const currentCount = counts[currentView];
     visibleCount.textContent = String(currentCount);
     visibleLabel.textContent = currentCount === 1 ? t.selectedObject : t.selectedObjects;
-    copyReportButton.disabled = currentCount === 0;
+    downloadTxtButton.disabled = currentCount === 0;
     downloadReportButton.disabled = currentCount === 0;
     emptyMessage.hidden = currentCount !== 0;
     cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
@@ -428,6 +473,10 @@ const weekRange = (week: number) => {
   hoursSelector?.addEventListener('change', update);
   thresholdSelector?.addEventListener('change', update);
   constellationSelector?.addEventListener('change', update);
+  meridianInputs.forEach((input) => input.addEventListener('change', () => {
+    if (!meridianInputs.some((candidate) => candidate.checked)) input.checked = true;
+    update();
+  }));
   filterButtons.forEach((button) => button.addEventListener('click', () => {
     currentView = button.dataset.visibilityFilter;
     update();
@@ -464,6 +513,8 @@ const weekRange = (week: number) => {
     const altitudeThreshold = thresholdSelector ? Number(thresholdSelector.value) : 30;
     const minimumHours = hoursSelector ? Number(hoursSelector.value) : 4;
     const selectedConstellation = constellationSelector?.value || t.allConstellations;
+    const selectedMeridianSides = meridianInputs.filter((input) => input.checked).map((input) => input.value);
+    const selectedMeridian = selectedMeridianSides.length === 2 ? t.both : selectedMeridianSides[0] === 'north' ? t.north : t.south;
     const reportCards = cards.filter((card) => card.dataset.status === currentView && card.dataset.selected === 'true');
     const labels = {
       title: { ca: 'INFORME DE VISIBILITAT', es: 'INFORME DE VISIBILIDAD', en: 'VISIBILITY REPORT' }[lang],
@@ -480,6 +531,7 @@ const weekRange = (week: number) => {
       t.location,
       `${labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending}`,
       `${t.constellation}: ${selectedConstellation}`,
+      `${t.meridianPass}: ${selectedMeridian}`,
       `${t.altitudeThreshold}: ${altitudeThreshold}°`,
       `${t.minimumVisibility}: ${minimumHours} h`,
       `${labels.objects}: ${reportCards.length}`,
@@ -498,7 +550,7 @@ const weekRange = (week: number) => {
         '',
       );
     });
-    return { lines, reportCards, labels, week, year, altitudeThreshold, minimumHours, selectedConstellation };
+    return { lines, reportCards, labels, week, year, altitudeThreshold, minimumHours, selectedConstellation, selectedMeridian };
   };
   const confirmButton = (button, textValue) => {
     const originalLabel = button.getAttribute('aria-label');
@@ -553,7 +605,8 @@ const weekRange = (week: number) => {
       context.fillStyle = '#405268'; context.font = '21px Arial';
       context.fillText(`${t.week}: ${report.week}/${report.year} · ${formatPeriodRange(report.year, report.week, dayOffset)}`, margin, 154);
       context.fillText(t.location, margin, 188);
-      context.fillText(`${report.labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending} · ${t.constellation}: ${report.selectedConstellation} · ${t.altitudeThreshold}: ${report.altitudeThreshold}° · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 222);
+      context.fillText(`${report.labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending} · ${t.constellation}: ${report.selectedConstellation} · ${t.meridianPass}: ${report.selectedMeridian}`, margin, 222);
+      context.fillText(`${t.altitudeThreshold}: ${report.altitudeThreshold}° · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 240);
       let y = 285;
       pageCards.forEach((card, cardIndex) => {
         const absoluteIndex = pageIndex * itemsPerPage + cardIndex + 1;
@@ -810,25 +863,31 @@ const weekRange = (week: number) => {
   .visibility-guide-link svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
   .visibility-guide-link:hover, .visibility-guide-link:focus-visible { border-color: #438ea0; background: radial-gradient(circle at 90% 8%, rgba(67, 142, 160, .32), transparent 52%), rgba(67, 142, 160, .16); color: #99d2dd; transform: translateY(-1px); }
   .visibility-planner__location { margin: 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .8rem; line-height: 1.5; text-align: right; }
-  .visibility-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: .9rem; margin: .75rem 0 1rem; padding: .65rem .75rem; border: 1px solid var(--color-border); border-radius: .7rem; background: linear-gradient(135deg, rgba(224,106,69,.1), var(--color-surface)); }
-  .visibility-toolbar__selectors { display: flex; align-items: end; gap: .9rem; }
-  .visibility-toolbar__modes { display: grid; grid-auto-rows: max-content; align-content: end; justify-items: start; gap: .5rem; min-width: max-content; }
+  .visibility-controls { display: grid; grid-template-areas: 'period filters' 'downloads modes'; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: .75rem 0 1rem; }
+  .visibility-toolbar { min-width: 0; margin: 0; padding: 1.1rem; border: 1px solid var(--color-border); border-radius: .9rem; background: linear-gradient(135deg, rgba(67,142,160,.09), var(--color-surface)); }
+  .visibility-toolbar legend { padding: 0 .45rem; color: var(--color-text); font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+  .visibility-toolbar--period { grid-area: period; }
+  .visibility-toolbar--filters { grid-area: filters; }
+  .visibility-toolbar--period { border-color: rgba(67,142,160,.44); }
+  .visibility-toolbar--filters { border-color: rgba(67,142,160,.34); }
+  .visibility-filter-grid { display: grid; grid-template-columns: minmax(8rem, .85fr) minmax(10rem, 1.15fr); align-items: end; gap: .55rem .7rem; }
+  .visibility-toolbar__downloads { grid-area: downloads; display: flex; align-items: center; justify-content: flex-end; gap: .55rem; min-width: 0; }
+  .visibility-toolbar__modes { grid-area: modes; display: flex; align-items: center; justify-content: flex-end; gap: .75rem; min-width: 0; }
   .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { display: grid; grid-template-columns: 7.2rem 7.2rem; gap: .5rem; width: 14.9rem; }
   .visibility-toolbar__modes .visibility-layout button, .visibility-toolbar__modes .visibility-filters button { width: 100%; text-align: left; }
   .week-control { display: grid; gap: .22rem; margin: 0; }
-  .week-control label, .visibility-select-control span { font-size: .7rem; font-weight: 700; line-height: 1.15; }
-  .week-control__labels { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; text-align: left; }
-  .period-shift__labels { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; gap: .5rem; text-align: left; }
-  .week-control__labels label, .period-shift__labels span { display: block; color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
-  .week-control__row { display: grid; grid-template-columns: 2.7rem 4.2rem 11rem 2.7rem 6.2rem; gap: .5rem; }
-  .period-shift__labels { margin-top: .34rem; }
-  .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem 6.2rem; align-items: center; gap: .5rem; }
+  .week-control label, .week-control__field > span, .visibility-select-control span { color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
+  .week-control__row { display: grid; grid-template-columns: 6.2rem minmax(10.5rem, 1.35fr) minmax(5.2rem, .72fr) minmax(4.7rem, .62fr); align-items: end; gap: .5rem; }
+  .week-control__field { display: grid; min-width: 0; gap: .22rem; }
+  .week-control__stepper { display: grid; grid-template-columns: 2.7rem minmax(3.8rem, 1fr) 2.7rem; gap: .4rem; }
+  .period-shift__label { margin-top: .42rem; color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
+  .period-shift { display: grid; grid-template-columns: 2.7rem minmax(11rem, 1fr) 2.7rem; align-items: center; gap: .5rem; }
   .period-shift button { width: 2.7rem; min-height: 2.7rem; color: #86c2cf; font-size: 1.05rem; }
   .period-shift button:disabled { opacity: 1; cursor: not-allowed; }
   .period-shift output { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-muted); font: 700 .82rem var(--font-mono); text-align: center; }
   .week-control__range { display: grid; place-items: center; min-height: 2.7rem; padding: 0 .8rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 .57rem var(--font-mono); text-align: center; }
   :global(.week-control__range) { color: var(--color-text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: .82rem !important; font-weight: 400; line-height: 1.6; }
-  .week-control select, .week-control button { min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
+  .week-control select, .week-control button { width: 100%; min-height: 2.7rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font: 700 1rem var(--font-mono); }
   .week-control select { font-size: .82rem; }
   .week-control #visibility-week { color: var(--color-muted); font-size: 1rem; text-align: center; text-align-last: center; }
   .week-control select { min-width: 0; padding: 0 .8rem; }
@@ -841,10 +900,16 @@ const weekRange = (week: number) => {
   .visibility-select-control > span { text-align: left; }
   :global(#visibility-constellation), :global(#visibility-threshold), :global(#visibility-hours) { width: 100%; min-width: 0; min-height: 2.7rem; padding: 0 .55rem; border: 1px solid var(--color-border); border-radius: .45rem; background: #0d121c; color: var(--color-text); font-family: var(--font-mono); font-size: .82rem; font-weight: 400; }
   .week-control select, :global(#visibility-constellation), :global(#visibility-threshold), :global(#visibility-hours) { appearance: none; -webkit-appearance: none; padding-right: 1.65rem; background-color: #0d121c; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m3 5 3 3 3-3' fill='none' stroke='%23aab5c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.25'/%3E%3C/svg%3E"); background-position: right .5rem center; background-repeat: no-repeat; background-size: .75rem; }
-  .constellation-control { width: 8.8rem; flex: 0 0 8.8rem; }
-  .threshold-hours-control { display: grid; width: 10.5rem; flex: 0 0 10.5rem; gap: .45rem; }
+  .constellation-control { width: 100%; }
+  .threshold-hours-control { display: grid; grid-template-columns: minmax(8rem, .8fr) minmax(11rem, 1.2fr); gap: .55rem; }
   .threshold-control, .hours-control { width: 100%; }
   .hours-control span { text-align: left; }
+  .meridian-control { grid-column: 1 / -1; display: grid; gap: .25rem; }
+  .meridian-control > span { color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
+  .meridian-control__options { display: flex; gap: .5rem; }
+  .meridian-control label { display: flex; flex: 0 0 6.5rem; align-items: center; gap: .5rem; min-height: 2.7rem; padding: 0 .65rem; border: 1px solid rgba(67,142,160,.46); border-radius: .45rem; background: #0d121c; color: #b9dfe7; cursor: pointer; font-size: .76rem; font-weight: 700; }
+  .meridian-control label:has(input:checked) { border-color: #54c8ff; background: rgba(67,142,160,.22); color: #e1f7fb; box-shadow: inset 0 0 0 1px rgba(84,200,255,.12); }
+  .meridian-control input { width: 1rem; height: 1rem; margin: 0; accent-color: #54c8ff; }
   :global(#visibility-threshold), :global(#visibility-hours) { padding: 0 1.55rem 0 .4rem; text-align: center; text-align-last: center; }
   .visibility-layout, .visibility-filters { display: flex; gap: .5rem; margin: 0; overflow-x: auto; scrollbar-width: none; }
   .visibility-layout { margin-left: 0; }
@@ -856,20 +921,18 @@ const weekRange = (week: number) => {
   .visibility-layout button[aria-pressed="true"], .visibility-filters button[aria-pressed="true"] { border-color: #54c8ff; background: rgba(67,142,160,.24); color: #d7f4fa; box-shadow: inset 0 0 0 1px rgba(84,200,255,.16); }
   .visibility-layout button:hover, .visibility-layout button:focus-visible,
   .visibility-filters button:hover, .visibility-filters button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
-  @media (max-width: 1180px) and (min-width: 701px) {
-    .visibility-toolbar { grid-template-columns: 1fr; }
-    .visibility-toolbar__selectors { min-width: 0; flex-wrap: wrap; }
-    .visibility-toolbar__modes { justify-content: end; width: 100%; min-width: 0; }
+  @media (max-width: 1180px) {
+    .visibility-controls { grid-template-areas: 'period' 'downloads' 'filters' 'modes'; grid-template-columns: 1fr; }
+    .visibility-toolbar__modes { justify-content: flex-end; width: 100%; }
   }
-  .visibility-output { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: -.35rem 0 .8rem; }
-  .visibility-output__actions { display: flex; justify-content: flex-end; gap: .55rem; flex-wrap: wrap; }
+  .visibility-output { margin: -.35rem 0 .8rem; }
   .visibility-results { margin: 0; color: var(--color-muted); font-size: 1rem; }
   .visibility-results strong { color: var(--color-accent); font: 700 1.18rem var(--font-mono); }
-  .visibility-output button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2rem; padding: .38rem .62rem; border: 1px solid rgba(67,142,160,.48); border-radius: .5rem; background: rgba(5,8,14,.42); color: #9bcbd5; font: 700 .68rem var(--font-sans); cursor: pointer; transition: border-color .16s ease, color .16s ease, background .16s ease; }
-  .visibility-output button:hover, .visibility-output button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
+  .visibility-toolbar__downloads button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2rem; padding: .38rem .62rem; border: 1px solid rgba(67,142,160,.48); border-radius: .5rem; background: rgba(5,8,14,.42); color: #9bcbd5; font: 700 .68rem var(--font-sans); cursor: pointer; transition: border-color .16s ease, color .16s ease, background .16s ease; }
+  .visibility-toolbar__downloads button:hover, .visibility-toolbar__downloads button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
   .visibility-output__check { width: .8rem; color: #75e3c4; opacity: 0; transform: scale(.6); transition: opacity .16s ease, transform .16s ease; }
-  .visibility-output button.is-confirmed { border-color: #55d9b3; background: rgba(85,217,179,.14); color: #75e3c4; }
-  .visibility-output button.is-confirmed .visibility-output__check { opacity: 1; transform: scale(1); }
+  .visibility-toolbar__downloads button.is-confirmed { border-color: #55d9b3; background: rgba(85,217,179,.14); color: #75e3c4; }
+  .visibility-toolbar__downloads button.is-confirmed .visibility-output__check { opacity: 1; transform: scale(1); }
   .visibility-output button:disabled { opacity: .4; cursor: not-allowed; }
   .visibility-empty { padding: 1rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); color: var(--color-muted); text-align: center; }
   [hidden] { display: none !important; }
@@ -981,19 +1044,19 @@ const weekRange = (week: number) => {
   .visibility-chart__selection { display: flex; align-items: center; gap: .5rem; margin: .4rem 0 0; color: var(--color-text); font-family: var(--font-mono); font-size: .78rem; }
   .visibility-chart__selection span { width: .7rem; height: .7rem; border-radius: 50%; background: var(--color-accent); }
   @media (max-width: 700px) {
-    .visibility-planner__meta, .visibility-toolbar { align-items: stretch; flex-direction: column; }
-    .visibility-toolbar { grid-template-columns: minmax(0, 1fr); }
-    .visibility-output { align-items: stretch; flex-direction: column; }
-    .visibility-output__actions { justify-content: flex-start; }
-    .visibility-output button { width: fit-content; }
+    .visibility-planner__meta { align-items: stretch; flex-direction: column; }
+    .visibility-controls { grid-template-columns: minmax(0, 1fr); }
+    .visibility-toolbar__downloads { justify-content: flex-end; flex-wrap: wrap; }
     .visibility-guide-link { justify-self: start; }
-    .visibility-toolbar__selectors { align-items: stretch; flex-direction: column; }
-    .threshold-hours-control { width: 100%; flex-basis: auto; }
-    .visibility-toolbar__modes { justify-items: start; width: 100%; min-width: 0; }
-    .visibility-layout { margin-left: 0; padding-top: .5rem; padding-left: 0; border-top: 1px solid var(--color-border); border-left: 0; }
+    .visibility-filter-grid { grid-template-columns: 1fr; }
+    .threshold-hours-control { grid-template-columns: 1fr 1fr; width: 100%; }
+    .meridian-control { grid-column: auto; }
+    .visibility-toolbar__modes { justify-content: stretch; width: 100%; min-width: 0; }
+    .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { flex: 1 1 0; width: auto; }
+    .visibility-layout { margin-left: 0; padding-left: 0; border-left: 0; }
     .visibility-planner__location { text-align: left; }
-    .week-control__row, .week-control__labels { grid-template-columns: 2.7rem 4.2rem minmax(7.5rem, 1fr) 2.7rem 5.8rem; }
-    .period-shift__labels, .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem 5.8rem; }
+    .week-control__row { grid-template-columns: 6.2rem minmax(10.5rem, 1.35fr) minmax(5.2rem, .72fr) minmax(4.7rem, .62fr); }
+    .period-shift { grid-template-columns: 2.7rem minmax(0, 1fr) 2.7rem; }
     .week-control select { width: 100%; min-width: 0; }
     .visibility-select-control { width: 100%; flex-basis: auto; }
     .visibility-card { grid-template-columns: 1fr; }
@@ -1023,13 +1086,15 @@ const weekRange = (week: number) => {
     .night-legend strong { width: 100%; margin-left: 0; }
   }
   @media (max-width: 520px) {
-    .visibility-toolbar { padding: .6rem; }
+    .visibility-toolbar { padding: .85rem; }
     .week-control { min-width: 0; }
-    .week-control__row, .week-control__labels { grid-template-columns: 2.35rem minmax(2.75rem, .65fr) minmax(0, 1.35fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
-    .period-shift__labels, .period-shift { grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem minmax(3.65rem, .8fr); gap: .25rem; }
+    .week-control__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
+    .period-shift { grid-template-columns: 2.35rem minmax(0, 1fr) 2.35rem; gap: .25rem; }
     .week-control button, .period-shift button { width: 2.35rem; }
     .week-control select, .week-control__range, .period-shift output { padding-right: 1.15rem; padding-left: .35rem; }
-    .week-control__labels label, .period-shift__labels span { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
+    .week-control label, .week-control__field > span, .period-shift__label { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
+    .threshold-hours-control { grid-template-columns: 1fr; }
+    .visibility-toolbar__modes { flex-direction: column; align-items: stretch; gap: .5rem; }
     .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .visibility-card--return-focus { animation: none; } }
