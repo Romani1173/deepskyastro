@@ -152,6 +152,23 @@
 .planning-tooltip { position: absolute; z-index: 2; top: 59.5%; display: grid; gap: .28rem; width: max-content; max-width: min(27rem, 84%); padding: .68rem .78rem; border: 1px solid rgba(124, 143, 172, .58); border-radius: .6rem; background: rgba(5, 8, 14, .58); color: var(--color-muted); font: .78rem/1.4 var(--font-technical); transform: translateX(-50%); pointer-events: none; box-shadow: 0 8px 25px rgba(0,0,0,.4); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 .planning-tooltip strong { color: #fff; font-size: .84rem; }.planning-tooltip span { display: block; }
 .planning-chart-help { margin: .7rem 0 0; color: var(--color-muted); font-size: .78rem; line-height: 1.5; }
+.planning-framing { margin-top: 1.1rem; padding: 1.15rem; border: 1px solid rgba(229, 169, 63, .34); border-radius: .9rem; background: radial-gradient(circle at 96% 0%, rgba(229, 169, 63, .09), transparent 38%), rgba(17, 24, 39, .7); box-shadow: inset 3px 0 0 rgba(229, 169, 63, .72), 0 16px 42px rgba(0, 0, 0, .16); }
+.planning-framing__question { margin: 0 0 .8rem; color: var(--color-text); font-size: .88rem; font-weight: 700; }
+.planning-framing__reuse { display: grid; grid-template-columns: auto 1fr; gap: .2rem .55rem; align-items: center; width: fit-content; margin: 0 0 .85rem; padding: .65rem .75rem; border: 1px solid rgba(85, 217, 179, .42); border-radius: .55rem; background: rgba(85, 217, 179, .08); color: #9de2d1; font-size: .8rem; font-weight: 700; cursor: pointer; }
+.planning-framing__reuse input { width: 1rem; height: 1rem; accent-color: #55d9b3; }
+.planning-framing__reuse small { grid-column: 2; color: var(--color-muted); font-size: .68rem; font-weight: 400; }
+.planning-framing__reuse:has(input:disabled) { border-color: var(--color-border); background: rgba(8,11,18,.35); color: var(--color-muted); cursor: not-allowed; }
+.planning-framing__controls { display: grid; grid-template-columns: 1fr 1fr 1.15fr auto; gap: .7rem; align-items: end; }
+.planning-framing__controls label { display: grid; gap: .35rem; color: var(--color-muted); font-size: .76rem; }
+.planning-framing__controls input, .planning-framing__controls select, .planning-framing__controls button { width: 100%; min-height: 2.65rem; padding: .58rem .68rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .9); color: var(--color-text); font: .82rem var(--font-technical); }
+.planning-framing__controls button { width: auto; border-color: rgba(229, 169, 63, .58); color: var(--planning-gold); font-family: var(--font-body); font-weight: 700; cursor: pointer; }
+.planning-framing__visual { margin-top: .9rem; overflow: hidden; border: 1px solid rgba(229, 169, 63, .26); border-radius: .7rem; background: radial-gradient(circle at 25% 30%, rgba(124,160,216,.1), transparent 25%), #060a12; }
+.planning-framing__visual svg { display: block; width: 100%; height: min(45vw, 360px); }
+.planning-framing__sensor { fill: rgba(30, 42, 63, .45); stroke: var(--planning-gold); stroke-width: 2; }
+.planning-framing__object { fill: rgba(229, 169, 63, .22); stroke: #f0c984; stroke-width: 2; stroke-dasharray: 6 5; filter: drop-shadow(0 0 9px rgba(229, 169, 63, .45)); }
+.planning-framing__result { display: flex; flex-wrap: wrap; gap: .35rem 1.2rem; margin-top: .75rem; color: var(--color-muted); font: .72rem var(--font-technical); }
+.planning-framing__result strong { width: 100%; color: #e6c58d; font-family: var(--font-body); font-size: .92rem; }
+.planning-framing__unavailable { margin: .8rem 0 0; padding: .8rem; border: 1px solid rgba(229, 169, 63, .3); border-radius: .55rem; background: rgba(229,169,63,.07); color: #e6c58d; font-size: .8rem; }
 @media (max-width: 1024px) {
   .planning-controls { grid-template-columns: 1fr; }.planning-panel--period { grid-column: auto; }.planning-fields, .planning-fields--location { grid-template-columns: 1fr; }
   .planning-period-grid { grid-template-columns: minmax(10rem, 1.2fr) minmax(9.5rem, 1.1fr) minmax(4.8rem, .58fr) minmax(4.5rem, .52fr); }
@@ -173,4 +190,6 @@
   .planning-conclusion__header { align-items: flex-start; flex-direction: column; }
   .planning-conclusion__tools { justify-content: flex-start; }
   .planning-conclusion__metrics { grid-template-columns: 1fr; }
+  .planning-framing__controls { grid-template-columns: 1fr 1fr; }
+  .planning-framing__controls label:nth-child(3), .planning-framing__controls button { grid-column: 1 / -1; }
 }

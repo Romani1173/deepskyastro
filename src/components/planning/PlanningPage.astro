@@ -44,7 +44,19 @@ const texts = {
     detail: '5 · Night detail', objectCurve: 'Object', moonCurve: 'Moon', threshold: '30° limit', astronomyNight: 'Astronomical night', chartHelp: 'Move the pointer; on touchscreens, tap to inspect and drag to scroll across the chart. Segments outside astronomical night are dimmed.', altitude: 'Altitude', azimuth: 'Azimuth', illumination: 'Illumination', sun: 'Sun', engine: 'Geometric topocentric coordinates without atmospheric refraction.', error: 'Check the location, object, and period.',
   },
 } as const;
-const t = texts[lang];
+const rawTexts = texts[lang];
+const numberedHeading = (value: string) => value.replace(' · ', '. ');
+const t = { ...rawTexts, location: numberedHeading(rawTexts.location), object: numberedHeading(rawTexts.object), period: numberedHeading(rawTexts.period), comparison: numberedHeading(rawTexts.comparison), detail: numberedHeading(rawTexts.detail) };
+const framingText = {
+  ca: { title: '6. Comprova l’enquadrament', question: 'Quin és el teu FOV de referència?', width: 'Amplada', height: 'Alçada', unit: 'Unitat', degrees: 'Graus', arcminutes: 'Minuts d’arc', rotate: 'Girar sensor', field: 'FOV', object: 'Mida aparent de l’objecte', roomy: 'Hi cap amb marge', tight: 'Enquadrament ajustat', outside: 'No hi cap complet', unavailable: 'Aquest objecte no té una mida aparent disponible; no es pot generar l’enquadrament.' },
+  es: { title: '6. Comprueba el encuadre', question: '¿Cuál es tu FOV de referencia?', width: 'Anchura', height: 'Altura', unit: 'Unidad', degrees: 'Grados', arcminutes: 'Minutos de arco', rotate: 'Girar sensor', field: 'FOV', object: 'Tamaño aparente del objeto', roomy: 'Cabe con margen', tight: 'Encuadre ajustado', outside: 'No cabe completo', unavailable: 'Este objeto no tiene un tamaño aparente disponible; no puede generarse el encuadre.' },
+  en: { title: '6. Check the framing', question: 'What is your reference FOV?', width: 'Width', height: 'Height', unit: 'Unit', degrees: 'Degrees', arcminutes: 'Arcminutes', rotate: 'Rotate sensor', field: 'FOV', object: 'Object apparent size', roomy: 'Fits with room', tight: 'Tight framing', outside: 'Does not fit completely', unavailable: 'This object has no apparent size available, so its framing cannot be generated.' },
+}[lang];
+const analyserFovReuseText = {
+  ca: { use: 'Utilitza l’últim FOV calculat a l’Analitzador', missing: 'Encara no hi ha cap FOV calculat en aquest navegador.' },
+  es: { use: 'Usar el último FOV calculado en el Analizador', missing: 'Todavía no hay ningún FOV calculado en este navegador.' },
+  en: { use: 'Use the latest FOV calculated in the Analyser', missing: 'No FOV has been calculated in this browser yet.' },
+}[lang];
 const apparentSizeText = {
   ca: { label: 'Mida aparent', unavailable: 'No disponible' },
   es: { label: 'Tamaño aparente', unavailable: 'No disponible' },
@@ -94,7 +106,7 @@ const objects = objectsData
   });
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
-const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, framing: framingText }, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
@@ -230,6 +242,25 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
         </div>
         <p class="planning-chart-help">{t.chartHelp}</p>
       </section>
+      <section class="planning-framing" data-planning-framing>
+        <div class="planning-section-heading"><h2>{framingText.title}</h2></div>
+        <p class="planning-framing__question">{framingText.question}</p>
+        <label class="planning-framing__reuse"><input type="checkbox" data-use-analyser-fov /><span>{analyserFovReuseText.use}</span><small data-analyser-fov-missing hidden>{analyserFovReuseText.missing}</small></label>
+        <div class="planning-framing__controls">
+          <label><span>{framingText.width}</span><input type="number" min="0.01" step="0.01" value="2" data-framing-width /></label>
+          <label><span>{framingText.height}</span><input type="number" min="0.01" step="0.01" value="1.4" data-framing-height /></label>
+          <label><span>{framingText.unit}</span><select data-framing-unit><option value="degrees">{framingText.degrees}</option><option value="arcminutes">{framingText.arcminutes}</option></select></label>
+          <button type="button" data-framing-rotate>{framingText.rotate}</button>
+        </div>
+        <p class="planning-framing__unavailable" data-framing-unavailable hidden>{framingText.unavailable}</p>
+        <div class="planning-framing__visual" data-framing-visual>
+          <svg viewBox="0 0 600 320" role="img" aria-label={framingText.title}>
+            <rect class="planning-framing__sensor" data-framing-sensor rx="5" />
+            <ellipse class="planning-framing__object" data-framing-object />
+          </svg>
+        </div>
+        <div class="planning-framing__result" data-framing-result><strong data-framing-verdict></strong><span data-framing-field></span><span data-framing-size></span></div>
+      </section>
     </section>
   </main>
 </Layout>
@@ -240,6 +271,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
   import { loadPlanningSession, savePlanningSession } from '../../lib/planning/session.mjs';
   import { findLocalObject, resolveSimbad } from '../../lib/planning/simbad.mjs';
   import { formatCatalogDesignations } from '../../lib/catalog-formatting.mjs';
+  import { framingRatio, framingStatus } from '../../lib/framing.mjs';
 
   const config = JSON.parse(document.querySelector('#planning-data')?.textContent ?? '{}');
   const root = document.querySelector<HTMLElement>('[data-planning-root]');
@@ -280,10 +312,73 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
   const downloadPlanningTxtButton = root.querySelector<HTMLButtonElement>('[data-download-planning-txt]');
   const downloadPlanningButton = root.querySelector<HTMLButtonElement>('[data-download-planning]');
   const planningExports = root.querySelector<HTMLElement>('[data-planning-exports]');
+  const framingPanel = root.querySelector<HTMLElement>('[data-planning-framing]');
+  const framingWidth = root.querySelector<HTMLInputElement>('[data-framing-width]');
+  const framingHeight = root.querySelector<HTMLInputElement>('[data-framing-height]');
+  const framingUnit = root.querySelector<HTMLSelectElement>('[data-framing-unit]');
+  const useAnalyserFov = root.querySelector<HTMLInputElement>('[data-use-analyser-fov]');
+  const framingSensor = root.querySelector<SVGRectElement>('[data-framing-sensor]');
+  const framingObject = root.querySelector<SVGEllipseElement>('[data-framing-object]');
+  let framingRotated = false;
   let analysis: any = null;
   let selectedNight: any = null;
   let resolvedSimbad: any = null;
   let objectMode = sessionStorage.getItem('deepskyastro:planning-object-mode') ?? 'local';
+
+  const framingData = () => {
+    const object = analysis?.object ?? objectValue();
+    const size = object?.angularSizeArcmin;
+    const multiplier = framingUnit?.value === 'arcminutes' ? 1 / 60 : 1;
+    let width = Number(framingWidth?.value) * multiplier, height = Number(framingHeight?.value) * multiplier;
+    if (framingRotated) [width, height] = [height, width];
+    if (!size || !Number.isFinite(size.major) || !Number.isFinite(size.minor) || !Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
+    const objectWidth = size.major / 60, objectHeight = size.minor / 60;
+    const ratio = framingRatio(width, height, objectWidth, objectHeight);
+    return { width, height, objectWidth, objectHeight, ratio, status: framingStatus(ratio) };
+  };
+  const renderFraming = () => {
+    if (!framingPanel) return;
+    const data = framingData();
+    const unavailable = framingPanel.querySelector<HTMLElement>('[data-framing-unavailable]');
+    const visual = framingPanel.querySelector<HTMLElement>('[data-framing-visual]');
+    const result = framingPanel.querySelector<HTMLElement>('[data-framing-result]');
+    if (unavailable) unavailable.hidden = Boolean(data);
+    if (visual) visual.hidden = !data;
+    if (result) result.hidden = !data;
+    if (!data || !framingSensor || !framingObject) return;
+    const scale = Math.min(540 / data.width, 270 / data.height);
+    const sensorWidth = data.width * scale, sensorHeight = data.height * scale;
+    framingSensor.setAttribute('x', String((600 - sensorWidth) / 2)); framingSensor.setAttribute('y', String((320 - sensorHeight) / 2));
+    framingSensor.setAttribute('width', String(sensorWidth)); framingSensor.setAttribute('height', String(sensorHeight));
+    framingObject.setAttribute('cx', '300'); framingObject.setAttribute('cy', '160');
+    framingObject.setAttribute('rx', String(Math.max(data.objectWidth * scale / 2, 2))); framingObject.setAttribute('ry', String(Math.max(data.objectHeight * scale / 2, 2)));
+    framingPanel.querySelector<HTMLElement>('[data-framing-verdict]')!.textContent = config.texts.framing[data.status];
+    framingPanel.querySelector<HTMLElement>('[data-framing-field]')!.textContent = `${config.texts.framing.field}: ${data.width.toFixed(2)}° × ${data.height.toFixed(2)}°`;
+    framingPanel.querySelector<HTMLElement>('[data-framing-size]')!.textContent = `${config.texts.framing.object}: ${formatAngularSize(analysis.object.angularSizeArcmin)}`;
+  };
+  [framingWidth, framingHeight, framingUnit].forEach((control) => { control?.addEventListener('input', renderFraming); control?.addEventListener('change', renderFraming); });
+  root.querySelector<HTMLButtonElement>('[data-framing-rotate]')?.addEventListener('click', () => { framingRotated = !framingRotated; renderFraming(); });
+  const readAnalyserFov = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('deepskyastro:last-analyser-fov') ?? 'null');
+      return saved && Number.isFinite(saved.widthDeg) && saved.widthDeg > 0 && Number.isFinite(saved.heightDeg) && saved.heightDeg > 0 ? saved : null;
+    } catch { return null; }
+  };
+  const syncAnalyserFovOption = () => {
+    const saved = readAnalyserFov();
+    const missing = root.querySelector<HTMLElement>('[data-analyser-fov-missing]');
+    if (useAnalyserFov) { useAnalyserFov.disabled = !saved; useAnalyserFov.checked = false; }
+    if (missing) missing.hidden = Boolean(saved);
+  };
+  useAnalyserFov?.addEventListener('change', () => {
+    const saved = readAnalyserFov();
+    if (useAnalyserFov.checked && saved && framingWidth && framingHeight && framingUnit) {
+      framingUnit.value = 'degrees'; framingWidth.value = String(saved.widthDeg); framingHeight.value = String(saved.heightDeg);
+    }
+    [framingWidth, framingHeight, framingUnit].forEach((control) => { if (control) control.disabled = useAnalyserFov.checked; });
+    renderFraming();
+  });
+  syncAnalyserFovOption();
 
   const now = new Date();
   const iso = (() => {
@@ -863,6 +958,14 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
       `${config.texts.moon}: ${percent(selectedNight.bestMoonUp?.moonIlluminationFraction)} · ${config.texts.separation}: ${degrees(selectedNight.bestMoonUp?.moonSeparationDeg)}`,
     ];
     details.forEach((value) => { y = wrapCanvasText(context, value, 80, y, 1080, 34) + 16; });
+    const frame = framingData();
+    if (frame) {
+      y += 12; context.fillStyle = '#9a6718'; context.font = '700 21px Arial'; context.fillText(config.texts.framing.title.toLocaleUpperCase(), 80, y); y += 30;
+      context.fillStyle = '#344054'; context.font = '19px Arial'; context.fillText(`${config.texts.framing[frame.status]} · ${config.texts.framing.field}: ${frame.width.toFixed(2)}° × ${frame.height.toFixed(2)}°`, 80, y); y += 22;
+      const boxW = 420, boxH = 210, scale = Math.min(boxW / frame.width, boxH / frame.height), sensorW = frame.width * scale, sensorH = frame.height * scale, cx = 620, cy = y + 120;
+      context.fillStyle = '#080b12'; context.fillRect(80, y + 10, 1080, 250); context.strokeStyle = '#c68418'; context.lineWidth = 3; context.strokeRect(cx - sensorW / 2, cy - sensorH / 2, sensorW, sensorH);
+      context.beginPath(); context.ellipse(cx, cy, Math.max(frame.objectWidth * scale / 2, 2), Math.max(frame.objectHeight * scale / 2, 2), 0, 0, Math.PI * 2); context.fillStyle = 'rgba(198,132,24,.25)'; context.fill(); context.stroke();
+    }
     context.fillStyle = '#667085'; context.font = '17px Arial'; wrapCanvasText(context, `${config.texts.engine} ${config.texts.geometryNotice}`, 80, 1640, 1080, 25);
     return canvas;
   };
@@ -1018,6 +1121,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
       if (results) results.hidden = false;
       if (planningExports) planningExports.hidden = false;
       if (nightDetail) nightDetail.hidden = false;
+      if (framingPanel) framingPanel.hidden = false;
+      renderFraming();
       selectNight(selectedNight.nightDateUtc);
     } catch (caught) { console.error(caught); if (error) error.hidden = false; }
     finally { if (calculateButton) { calculateButton.disabled = false; calculateButton.textContent = config.texts.calculate; } }
@@ -1034,6 +1139,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, 
     if (planningExports) planningExports.hidden = true;
     if (rows) rows.replaceChildren();
     if (nightDetail) nightDetail.hidden = true;
+    if (framingPanel) framingPanel.hidden = true;
   }
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'threshold', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
   ['manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', invalidateObjectResults));
