@@ -1,4 +1,4 @@
-import { Body, DefineStar, Equator, Horizon, Illumination, Observer } from 'astronomy-engine';
+import { Body, DefineStar, Equator, Horizon, Illumination, MoonPhase, Observer } from 'astronomy-engine';
 
 export const DEFAULT_LOCATION = Object.freeze({ name: 'L’Ampolla', latitudeDeg: 40.80194, longitudeDeg: 0.69361, elevationM: 0 });
 export const SAMPLE_MINUTES = 5;
@@ -38,6 +38,7 @@ export function sampleInstant({ date, location, object, objectLimitDeg = OBJECT_
     moonAltitudeDeg,
     moonAzimuthDeg: round(moon.azimuth),
     moonIlluminationFraction: round(illumination, 6),
+    moonPhaseDeg: round(MoonPhase(date), 4),
     moonSeparationDeg: round(angularSeparation(target, moon)),
     sunAltitudeDeg,
     isAstronomicalNight: sunAltitudeDeg <= TWILIGHT_DEG,

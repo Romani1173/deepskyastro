@@ -72,9 +72,12 @@
 .planning-simbad { margin: .35rem 0 .15rem; }
 .planning-simbad__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
 .planning-simbad p { min-height: 1.35rem; margin: 0 0 .85rem; color: var(--planning-moon); font: 700 .9rem var(--font-technical); }
-.planning-object-size { display: flex; gap: .65rem; align-items: baseline; width: fit-content; margin: .8rem 0 0; padding: .48rem .65rem; border: 1px solid rgba(229,169,63,.34); border-radius: .5rem; background: rgba(229,169,63,.07); }
+.planning-object-metadata { display: flex; flex-wrap: wrap; gap: .55rem; align-items: stretch; margin-top: .8rem; }
+.planning-object-size { display: flex; gap: .65rem; align-items: baseline; width: fit-content; margin: 0; padding: .48rem .65rem; border: 1px solid rgba(229,169,63,.34); border-radius: .5rem; background: rgba(229,169,63,.07); }
 .planning-object-size strong { color: var(--color-muted); font-size: .72rem; }
 .planning-object-size span { color: var(--planning-gold); font: 700 .82rem var(--font-technical); }
+.planning-object-coordinates { flex-wrap: wrap; }
+.planning-object-coordinates small { flex: 1 1 100%; color: #e6c58d; font: 700 .76rem var(--font-technical); }
 .planning-simbad small { display: block; margin-top: .75rem; }
 .planning-check { display: flex !important; grid-template-columns: auto 1fr; align-items: center; width: fit-content; }
 .planning-check input { width: 1rem; min-height: 1rem; }
@@ -124,7 +127,11 @@
 .planning-moon-guide li { margin: .22rem 0; }
 .planning-section-heading--night > p { flex: 1 1 100%; color: var(--planning-gold); font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 700; letter-spacing: .04em; }
 .planning-section-heading--night h2 { flex: 1 1 auto; }
-.planning-section-heading--night .planning-moon-guide { margin: 0 0 0 auto; }
+.planning-night-lunar { display: grid; flex: 0 1 39rem; justify-items: end; gap: .4rem; margin-left: auto; }
+.planning-night-phase { display: inline-flex; align-items: center; gap: .55rem; color: var(--color-text); font-size: .82rem; }
+.planning-night-phase [data-planning-moon-phase-icon] { min-width: 2.7rem; font-size: 2.7rem; line-height: 1; text-align: center; }
+.planning-night-phase small { padding-left: .15rem; color: var(--planning-gold); font: 700 .72rem var(--font-technical); }
+.planning-section-heading--night .planning-moon-guide { margin: 0; }
 .planning-table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: .85rem; }
 .planning-table { width: 100%; min-width: 1160px; border-collapse: separate; border-spacing: 0; background: rgba(8, 11, 18, .7); font-size: .79rem; }
 .planning-table th, .planning-table td { padding: .72rem .6rem; border-bottom: 1px solid rgba(43, 56, 80, .65); text-align: left; vertical-align: top; }
@@ -162,6 +169,14 @@
 .planning-framing__controls label { display: grid; gap: .35rem; color: var(--color-muted); font-size: .76rem; }
 .planning-framing__controls input, .planning-framing__controls select, .planning-framing__controls button { width: 100%; min-height: 2.65rem; padding: .58rem .68rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8, 11, 18, .9); color: var(--color-text); font: .82rem var(--font-technical); }
 .planning-framing__controls button { width: auto; border-color: rgba(229, 169, 63, .58); color: var(--planning-gold); font-family: var(--font-body); font-weight: 700; cursor: pointer; }
+.planning-framing__manual-size { margin-top: .85rem; padding: .8rem; border: 1px solid rgba(124,143,172,.28); border-radius: .65rem; background: rgba(8,11,18,.38); }
+.planning-framing__manual-toggle { display: flex; align-items: center; gap: .55rem; color: var(--color-text); font-size: .8rem; font-weight: 700; cursor: pointer; }
+.planning-framing__manual-toggle input { width: 1rem; height: 1rem; accent-color: var(--planning-gold); }
+.planning-framing__manual-size > small { display: block; margin: .25rem 0 .7rem 1.55rem; color: var(--color-muted); font-size: .68rem; line-height: 1.45; }
+.planning-framing__manual-fields { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: .7rem; }
+.planning-framing__manual-fields label { display: grid; gap: .35rem; color: var(--color-muted); font-size: .76rem; }
+.planning-framing__manual-fields input, .planning-framing__manual-fields select { width: 100%; min-height: 2.65rem; padding: .58rem .68rem; border: 1px solid var(--color-border); border-radius: .55rem; background: rgba(8,11,18,.9); color: var(--color-text); font: .82rem var(--font-technical); }
+.planning-framing__manual-fields :disabled { opacity: .45; cursor: not-allowed; }
 .planning-framing__visual { margin-top: .9rem; overflow: hidden; border: 1px solid rgba(229, 169, 63, .26); border-radius: .7rem; background: radial-gradient(circle at 25% 30%, rgba(124,160,216,.1), transparent 25%), #060a12; }
 .planning-framing__visual svg { display: block; width: 100%; height: min(45vw, 360px); }
 .planning-framing__sensor { fill: rgba(30, 42, 63, .45); stroke: var(--planning-gold); stroke-width: 2; }
@@ -192,4 +207,5 @@
   .planning-conclusion__metrics { grid-template-columns: 1fr; }
   .planning-framing__controls { grid-template-columns: 1fr 1fr; }
   .planning-framing__controls label:nth-child(3), .planning-framing__controls button { grid-column: 1 / -1; }
+  .planning-framing__manual-fields { grid-template-columns: 1fr; }
 }

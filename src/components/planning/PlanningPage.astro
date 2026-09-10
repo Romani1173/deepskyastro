@@ -57,6 +57,11 @@ const analyserFovReuseText = {
   es: { use: 'Usar el último FOV calculado en el Analizador', missing: 'Todavía no hay ningún FOV calculado en este navegador.' },
   en: { use: 'Use the latest FOV calculated in the Analyser', missing: 'No FOV has been calculated in this browser yet.' },
 }[lang];
+const manualApparentSizeText = {
+  ca: { toggle: 'Forçar una mida aparent manual', help: 'Substitueix només per a aquest enquadrament la mida del catàleg o la dada absent de SIMBAD.', width: 'Amplada aparent', height: 'Alçada aparent', unit: 'Unitat de mida aparent', degrees: 'Graus', arcminutes: 'Minuts d’arc' },
+  es: { toggle: 'Forzar una medida aparente manual', help: 'Sustituye únicamente para este encuadre la medida del catálogo o el dato ausente de SIMBAD.', width: 'Anchura aparente', height: 'Altura aparente', unit: 'Unidad del tamaño aparente', degrees: 'Grados', arcminutes: 'Minutos de arco' },
+  en: { toggle: 'Override with a manual apparent size', help: 'Replaces the catalogue size, or missing SIMBAD data, for this framing only.', width: 'Apparent width', height: 'Apparent height', unit: 'Apparent-size unit', degrees: 'Degrees', arcminutes: 'Arcminutes' },
+}[lang];
 const apparentSizeText = {
   ca: { label: 'Mida aparent', unavailable: 'No disponible' },
   es: { label: 'Tamaño aparente', unavailable: 'No disponible' },
@@ -85,6 +90,11 @@ const moonGuide = {
     illumination: 'Lunar illumination changes the interpretation considerably:', bullets: ['0–20%: separation usually matters little.', '20–60%: aim for a separation greater than 50–60°.', 'Over 60%: even beyond 90° it can noticeably brighten the sky background.'],
   },
 }[lang];
+const moonPhaseText = {
+  ca: ['Lluna nova', 'Creixent fina', 'Quart creixent', 'Gibosa creixent', 'Lluna plena', 'Gibosa minvant', 'Quart minvant', 'Minvant fina'],
+  es: ['Luna nueva', 'Creciente fina', 'Cuarto creciente', 'Gibosa creciente', 'Luna llena', 'Gibosa menguante', 'Cuarto menguante', 'Menguante fina'],
+  en: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'],
+}[lang];
 const photos = await getCollection('fotos');
 const latestPhotoByObject = new Map<string, (typeof photos)[number]>();
 for (const photo of [...photos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
@@ -106,7 +116,7 @@ const objects = objectsData
   });
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
-const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, framing: framingText }, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, framing: framingText }, moonPhases: moonPhaseText, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
@@ -160,7 +170,10 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
           <label><span>{t.ra}</span><input name="manualRa" type="number" min="0" max="359.999999" step="0.000001" /></label>
           <label><span>{t.dec}</span><input name="manualDec" type="number" min="-90" max="90" step="0.000001" /></label>
         </div>
-        <p class="planning-object-size" data-object-angular-size hidden><strong>{apparentSizeText.label}</strong><span data-object-angular-size-value></span></p>
+        <div class="planning-object-metadata">
+          <p class="planning-object-size" data-object-angular-size hidden><strong>{apparentSizeText.label}</strong><span data-object-angular-size-value></span></p>
+          <p class="planning-object-size planning-object-coordinates" data-object-coordinates hidden><strong>AR / Dec J2000</strong><span data-object-coordinates-value></span><small data-object-coordinates-sexagesimal></small></p>
+        </div>
       </fieldset>
 
       <fieldset class="planning-panel planning-panel--period">
@@ -225,7 +238,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
 
       <section class="planning-night" data-night-detail>
         <div class="planning-section-heading planning-section-heading--night">
-          <p data-night-date>UTC</p><h2>{t.detail}</h2>
+          <p data-night-date>UTC</p><h2>{t.detail}</h2><div class="planning-night-lunar"><strong class="planning-night-phase" data-planning-moon-phase><span data-planning-moon-phase-icon aria-hidden="true"></span><span data-planning-moon-phase-label></span><small data-planning-moon-phase-percent></small></strong>
           <details class="planning-moon-guide">
             <summary><span aria-hidden="true">☾</span>{moonGuide.title}</summary>
             <div class="planning-moon-guide__content">
@@ -233,7 +246,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
               <p>{moonGuide.illumination}</p>
               <ul>{moonGuide.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
             </div>
-          </details>
+          </details></div>
         </div>
         <div class="planning-legend"><span class="planning-legend__object">— {t.objectCurve}</span><span class="planning-legend__moon">— {t.moonCurve}</span><span class="planning-legend__threshold" data-threshold-legend>┄ {t.threshold}</span><span class="planning-legend__darkness">■ {t.astronomyNight}</span></div>
         <div class="planning-chart" data-chart-wrap>
@@ -251,6 +264,15 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
           <label><span>{framingText.height}</span><input type="number" min="0.01" step="0.01" value="1.4" data-framing-height /></label>
           <label><span>{framingText.unit}</span><select data-framing-unit><option value="degrees">{framingText.degrees}</option><option value="arcminutes">{framingText.arcminutes}</option></select></label>
           <button type="button" data-framing-rotate>{framingText.rotate}</button>
+        </div>
+        <div class="planning-framing__manual-size">
+          <label class="planning-framing__manual-toggle"><input type="checkbox" data-use-manual-size /><span>{manualApparentSizeText.toggle}</span></label>
+          <small>{manualApparentSizeText.help}</small>
+          <div class="planning-framing__manual-fields" data-manual-size-fields>
+            <label><span>{manualApparentSizeText.width}</span><input type="number" min="0.01" step="0.01" data-manual-size-width disabled /></label>
+            <label><span>{manualApparentSizeText.height}</span><input type="number" min="0.01" step="0.01" data-manual-size-height disabled /></label>
+            <label><span>{manualApparentSizeText.unit}</span><select data-manual-size-unit disabled><option value="arcminutes">{manualApparentSizeText.arcminutes}</option><option value="degrees">{manualApparentSizeText.degrees}</option></select></label>
+          </div>
         </div>
         <p class="planning-framing__unavailable" data-framing-unavailable hidden>{framingText.unavailable}</p>
         <div class="planning-framing__visual" data-framing-visual>
@@ -296,6 +318,9 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
   const objectAngularSize = root.querySelector<HTMLElement>('[data-object-angular-size]');
   const objectAngularSizeValue = root.querySelector<HTMLElement>('[data-object-angular-size-value]');
+  const objectCoordinates = root.querySelector<HTMLElement>('[data-object-coordinates]');
+  const objectCoordinatesValue = root.querySelector<HTMLElement>('[data-object-coordinates-value]');
+  const objectCoordinatesSexagesimal = root.querySelector<HTMLElement>('[data-object-coordinates-sexagesimal]');
   const weekMonth = root.querySelector<HTMLOutputElement>('[data-week-month]');
   const weekDays = root.querySelector<HTMLOutputElement>('[data-week-days]');
   const shiftedRange = root.querySelector<HTMLElement>('[data-shifted-range]');
@@ -317,6 +342,10 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   const framingHeight = root.querySelector<HTMLInputElement>('[data-framing-height]');
   const framingUnit = root.querySelector<HTMLSelectElement>('[data-framing-unit]');
   const useAnalyserFov = root.querySelector<HTMLInputElement>('[data-use-analyser-fov]');
+  const useManualSize = root.querySelector<HTMLInputElement>('[data-use-manual-size]');
+  const manualSizeWidth = root.querySelector<HTMLInputElement>('[data-manual-size-width]');
+  const manualSizeHeight = root.querySelector<HTMLInputElement>('[data-manual-size-height]');
+  const manualSizeUnit = root.querySelector<HTMLSelectElement>('[data-manual-size-unit]');
   const framingSensor = root.querySelector<SVGRectElement>('[data-framing-sensor]');
   const framingObject = root.querySelector<SVGEllipseElement>('[data-framing-object]');
   let framingRotated = false;
@@ -327,14 +356,16 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
 
   const framingData = () => {
     const object = analysis?.object ?? objectValue();
-    const size = object?.angularSizeArcmin;
+    const manualMultiplier = manualSizeUnit?.value === 'degrees' ? 60 : 1;
+    const manualSize = useManualSize?.checked ? { major: Number(manualSizeWidth?.value) * manualMultiplier, minor: Number(manualSizeHeight?.value) * manualMultiplier } : null;
+    const size = manualSize ?? object?.angularSizeArcmin;
     const multiplier = framingUnit?.value === 'arcminutes' ? 1 / 60 : 1;
     let width = Number(framingWidth?.value) * multiplier, height = Number(framingHeight?.value) * multiplier;
     if (framingRotated) [width, height] = [height, width];
     if (!size || !Number.isFinite(size.major) || !Number.isFinite(size.minor) || !Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
     const objectWidth = size.major / 60, objectHeight = size.minor / 60;
     const ratio = framingRatio(width, height, objectWidth, objectHeight);
-    return { width, height, objectWidth, objectHeight, ratio, status: framingStatus(ratio) };
+    return { width, height, objectWidth, objectHeight, sizeArcmin: size, ratio, status: framingStatus(ratio) };
   };
   const renderFraming = () => {
     if (!framingPanel) return;
@@ -354,7 +385,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     framingObject.setAttribute('rx', String(Math.max(data.objectWidth * scale / 2, 2))); framingObject.setAttribute('ry', String(Math.max(data.objectHeight * scale / 2, 2)));
     framingPanel.querySelector<HTMLElement>('[data-framing-verdict]')!.textContent = config.texts.framing[data.status];
     framingPanel.querySelector<HTMLElement>('[data-framing-field]')!.textContent = `${config.texts.framing.field}: ${data.width.toFixed(2)}° × ${data.height.toFixed(2)}°`;
-    framingPanel.querySelector<HTMLElement>('[data-framing-size]')!.textContent = `${config.texts.framing.object}: ${formatAngularSize(analysis.object.angularSizeArcmin)}`;
+    framingPanel.querySelector<HTMLElement>('[data-framing-size]')!.textContent = `${config.texts.framing.object}: ${formatAngularSize(data.sizeArcmin)}`;
   };
   [framingWidth, framingHeight, framingUnit].forEach((control) => { control?.addEventListener('input', renderFraming); control?.addEventListener('change', renderFraming); });
   root.querySelector<HTMLButtonElement>('[data-framing-rotate]')?.addEventListener('click', () => { framingRotated = !framingRotated; renderFraming(); });
@@ -379,6 +410,13 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     renderFraming();
   });
   syncAnalyserFovOption();
+  const syncManualSize = () => {
+    const enabled = Boolean(useManualSize?.checked);
+    [manualSizeWidth, manualSizeHeight, manualSizeUnit].forEach((control) => { if (control) control.disabled = !enabled; });
+    renderFraming();
+  };
+  useManualSize?.addEventListener('change', syncManualSize);
+  [manualSizeWidth, manualSizeHeight, manualSizeUnit].forEach((control) => { control?.addEventListener('input', renderFraming); control?.addEventListener('change', renderFraming); });
 
   const now = new Date();
   const iso = (() => {
@@ -497,6 +535,21 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   const formatAngularSize = (size?: { major: number; minor: number }) => size && Number.isFinite(size.major) && Number.isFinite(size.minor)
     ? `${angularSizeNumber.format(size.major)}′ × ${angularSizeNumber.format(size.minor)}′`
     : config.texts.unavailable;
+  const sexagesimalParts = (totalSeconds: number) => {
+    const rounded = Math.round(totalSeconds * 100) / 100;
+    const major = Math.floor(rounded / 3600);
+    const minutes = Math.floor((rounded - major * 3600) / 60);
+    const seconds = rounded - major * 3600 - minutes * 60;
+    return { major, minutes, seconds };
+  };
+  const formatRaHms = (degrees: number) => {
+    const parts = sexagesimalParts((((degrees % 360) + 360) % 360) * 240);
+    return `${String(parts.major % 24).padStart(2, '0')}h ${String(parts.minutes).padStart(2, '0')}m ${parts.seconds.toFixed(2).padStart(5, '0')}s`;
+  };
+  const formatDecDms = (degrees: number) => {
+    const parts = sexagesimalParts(Math.abs(degrees) * 3600);
+    return `${degrees < 0 ? '−' : '+'}${String(parts.major).padStart(2, '0')}° ${String(parts.minutes).padStart(2, '0')}′ ${parts.seconds.toFixed(2).padStart(5, '0')}″`;
+  };
   const syncObjectAngularSize = () => {
     if (!objectAngularSize || !objectAngularSizeValue) return;
     const object = objectMode === 'local'
@@ -504,6 +557,13 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
       : objectMode === 'simbad' ? resolvedSimbad : undefined;
     objectAngularSize.hidden = objectMode === 'manual' || !object;
     objectAngularSizeValue.textContent = formatAngularSize(object?.angularSizeArcmin);
+    const coordinateObject = objectMode === 'manual'
+      ? { raDeg: Number(field('manualRa').value), decDeg: Number(field('manualDec').value) }
+      : object;
+    const hasCoordinates = Number.isFinite(coordinateObject?.raDeg) && Number.isFinite(coordinateObject?.decDeg);
+    if (objectCoordinates) objectCoordinates.hidden = !hasCoordinates;
+    if (objectCoordinatesValue) objectCoordinatesValue.textContent = hasCoordinates ? `AR ${coordinateObject.raDeg.toFixed(6)}° · Dec ${coordinateObject.decDeg >= 0 ? '+' : ''}${coordinateObject.decDeg.toFixed(6)}°` : '';
+    if (objectCoordinatesSexagesimal) objectCoordinatesSexagesimal.textContent = hasCoordinates ? `AR ${formatRaHms(coordinateObject.raDeg)} · Dec ${formatDecDms(coordinateObject.decDeg)}` : '';
   };
   const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
   const syncLocalObjectSearch = () => {
@@ -1101,6 +1161,13 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   const selectNight = (date?: string) => {
     selectedNight = analysis?.nights.find((night: any) => night.nightDateUtc === date) ?? analysis?.nights[0];
     root.querySelector<HTMLElement>('[data-night-date]')!.textContent = `${selectedNight.nightDateUtc} · UTC`;
+    const nightSamples = selectedNight.samples.filter((sample: any) => sample.isAstronomicalNight);
+    const lunarSample = nightSamples[Math.floor(nightSamples.length / 2)] ?? selectedNight.samples[Math.floor(selectedNight.samples.length / 2)];
+    const phaseIndex = Math.floor(((lunarSample.moonPhaseDeg ?? 0) + 22.5) / 45) % 8;
+    const phaseIcons = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+    root.querySelector<HTMLElement>('[data-planning-moon-phase-icon]')!.textContent = phaseIcons[phaseIndex];
+    root.querySelector<HTMLElement>('[data-planning-moon-phase-label]')!.textContent = config.moonPhases[phaseIndex];
+    root.querySelector<HTMLElement>('[data-planning-moon-phase-percent]')!.textContent = percent(lunarSample.moonIlluminationFraction);
     renderRows(); renderChart(); persist();
   };
 
@@ -1142,7 +1209,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     if (framingPanel) framingPanel.hidden = true;
   }
   ['locationName', 'latitude', 'longitude', 'localObject', 'year', 'week', 'threshold', 'manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', markDirty));
-  ['manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', invalidateObjectResults));
+  ['manualName', 'manualRa', 'manualDec'].forEach((name) => field(name).addEventListener('input', () => { syncObjectAngularSize(); invalidateObjectResults(); }));
   form.addEventListener('submit', (event) => { event.preventDefault(); calculate(); });
   calculate();
 </script>
