@@ -57,10 +57,15 @@ const analyserFovReuseText = {
   es: { use: 'Usar el último FOV calculado en el Analizador', missing: 'Todavía no hay ningún FOV calculado en este navegador.' },
   en: { use: 'Use the latest FOV calculated in the Analyser', missing: 'No FOV has been calculated in this browser yet.' },
 }[lang];
+const manualFovText = {
+  ca: { toggle: 'Forçar una mida de FOV', help: 'Activa les mateixes caselles d’amplada i alçada per introduir un FOV conegut.', missing: 'Selecciona el FOV de l’Analitzador o força una mida de FOV per generar l’enquadrament.' },
+  es: { toggle: 'Forzar una medida de FOV', help: 'Activa las mismas casillas de anchura y altura para introducir un FOV conocido.', missing: 'Selecciona el FOV del Analizador o fuerza una medida de FOV para generar el encuadre.' },
+  en: { toggle: 'Override the FOV size', help: 'Enables the same width and height fields so you can enter a known FOV.', missing: 'Select the Analyser FOV or override the FOV size to generate the framing.' },
+}[lang];
 const manualApparentSizeText = {
-  ca: { toggle: 'Forçar una mida aparent manual', help: 'Substitueix només per a aquest enquadrament la mida del catàleg o la dada absent de SIMBAD.', width: 'Amplada aparent', height: 'Alçada aparent', unit: 'Unitat de mida aparent', degrees: 'Graus', arcminutes: 'Minuts d’arc' },
-  es: { toggle: 'Forzar una medida aparente manual', help: 'Sustituye únicamente para este encuadre la medida del catálogo o el dato ausente de SIMBAD.', width: 'Anchura aparente', height: 'Altura aparente', unit: 'Unidad del tamaño aparente', degrees: 'Grados', arcminutes: 'Minutos de arco' },
-  en: { toggle: 'Override with a manual apparent size', help: 'Replaces the catalogue size, or missing SIMBAD data, for this framing only.', width: 'Apparent width', height: 'Apparent height', unit: 'Apparent-size unit', degrees: 'Degrees', arcminutes: 'Arcminutes' },
+  ca: { toggle: 'Indicar la mida aparent de l’objecte', help: 'Només si el catàleg o SIMBAD no proporcionen la mida de l’objecte, o si la vols corregir.', width: 'Amplada aparent', height: 'Alçada aparent', unit: 'Unitat de mida aparent', degrees: 'Graus', arcminutes: 'Minuts d’arc' },
+  es: { toggle: 'Indicar el tamaño aparente del objeto', help: 'Solo si el catálogo o SIMBAD no proporcionan el tamaño del objeto, o si quieres corregirlo.', width: 'Anchura aparente', height: 'Altura aparente', unit: 'Unidad del tamaño aparente', degrees: 'Grados', arcminutes: 'Minutos de arco' },
+  en: { toggle: 'Enter the object’s apparent size', help: 'Only if the catalogue or SIMBAD does not provide the object size, or if you want to correct it.', width: 'Apparent width', height: 'Apparent height', unit: 'Apparent-size unit', degrees: 'Degrees', arcminutes: 'Arcminutes' },
 }[lang];
 const apparentSizeText = {
   ca: { label: 'Mida aparent', unavailable: 'No disponible' },
@@ -258,12 +263,19 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
       <section class="planning-framing" data-planning-framing>
         <div class="planning-section-heading"><h2>{framingText.title}</h2></div>
         <p class="planning-framing__question">{framingText.question}</p>
-        <label class="planning-framing__reuse"><input type="checkbox" data-use-analyser-fov /><span>{analyserFovReuseText.use}</span><small data-analyser-fov-missing hidden>{analyserFovReuseText.missing}</small></label>
+        <div class="planning-framing__fov-sources">
+          <label class="planning-framing__reuse"><input type="checkbox" data-use-analyser-fov /><span>{analyserFovReuseText.use}</span><small data-analyser-fov-missing hidden>{analyserFovReuseText.missing}</small></label>
+          <label class="planning-framing__reuse"><input type="checkbox" data-force-manual-fov /><span>{manualFovText.toggle}</span><small>{manualFovText.help}</small></label>
+        </div>
         <div class="planning-framing__controls">
-          <label><span>{framingText.width}</span><input type="number" min="0.01" step="0.01" value="2" data-framing-width /></label>
-          <label><span>{framingText.height}</span><input type="number" min="0.01" step="0.01" value="1.4" data-framing-height /></label>
-          <label><span>{framingText.unit}</span><select data-framing-unit><option value="degrees">{framingText.degrees}</option><option value="arcminutes">{framingText.arcminutes}</option></select></label>
-          <button type="button" data-framing-rotate>{framingText.rotate}</button>
+          <label><span>{framingText.width}</span><input type="number" min="0.01" step="0.01" value="0" data-framing-width disabled /></label>
+          <label><span>{framingText.height}</span><input type="number" min="0.01" step="0.01" value="0" data-framing-height disabled /></label>
+          <label><span>{framingText.unit}</span><select data-framing-unit disabled><option value="degrees">{framingText.degrees}</option><option value="arcminutes">{framingText.arcminutes}</option></select></label>
+          <div class="planning-framing__rotation" aria-label={framingText.rotate}>
+            <button type="button" data-framing-rotate="-45" aria-label={`${framingText.rotate} −45°`}>−45°</button>
+            <output data-framing-angle>0°</output>
+            <button type="button" data-framing-rotate="45" aria-label={`${framingText.rotate} +45°`}>+45°</button>
+          </div>
         </div>
         <div class="planning-framing__manual-size">
           <label class="planning-framing__manual-toggle"><input type="checkbox" data-use-manual-size /><span>{manualApparentSizeText.toggle}</span></label>
@@ -274,6 +286,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
             <label><span>{manualApparentSizeText.unit}</span><select data-manual-size-unit disabled><option value="arcminutes">{manualApparentSizeText.arcminutes}</option><option value="degrees">{manualApparentSizeText.degrees}</option></select></label>
           </div>
         </div>
+        <p class="planning-framing__unavailable" data-framing-fov-missing>{manualFovText.missing}</p>
         <p class="planning-framing__unavailable" data-framing-unavailable hidden>{framingText.unavailable}</p>
         <div class="planning-framing__visual" data-framing-visual>
           <svg viewBox="0 0 600 320" role="img" aria-label={framingText.title}>
@@ -342,53 +355,67 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   const framingHeight = root.querySelector<HTMLInputElement>('[data-framing-height]');
   const framingUnit = root.querySelector<HTMLSelectElement>('[data-framing-unit]');
   const useAnalyserFov = root.querySelector<HTMLInputElement>('[data-use-analyser-fov]');
+  const forceManualFov = root.querySelector<HTMLInputElement>('[data-force-manual-fov]');
   const useManualSize = root.querySelector<HTMLInputElement>('[data-use-manual-size]');
   const manualSizeWidth = root.querySelector<HTMLInputElement>('[data-manual-size-width]');
   const manualSizeHeight = root.querySelector<HTMLInputElement>('[data-manual-size-height]');
   const manualSizeUnit = root.querySelector<HTMLSelectElement>('[data-manual-size-unit]');
   const framingSensor = root.querySelector<SVGRectElement>('[data-framing-sensor]');
   const framingObject = root.querySelector<SVGEllipseElement>('[data-framing-object]');
-  let framingRotated = false;
+  let framingAngle = 0;
   let analysis: any = null;
   let selectedNight: any = null;
   let resolvedSimbad: any = null;
   let objectMode = sessionStorage.getItem('deepskyastro:planning-object-mode') ?? 'local';
 
   const framingData = () => {
+    if (!useAnalyserFov?.checked && !forceManualFov?.checked) return null;
     const object = analysis?.object ?? objectValue();
     const manualMultiplier = manualSizeUnit?.value === 'degrees' ? 60 : 1;
     const manualSize = useManualSize?.checked ? { major: Number(manualSizeWidth?.value) * manualMultiplier, minor: Number(manualSizeHeight?.value) * manualMultiplier } : null;
     const size = manualSize ?? object?.angularSizeArcmin;
     const multiplier = framingUnit?.value === 'arcminutes' ? 1 / 60 : 1;
-    let width = Number(framingWidth?.value) * multiplier, height = Number(framingHeight?.value) * multiplier;
-    if (framingRotated) [width, height] = [height, width];
+    const width = Number(framingWidth?.value) * multiplier, height = Number(framingHeight?.value) * multiplier;
     if (!size || !Number.isFinite(size.major) || !Number.isFinite(size.minor) || !Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return null;
     const objectWidth = size.major / 60, objectHeight = size.minor / 60;
-    const ratio = framingRatio(width, height, objectWidth, objectHeight);
-    return { width, height, objectWidth, objectHeight, sizeArcmin: size, ratio, status: framingStatus(ratio) };
+    const radians = framingAngle * Math.PI / 180;
+    const projectedWidth = Math.hypot(objectWidth * Math.cos(radians), objectHeight * Math.sin(radians));
+    const projectedHeight = Math.hypot(objectWidth * Math.sin(radians), objectHeight * Math.cos(radians));
+    const ratio = framingRatio(width, height, projectedWidth, projectedHeight);
+    return { width, height, objectWidth, objectHeight, sizeArcmin: size, ratio, status: framingStatus(ratio), angle: framingAngle };
   };
   const renderFraming = () => {
     if (!framingPanel) return;
     const data = framingData();
     const unavailable = framingPanel.querySelector<HTMLElement>('[data-framing-unavailable]');
+    const fovMissing = framingPanel.querySelector<HTMLElement>('[data-framing-fov-missing]');
     const visual = framingPanel.querySelector<HTMLElement>('[data-framing-visual]');
     const result = framingPanel.querySelector<HTMLElement>('[data-framing-result]');
-    if (unavailable) unavailable.hidden = Boolean(data);
+    const hasFovSource = Boolean(useAnalyserFov?.checked || forceManualFov?.checked);
+    if (fovMissing) fovMissing.hidden = hasFovSource;
+    if (unavailable) unavailable.hidden = !hasFovSource || Boolean(data);
     if (visual) visual.hidden = !data;
     if (result) result.hidden = !data;
     if (!data || !framingSensor || !framingObject) return;
-    const scale = Math.min(540 / data.width, 270 / data.height);
+    const diagonal = Math.hypot(data.width, data.height);
+    const scale = Math.min(540 / diagonal, 270 / diagonal);
     const sensorWidth = data.width * scale, sensorHeight = data.height * scale;
     framingSensor.setAttribute('x', String((600 - sensorWidth) / 2)); framingSensor.setAttribute('y', String((320 - sensorHeight) / 2));
     framingSensor.setAttribute('width', String(sensorWidth)); framingSensor.setAttribute('height', String(sensorHeight));
+    framingSensor.setAttribute('transform', `rotate(${framingAngle} 300 160)`);
     framingObject.setAttribute('cx', '300'); framingObject.setAttribute('cy', '160');
     framingObject.setAttribute('rx', String(Math.max(data.objectWidth * scale / 2, 2))); framingObject.setAttribute('ry', String(Math.max(data.objectHeight * scale / 2, 2)));
     framingPanel.querySelector<HTMLElement>('[data-framing-verdict]')!.textContent = config.texts.framing[data.status];
-    framingPanel.querySelector<HTMLElement>('[data-framing-field]')!.textContent = `${config.texts.framing.field}: ${data.width.toFixed(2)}° × ${data.height.toFixed(2)}°`;
+    framingPanel.querySelector<HTMLElement>('[data-framing-field]')!.textContent = `${config.texts.framing.field}: ${data.width.toFixed(2)}° × ${data.height.toFixed(2)}° · ${data.angle}°`;
     framingPanel.querySelector<HTMLElement>('[data-framing-size]')!.textContent = `${config.texts.framing.object}: ${formatAngularSize(data.sizeArcmin)}`;
   };
   [framingWidth, framingHeight, framingUnit].forEach((control) => { control?.addEventListener('input', renderFraming); control?.addEventListener('change', renderFraming); });
-  root.querySelector<HTMLButtonElement>('[data-framing-rotate]')?.addEventListener('click', () => { framingRotated = !framingRotated; renderFraming(); });
+  root.querySelectorAll<HTMLButtonElement>('[data-framing-rotate]').forEach((button) => button.addEventListener('click', () => {
+    framingAngle = (framingAngle + Number(button.dataset.framingRotate) + 360) % 360;
+    const angle = framingPanel?.querySelector<HTMLOutputElement>('[data-framing-angle]');
+    if (angle) angle.value = `${framingAngle}°`;
+    renderFraming();
+  }));
   const readAnalyserFov = () => {
     try {
       const saved = JSON.parse(localStorage.getItem('deepskyastro:last-analyser-fov') ?? 'null');
@@ -404,12 +431,18 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   useAnalyserFov?.addEventListener('change', () => {
     const saved = readAnalyserFov();
     if (useAnalyserFov.checked && saved && framingWidth && framingHeight && framingUnit) {
+      if (forceManualFov) forceManualFov.checked = false;
       framingUnit.value = 'degrees'; framingWidth.value = String(saved.widthDeg); framingHeight.value = String(saved.heightDeg);
     }
-    [framingWidth, framingHeight, framingUnit].forEach((control) => { if (control) control.disabled = useAnalyserFov.checked; });
+    [framingWidth, framingHeight, framingUnit].forEach((control) => { if (control) control.disabled = !forceManualFov?.checked; });
     renderFraming();
   });
   syncAnalyserFovOption();
+  forceManualFov?.addEventListener('change', () => {
+    if (forceManualFov.checked && useAnalyserFov) useAnalyserFov.checked = false;
+    [framingWidth, framingHeight, framingUnit].forEach((control) => { if (control) control.disabled = !forceManualFov.checked; });
+    renderFraming();
+  });
   const syncManualSize = () => {
     const enabled = Boolean(useManualSize?.checked);
     [manualSizeWidth, manualSizeHeight, manualSizeUnit].forEach((control) => { if (control) control.disabled = !enabled; });
@@ -1021,7 +1054,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     const frame = framingData();
     if (frame) {
       y += 12; context.fillStyle = '#9a6718'; context.font = '700 21px Arial'; context.fillText(config.texts.framing.title.toLocaleUpperCase(), 80, y); y += 30;
-      context.fillStyle = '#344054'; context.font = '19px Arial'; context.fillText(`${config.texts.framing[frame.status]} · ${config.texts.framing.field}: ${frame.width.toFixed(2)}° × ${frame.height.toFixed(2)}°`, 80, y); y += 22;
+      context.fillStyle = '#344054'; context.font = '19px Arial'; context.fillText(`${config.texts.framing[frame.status]} · ${config.texts.framing.field}: ${frame.width.toFixed(2)}° × ${frame.height.toFixed(2)}° · ${frame.angle}°`, 80, y); y += 22;
       const boxW = 420, boxH = 210, scale = Math.min(boxW / frame.width, boxH / frame.height), sensorW = frame.width * scale, sensorH = frame.height * scale, cx = 620, cy = y + 120;
       context.fillStyle = '#080b12'; context.fillRect(80, y + 10, 1080, 250); context.strokeStyle = '#c68418'; context.lineWidth = 3; context.strokeRect(cx - sensorW / 2, cy - sensorH / 2, sensorW, sensorH);
       context.beginPath(); context.ellipse(cx, cy, Math.max(frame.objectWidth * scale / 2, 2), Math.max(frame.objectHeight * scale / 2, 2), 0, 0, Math.PI * 2); context.fillStyle = 'rgba(198,132,24,.25)'; context.fill(); context.stroke();
