@@ -45,6 +45,11 @@ const texts = {
   },
 } as const;
 const t = texts[lang];
+const apparentSizeText = {
+  ca: { label: 'Mida aparent', unavailable: 'No disponible' },
+  es: { label: 'Tamaño aparente', unavailable: 'No disponible' },
+  en: { label: 'Apparent size', unavailable: 'Not available' },
+}[lang];
 const periodShiftText = {
   ca: { label: 'Desplaçament de dies', previous: 'Un dia abans', next: 'Un dia després' },
   es: { label: 'Desplazamiento de días', previous: 'Un día antes', next: 'Un día después' },
@@ -85,11 +90,11 @@ const objects = objectsData
   .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
   .map((object) => {
     const photo = latestPhotoByObject.get(object.id);
-    return { id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery', photoSrc: photo ? withBase(`imagenes/cielo-profundo/${photo.data.imatge}`, base) : undefined };
+    return { id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, angularSizeArcmin: object.angularSizeArcmin, angularSizeSource: object.angularSizeSource, source: object.status === 'pending' ? 'pending' : 'gallery', photoSrc: photo ? withBase(`imagenes/cielo-profundo/${photo.data.imatge}`, base) : undefined };
   });
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
-const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText }, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.planning(base)} focused>
@@ -143,6 +148,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
           <label><span>{t.ra}</span><input name="manualRa" type="number" min="0" max="359.999999" step="0.000001" /></label>
           <label><span>{t.dec}</span><input name="manualDec" type="number" min="-90" max="90" step="0.000001" /></label>
         </div>
+        <p class="planning-object-size" data-object-angular-size hidden><strong>{apparentSizeText.label}</strong><span data-object-angular-size-value></span></p>
       </fieldset>
 
       <fieldset class="planning-panel planning-panel--period">
@@ -256,6 +262,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const nightDetail = root.querySelector<HTMLElement>('[data-night-detail]');
   const simbadButton = root.querySelector<HTMLButtonElement>('[data-resolve-simbad]');
   const simbadResult = root.querySelector<HTMLElement>('[data-simbad-result]');
+  const objectAngularSize = root.querySelector<HTMLElement>('[data-object-angular-size]');
+  const objectAngularSizeValue = root.querySelector<HTMLElement>('[data-object-angular-size-value]');
   const weekMonth = root.querySelector<HTMLOutputElement>('[data-week-month]');
   const weekDays = root.querySelector<HTMLOutputElement>('[data-week-days]');
   const shiftedRange = root.querySelector<HTMLElement>('[data-shifted-range]');
@@ -390,12 +398,25 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
   const localObjectSearch = field('localObjectSearch') as HTMLInputElement;
   const localObjectResults = root.querySelector<HTMLElement>('[data-object-results]');
   const objectLabel = (object: any) => object.commonName ? `${object.displayCatalogName} · ${object.commonName}` : object.displayCatalogName;
+  const angularSizeNumber = new Intl.NumberFormat(config.lang, { maximumFractionDigits: 2 });
+  const formatAngularSize = (size?: { major: number; minor: number }) => size && Number.isFinite(size.major) && Number.isFinite(size.minor)
+    ? `${angularSizeNumber.format(size.major)}′ × ${angularSizeNumber.format(size.minor)}′`
+    : config.texts.unavailable;
+  const syncObjectAngularSize = () => {
+    if (!objectAngularSize || !objectAngularSizeValue) return;
+    const object = objectMode === 'local'
+      ? config.objects.find((candidate: any) => candidate.id === field('localObject').value)
+      : objectMode === 'simbad' ? resolvedSimbad : undefined;
+    objectAngularSize.hidden = objectMode === 'manual' || !object;
+    objectAngularSizeValue.textContent = formatAngularSize(object?.angularSizeArcmin);
+  };
   const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
   const syncLocalObjectSearch = () => {
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
     localObjectSearch.value = selected ? objectLabel(selected) : '';
   };
   syncLocalObjectSearch();
+  syncObjectAngularSize();
   const syncPhotoLink = () => {
     if (!planningPhotoButton) return;
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
@@ -439,6 +460,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     localObjectSearch.value = objectLabel(selected);
     field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
     syncPhotoLink();
+    syncObjectAngularSize();
     closeLocalObjectResults();
   };
   const matchingLocalObjects = (showAll = false) => {
@@ -507,6 +529,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     modePanels.forEach((panel) => { panel.hidden = panel.dataset.objectPanel !== objectMode; });
     sessionStorage.setItem('deepskyastro:planning-object-mode', objectMode);
     syncPhotoLink();
+    syncObjectAngularSize();
     if (changed) { invalidateObjectResults(); markDirty(); persist(); }
   };
   modeButtons.forEach((button) => button.addEventListener('click', () => setObjectMode(button.dataset.objectMode ?? 'local', true)));
@@ -539,7 +562,7 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     };
     if (objectMode === 'simbad') return resolvedSimbad ?? { displayName: '—', raDeg: Number.NaN, decDeg: Number.NaN, epoch: 'J2000', frame: 'ICRS', source: 'simbad' };
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
-    return { displayName: selected.commonName ? `${selected.displayCatalogName} · ${selected.commonName}` : selected.displayCatalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
+    return { displayName: selected.commonName ? `${selected.displayCatalogName} · ${selected.commonName}` : selected.displayCatalogName, canonicalName: selected.catalogName, raDeg: selected.raDeg, decDeg: selected.decDeg, angularSizeArcmin: selected.angularSizeArcmin, angularSizeSource: selected.angularSizeSource, epoch: 'J2000', frame: 'ICRS', source: selected.source, localObjectId: selected.id };
   };
   const persist = () => {
     const location = locationValue();
@@ -593,8 +616,8 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
     control.dispatchEvent(new Event('input', { bubbles: true }));
     control.dispatchEvent(new Event('change', { bubbles: true }));
   }));
-  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
-  field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; invalidateObjectResults(); });
+  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; syncObjectAngularSize(); invalidateObjectResults(); });
+  field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; syncObjectAngularSize(); invalidateObjectResults(); });
   field('simbadQuery').addEventListener('input', () => simbadButton?.classList.add('is-dirty'));
 
   simbadButton?.addEventListener('click', async () => {
@@ -607,12 +630,13 @@ const clientData = JSON.stringify({ lang, texts: t, objects }).replace(/</g, '\\
       if (local) {
         field('localObject').value = local.id;
         syncLocalObjectSearch();
-        resolvedSimbad = { displayName: local.commonName ? `${local.displayCatalogName} · ${local.commonName}` : local.displayCatalogName, canonicalName: local.catalogName, raDeg: local.raDeg, decDeg: local.decDeg, epoch: 'J2000', frame: 'ICRS', source: local.source, localObjectId: local.id };
+        resolvedSimbad = { displayName: local.commonName ? `${local.displayCatalogName} · ${local.commonName}` : local.displayCatalogName, canonicalName: local.catalogName, raDeg: local.raDeg, decDeg: local.decDeg, angularSizeArcmin: local.angularSizeArcmin, angularSizeSource: local.angularSizeSource, epoch: 'J2000', frame: 'ICRS', source: local.source, localObjectId: local.id };
         if (simbadResult) simbadResult.textContent = `${config.texts.localResolved}: ${local.displayCatalogName}${local.commonName ? ` · ${local.commonName}` : ''}`;
       } else {
         resolvedSimbad = await resolveSimbad(query);
         if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${resolvedSimbad.raDeg.toFixed(6)}° · Dec ${resolvedSimbad.decDeg.toFixed(6)}°`;
       }
+      syncObjectAngularSize();
       markDirty(); persist();
     } catch (caught) { console.error(caught); if (simbadResult) simbadResult.textContent = config.texts.simbadError; }
     finally { simbadButton.disabled = false; simbadButton.textContent = config.texts.resolve; }

@@ -24,6 +24,9 @@ const exportTexts = {
   en: { downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', downloadPdf: 'Download PDF', downloadedPdf: '✓ PDF downloaded', reportHint: 'Download the visible results without photographs.', periodSection: '1. Time period', filtersSection: '2. Filters', month: 'Month', days: 'Days', selectedWeeklyPeriod: 'Selected weekly period', shiftPeriod: 'Day offset', previousDay: 'One day earlier', nextDay: 'One day later', year: 'Year', altitudeThreshold: 'Altitude threshold', graphThreshold: 'Threshold', minimumVisibility: 'Minimum hours above threshold', meridianPass: 'Meridian transit', north: 'North', south: 'South', both: 'North and south' },
 } as const;
 const t = { ...texts[lang], ...exportTexts[lang] };
+const apparentSizeLabel = { ca: 'Mida aparent', es: 'Tamaño aparente', en: 'Apparent size' }[lang];
+const angularSizeNumber = new Intl.NumberFormat(lang, { maximumFractionDigits: 2 });
+const formatAngularSize = (size?: { major: number; minor: number }) => size ? `${angularSizeNumber.format(size.major)}′ × ${angularSizeNumber.format(size.minor)}′` : '—';
 const enhancedVisibility = lang !== 'en';
 const publicIntro = {
   ca: 'Descobreix i compara els objectes fotografiats d’aquesta web des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.',
@@ -167,6 +170,7 @@ const weekParts = (week: number) => {
             </div>
             <dl>
               <div class="visibility-card__primary"><dt>{t.maxAltitude}</dt><dd data-altitude>—</dd></div>
+              <div class="visibility-card__apparent-size"><dt>{apparentSizeLabel}</dt><dd>{formatAngularSize(object.angularSizeArcmin)}</dd></div>
               <div><dt>{t.bestTime}</dt><dd><span data-best-time>—</span> <small>{t.localTime}</small></dd></div>
               <div><dt data-useful-time>{t.usefulTime.replace('{threshold}', '30')}</dt><dd data-hours>—</dd></div>
               <div><dt>{t.night}</dt><dd data-night>—</dd></div>
@@ -1040,6 +1044,7 @@ const weekParts = (week: number) => {
   .visibility-grid--list .visibility-card__heading .visibility-card__alias { margin-top: .08rem; font-size: .72rem; }
   .visibility-grid--list .visibility-card dl { grid-template-columns: repeat(4, minmax(6rem, 1fr)); gap: .35rem; margin: 0; }
   .visibility-grid--list .visibility-card dl div { padding: .45rem .55rem; }
+  .visibility-grid--list .visibility-card__apparent-size { display: none; }
   .visibility-grid--list .visibility-card dl .visibility-card__primary { grid-row: auto; }
   .visibility-grid--list .visibility-card dt { font-size: .64rem; }
   .visibility-grid--list .visibility-card dd,

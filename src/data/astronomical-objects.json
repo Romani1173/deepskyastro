@@ -10,7 +10,12 @@
     "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 18.938,
+      "minor": 18.938
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "albireo",
@@ -36,7 +41,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 20,
+      "minor": 20
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "collinder399",
@@ -67,7 +77,12 @@
     "constellation": "Pegasus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 3.2,
+      "minor": 3.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic1795",
@@ -83,7 +98,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 3.1,
+      "minor": 3.1
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic59",
@@ -114,7 +134,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 10,
+      "minor": 3
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ic405",
@@ -153,7 +178,12 @@
     "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 40,
+      "minor": 30
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ic434",
@@ -179,7 +209,12 @@
     "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 45,
+      "minor": 25
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic1318",
@@ -205,7 +240,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 146,
+      "minor": 146
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic1805",
@@ -216,7 +256,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 13.3,
+      "minor": 13.3
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic1848",
@@ -227,7 +272,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 24,
+      "minor": 24
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ic2118",
@@ -240,7 +290,12 @@
     "constellation": "Eridanus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 160,
+      "minor": 60
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ic2177",
@@ -251,7 +306,12 @@
     "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 120,
+      "minor": 40
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ic5070",
@@ -262,7 +322,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 60,
+      "minor": 50
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ic5146",
@@ -273,7 +338,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 8.2,
+      "minor": 8.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "lbn468",
@@ -345,7 +415,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 137,
+      "minor": 137
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ldn1235",
@@ -356,7 +431,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 10.2,
+      "minor": 4.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ldn1400",
@@ -380,7 +460,12 @@
     "constellation": "Taurus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 7,
+      "minor": 5
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m3",
@@ -393,7 +478,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 16.2,
+      "minor": 16.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m8",
@@ -420,7 +510,12 @@
     "constellation": "Hercules",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 33,
+      "minor": 33
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m15",
@@ -433,7 +528,12 @@
     "constellation": "Pegasus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 12.3,
+      "minor": 12.3
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m16",
@@ -446,7 +546,12 @@
     "constellation": "Serpens",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 80,
+      "minor": 80
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m20",
@@ -459,7 +564,12 @@
     "constellation": "Sagittarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 28,
+      "minor": 28
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m21",
@@ -472,7 +582,12 @@
     "constellation": "Sagittarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 110,
+      "minor": 110
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m27",
@@ -485,7 +600,12 @@
     "constellation": "Vulpecula",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 6.7,
+      "minor": 6.7
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m29",
@@ -498,7 +618,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 12.7,
+      "minor": 12.7
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m31",
@@ -511,7 +636,12 @@
     "constellation": "Andromeda",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 199.53,
+      "minor": 70.79
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m33",
@@ -524,7 +654,12 @@
     "constellation": "Triangulum",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 60.26,
+      "minor": 35.48
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m35",
@@ -537,7 +672,12 @@
     "constellation": "Gemini",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 38.3,
+      "minor": 38.3
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m36",
@@ -550,7 +690,12 @@
     "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 120,
+      "minor": 120
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m37",
@@ -563,7 +708,12 @@
     "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 19.3,
+      "minor": 19.3
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m38",
@@ -576,7 +726,12 @@
     "constellation": "Auriga",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 19.6,
+      "minor": 19.6
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m39",
@@ -589,7 +744,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 120.4,
+      "minor": 120.4
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m42",
@@ -603,7 +763,12 @@
     "constellation": "Orion",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 66,
+      "minor": 66
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m44",
@@ -616,7 +781,12 @@
     "constellation": "Cancer",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 118.2,
+      "minor": 118.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m45",
@@ -629,7 +799,12 @@
     "constellation": "Taurus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 76.86,
+      "minor": 76.86
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m51",
@@ -642,7 +817,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 9.04379,
+      "minor": 7.78399
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m52",
@@ -655,7 +835,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 16,
+      "minor": 16
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m56",
@@ -668,7 +853,12 @@
     "constellation": "Lyra",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 7.1,
+      "minor": 7.1
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m57",
@@ -681,7 +871,12 @@
     "constellation": "Lyra",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 1.153,
+      "minor": 1.153
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m63",
@@ -694,7 +889,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 13.18,
+      "minor": 7.94
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m65",
@@ -707,7 +907,12 @@
     "constellation": "Leo",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 15.9663,
+      "minor": 4.5472
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m71",
@@ -720,7 +925,12 @@
     "constellation": "Sagitta",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 7.2,
+      "minor": 7.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m78",
@@ -747,7 +957,12 @@
     "constellation": "Ursa Major",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 21.38,
+      "minor": 10.23
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m84",
@@ -760,7 +975,12 @@
     "constellation": "Virgo",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 6.46,
+      "minor": 5.75
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m92",
@@ -773,7 +993,12 @@
     "constellation": "Hercules",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 11.2,
+      "minor": 11.2
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m94",
@@ -786,7 +1011,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 6.99078,
+      "minor": 5.86107
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m101",
@@ -797,7 +1027,12 @@
     "constellation": "Ursa Major",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 21.88,
+      "minor": 20.89
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m103",
@@ -808,7 +1043,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 7.4,
+      "minor": 7.4
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m104",
@@ -822,7 +1062,12 @@
     "constellation": "Virgo",
     "coordinateSource": "SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 8.51,
+      "minor": 5.01
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m106",
@@ -833,7 +1078,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 17.78,
+      "minor": 6.92
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc1491",
@@ -849,7 +1099,12 @@
     "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 4.8,
+      "minor": 4.8
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc225",
@@ -867,7 +1122,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 25.9,
+      "minor": 25.9
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc281",
@@ -893,7 +1153,12 @@
     "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 16.3,
+      "minor": 16.3
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc1499",
@@ -906,7 +1171,12 @@
     "constellation": "Perseus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 145,
+      "minor": 40
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc2174",
@@ -919,7 +1189,12 @@
     "constellation": "Orion",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 40,
+      "minor": 30
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc2237",
@@ -932,7 +1207,12 @@
     "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 80,
+      "minor": 60
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc2264",
@@ -945,7 +1225,12 @@
     "constellation": "Monoceros",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 240,
+      "minor": 240
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc2359",
@@ -958,7 +1243,12 @@
     "constellation": "Canis Major",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 30,
+      "minor": 30
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc4244",
@@ -971,7 +1261,12 @@
     "constellation": "Canes Venatici",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 19.0689,
+      "minor": 2.72876
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc4565",
@@ -984,7 +1279,12 @@
     "constellation": "Coma Berenices",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 13.8,
+      "minor": 2.19
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc6559",
@@ -1015,7 +1315,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 35,
+      "minor": 35
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc6888",
@@ -1028,7 +1333,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 20,
+      "minor": 10
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc6914",
@@ -1041,7 +1351,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 13,
+      "minor": 12
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc6946",
@@ -1054,7 +1369,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 11.48,
+      "minor": 10.72
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc6960-e",
@@ -1068,7 +1388,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD (NGC 6960 reference coordinates)",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 70,
+      "minor": 70
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "ngc6960-w",
@@ -1134,7 +1459,12 @@
     "constellation": "Aquarius",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 13.4,
+      "minor": 13.4
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc7380",
@@ -1147,7 +1477,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 10.8,
+      "minor": 10.8
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "ngc7635",
@@ -1160,7 +1495,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 41.666667938,
+      "minor": 41.666667938
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "pk064-051",
@@ -1173,12 +1513,18 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 0.1098075,
+      "minor": 0.10896717
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "pn-g0803-104",
-    "catalogName": "PN G080.3-10.4",
+    "catalogName": "PNG080.3-10.4",
     "aliases": [
+      "PN G080.3-10.4",
       "MWP 1",
       "PK 080-10 1"
     ],
@@ -1192,7 +1538,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 13,
+      "minor": 9
+    },
+    "angularSizeSource": "project-catalogue"
   },
   {
     "id": "sh2-86",
@@ -1242,7 +1593,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 16,
+      "minor": 9
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "sh2-114",
@@ -1331,7 +1687,12 @@
     "constellation": "Cepheus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 5.25,
+      "minor": 3.6
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "sh2-157",
@@ -1344,7 +1705,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 3.32,
+      "minor": 1.68
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "sh2-173",
@@ -1357,7 +1723,12 @@
     "constellation": "Cassiopeia",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 25,
+      "minor": 20
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "sh2-261",
@@ -1370,7 +1741,12 @@
     "constellation": "Orion",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "photographed"
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 30,
+      "minor": 15
+    },
+    "angularSizeSource": "gallery"
   },
   {
     "id": "sh2-308",

@@ -14,6 +14,7 @@
     "astro": "astro",
     "visibility:generate": "node scripts/generate-visibility-data.mjs",
     "visibility:chart": "node scripts/generate-visibility-chart.mjs",
+    "catalogue:apparent-sizes": "node scripts/enrich-apparent-sizes.mjs",
     "visibility:test": "node --test scripts/visibility.test.mjs",
     "planning:test": "node --test scripts/planning.test.mjs"
   },

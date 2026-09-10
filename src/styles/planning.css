@@ -72,6 +72,9 @@
 .planning-simbad { margin: .35rem 0 .15rem; }
 .planning-simbad__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
 .planning-simbad p { min-height: 1.35rem; margin: 0 0 .85rem; color: var(--planning-moon); font: 700 .9rem var(--font-technical); }
+.planning-object-size { display: flex; gap: .65rem; align-items: baseline; width: fit-content; margin: .8rem 0 0; padding: .48rem .65rem; border: 1px solid rgba(229,169,63,.34); border-radius: .5rem; background: rgba(229,169,63,.07); }
+.planning-object-size strong { color: var(--color-muted); font-size: .72rem; }
+.planning-object-size span { color: var(--planning-gold); font: 700 .82rem var(--font-technical); }
 .planning-simbad small { display: block; margin-top: .75rem; }
 .planning-check { display: flex !important; grid-template-columns: auto 1fr; align-items: center; width: fit-content; }
 .planning-check input { width: 1rem; min-height: 1rem; }
