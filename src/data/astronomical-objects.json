@@ -1580,7 +1580,12 @@
     "constellation": "Cygnus",
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
-    "status": "pending"
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 120,
+      "minor": 20
+    },
+    "angularSizeSource": "project-catalogue"
   },
   {
     "id": "sh2-101",

@@ -1,11 +1,12 @@
 ---
 import type { Lang } from '../i18n';
 import { getCollection } from 'astro:content';
-import { equipmentAnalyzerGuideHref, languageLinks, sessionPreparationHref, withBase } from '../i18n';
+import { equipmentAnalyzerGuideHref, languageLinks, planningHref, sessionPreparationHref, withBase } from '../i18n';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import { photoText } from '../photoTranslations';
 import Layout from '../layouts/Layout.astro';
 import SessionToolLink from './SessionToolLink.astro';
+import SiteMapIcon from './SiteMapIcon.astro';
 import astronomicalObjects from '../data/astronomical-objects.json';
 import { cameraProfiles, fovReferences as familiarFovReferences, guideCameraProfiles, smartProfiles } from '../data/equipment-analyzer';
 import { excludedCompositeObjectIds, fovObjectSizes } from '../data/fov-object-sizes';
@@ -98,6 +99,11 @@ const transferText = {
   ca: { downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', download: 'Descarrega el PDF', downloaded: '✓ PDF descarregat', help: 'Descarrega els resultats en TXT o un informe PDF de dues pàgines.', txtHint: 'Desa els resultats numèrics en un fitxer TXT.', downloadHint: 'Desa un informe PDF amb els resultats i l’enquadrament a la carpeta Descàrregues.' },
   es: { downloadTxt: 'Descargar TXT', downloadedTxt: '✓ TXT descargado', download: 'Descargar PDF', downloaded: '✓ PDF descargado', help: 'Descarga los resultados en TXT o un informe PDF de dos páginas.', txtHint: 'Guarda los resultados numéricos en un archivo TXT.', downloadHint: 'Guarda un informe PDF con los resultados y el encuadre en la carpeta Descargas.' },
   en: { downloadTxt: 'Download TXT', downloadedTxt: '✓ TXT downloaded', download: 'Download PDF', downloaded: '✓ PDF downloaded', help: 'Download the results as TXT or a two-page PDF report.', txtHint: 'Saves the numerical results as a TXT file.', downloadHint: 'Saves a PDF report with the results and framing in your Downloads folder.' },
+}[lang];
+const planningTransferText = {
+  ca: 'Planifica aquest objecte amb aquest FOV',
+  es: 'Planificar este objeto con este FOV',
+  en: 'Plan this object with this FOV',
 }[lang];
 const photos = await getCollection('fotos');
 const photoByObject = new Map<string, (typeof photos)[number]>();
@@ -201,12 +207,12 @@ const photographedReferences = fovReferences.filter((reference) => reference.sta
     </div>
     <details class="fov-comparison" data-fov hidden>
       <summary class="fov-comparison__summary"><span><b class="step-number">5.</b> <span class="step-title">{fovText.step}</span></span><small>{fovIntroText}</small></summary>
-      <div class="fov-controls"><label>{fovText.choose}<select data-fov-select><optgroup label={`━━ ${fovPhotoText.familiar.toLocaleUpperCase(lang)} ━━`}>{familiarReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup><optgroup label={`━━ ${fovPhotoText.pending.toLocaleUpperCase(lang)} (${pendingReferences.length}) ━━`}>{pendingReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup><optgroup label={`━━ ${fovPhotoText.gallery.toLocaleUpperCase(lang)} (${photographedReferences.length}) ━━`}>{photographedReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup></select></label><div class="fov-rotation" aria-label={fovText.rotate}><button type="button" data-fov-rotate="-45" aria-label={`${fovText.rotate} −45°`}>−45°</button><output data-fov-angle>0°</output><button type="button" data-fov-rotate="45" aria-label={`${fovText.rotate} +45°`}>+45°</button></div></div>
+      <div class="fov-controls"><label>{fovText.choose}<select data-fov-select><optgroup label={`━━ ${fovPhotoText.familiar.toLocaleUpperCase(lang)} ━━`}>{familiarReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup><optgroup label={`━━ ${fovPhotoText.pending.toLocaleUpperCase(lang)} (${pendingReferences.length}) ━━`}>{pendingReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup><optgroup label={`━━ ${fovPhotoText.gallery.toLocaleUpperCase(lang)} (${photographedReferences.length}) ━━`}>{photographedReferences.map((reference) => <option value={reference.id}>{reference.name}</option>)}</optgroup></select></label><div class="fov-rotation" aria-label={fovText.rotate}><button type="button" data-fov-rotate="-15" aria-label={`${fovText.rotate} −15°`}>−15°</button><output data-fov-angle>0°</output><button type="button" data-fov-rotate="15" aria-label={`${fovText.rotate} +15°`}>+15°</button></div></div>
       <div class="fov-visual-grid">
       <div class="fov-field-visual"><strong>Field of View (FOV)</strong><div class="fov-stage"><svg viewBox="0 0 600 320" role="img" aria-labelledby="fov-svg-title"><title id="fov-svg-title">{fovText.title}</title><defs><clipPath id={`fov-clip-${lang}`}><rect data-fov-clip /></clipPath><clipPath id={`fov-object-clip-${lang}`}><ellipse data-fov-object-clip /></clipPath><radialGradient id={`fov-object-gradient-${lang}`}><stop offset="0" stop-color="#fff4bd" stop-opacity=".95"/><stop offset=".45" stop-color="#e4c66a" stop-opacity=".55"/><stop offset="1" stop-color="#7ca0d8" stop-opacity=".08"/></radialGradient></defs><rect class="fov-frame" data-fov-frame/><g><ellipse class="fov-object" data-fov-object fill={`url(#fov-object-gradient-${lang})`}/><image class="fov-gallery-image" data-fov-image preserveAspectRatio="xMidYMid slice" clip-path={`url(#fov-object-clip-${lang})`}/><ellipse class="fov-object-ring" data-fov-ring/></g><line class="fov-cross" data-fov-cross-x/><line class="fov-cross" data-fov-cross-y/></svg></div></div>
       <aside class="fov-photo-reference" data-fov-photo hidden><strong>{fovPhotoText.title}</strong><div class="fov-photo-canvas"><div class="fov-photo-frame" data-fov-photo-frame><img data-fov-reference-photo alt="" /><span class="fov-no-photo" data-fov-no-photo hidden>{fovPhotoText.noPhoto}</span></div></div><small data-fov-photo-note>{fovPhotoText.note}</small></aside>
       </div>
-      <div class="fov-caption"><strong data-fov-verdict></strong><span data-fov-field></span><span data-fov-size></span></div>
+      <div class="fov-caption"><strong data-fov-verdict></strong><span data-fov-field></span><span data-fov-size></span><a class="fov-planning-link" data-fov-planning href={planningHref(lang, base)} hidden><SiteMapIcon name="planning" />{planningTransferText}<span aria-hidden="true">→</span></a></div>
     </details>
   </form>
   <details class="analyser-results" data-results aria-label={t.results} hidden>
@@ -269,6 +275,32 @@ const oldDownloadButton=root.querySelector('[data-download]'),downloadButton=old
     }
   };
   if (analyserFieldResult) { new MutationObserver(rememberAnalyserFov).observe(analyserFieldResult, { childList: true, characterData: true, subtree: true }); rememberAnalyserFov(); }
+
+  const framingPlanningLink = document.querySelector<HTMLAnchorElement>('[data-fov-planning]');
+  const framingReference = document.querySelector<HTMLSelectElement>('[data-fov-select]');
+  const framingField = document.querySelector<HTMLElement>('[data-fov-field]');
+  const framingAngleOutput = document.querySelector<HTMLOutputElement>('[data-fov-angle]');
+  const syncFramingPlanningLink = () => {
+    if (!framingPlanningLink || !framingReference || !framingField) return;
+    const objectId = framingReference.value;
+    const values = framingField.textContent?.match(/[0-9]+(?:[.,][0-9]+)?/g)?.map((value) => Number(value.replace(',', '.'))) ?? [];
+    const width = values[0], height = values[1];
+    const angle = Number.parseFloat(framingAngleOutput?.value ?? '0');
+    const available = !['moon', 'jupiter'].includes(objectId) && Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0;
+    framingPlanningLink.hidden = !available;
+    if (!available) return;
+    const url = new URL(framingPlanningLink.getAttribute('href') ?? '', window.location.href);
+    url.searchParams.set('object', objectId);
+    url.searchParams.set('from', 'analyser');
+    url.searchParams.set('fovWidth', String(width));
+    url.searchParams.set('fovHeight', String(height));
+    url.searchParams.set('fovAngle', String(Number.isFinite(angle) ? angle : 0));
+    framingPlanningLink.href = `${url.pathname}${url.search}`;
+  };
+  if (framingField) new MutationObserver(syncFramingPlanningLink).observe(framingField, { childList: true, characterData: true, subtree: true });
+  framingReference?.addEventListener('change', syncFramingPlanningLink);
+  document.querySelectorAll('[data-fov-rotate]').forEach((button) => button.addEventListener('click', () => requestAnimationFrame(syncFramingPlanningLink)));
+  syncFramingPlanningLink();
 </script>
 <style>
 .equipment-analyser{width:min(100%,1040px);margin:.4rem auto 0}.equipment-analyser__header{max-width:760px;margin:0 auto 1.5rem;text-align:center}.equipment-analyser__header>p:first-child,.analyser-results>header p{margin:0 0 .3rem;color:var(--color-accent);font-family:var(--font-technical);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase}.equipment-analyser__header h1{margin:.15rem 0 .65rem;font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-.055em;line-height:1}.equipment-analyser__header>p{margin:0;color:var(--color-muted)}.analyser-mode{display:grid;grid-template-columns:1fr 1fr;width:min(100%,600px);margin:0 auto 1.25rem;padding:.3rem;border:1px solid var(--color-border);border-radius:.7rem;background:#090e18}.analyser-mode button,.analyser-actions button{border:0;border-radius:.45rem;background:transparent;color:var(--color-muted);font:inherit;font-size:.86rem;font-weight:700;cursor:pointer}.analyser-mode button{padding:.65rem}.analyser-mode button[aria-pressed=true]{background:var(--color-surface-raised);color:var(--color-accent);box-shadow:0 5px 16px rgba(0,0,0,.25)}.analyser-form{display:grid;gap:.9rem}.analyser-panel,.analyser-results{padding:1.15rem;border:1px solid var(--color-border);border-radius:.8rem;background:rgba(17,24,39,.86);box-shadow:0 12px 30px rgba(0,0,0,.16)}.analyser-panel h2{display:flex;gap:.65rem;align-items:center;margin:0 0 1rem;font-size:1.05rem}.analyser-panel h2 span{color:var(--color-accent);font-family:var(--font-technical);font-size:.7rem}.analyser-fields{display:grid;gap:.9rem}.analyser-fields--three{grid-template-columns:repeat(3,1fr)}.analyser-fields--two{grid-template-columns:repeat(2,1fr);margin-top:1rem}.analyser-panel label,.analyser-select>span{display:grid;gap:.35rem;color:var(--color-muted);font-size:.78rem;font-weight:700}.analyser-panel label>span{display:flex;align-items:center;gap:.4rem;color:var(--color-muted);font-family:var(--font-technical);font-size:.72rem}.analyser-panel input,.analyser-panel select{width:100%;min-width:0;padding:.65rem .72rem;border:1px solid #3b4a63;border-radius:.42rem;background:#090e18;color:var(--color-text);font:inherit}.analyser-panel input{font-family:var(--font-technical)}.analyser-panel small{color:#8593a8;font-size:.66rem;font-weight:400;line-height:1.4}.analyser-select{display:grid;gap:.35rem}.analyser-optional summary{color:var(--color-text);font-weight:700;cursor:pointer}.analyser-optional[open] summary{margin-bottom:1rem}.analyser-check{display:flex!important;align-items:center!important}.analyser-check input{width:auto}.preset-source{margin:.65rem 0 0;color:var(--color-muted);font-family:var(--font-technical);font-size:.62rem}.preset-source a{color:var(--color-accent)}.analyser-results{margin-top:1.2rem;border-color:rgba(228,198,106,.45);background:linear-gradient(145deg,rgba(31,39,57,.96),rgba(12,18,30,.96))}.analyser-results>header h2{margin:0 0 1rem;font-size:1.35rem}.analyser-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem}.analyser-metrics article{padding:.85rem;border:1px solid rgba(124,143,172,.32);border-radius:.55rem;background:rgba(8,11,18,.58)}.analyser-metrics span{display:block;min-height:2.5em;color:var(--color-muted);font-size:.68rem;line-height:1.25}.analyser-metrics strong{display:block;margin-top:.35rem;color:var(--color-accent-soft);font-family:var(--font-technical);font-size:clamp(.86rem,2vw,1.05rem)}.analyser-reading{margin-top:.9rem;padding:.9rem 1rem;border-left:3px solid var(--color-accent);background:rgba(8,11,18,.48)}.analyser-reading h3{margin:0 0 .25rem;font-size:.85rem}.analyser-reading p{margin:.25rem 0;color:var(--color-muted);font-size:.8rem}.analyser-disclaimer{color:#8794a8;font-size:.69rem}.analyser-actions{display:flex;gap:.65rem;margin-top:1rem}.analyser-actions button{padding:.65rem .9rem;border:1px solid var(--color-accent);color:var(--color-accent)}.analyser-actions button:first-child{background:var(--color-accent);color:#111827}.analyser-actions button:disabled{opacity:.45;cursor:not-allowed}.analyser-print-help{display:block;margin-top:.5rem;color:#7e8ba0}
@@ -307,6 +339,7 @@ const oldDownloadButton=root.querySelector('[data-download]'),downloadButton=old
 .fov-no-photo{max-width:17rem;padding:1rem;color:var(--color-muted);font-size:.78rem;line-height:1.5;text-align:center}.fov-controls optgroup{color:#f2c94c;font-size:.82rem;font-weight:900}.fov-controls option{color:var(--color-text);font-size:.72rem;font-weight:400}
 .fov-photo-frame img[hidden],.fov-photo-reference>small[hidden]{display:none!important}
 .fov-caption>span{color:var(--color-accent-soft)}
+.fov-planning-link{display:inline-flex;align-items:center;gap:.55rem;margin-left:auto;padding:.7rem .9rem;border:1px solid rgba(212,155,77,.68);border-radius:.52rem;background:rgba(212,155,77,.12);color:#e7b56f;font-family:var(--font-body);font-size:.82rem;font-weight:700;text-decoration:none}.fov-planning-link:hover,.fov-planning-link:focus-visible{border-color:#d49b4d;background:rgba(212,155,77,.2);color:#f0c984}.fov-planning-link :global(.site-map-icon){color:currentColor}@media(max-width:600px){.fov-planning-link{width:100%;margin-left:0;justify-content:center}}
 .fov-visual-grid{grid-template-columns:minmax(0,1.35fr) minmax(270px,.85fr)}.fov-photo-canvas{border:0;background:transparent}
 @media(max-width:760px){.fov-visual-grid{grid-template-columns:1fr}}
 .fov-photo-reference>small{margin-top:.75rem}
