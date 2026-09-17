@@ -89,6 +89,9 @@ export const articlesHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref
 export const visibilityHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('visibilitat', base) : pageHref(`${lang}/${lang === 'en' ? 'visibility' : 'visibilidad'}`, base);
 export const planningHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('planificacio', base) : pageHref(`${lang}/${lang === 'en' ? 'planning' : 'planificacion'}`, base);
 export const myNightHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('la-meva-nit', base) : pageHref(`${lang}/${lang === 'en' ? 'my-night' : 'mi-noche'}`, base);
+export const myNightGuideHref = (lang: Lang, base = '/') => lang === 'ca'
+	? pageHref('la-meva-nit/guia', base)
+	: pageHref(`${lang}/${lang === 'en' ? 'my-night/guide' : 'mi-noche/guia'}`, base);
 export const sessionPreparationHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('prepara-la-sessio', base) : pageHref(`${lang}/${lang === 'en' ? 'prepare-your-session' : 'prepara-tu-sesion'}`, base);
 export const siteMapHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('mapa-web', base) : pageHref(`${lang}/${lang === 'en' ? 'site-map' : 'mapa-web'}`, base);
 export const planningGuideHref = (lang: Lang, base = '/') => lang === 'ca'
@@ -120,6 +123,7 @@ export const languageLinks = {
 	visibility: (base = '/') => ({ ca: visibilityHref('ca', base), es: visibilityHref('es', base), en: visibilityHref('en', base) }),
 	planning: (base = '/') => ({ ca: planningHref('ca', base), es: planningHref('es', base), en: planningHref('en', base) }),
 	myNight: (base = '/') => ({ ca: myNightHref('ca', base), es: myNightHref('es', base), en: myNightHref('en', base) }),
+	myNightGuide: (base = '/') => ({ ca: myNightGuideHref('ca', base), es: myNightGuideHref('es', base), en: myNightGuideHref('en', base) }),
 	sessionPreparation: (base = '/') => ({ ca: sessionPreparationHref('ca', base), es: sessionPreparationHref('es', base), en: sessionPreparationHref('en', base) }),
 	siteMap: (base = '/') => ({ ca: siteMapHref('ca', base), es: siteMapHref('es', base), en: siteMapHref('en', base) }),
 	planningGuide: (base = '/') => ({ ca: planningGuideHref('ca', base), es: planningGuideHref('es', base), en: planningGuideHref('en', base) }),

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { languageLinks, myNightHref, sessionPreparationHref } from '../i18n';
+import { languageLinks, myNightGuideHref, myNightHref, sessionPreparationHref } from '../i18n';
 import objectsData from '../data/astronomical-objects.json';
 import { PUBLIC_PENDING_OBJECTS } from '../config/features';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
@@ -17,11 +17,35 @@ const texts = {
   en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Order the basket by altitude and Moon impact.', createPlan: 'Create my night plan', plan: '4 · Night order', reference: 'Provisional calculation for central Catalonia.', altitude: 'altitude', moonDistance: 'Moon', recalculate: 'Recalculate plan', hours: 'h', noFilter: 'Colour capture' },
 } as const;
 const sourceTexts = {
-  ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.' },
-  es: { equipmentHelp: 'Selecciona un único tipo de cámara para toda la sesión.', local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.' },
-  en: { equipmentHelp: 'Choose one camera type for the whole session.', local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.' },
+  ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', targetCount: 'objectius', targetLimit: 'Has arribat al màxim de 4 objectius per nit.', previousWeek: 'Setmana anterior', nextWeek: 'Setmana següent', weekIso: 'Setmana ISO', month: 'Mes', selectedDay: 'Dia seleccionat', threshold: 'Llindar d\'altura', previousDay: 'Dia anterior', nextDay: 'Dia següent', scoringTitle: 'Puntuació dels objectius', scoringOrder: 'El pla divideix la sessió en trams iguals i, al centre de cada tram, ordena els objectius pendents per altura i incidència de la Lluna.', scoringThreshold: 'Un objecte situat per sota del llindar seleccionat rep una penalització forta. Llindar actual:', scoringMoon: 'La penalització lunar combina proximitat, fracció il·luminada i sensibilitat del filtre. Si la Lluna és sota l\'horitzó, la penalització és zero.', scoringWeights: 'Pes lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparació de visibilitat', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedSlot: 'Tram seleccionat', invalidSlot: 'Tram no vàlid', whyHere: 'Per què aquí?', chosenReason: 'Al centre del tram ({time}) era l’objectiu pendent amb millor puntuació: altura {altitude}° davant del llindar de {threshold}° i incidència lunar {moon}.', invalidReason: 'És la millor opció pendent a les {time}, però no és vàlida: altura {altitude}° davant del llindar de {threshold}°. Incidència lunar {moon}.', moonLow: 'baixa', moonMedium: 'mitjana', moonHigh: 'alta' },
+  es: { equipmentHelp: 'Selecciona un único tipo de cámara para toda la sesión.', local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.', targetCount: 'objetivos', targetLimit: 'Has alcanzado el máximo de 4 objetivos por noche.', previousWeek: 'Semana anterior', nextWeek: 'Semana siguiente', weekIso: 'Semana ISO', month: 'Mes', selectedDay: 'Día seleccionado', threshold: 'Umbral de altura', previousDay: 'Día anterior', nextDay: 'Día siguiente', scoringTitle: 'Puntuación de objetivos', scoringOrder: 'El plan divide la sesión en tramos iguales y, en el centro de cada tramo, ordena los objetivos pendientes por altura e incidencia de la Luna.', scoringThreshold: 'Un objeto situado por debajo del umbral seleccionado recibe una penalización fuerte. Umbral actual:', scoringMoon: 'La penalización lunar combina proximidad, fracción iluminada y sensibilidad del filtro. Si la Luna está bajo el horizonte, la penalización es cero.', scoringWeights: 'Peso lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparación de visibilidad', objectCurve: 'Objeto', moonCurve: 'Luna', selectedSlot: 'Tramo seleccionado', invalidSlot: 'Tramo no válido', whyHere: '¿Por qué aquí?', chosenReason: 'En el centro del tramo ({time}) era el objetivo pendiente con mejor puntuación: altura {altitude}° frente al umbral de {threshold}° e incidencia lunar {moon}.', invalidReason: 'Es la mejor opción pendiente a las {time}, pero no es válida: altura {altitude}° frente al umbral de {threshold}°. Incidencia lunar {moon}.', moonLow: 'baja', moonMedium: 'media', moonHigh: 'alta' },
+  en: { equipmentHelp: 'Choose one camera type for the whole session.', local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.', targetCount: 'targets', targetLimit: 'You have reached the maximum of 4 targets per night.', previousWeek: 'Previous week', nextWeek: 'Next week', weekIso: 'ISO week', month: 'Month', selectedDay: 'Selected day', threshold: 'Altitude threshold', previousDay: 'Previous day', nextDay: 'Next day', scoringTitle: 'Target scoring', scoringOrder: 'The plan divides the session into equal slots and, at each slot midpoint, ranks the remaining targets by altitude and Moon impact.', scoringThreshold: 'A target below the selected altitude threshold receives a strong penalty. Current threshold:', scoringMoon: 'The lunar penalty combines proximity, illuminated fraction and filter sensitivity. It is zero while the Moon is below the horizon.', scoringWeights: 'Lunar weight: B 34 · L/colour 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Visibility comparison', objectCurve: 'Target', moonCurve: 'Moon', selectedSlot: 'Selected slot', invalidSlot: 'Invalid slot', whyHere: 'Why here?', chosenReason: 'At the slot midpoint ({time}) it was the highest-scoring pending target: altitude {altitude}° versus a {threshold}° threshold, with {moon} Moon impact.', invalidReason: 'It is the best pending option at {time}, but it is not valid: altitude {altitude}° versus a {threshold}° threshold. Moon impact is {moon}.', moonLow: 'low', moonMedium: 'medium', moonHigh: 'high' },
 } as const;
 const t = { ...texts[lang], ...sourceTexts[lang] };
+const guideLinkText = {
+  ca: { label: 'Guia de La meva nit', tooltip: 'Obre la guia completa de La meva nit' },
+  es: { label: 'Guía de Mi noche', tooltip: 'Abre la guía completa de Mi noche' },
+  en: { label: 'My Night guide', tooltip: 'Open the complete My Night guide' },
+}[lang];
+const explanationText = {
+  ca: { comparison: 'La següent alternativa era {target}, a {altitude}°.', only: 'No quedaven altres objectius pendents.', noneValid: 'Cap dels objectius pendents arribava al llindar.' },
+  es: { comparison: 'La siguiente alternativa era {target}, a {altitude}°.', only: 'No quedaban otros objetivos pendientes.', noneValid: 'Ninguno de los objetivos pendientes alcanzaba el umbral.' },
+  en: { comparison: 'The next alternative was {target}, at {altitude}°.', only: 'No other targets remained.', noneValid: 'None of the pending targets reached the threshold.' },
+}[lang];
+const lunarWeightHelp = {
+  ca: {
+    values: 'Penalització lunar màxima que es pot restar segons el filtre: B −34 punts · L/color −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
+    meaning: 'Com més alt és el valor, més sensible és el filtre a la Lluna. Només s’aplica tota la penalització amb la Lluna visible, molt il·luminada i molt a prop de l’objecte; disminueix quan la separació augmenta o la fase és menor, i és zero quan la Lluna és sota l’horitzó.',
+  },
+  es: {
+    values: 'Penalización lunar máxima que puede restarse según el filtro: B −34 puntos · L/color −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
+    meaning: 'Cuanto mayor es el valor, más sensible es el filtro a la Luna. La penalización completa solo se aplica con la Luna visible, muy iluminada y muy próxima al objeto; disminuye al aumentar la separación o reducirse la fase, y es cero cuando la Luna está bajo el horizonte.',
+  },
+  en: {
+    values: 'Maximum lunar penalty that may be subtracted by filter: B −34 points · L/colour −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
+    meaning: 'The larger the value, the more Moon-sensitive the filter is. The full penalty applies only when the Moon is visible, strongly illuminated and very close to the target; it decreases with greater separation or a smaller phase, and is zero while the Moon is below the horizon.',
+  },
+}[lang];
 const photos = await getCollection('fotos');
 const latestPhotoByObject = new Map<string, (typeof photos)[number]>();
 for (const photo of [...photos].sort((a, b) => b.data.entorn.data.valueOf() - a.data.entorn.data.valueOf())) {
@@ -42,24 +66,50 @@ const objects = objectsData
     return { id: object.id, catalogName: object.catalogName, commonName, label: `${formatCatalogDesignations(object.catalogName)}${commonName ? ` · ${commonName}` : ''}`, raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' };
   })
   .sort((a, b) => a.label.localeCompare(b.label, lang, { numeric: true }));
-const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanationText }, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNight(base)} focused>
   <main class="my-night" data-my-night>
     <a class="my-night__back" href={sessionPreparationHref(lang, base)}>← {t.back}</a>
-    <header class="my-night__header"><p>Laboratorio</p><h1>{t.title}</h1><span>{t.intro}</span></header>
+    <header class="my-night__header"><h1>{t.title}</h1><span>{t.intro}</span></header>
+    <div class="my-night__help-row">
+      <details class="my-night__scoring my-night__scoring--guide">
+        <summary>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 10.5v6M12 7.5h.01" /></svg>
+          <span>{t.scoringTitle}</span>
+        </summary>
+        <div>
+          <p>{t.scoringOrder}</p>
+          <p>{t.scoringThreshold} <strong><output data-scoring-threshold>30</output>°</strong></p>
+          <p>{t.scoringMoon}</p>
+          <p class="my-night__scoring-weights"><strong>{lunarWeightHelp.values}</strong><span>{lunarWeightHelp.meaning}</span></p>
+        </div>
+      </details>
+      <a class="my-night__guide-link" href={myNightGuideHref(lang, base)} title={guideLinkText.tooltip}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg><span>{guideLinkText.label}</span></a>
+    </div>
     <div class="my-night__grid">
-      <section class="my-night__panel">
+      <section class="my-night__panel my-night__panel--session">
         <h2>{t.session}</h2>
         <div class="my-night__fields">
-          <label><span>{t.date}</span><input type="date" data-night-date /></label>
+          <div class="my-night__date-field" aria-label={t.date}>
+            <input class="my-night__date-input" type="date" data-night-date tabindex="-1" aria-hidden="true" />
+            <div class="my-night__period-head">
+              <label><span>{t.weekIso}</span><span class="my-night__stepper"><button type="button" data-week-step="-1" aria-label={t.previousWeek}>‹</button><output data-week-number></output><button type="button" data-week-step="1" aria-label={t.nextWeek}>›</button></span></label>
+              <label><span>{t.month}</span><output class="my-night__period-value" data-month></output></label>
+              <label><span>{t.threshold}</span><span class="my-night__threshold"><input type="number" min="0" max="90" step="5" value="30" data-altitude-threshold /><b>°</b></span></label>
+            </div>
+            <label class="my-night__selected-day"><span>{t.selectedDay}</span><span class="my-night__stepper my-night__stepper--day"><button type="button" data-day-step="-1" aria-label={t.previousDay}>‹</button><output data-selected-day></output><button type="button" data-day-step="1" aria-label={t.nextDay}>›</button></span></label>
+            <div class="my-night__week-strip">
+              <div data-night-days></div>
+            </div>
+          </div>
           <label><span class="my-night__field-title">{t.ready}<button class="my-night__info" type="button" aria-label={t.readyHelp} data-tooltip={t.readyHelp}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 10.5v6M12 7.5h.01" /></svg></button></span><input type="time" value="21:30" data-ready /></label>
           <label><span class="my-night__field-title">{t.finish}<button class="my-night__info" type="button" aria-label={t.finishHelp} data-tooltip={t.finishHelp}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 10.5v6M12 7.5h.01" /></svg></button></span><input type="time" value="03:00" data-finish /></label>
         </div>
       </section>
 
-      <section class="my-night__panel">
+      <section class="my-night__panel my-night__panel--equipment">
         <h2>{t.equipment}</h2>
         <div class="my-night__equipment" data-equipment>
           <label><input type="radio" name="equipment" value="smart" checked /><span>{t.smart}</span></label>
@@ -74,7 +124,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
       </section>
 
       <section class="my-night__panel my-night__panel--basket">
-        <h2>{t.targets}</h2>
+        <div class="my-night__basket-heading"><h2>{t.targets}</h2><span data-target-count>0/4 {t.targetCount}</span></div>
         <nav class="my-night__sources" aria-label={t.targets}>
           <button type="button" data-object-mode="local" aria-pressed="true">{t.local}</button>
           <button type="button" data-object-mode="simbad" aria-pressed="false">{t.simbad}</button>
@@ -85,7 +135,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
               <label><span>{t.search}</span><input name="localAstronomicalObject" type="search" placeholder={t.placeholder} data-object-search autocomplete="off" autocapitalize="off" spellcheck="false" aria-autocomplete="list" aria-controls="my-night-object-results" aria-expanded="false" /></label>
               <div class="my-night__object-results" id="my-night-object-results" data-object-results role="listbox" hidden></div>
             </div>
-            <button type="submit">+ {t.add}</button>
+            <button type="submit" data-add-local>+ {t.add}</button>
           </form>
         </div>
         <div class="my-night__simbad" data-object-panel="simbad" hidden>
@@ -97,6 +147,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
           <div class="my-night__simbad-result" data-simbad-result hidden><strong data-simbad-name></strong><span data-simbad-coordinates></span><button type="button" data-add-simbad>+ {t.add}</button></div>
           <p class="my-night__simbad-error" data-simbad-error hidden>{t.simbadError}</p>
         </div>
+        <p class="my-night__limit" data-target-limit hidden>{t.targetLimit}</p>
         <p class="my-night__empty" data-empty>{t.empty}</p>
         <div class="my-night__basket" data-basket></div>
       </section>
@@ -109,8 +160,14 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
       </aside>
 
       <section class="my-night__panel my-night__plan" data-plan hidden>
-        <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div><button type="button" data-recalculate>{t.recalculate}</button></header>
+        <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div></header>
+        <div class="my-night__plan-settings">
+          <label><span>{t.selectedDay}</span><input type="date" data-plan-date /></label>
+          <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b></span></label>
+          <button type="button" data-recalculate>{t.recalculate}</button>
+        </div>
         <div class="my-night__timeline" data-timeline></div>
+        <div class="my-night__plan-charts" data-plan-charts></div>
         <ol class="my-night__schedule" data-schedule></ol>
       </section>
     </div>
@@ -125,10 +182,17 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   const root = document.querySelector<HTMLElement>('[data-my-night]');
   if (!root) throw new Error('My night interface not found');
   const date = root.querySelector<HTMLInputElement>('[data-night-date]')!;
+  const nightDays = root.querySelector<HTMLElement>('[data-night-days]')!;
+  const weekNumber = root.querySelector<HTMLOutputElement>('[data-week-number]')!;
+  const month = root.querySelector<HTMLOutputElement>('[data-month]')!;
+  const selectedDay = root.querySelector<HTMLOutputElement>('[data-selected-day]')!;
+  const altitudeThreshold = root.querySelector<HTMLInputElement>('[data-altitude-threshold]')!;
+  const scoringThreshold = root.querySelector<HTMLOutputElement>('[data-scoring-threshold]')!;
   const ready = root.querySelector<HTMLInputElement>('[data-ready]')!;
   const finish = root.querySelector<HTMLInputElement>('[data-finish]')!;
   const globalFilters = root.querySelector<HTMLElement>('[data-global-filters]')!;
   const picker = root.querySelector<HTMLFormElement>('[data-picker]')!;
+  const addLocal = root.querySelector<HTMLButtonElement>('[data-add-local]')!;
   const search = root.querySelector<HTMLInputElement>('[data-object-search]')!;
   const objectResults = root.querySelector<HTMLElement>('[data-object-results]')!;
   const simbadForm = root.querySelector<HTMLFormElement>('[data-simbad-form]')!;
@@ -140,19 +204,65 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   const simbadError = root.querySelector<HTMLElement>('[data-simbad-error]')!;
   const addSimbad = root.querySelector<HTMLButtonElement>('[data-add-simbad]')!;
   const basket = root.querySelector<HTMLElement>('[data-basket]')!;
+  const targetCount = root.querySelector<HTMLElement>('[data-target-count]')!;
+  const targetLimit = root.querySelector<HTMLElement>('[data-target-limit]')!;
   const empty = root.querySelector<HTMLElement>('[data-empty]')!;
   const duration = root.querySelector<HTMLElement>('[data-duration]')!;
   const combinations = root.querySelector<HTMLElement>('[data-combinations]')!;
   const createPlan = root.querySelector<HTMLButtonElement>('[data-create-plan]')!;
   const plan = root.querySelector<HTMLElement>('[data-plan]')!;
   const timeline = root.querySelector<HTMLElement>('[data-timeline]')!;
+  const planCharts = root.querySelector<HTMLElement>('[data-plan-charts]')!;
   const schedule = root.querySelector<HTMLOListElement>('[data-schedule]')!;
+  const planDate = root.querySelector<HTMLInputElement>('[data-plan-date]')!;
+  const planThreshold = root.querySelector<HTMLInputElement>('[data-plan-threshold]')!;
   const recalculate = root.querySelector<HTMLButtonElement>('[data-recalculate]')!;
   type NightTarget = { id:string; label:string; filters:string[]; raDeg?:number; decDeg?:number; source?:string };
+  const MAX_TARGETS = 4;
   let items: NightTarget[] = [];
   let selectedLocal: any = null;
   let resolvedSimbad: { displayName:string; canonicalName?:string; raDeg:number; decDeg:number; source:string; localObjectId?:string } | null = null;
-  date.value = new Date().toISOString().slice(0, 10);
+  const isoDate = (value:Date) => `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
+  const parseDate = (value:string) => { const [year, month, day] = value.split('-').map(Number); return new Date(year, month - 1, day, 12); };
+  const today = new Date();
+  date.value = isoDate(today);
+  let visibleWeek = parseDate(date.value);
+  const isoWeek = (value:Date) => {
+    const day = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+    day.setUTCDate(day.getUTCDate() + 4 - (day.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(day.getUTCFullYear(), 0, 1));
+    return Math.ceil((((day.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  };
+  const selectNight = (day:Date) => {
+    date.value = isoDate(day);
+    visibleWeek = new Date(day);
+    renderNightDays();
+    invalidatePlan();
+    render();
+  };
+  const renderNightDays = () => {
+    const monday = new Date(visibleWeek);
+    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+    const weekday = new Intl.DateTimeFormat(config.lang, { weekday: 'short' });
+    const selected = parseDate(date.value);
+    weekNumber.textContent = String(isoWeek(monday));
+    month.textContent = new Intl.DateTimeFormat(config.lang, { month: 'short' }).format(selected).replace('.', '');
+    const selectedLabel = new Intl.DateTimeFormat(config.lang, { weekday: 'long', day: 'numeric', month: 'long' }).format(selected);
+    selectedDay.textContent = `${selectedLabel.charAt(0).toLocaleUpperCase(config.lang)}${selectedLabel.slice(1)}`;
+    nightDays.replaceChildren();
+    for (let offset = 0; offset < 7; offset += 1) {
+      const day = new Date(monday); day.setDate(monday.getDate() + offset);
+      const value = isoDate(day);
+      const button = document.createElement('button');
+      button.type = 'button'; button.dataset.nightValue = value;
+      button.setAttribute('aria-pressed', String(value === date.value));
+      button.innerHTML = `<span>${weekday.format(day).replace('.', '')}</span><strong>${day.getDate()}</strong>`;
+      button.addEventListener('click', () => selectNight(day));
+      nightDays.append(button);
+    }
+  };
+  root.querySelectorAll<HTMLButtonElement>('[data-week-step]').forEach((button) => button.addEventListener('click', () => { const day = parseDate(date.value); day.setDate(day.getDate() + Number(button.dataset.weekStep) * 7); selectNight(day); }));
+  root.querySelectorAll<HTMLButtonElement>('[data-day-step]').forEach((button) => button.addEventListener('click', () => { const day = parseDate(date.value); day.setDate(day.getDate() + Number(button.dataset.dayStep)); selectNight(day); }));
   const equipment = () => root.querySelector<HTMLInputElement>('input[name="equipment"]:checked')?.value ?? 'smart';
   const availableFilters = () => equipment() === 'mono' ? [...globalFilters.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.value) : [config.texts.noFilter];
   const updateSummary = () => {
@@ -162,9 +272,59 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
     combinations.textContent = String(equipment() === 'mono' ? items.reduce((total, item) => total + item.filters.length, 0) : items.length);
     createPlan.disabled = items.length === 0 || (equipment() === 'mono' && items.every((item) => item.filters.length === 0));
   };
-  const invalidatePlan = () => { plan.hidden = true; timeline.replaceChildren(); schedule.replaceChildren(); };
+  const invalidatePlan = () => { plan.hidden = true; timeline.replaceChildren(); planCharts.replaceChildren(); schedule.replaceChildren(); };
+  const updateScoringThreshold = () => { scoringThreshold.value = altitudeThreshold.value; };
+  altitudeThreshold.addEventListener('input', () => { updateScoringThreshold(); invalidatePlan(); render(); });
+  const STORAGE_KEY = 'deepskyastro:my-night:v1';
+  const persistState = () => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        date: date.value,
+        ready: ready.value,
+        finish: finish.value,
+        altitudeThreshold: altitudeThreshold.value,
+        equipment: equipment(),
+        globalFilters: [...globalFilters.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.value),
+        items,
+      }));
+    } catch (error) { console.warn('Could not preserve My night state', error); }
+  };
+  const restoreState = () => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null');
+      if (!saved || typeof saved !== 'object') return;
+      if (typeof saved.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(saved.date)) date.value = saved.date;
+      if (typeof saved.ready === 'string' && /^\d{2}:\d{2}$/.test(saved.ready)) ready.value = saved.ready;
+      if (typeof saved.finish === 'string' && /^\d{2}:\d{2}$/.test(saved.finish)) finish.value = saved.finish;
+      const savedThreshold = Number(saved.altitudeThreshold);
+      if (Number.isFinite(savedThreshold) && savedThreshold >= 0 && savedThreshold <= 90) altitudeThreshold.value = String(savedThreshold);
+      if (['smart', 'osc', 'mono'].includes(saved.equipment)) {
+        const equipmentInput = root.querySelector<HTMLInputElement>(`input[name="equipment"][value="${saved.equipment}"]`);
+        if (equipmentInput) equipmentInput.checked = true;
+      }
+      if (Array.isArray(saved.globalFilters)) globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => { input.checked = saved.globalFilters.includes(input.value); });
+      if (Array.isArray(saved.items)) items = saved.items.slice(0, MAX_TARGETS).flatMap((savedItem:any) => {
+        if (!savedItem || typeof savedItem.id !== 'string' || typeof savedItem.label !== 'string') return [];
+        const local = config.objects.find((object:any) => object.id === savedItem.id);
+        return [{
+          id: savedItem.id,
+          label: local?.label ?? savedItem.label,
+          filters: Array.isArray(savedItem.filters) ? savedItem.filters.filter((filter:any) => typeof filter === 'string') : [],
+          raDeg: typeof local?.raDeg === 'number' ? local.raDeg : savedItem.raDeg,
+          decDeg: typeof local?.decDeg === 'number' ? local.decDeg : savedItem.decDeg,
+          source: local?.source ?? savedItem.source,
+        }];
+      });
+      globalFilters.hidden = equipment() !== 'mono';
+    } catch (error) { console.warn('Could not restore My night state', error); }
+  };
   const render = () => {
     empty.hidden = items.length > 0;
+    targetCount.textContent = `${items.length}/${MAX_TARGETS} ${config.texts.targetCount}`;
+    const full = items.length >= MAX_TARGETS;
+    addLocal.disabled = full;
+    addSimbad.disabled = full;
+    if (!full) targetLimit.hidden = true;
     basket.innerHTML = '';
     items.forEach((item) => {
       const article = document.createElement('article'); article.className = 'my-night-item';
@@ -175,15 +335,22 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
         const actions = document.createElement('div'); actions.className = 'my-night-item__actions';
         const all = document.createElement('button'); all.type = 'button'; all.textContent = config.texts.selectAll; all.addEventListener('click', () => { item.filters = availableFilters(); invalidatePlan(); render(); });
         const none = document.createElement('button'); none.type = 'button'; none.textContent = config.texts.clearAll; none.addEventListener('click', () => { item.filters = []; invalidatePlan(); render(); }); actions.append(all, none); article.append(actions);
-        const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); invalidatePlan(); updateSummary(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox);
+        const filterBox = document.createElement('div'); filterBox.className = 'my-night-item__filters'; availableFilters().forEach((filter:string) => { const label = document.createElement('label'), input = document.createElement('input'), span = document.createElement('span'); input.type = 'checkbox'; input.checked = item.filters.includes(filter); span.textContent = filter; input.addEventListener('change', () => { item.filters = input.checked ? [...new Set([...item.filters, filter])] : item.filters.filter((value) => value !== filter); invalidatePlan(); updateSummary(); persistState(); }); label.append(input, span); filterBox.append(label); }); article.append(filterBox);
       }
       basket.append(article);
     });
     updateSummary();
+    persistState();
   };
   root.querySelectorAll<HTMLInputElement>('input[name="equipment"]').forEach((input) => input.addEventListener('change', () => { globalFilters.hidden = equipment() !== 'mono'; const filters = availableFilters(); items.forEach((item) => item.filters = [...filters]); invalidatePlan(); render(); }));
   globalFilters.querySelectorAll<HTMLInputElement>('input').forEach((input) => input.addEventListener('change', () => { const filters = availableFilters(); items.forEach((item) => item.filters = item.filters.filter((filter) => filters.includes(filter))); invalidatePlan(); render(); }));
-  const addTarget = (target: NightTarget) => { if (items.some((item) => item.id === target.id)) return; items.push(target); invalidatePlan(); render(); };
+  const addTarget = (target: NightTarget) => {
+    if (items.some((item) => item.id === target.id)) return false;
+    if (items.length >= MAX_TARGETS) { targetLimit.hidden = false; return false; }
+    items.push(target); invalidatePlan(); render();
+    targetLimit.hidden = items.length < MAX_TARGETS;
+    return true;
+  };
   const normalizeSearch = (value:string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
   const matchingLocalObjects = (showAll = false) => { const query = normalizeSearch(search.value); return showAll || !query ? config.objects : config.objects.filter((object:any) => normalizeSearch(`${object.label} ${object.catalogName} ${object.id}`).includes(query)); };
   const closeObjectResults = () => { objectResults.hidden = true; search.setAttribute('aria-expanded', 'false'); };
@@ -198,7 +365,7 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   search.addEventListener('input', () => { selectedLocal = null; renderObjectResults(); });
   search.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeObjectResults(); if (event.key === 'ArrowDown') { event.preventDefault(); objectResults.querySelector<HTMLButtonElement>('button')?.focus(); } if (event.key === 'Enter') { const first = matchingLocalObjects()[0]; if (first) { event.preventDefault(); chooseLocalObject(first); } } });
   search.addEventListener('blur', () => window.setTimeout(closeObjectResults, 120));
-  picker.addEventListener('submit', (event) => { event.preventDefault(); const object = selectedLocal ?? matchingLocalObjects()[0]; if (!object) return; addTarget({ id: object.id, label: object.label, filters: availableFilters(), raDeg: object.raDeg, decDeg: object.decDeg, source: object.source }); selectedLocal = null; search.value = ''; closeObjectResults(); });
+  picker.addEventListener('submit', (event) => { event.preventDefault(); const object = selectedLocal ?? matchingLocalObjects()[0]; if (!object) return; if (addTarget({ id: object.id, label: object.label, filters: availableFilters(), raDeg: object.raDeg, decDeg: object.decDeg, source: object.source })) { selectedLocal = null; search.value = ''; closeObjectResults(); } });
   root.querySelectorAll<HTMLButtonElement>('[data-object-mode]').forEach((button) => button.addEventListener('click', () => { const mode = button.dataset.objectMode; root.querySelectorAll<HTMLButtonElement>('[data-object-mode]').forEach((entry) => entry.setAttribute('aria-pressed', String(entry === button))); root.querySelectorAll<HTMLElement>('[data-object-panel]').forEach((panel) => panel.hidden = panel.dataset.objectPanel !== mode); }));
   simbadQuery.addEventListener('input', () => { resolvedSimbad = null; simbadResult.hidden = true; simbadError.hidden = true; });
   simbadForm.addEventListener('submit', async (event) => {
@@ -223,9 +390,10 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   };
   addSimbad.addEventListener('click', () => {
     if (!resolvedSimbad) return;
-    addTarget({ id: resolvedSimbad.localObjectId ?? `simbad:${resolvedSimbad.canonicalName ?? resolvedSimbad.displayName}`, label: resolvedSimbad.displayName, filters: availableFilters(), raDeg: resolvedSimbad.raDeg, decDeg: resolvedSimbad.decDeg, source: resolvedSimbad.source });
-    clearSimbad();
-    simbadQuery.focus();
+    if (addTarget({ id: resolvedSimbad.localObjectId ?? `simbad:${resolvedSimbad.canonicalName ?? resolvedSimbad.displayName}`, label: resolvedSimbad.displayName, filters: availableFilters(), raDeg: resolvedSimbad.raDeg, decDeg: resolvedSimbad.decDeg, source: resolvedSimbad.source })) {
+      clearSimbad();
+      simbadQuery.focus();
+    }
   });
   const centralCatalonia = { name: 'Catalunya central', latitudeDeg: 41.7, longitudeDeg: 1.5, elevationM: 0 };
   const sessionBounds = () => {
@@ -234,14 +402,57 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
     if (end <= start) end.setDate(end.getDate() + 1);
     return { start, end };
   };
+  function makeComparisonChart(item:NightTarget, selectedSlots:{ start:Date; end:Date; valid:boolean }[] = []) {
+    const figure = document.createElement('figure');
+    figure.className = 'my-night-chart';
+    figure.setAttribute('aria-label', `${config.texts.comparison}: ${item.label}`);
+    if (typeof item.raDeg !== 'number' || typeof item.decDeg !== 'number') return figure;
+    const { start, end } = sessionBounds();
+    const sampleCount = 25;
+    const readings = Array.from({ length: sampleCount }, (_, index) => {
+      const instant = new Date(start.getTime() + ((end.getTime() - start.getTime()) * index) / (sampleCount - 1));
+      return { instant, ...sampleInstant({ date: instant, location: centralCatalonia, object: item }) };
+    });
+    const width = 320, height = 160, left = 28, right = 10, top = 16, bottom = 28;
+    const plotWidth = width - left - right, plotHeight = height - top - bottom;
+    const x = (index:number) => left + (index / (sampleCount - 1)) * plotWidth;
+    const y = (altitude:number) => top + ((90 - Math.max(-10, Math.min(90, altitude))) / 100) * plotHeight;
+    const path = (key:'objectAltitudeDeg'|'moonAltitudeDeg') => readings.map((reading:any, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(reading[key]).toFixed(1)}`).join(' ');
+    const timeX = (instant:Date) => left + ((instant.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * plotWidth;
+    const slotBands = selectedSlots.map((slot) => {
+      const bandStart = Math.max(left, timeX(slot.start));
+      const bandEnd = Math.min(width - right, timeX(slot.end));
+      return `<rect class="my-night-chart__selected-slot${slot.valid ? '' : ' is-invalid'}" x="${bandStart.toFixed(1)}" y="${top}" width="${Math.max(0, bandEnd - bandStart).toFixed(1)}" height="${plotHeight}"/>`;
+    }).join('');
+    const thresholdY = y(Number(altitudeThreshold.value));
+    const grid = [0,30,60,90].map((value) => `<line x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text x="${left-5}" y="${y(value)+3}" text-anchor="end">${value}°</text>`).join('');
+    figure.innerHTML = `<figcaption><strong data-chart-title></strong><small>${config.texts.comparison}</small><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
+    figure.querySelector<HTMLElement>('[data-chart-title]')!.textContent = item.label;
+    return figure;
+  }
   const filterMoonWeight = (filter:string) => ({ B: 34, L: 30, G: 24, R: 15, Hα: 4, OIII: 7, SII: 4 }[filter] ?? 30);
   const scoreAt = (task:any, instant:Date) => {
     const reading = sampleInstant({ date: instant, location: centralCatalonia, object: task });
     const moonProximity = reading.isMoonUp ? Math.max(0, (100 - reading.moonSeparationDeg) / 100) : 0;
     const moonPenalty = moonProximity * reading.moonIlluminationFraction * filterMoonWeight(task.filter);
-    return { reading, score: reading.objectAltitudeDeg - moonPenalty - (reading.objectAltitudeDeg < 20 ? 120 : 0) };
+    return { reading, moonPenalty, score: reading.objectAltitudeDeg - moonPenalty - (reading.objectAltitudeDeg < Number(altitudeThreshold.value) ? 120 : 0) };
   };
   const clock = (instant:Date) => instant.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const explainSlot = (slot:any, valid:boolean) => {
+    const moonImpact = slot.moonPenalty < 5 ? config.texts.moonLow : slot.moonPenalty < 15 ? config.texts.moonMedium : config.texts.moonHigh;
+    const template = valid ? config.texts.chosenReason : config.texts.invalidReason;
+    const mainReason = template
+      .replace('{time}', clock(slot.midpoint))
+      .replace('{altitude}', slot.reading.objectAltitudeDeg.toFixed(0))
+      .replace('{threshold}', altitudeThreshold.value)
+      .replace('{moon}', moonImpact);
+    if (!valid && slot.validCandidateCount === 0) return `${mainReason} ${config.texts.explanation.noneValid}`;
+    if (!slot.runnerUp) return `${mainReason} ${config.texts.explanation.only}`;
+    const comparison = config.texts.explanation.comparison
+      .replace('{target}', slot.runnerUp.task.label)
+      .replace('{altitude}', slot.runnerUp.reading.objectAltitudeDeg.toFixed(0));
+    return `${mainReason} ${comparison}`;
+  };
   const makePlan = () => {
     const tasks = items.flatMap((item) => (equipment() === 'mono' ? item.filters : [config.texts.noFilter]).map((filter) => ({ ...item, filter })));
     if (!tasks.length) return;
@@ -255,33 +466,111 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
       const candidates = remaining.map((task) => ({ task, ...scoreAt(task, midpoint) })).sort((a, b) => b.score - a.score);
       const selected = candidates[0];
       remaining.splice(remaining.indexOf(selected.task), 1);
-      return { ...selected, start: slotStart, end: slotEnd };
+      return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: candidates[1] ?? null, validCandidateCount: candidates.filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
     });
-    timeline.replaceChildren(); schedule.replaceChildren();
+    planDate.value = date.value;
+    planThreshold.value = altitudeThreshold.value;
+    timeline.replaceChildren(); planCharts.replaceChildren(); schedule.replaceChildren();
     ordered.forEach((slot, index) => {
+      const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
       const segment = document.createElement('div');
+      segment.classList.toggle('is-invalid', !valid);
       segment.style.setProperty('--night-colour', `hsl(${270 + (index * 31) % 65} 48% ${42 + (index % 2) * 8}%)`);
-      segment.innerHTML = `<strong>${slot.task.label}</strong><span>${equipment() === 'mono' ? slot.task.filter : ''}</span><small>${clock(slot.start)}–${clock(slot.end)}</small>`;
+      segment.innerHTML = `<strong>${slot.task.label}</strong><span>${equipment() === 'mono' ? slot.task.filter : ''}</span><small>${clock(slot.start)}–${clock(slot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
       timeline.append(segment);
       const row = document.createElement('li');
+      row.classList.toggle('is-invalid', !valid);
       const filter = equipment() === 'mono' ? ` · ${slot.task.filter}` : '';
-      row.innerHTML = `<time>${clock(slot.start)}–${clock(slot.end)}</time><strong>${slot.task.label}${filter}</strong><span>${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°</span>`;
+      row.innerHTML = `<time>${clock(slot.start)}–${clock(slot.end)}</time><strong>${slot.task.label}${filter}</strong><span>${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°${valid ? '' : ` · ${config.texts.invalidSlot}`}</span>`;
+      const explanation = document.createElement('details');
+      explanation.className = 'my-night__slot-explanation';
+      const explanationSummary = document.createElement('summary');
+      explanationSummary.textContent = config.texts.whyHere;
+      const explanationText = document.createElement('p');
+      explanationText.textContent = explainSlot(slot, valid);
+      explanation.append(explanationSummary, explanationText);
+      row.append(explanation);
       schedule.append(row);
     });
+    const chartTargets = ordered.reduce<NightTarget[]>((targets, slot) => targets.some((target) => target.id === slot.task.id) ? targets : [...targets, slot.task], []);
+    chartTargets.slice(0, MAX_TARGETS).forEach((target) => {
+      const targetSlots = ordered.filter((slot) => slot.task.id === target.id).map((slot) => ({ start: slot.start, end: slot.end, valid: slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value) }));
+      planCharts.append(makeComparisonChart(target, targetSlots));
+    });
     plan.hidden = false;
+    recalculate.classList.remove('is-dirty');
+    persistState();
     plan.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   createPlan.addEventListener('click', makePlan);
   recalculate.addEventListener('click', makePlan);
-  [date, ready, finish].forEach((input) => input.addEventListener('change', () => { invalidatePlan(); updateSummary(); }));
+  planDate.addEventListener('change', () => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(planDate.value)) return;
+    date.value = planDate.value;
+    visibleWeek = parseDate(date.value);
+    renderNightDays();
+    recalculate.classList.add('is-dirty');
+    render();
+  });
+  planThreshold.addEventListener('input', () => {
+    altitudeThreshold.value = planThreshold.value;
+    updateScoringThreshold();
+    recalculate.classList.add('is-dirty');
+    render();
+  });
+  [date, ready, finish].forEach((input) => input.addEventListener('change', () => { invalidatePlan(); render(); }));
+  restoreState();
+  visibleWeek = parseDate(date.value);
+  renderNightDays();
+  updateScoringThreshold();
   render();
 </script>
 
 <style>
-  .my-night{width:min(1180px,100%);margin:0 auto 4rem}.my-night__back{display:inline-block;margin-bottom:1.2rem;color:var(--color-muted);font-size:.82rem;text-decoration:none}.my-night__header{position:relative;margin-bottom:1.4rem;padding:1.5rem;border:1px solid #3a3152;border-radius:1rem;background:radial-gradient(circle at 90% 0,rgba(168,131,220,.18),transparent 38%),#0c111d}.my-night__header p{margin:0;color:#b79be2;font-family:var(--font-technical);font-size:.72rem;text-transform:uppercase}.my-night__header h1{margin:.2rem 0 .45rem;font-size:clamp(2rem,5vw,3.5rem)}.my-night__header span{display:block;max-width:850px;color:var(--color-muted);line-height:1.6}.my-night__grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.my-night__panel,.my-night__summary{padding:1.25rem;border:1px solid var(--color-border);border-radius:.85rem;background:rgba(13,19,31,.88)}.my-night__panel h2,.my-night__summary h2{margin:0 0 1rem;font-size:1rem}.my-night__fields{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:.8rem}.my-night label{display:grid;gap:.38rem;color:#b7c1d1;font-size:.76rem}.my-night input{box-sizing:border-box;width:100%;padding:.7rem;border:1px solid #354156;border-radius:.5rem;background:#080c14;color:#f0f3f8;font:inherit}.my-night__panel small{display:block;margin-top:.7rem;color:var(--color-muted);line-height:1.5}.my-night__equipment{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}.my-night__equipment label,.my-night__global-filters label,.my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}.my-night__equipment input,.my-night__global-filters input,.my-night-item__filters input{width:auto}.my-night__global-filters{margin-top:1rem}.my-night__global-filters>div,.my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}.my-night__panel--basket{grid-column:1/-1}.my-night__picker{display:grid;grid-template-columns:1fr auto;gap:.7rem;align-items:end}.my-night button:not(.my-night__info){padding:.7rem .9rem;border:1px solid #765ca1;border-radius:.5rem;background:#251a38;color:#e8dcfa;cursor:pointer}.my-night__empty{color:var(--color-muted)}.my-night__basket{display:grid;gap:.65rem;margin-top:1rem}.my-night-item{padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}.my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}.my-night-item header button,.my-night-item__actions button{padding:.35rem .55rem;background:transparent;font-size:.7rem}.my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}.my-night__summary{grid-column:1/-1;border-color:#594671}.my-night__summary dl{display:flex;gap:2rem;margin:0}.my-night__summary dl div{display:grid;gap:.2rem}.my-night__summary dt{color:var(--color-muted);font-size:.75rem}.my-night__summary dd{margin:0;color:#d9c5f5;font-family:var(--font-technical);font-size:1.15rem}.my-night__summary p{margin:1rem 0 0;color:#b79be2;font-size:.82rem}.my-night [hidden]{display:none!important}@media(max-width:760px){.my-night__grid{grid-template-columns:1fr}.my-night__fields,.my-night__equipment{grid-template-columns:1fr}.my-night__picker{grid-template-columns:1fr}.my-night__panel--basket,.my-night__summary{grid-column:auto}.my-night__summary dl{flex-direction:column;gap:.8rem}}
+.my-night{width:min(1180px,100%);margin:0 auto 4rem}.my-night__back{display:inline-block;margin-bottom:1.2rem;color:var(--color-muted);font-size:.82rem;text-decoration:none}.my-night__header{position:relative;margin-bottom:1.4rem;padding:1.5rem;border:1px solid #3a3152;border-radius:1rem;background:radial-gradient(circle at 90% 0,rgba(168,131,220,.18),transparent 38%),#0c111d}.my-night__header h1{margin:.15rem 0 .3rem;font-size:clamp(1.45rem,3vw,2.2rem);line-height:1.1}.my-night__header span{display:block;max-width:850px;color:var(--color-muted);line-height:1.6}.my-night__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:1rem}.my-night__panel,.my-night__summary{padding:1.25rem;border:1px solid var(--color-border);border-radius:.85rem;background:rgba(13,19,31,.88)}.my-night__panel h2,.my-night__summary h2{margin:0 0 1rem;font-size:1.05rem;line-height:1.2}.my-night__fields{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:.8rem}.my-night label{display:grid;gap:.38rem;color:#b7c1d1;font-size:.82rem}.my-night input{box-sizing:border-box;width:100%;padding:.7rem;border:1px solid #354156;border-radius:.5rem;background:#080c14;color:#f0f3f8;font:inherit}.my-night__panel small{display:block;margin-top:.7rem;color:var(--color-muted);line-height:1.5}.my-night__equipment{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}.my-night__equipment label,.my-night__global-filters label,.my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}.my-night__equipment input,.my-night__global-filters input,.my-night-item__filters input{width:auto}.my-night__global-filters{margin-top:1rem}.my-night__global-filters>div,.my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}.my-night__panel--basket{grid-column:1/-1}.my-night__picker{display:grid;grid-template-columns:minmax(18rem,34rem) auto;justify-content:start;gap:.7rem;align-items:end}.my-night button:not(.my-night__info){padding:.7rem .9rem;border:1px solid #765ca1;border-radius:.5rem;background:#251a38;color:#e8dcfa;cursor:pointer}.my-night__empty{color:var(--color-muted)}.my-night__basket{display:grid;gap:.65rem;margin-top:1rem}.my-night-item{padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}.my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}.my-night-item header button,.my-night-item__actions button{padding:.35rem .55rem;background:transparent;font-size:.7rem}.my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}.my-night__summary{grid-column:1/-1;border-color:#594671}.my-night__summary dl{display:flex;gap:2rem;margin:0}.my-night__summary dl div{display:grid;gap:.2rem}.my-night__summary dt{color:var(--color-muted);font-size:.75rem}.my-night__summary dd{margin:0;color:#d9c5f5;font-family:var(--font-technical);font-size:1.15rem}.my-night__summary p{margin:1rem 0 0;color:#b79be2;font-size:.82rem}.my-night [hidden]{display:none!important}@media(max-width:900px){.my-night__grid{grid-template-columns:1fr}.my-night__fields,.my-night__equipment{grid-template-columns:1fr}.my-night__picker{grid-template-columns:1fr;justify-content:stretch}.my-night__panel--basket,.my-night__summary{grid-column:auto}.my-night__summary dl{flex-direction:column;gap:.8rem}}
 </style>
 
 <style is:global>
+  .my-night .my-night__header{display:grid;margin:0 0 .7rem;padding:0;border:0;border-radius:0;background:none}
+  .my-night .my-night__header h1{margin:.15rem 0 .3rem;font-size:clamp(1.45rem,3vw,2.2rem);line-height:1.1}
+  .my-night .my-night__header span{max-width:none;margin:0;color:var(--color-muted);font-size:.9rem;line-height:1.55}
+  .my-night .my-night__grid{gap:1.1rem}
+  .my-night .my-night__fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .my-night .my-night__panel--session,.my-night .my-night__panel--equipment{min-width:0;min-height:100%;padding:1.1rem;border-color:#493a60;border-radius:.9rem;background:linear-gradient(145deg,rgba(20,15,32,.92),rgba(11,17,29,.94))}
+  .my-night .my-night__panel--session h2,.my-night .my-night__panel--equipment h2{font-size:1.05rem;line-height:1.2}
+  .my-night .my-night__date-field{display:grid;grid-column:1/-1;gap:.75rem;color:#b7c1d1;font-size:.82rem}
+  .my-night .my-night__date-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .my-night .my-night__period-head{display:grid;grid-template-columns:11.3rem 5.5rem 7.5rem;gap:.75rem;align-items:end;justify-content:start}
+  .my-night .my-night__date-field .my-night__period-head label,.my-night .my-night__date-field .my-night__selected-day{display:grid;gap:.4rem;color:#b7c1d1;font-size:.82rem;font-weight:700;line-height:1.6}
+  .my-night .my-night__stepper{display:grid;grid-template-columns:2.65rem minmax(0,1fr) 2.65rem;min-height:2.65rem}
+  .my-night .my-night__stepper button{display:grid;min-height:2.65rem;place-items:center;padding:0;border-color:#4b3d63;border-radius:0;background:#090d16;color:#b68ae8;font:700 1.35rem/1 var(--font-technical)}
+  .my-night .my-night__date-field .my-night__stepper>button{box-sizing:border-box;height:2.65rem;min-height:2.65rem;padding:0}
+  .my-night .my-night__date-field .my-night__stepper>output{box-sizing:border-box;height:2.65rem;min-height:2.65rem}
+  .my-night .my-night__stepper button:first-child{border-radius:.65rem 0 0 .65rem}
+  .my-night .my-night__stepper button:last-child{border-radius:0 .65rem .65rem 0}
+  .my-night .my-night__stepper output,.my-night .my-night__period-value,.my-night .my-night__threshold{display:grid;min-height:2.65rem;place-items:center;border:1px solid #4b3d63;background:#090d16;color:#f0e9fa;font:700 .86rem var(--font-technical);text-align:center}
+  .my-night .my-night__period-value{border-radius:.55rem}
+  .my-night .my-night__threshold{display:flex;align-items:center;justify-content:center;gap:.28rem;padding:0 .68rem;border-radius:.55rem}
+  .my-night .my-night__threshold input{width:3ch;min-height:0;padding:0;border:0;background:transparent;font:700 .86rem var(--font-technical);text-align:center}
+  .my-night .my-night__threshold b{font:700 .86rem var(--font-technical)}
+  .my-night .my-night__selected-day{width:100%}
+  .my-night .my-night__stepper--day output{color:#d9c5f5;font-size:.86rem}
+  .my-night .my-night__week-strip{padding:.75rem;border:1px solid #594671;border-radius:.7rem;background:#080c14;box-shadow:inset 0 0 2rem rgba(118,92,161,.06)}
+  .my-night [data-night-days]{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+  .my-night [data-night-days] button{display:grid;min-width:0;min-height:3.15rem;place-content:center;gap:.25rem;padding:.42rem .2rem;border-color:#302940;border-width:1px 0 1px 1px;border-radius:0;background:#0c111c;color:#8f99aa;text-align:center}
+  .my-night [data-night-days] button:first-child{border-radius:.6rem 0 0 .6rem}
+  .my-night [data-night-days] button:last-child{border-right-width:1px;border-radius:0 .6rem .6rem 0}
+  .my-night [data-night-days] button span{font-size:.62rem;font-weight:700;text-transform:uppercase}
+  .my-night [data-night-days] button strong{font:700 .86rem var(--font-technical)}
+  .my-night .my-night__panel--session .my-night__fields>label input{min-height:2.65rem;padding:.58rem .68rem;border-radius:.55rem;font:.86rem var(--font-technical)}
+  .my-night .my-night__panel--session .my-night__fields>label{width:10.5rem}
+  .my-night .my-night__panel--equipment .my-night__equipment label{box-sizing:border-box;min-height:2.65rem;padding:.35rem .5rem;font-size:.76rem;line-height:1.25}
+  .my-night [data-night-days] button[aria-pressed="true"]{position:relative;z-index:1;border:2px solid #9b72d1;border-radius:.65rem;background:rgba(155,114,209,.28);color:#f0e6ff;box-shadow:inset 0 0 0 1px rgba(195,158,240,.18),0 0 1.2rem rgba(118,92,161,.18)}
+  .my-night .my-night__basket-heading{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+  .my-night .my-night__basket-heading h2{margin-bottom:1rem}
+  .my-night .my-night__basket-heading span{color:#b79be2;font-family:var(--font-technical);font-size:.72rem}
+  .my-night .my-night__limit{margin:.8rem 0 0;color:#d4b5ff;font-size:.78rem}
+  .my-night button:disabled{opacity:.42;cursor:not-allowed}
   .my-night .my-night__sources{display:flex;flex-wrap:wrap;gap:.45rem;margin:0 0 1.1rem}
   .my-night .my-night__sources button[data-object-mode]{min-height:2.1rem;padding:.42rem .7rem;border:1px solid var(--color-border)!important;border-radius:.55rem;background:rgba(8,11,18,.45)!important;color:var(--color-muted)!important;font-size:.76rem;cursor:pointer}
   .my-night .my-night__sources button[data-object-mode][aria-pressed="true"]{border-color:rgba(155,114,209,.9)!important;background:rgba(155,114,209,.22)!important;color:#eadcff!important;box-shadow:inset 0 0 0 1px rgba(195,158,240,.12)}
@@ -294,7 +583,9 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
   .my-night .my-night__simbad-result span{grid-column:1;color:var(--color-muted);font-family:var(--font-technical);font-size:.72rem}
   .my-night .my-night__simbad-result button{grid-column:2;grid-row:1/3}
   .my-night .my-night__simbad-error{color:#e58d8d;font-size:.8rem}
-  @media(max-width:760px){.my-night .my-night__simbad-result{grid-template-columns:1fr}.my-night .my-night__simbad-result button{grid-column:1;grid-row:auto}}
+  .my-night .my-night__panel--equipment{display:flex;flex-direction:column}
+  .my-night .my-night__panel--equipment .my-night__equipment-help{margin-bottom:auto}
+  @media(max-width:900px){.my-night .my-night__fields,.my-night .my-night__period-head{grid-template-columns:1fr}.my-night .my-night__panel--session .my-night__fields>label,.my-night .my-night__selected-day{width:100%}.my-night .my-night__week-strip{overflow-x:auto;padding:.65rem}.my-night [data-night-days]{min-width:31rem}.my-night [data-night-days] button{min-height:3.7rem}.my-night .my-night__simbad-result{grid-template-columns:1fr}.my-night .my-night__simbad-result button{grid-column:1;grid-row:auto}}
   .my-night .my-night__field-title{display:flex;align-items:center;gap:.4rem}
   .my-night .my-night__info{position:relative;display:inline-grid;place-items:center;flex:0 0 1.2rem;width:1.2rem;height:1.2rem;min-width:1.2rem;padding:0;border:0;background:transparent;color:#a98bd2;line-height:1}
   .my-night .my-night__info svg{display:block;width:1.05rem;height:1.05rem;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -305,32 +596,85 @@ const clientData = JSON.stringify({ texts: t, objects }).replace(/</g, '\\u003c'
 </style>
 
 <style is:global>
-  .my-night .my-night-item{padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}
+  .my-night .my-night-item{min-width:0;padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}
   .my-night .my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}
   .my-night .my-night-item header button,.my-night .my-night-item__actions button{padding:.35rem .55rem;border:1px solid #765ca1;border-radius:.45rem;background:transparent;color:#d9c5f5;font-size:.7rem;cursor:pointer}
   .my-night .my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}
   .my-night .my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}
   .my-night .my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14;color:#b7c1d1;font-size:.76rem}
   .my-night .my-night-item__filters input{width:auto}
+  .my-night .my-night-chart{min-width:0;margin:0;padding:.8rem;border:1px solid #3d3450;border-radius:.6rem;background:rgba(8,12,20,.66)}
+  .my-night .my-night-chart figcaption{display:grid;gap:.45rem;margin-bottom:.35rem}
+  .my-night .my-night-chart figcaption strong{overflow:hidden;font-size:.72rem;text-overflow:ellipsis;white-space:nowrap}
+  .my-night .my-night-chart figcaption small{margin:0;color:#9ea8b8;font-size:.62rem}
+  .my-night .my-night-chart figcaption span{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;color:var(--color-muted);font-size:.62rem}
+  .my-night .my-night-chart figcaption i{display:inline-block;width:1.2rem;height:2px;margin-right:-.25rem;background:#55d9b3}
+  .my-night .my-night-chart figcaption .my-night-chart__moon{background:#e78983}
+  .my-night .my-night-chart figcaption .my-night-chart__threshold{height:0;border-top:1px dashed #75a8d7;background:transparent}
+  .my-night .my-night-chart figcaption .my-night-chart__slot{height:.55rem;border:1px solid rgba(184,140,240,.7);background:rgba(155,114,209,.25)}
+  .my-night .my-night-chart figcaption .my-night-chart__slot--invalid{border-color:rgba(239,120,120,.85);background:rgba(229,91,91,.25)}
+  .my-night .my-night-chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .my-night .my-night-chart__grid line{stroke:#293246;stroke-width:.7}
+  .my-night .my-night-chart__grid text,.my-night .my-night-chart__time{fill:#778296;font:8px var(--font-technical)}
+  .my-night .my-night-chart__object-line,.my-night .my-night-chart__moon-line{fill:none;stroke:#55d9b3;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .my-night .my-night-chart__moon-line{stroke:#e78983;stroke-width:1.6;stroke-dasharray:4 3}
+  .my-night .my-night-chart__threshold-line{stroke:#75a8d7;stroke-width:1;stroke-dasharray:3 3}
+  .my-night .my-night-chart__selected-slot{fill:rgba(155,114,209,.18);stroke:rgba(203,169,244,.62);stroke-width:1}
+  .my-night .my-night-chart__selected-slot.is-invalid{fill:rgba(229,91,91,.22);stroke:rgba(239,120,120,.9)}
 </style>
 
 <style is:global>
+  .my-night .my-night__scoring{margin-top:.9rem}
+  .my-night .my-night__scoring summary{width:max-content;color:#cba9f4;font-size:.8rem;font-weight:700;text-decoration:underline;text-decoration-color:rgba(203,169,244,.45);text-underline-offset:.2rem;cursor:pointer}
+  .my-night .my-night__scoring summary:hover,.my-night .my-night__scoring summary:focus-visible{color:#eadcff}
+  .my-night .my-night__scoring>div{max-width:52rem;margin-top:.7rem;padding:.85rem 1rem;border:1px solid #594671;border-radius:.65rem;background:#0b0d17}
+  .my-night .my-night__scoring p{margin:0 0 .55rem;color:#b7c1d1;line-height:1.5}
+  .my-night .my-night__scoring p:last-child{margin-bottom:0}
+  .my-night .my-night__scoring strong,.my-night .my-night__scoring-weights strong{color:#ddc8f7;font-family:var(--font-technical)}
+  .my-night .my-night__scoring-weights span{display:block;margin-top:.55rem;color:#b7c1d1;font-family:var(--font-body)}
+  .my-night .my-night__scoring--guide{position:relative;z-index:2;margin:0 0 1rem}
+  .my-night .my-night__scoring--guide summary{display:flex;width:max-content;align-items:center;gap:.45rem;padding:.55rem .75rem;border:1px solid #765ca1;border-radius:.55rem;background:#251a38;color:#eadcff;text-decoration:none;box-shadow:0 .35rem 1rem rgba(0,0,0,.18)}
+  .my-night .my-night__scoring--guide summary::marker{content:''}
+  .my-night .my-night__scoring--guide summary::-webkit-details-marker{display:none}
+  .my-night .my-night__scoring--guide summary svg{width:1.05rem;height:1.05rem;fill:none;stroke:#cba9f4;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .my-night .my-night__scoring--guide[open] summary{border-color:#9b72d1;background:#332247}
+  .my-night .my-night__scoring--guide>div{max-width:none;margin-top:.55rem}
+  .my-night .my-night__help-row{display:flex;flex-wrap:wrap;align-items:start;gap:.6rem;margin:0 0 1rem}
+  .my-night .my-night__help-row .my-night__scoring--guide{margin:0}
+  .my-night .my-night__guide-link{display:flex;align-items:center;gap:.45rem;margin-left:auto;padding:.55rem .75rem;border:1px solid #765ca1;border-radius:.55rem;background:rgba(19,25,40,.8);color:#d9c5f5;font-size:.8rem;font-weight:700;text-decoration:none;box-shadow:0 .35rem 1rem rgba(0,0,0,.14)}
+  .my-night .my-night__guide-link:hover,.my-night .my-night__guide-link:focus-visible{border-color:#9b72d1;background:#251a38;color:#eadcff}
+  .my-night .my-night__guide-link svg{width:1.05rem;height:1.05rem;fill:none;stroke:#cba9f4;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .my-night .my-night__summary>button{margin-top:1rem;font-weight:700}
   .my-night .my-night__summary>button:disabled{opacity:.42;cursor:not-allowed}
   .my-night .my-night__plan{grid-column:1/-1;border-color:#6e5295;background:linear-gradient(145deg,rgba(25,18,39,.96),rgba(11,17,29,.96))}
   .my-night .my-night__plan>header{display:flex;justify-content:space-between;align-items:start;gap:1rem;margin-bottom:1rem}
   .my-night .my-night__plan h2{margin:0 0 .3rem}
   .my-night .my-night__plan header p{margin:0;color:var(--color-muted);font-size:.76rem}
-  .my-night .my-night__plan header button{padding:.55rem .7rem;background:transparent;font-size:.72rem}
+  .my-night .my-night__plan-settings{display:grid;grid-template-columns:11rem 7.5rem auto;gap:.7rem;align-items:end;justify-content:start;margin-bottom:1rem}
+  .my-night .my-night__plan-settings label{gap:.4rem;font-size:.82rem;font-weight:700}
+  .my-night .my-night__plan-settings input{min-height:2.65rem;padding:.58rem .68rem;border-radius:.55rem;font:.86rem var(--font-technical)}
+  .my-night .my-night__plan-threshold{display:flex;align-items:center;justify-content:center;gap:.28rem;min-height:2.65rem;padding:0 .68rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}
+  .my-night .my-night__plan-threshold input{width:3ch;min-height:0;padding:0;border:0;background:transparent;text-align:center}
+  .my-night .my-night__plan-threshold b{font:700 .86rem var(--font-technical)}
+  .my-night .my-night__plan-settings>button{min-height:2.65rem;padding:.55rem .8rem;background:transparent;font-size:.72rem}
+  .my-night .my-night__plan-settings>button.is-dirty{border-color:#cba9f4;background:#332247;box-shadow:0 0 0 2px rgba(155,114,209,.16)}
   .my-night .my-night__timeline{display:flex;min-height:7.2rem;overflow:hidden;border:1px solid #765ca1;border-radius:.65rem;background:#080c14}
   .my-night .my-night__timeline>div{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:.18rem;padding:.65rem;border-left:1px solid rgba(255,255,255,.16);background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
   .my-night .my-night__timeline>div:first-child{border-left:0}
+  .my-night .my-night__timeline>div.is-invalid{background:linear-gradient(145deg,rgba(126,43,52,.74),rgba(42,16,24,.94));box-shadow:inset 0 0 0 1px rgba(239,120,120,.35)}
   .my-night .my-night__timeline strong{overflow:hidden;font-size:.74rem;text-overflow:ellipsis;white-space:nowrap}
   .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.68rem}
   .my-night .my-night__timeline small{margin:0;color:#d2c7df;font-family:var(--font-technical);font-size:.62rem}
+  .my-night .my-night__plan-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.65rem;margin-top:.75rem}
   .my-night .my-night__schedule{display:grid;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none}
   .my-night .my-night__schedule li{display:grid;grid-template-columns:8rem 1fr auto;gap:.8rem;align-items:center;padding:.65rem .75rem;border:1px solid #3d3450;border-radius:.5rem;background:rgba(8,12,20,.66)}
+  .my-night .my-night__schedule li.is-invalid{border-color:rgba(239,120,120,.58);background:rgba(84,25,35,.34)}
   .my-night .my-night__schedule time,.my-night .my-night__schedule span{color:var(--color-muted);font-family:var(--font-technical);font-size:.69rem}
   .my-night .my-night__schedule span{text-align:right}
-  @media(max-width:760px){.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__schedule li{grid-template-columns:1fr}.my-night .my-night__schedule span{text-align:left}}
+  .my-night .my-night__slot-explanation{grid-column:1/-1;padding-top:.35rem;border-top:1px solid rgba(118,92,161,.3)}
+  .my-night .my-night__slot-explanation summary{width:max-content;color:#cba9f4;font-size:.72rem;font-weight:700;cursor:pointer}
+  .my-night .my-night__slot-explanation summary:hover,.my-night .my-night__slot-explanation summary:focus-visible{color:#eadcff}
+  .my-night .my-night__slot-explanation p{margin:.5rem 0 0;color:#b7c1d1;font-size:.74rem;line-height:1.5}
+  .my-night .my-night__schedule li.is-invalid .my-night__slot-explanation summary{color:#f0aaa7}
+  @media(max-width:760px){.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night__schedule li{grid-template-columns:1fr}.my-night .my-night__schedule span{text-align:left}}
 </style>

@@ -1,0 +1,69 @@
+---
+import type { Lang } from '../i18n';
+import { languageLinks, myNightHref } from '../i18n';
+import Layout from '../layouts/Layout.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const content = {
+  ca: {
+    title: 'Guia de La meva nit', back: 'Tornar a La meva nit', index: 'En aquesta guia',
+    intro: 'La meva nit reuneix fins a quatre objectius, els compara dins de l’horari de captura i proposa un ordre segons l’altura, el llindar escollit i la incidència de la Lluna.',
+    sections: [
+      ['sessio', '1 · Sessió', ['Selecciona la nit, l’hora en què l’equip estarà preparat i l’hora de finalització. Si l’hora final és anterior a la inicial, l’eina entén que la sessió acaba l’endemà.', 'El llindar d’altura estableix l’altura mínima que consideres acceptable. Es pot modificar també al pas 4; els dos controls estan sincronitzats.']],
+      ['equip', '2 · Equip i filtres', ['Tria un únic tipus de càmera per a la sessió. Amb telescopi intel·ligent o càmera OSC cada objectiu genera un tram en color. Amb càmera monocroma pots seleccionar filtres diferents per objectiu.', 'Els filtres modifiquen el pes de la penalització lunar: B 34, L/color 30, G 24, R 15, OIII 7, Hα 4 i SII 4.']],
+      ['objectius', '3 · Objectius', ['Pots reunir un màxim de quatre objectius de la llista local o resoldre’n un mitjançant SIMBAD. La selecció, la data, l’horari, l’equip i els filtres es conserven durant la sessió del navegador quan visites una altra pàgina.', 'Amb càmera monocroma, cada combinació objecte–filtre es converteix en una tasca independent.']],
+      ['ordre', '4 · Com es decideix l’ordre', ['La durada disponible es divideix en trams iguals, un per tasca. Al centre de cada tram es calcula l’altura de tots els objectius que encara no han estat assignats.', 'La puntuació parteix de l’altura de l’objecte i resta la incidència lunar. Si l’objecte queda sota el llindar, rep una penalització forta. Guanya la millor puntuació entre les tasques pendents i el procés es repeteix per al tram següent.']],
+      ['explicacio', '«Per què aquí?»', ['Cada tram inclou una explicació desplegable amb l’hora central examinada, l’altura, el llindar, el nivell d’incidència lunar i la següent alternativa disponible.', 'Aquesta lectura explica la decisió concreta del pla sense obligar-te a interpretar la fórmula completa.']],
+      ['validesa', 'Trams no vàlids', ['Un objecte que no arriba al llindar no s’amaga: continua al pla perquè puguis veure per què no compleix les condicions. El tram, la fila i la franja de la gràfica apareixen en vermell translúcid i s’identifiquen com a «Tram no vàlid».', 'Que sigui la millor opció pendent no significa que sigui una opció acceptable.']],
+      ['grafiques', 'Lectura de les gràfiques', ['La corba verda representa l’altura de l’objecte; la vermella, l’altura de la Lluna; la línia discontínua marca el llindar. La franja vertical indica el tram assignat a aquell objecte.', 'Una franja porpra és vàlida. Una franja vermella indica que l’objecte no arriba al llindar al centre del tram.']],
+      ['limits', 'Model i límits', ['El càlcul provisional utilitza el centre de Catalunya. Considera geometria celeste, altura, separació lunar, fracció il·luminada i sensibilitat del filtre, però no meteorologia, núvols, transparència, seeing, vent, relleu, obstacles ni contaminació lumínica local.', 'Utilitza el pla com a ajuda per decidir i comprova sempre les condicions reals abans de capturar.']],
+    ],
+  },
+  es: {
+    title: 'Guía de Mi noche', back: 'Volver a Mi noche', index: 'En esta guía',
+    intro: 'Mi noche reúne hasta cuatro objetivos, los compara dentro del horario de captura y propone un orden según la altura, el umbral elegido y la incidencia de la Luna.',
+    sections: [
+      ['sesion', '1 · Sesión', ['Selecciona la noche, la hora en la que el equipo estará preparado y la hora de finalización. Si la hora final es anterior a la inicial, la herramienta entiende que la sesión termina al día siguiente.', 'El umbral de altura establece la altura mínima que consideras aceptable. También puede modificarse en el paso 4; ambos controles permanecen sincronizados.']],
+      ['equipo', '2 · Equipo y filtros', ['Selecciona un único tipo de cámara para la sesión. Con telescopio inteligente o cámara OSC, cada objeto genera un tramo en color. Con cámara monocroma puedes escoger filtros diferentes para cada objeto.', 'Los filtros modifican el peso de la penalización lunar: B 34, L/color 30, G 24, R 15, OIII 7, Hα 4 y SII 4.']],
+      ['objetivos', '3 · Objetivos', ['Puedes reunir un máximo de cuatro objetos de la lista local o resolver uno mediante SIMBAD. La selección, la fecha, el horario, el equipo y los filtros se conservan durante la sesión del navegador cuando visitas otra página.', 'Con cámara monocroma, cada combinación objeto–filtro se convierte en una tarea independiente.']],
+      ['orden', '4 · Cómo se decide el orden', ['La duración disponible se divide en tramos iguales, uno por tarea. En el centro de cada tramo se calcula la altura de todos los objetos que todavía no han sido asignados.', 'La puntuación parte de la altura del objeto y resta la incidencia lunar. Si el objeto está bajo el umbral, recibe una penalización fuerte. Gana la mejor puntuación entre las tareas pendientes y el proceso se repite para el siguiente tramo.']],
+      ['explicacion', '«¿Por qué aquí?»', ['Cada tramo incorpora una explicación desplegable con la hora central examinada, la altura, el umbral, el nivel de incidencia lunar y la siguiente alternativa disponible.', 'Esta lectura explica la decisión concreta del plan sin obligarte a interpretar la fórmula completa.']],
+      ['validez', 'Tramos no válidos', ['Un objeto que no alcanza el umbral no se oculta: permanece en el plan para que puedas comprobar por qué incumple las condiciones. El tramo, la fila y la franja de la gráfica aparecen en rojo translúcido y se identifican como «Tramo no válido».', 'Que sea la mejor opción pendiente no significa que sea una opción aceptable.']],
+      ['graficas', 'Lectura de las gráficas', ['La curva verde representa la altura del objeto; la roja, la altura de la Luna; la línea discontinua marca el umbral. La franja vertical indica el tramo asignado a ese objeto.', 'Una franja morada es válida. Una franja roja indica que el objeto no alcanza el umbral en el centro del tramo.']],
+      ['limites', 'Modelo y límites', ['El cálculo provisional utiliza el centro de Cataluña. Considera geometría celeste, altura, separación lunar, fracción iluminada y sensibilidad del filtro, pero no meteorología, nubes, transparencia, seeing, viento, relieve, obstáculos ni contaminación lumínica local.', 'Utiliza el plan como ayuda para decidir y comprueba siempre las condiciones reales antes de capturar.']],
+    ],
+  },
+  en: {
+    title: 'My Night guide', back: 'Back to My Night', index: 'In this guide',
+    intro: 'My Night brings together up to four targets, compares them within the capture period and proposes an order based on altitude, the chosen threshold and Moon impact.',
+    sections: [
+      ['session', '1 · Session', ['Choose the night and the times when the equipment will be ready and capture will finish. If the finish time is earlier, the tool treats it as the following day.', 'The altitude threshold is the minimum altitude you consider acceptable. It can also be changed in step 4; both controls remain synchronised.']],
+      ['equipment', '2 · Equipment and filters', ['Choose one camera type for the session. A smart telescope or OSC camera creates one colour slot per target. A monochrome camera allows different filters for each target.', 'Filters change the lunar penalty weight: B 34, L/colour 30, G 24, R 15, OIII 7, Hα 4 and SII 4.']],
+      ['targets', '3 · Targets', ['Add up to four targets from the local list or resolve one through SIMBAD. Targets, date, times, equipment and filters remain available for the browser session when you visit another page.', 'With a monochrome camera, each target–filter combination becomes an independent task.']],
+      ['order', '4 · How the order is chosen', ['Available time is divided into equal slots, one per task. At each slot midpoint, the altitude of every target not yet assigned is calculated.', 'Scoring starts with target altitude and subtracts Moon impact. A target below the threshold receives a strong penalty. The highest-scoring pending task wins, and the process repeats for the next slot.']],
+      ['explanation', '“Why here?”', ['Each slot has a short expandable explanation showing the evaluated midpoint, altitude, threshold, Moon-impact level and the next available alternative.', 'It explains the specific choice without requiring you to interpret the complete formula.']],
+      ['validity', 'Invalid slots', ['A target below the threshold is not hidden: it remains in the plan so you can see why it fails. Its slot, row and chart band are shown in translucent red and labelled “Invalid slot”.', 'Being the best remaining option does not make it an acceptable one.']],
+      ['charts', 'Reading the charts', ['The green curve is target altitude; the red curve is Moon altitude; the dashed line is the threshold. The vertical band identifies the slot assigned to that target.', 'A purple band is valid. A red band means the target is below the threshold at the slot midpoint.']],
+      ['limits', 'Model and limits', ['The provisional calculation uses central Catalonia. It considers sky geometry, altitude, lunar separation, illuminated fraction and filter sensitivity, but not weather, cloud, transparency, seeing, wind, terrain, obstructions or local light pollution.', 'Use the plan as a decision aid and always check real conditions before capture.']],
+    ],
+  },
+} as const;
+const t = content[lang];
+---
+
+<Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNightGuide(base)} focused>
+  <article class="my-night-guide">
+    <a class="my-night-guide__back" href={myNightHref(lang, base)}>← {t.back}</a>
+    <header><div aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg></div><h1>{t.title}</h1></header>
+    <p class="my-night-guide__intro">{t.intro}</p>
+    <nav aria-label={t.index}><strong>{t.index}</strong><ol>{t.sections.map((section, index) => <li><a href={`#${section[0]}`}><span>{String(index + 1).padStart(2, '0')}</span>{section[1]}</a></li>)}</ol></nav>
+    <div class="my-night-guide__sections">{t.sections.map((section, index) => <section id={section[0]}><i>{String(index + 1).padStart(2, '0')}</i><div><h2>{section[1]}</h2>{section[2].map((paragraph) => <p>{paragraph}</p>)}</div></section>)}</div>
+    <a class="my-night-guide__return" href={myNightHref(lang, base)}>← {t.back}</a>
+  </article>
+</Layout>
+
+<style>
+  .my-night-guide{max-width:58rem;margin:0 auto;padding:.5rem 0 3rem}.my-night-guide__back{display:inline-block;margin-bottom:1.1rem;color:#cba9f4;font-size:.78rem;text-decoration:none}.my-night-guide>header{display:flex;align-items:center;gap:1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--color-border)}.my-night-guide>header>div{display:grid;flex:0 0 auto;width:2.8rem;height:2.8rem;place-items:center;border:1px solid #765ca1;border-radius:.65rem;background:rgba(155,114,209,.12);color:#d9c5f5}.my-night-guide svg{width:1.6rem;height:1.6rem;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.45}.my-night-guide h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem);letter-spacing:-.035em;line-height:1.05}.my-night-guide__intro{max-width:50rem;margin:1.25rem 0;color:var(--color-text);font-size:clamp(1rem,2vw,1.14rem);line-height:1.7}.my-night-guide nav{margin:1.5rem 0 2.4rem;padding:1rem;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.my-night-guide nav>strong{display:block;margin-bottom:.65rem;color:var(--color-muted);font-size:.72rem;text-transform:uppercase}.my-night-guide nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem .8rem;margin:0;padding:0;list-style:none}.my-night-guide nav a{display:flex;gap:.5rem;padding:.35rem .4rem;color:var(--color-text);font-size:.85rem;text-decoration:none}.my-night-guide nav span,.my-night-guide section>i{color:#cba9f4;font:.68rem var(--font-mono)}.my-night-guide__sections{display:grid;gap:1rem}.my-night-guide section{display:grid;grid-template-columns:2.8rem 1fr;scroll-margin-top:1rem;overflow:hidden;border:1px solid var(--color-border);border-radius:.8rem;background:var(--color-surface)}.my-night-guide section>i{padding:1.2rem .55rem;border-right:1px solid var(--color-border);font-weight:700;text-align:center;font-style:normal}.my-night-guide section>div{padding:1.1rem 1.2rem 1.2rem}.my-night-guide h2{margin:0 0 .65rem;font-size:1.25rem}.my-night-guide section p{margin:.55rem 0;color:var(--color-muted);line-height:1.65}.my-night-guide__return{display:inline-flex;margin-top:1rem;padding:.65rem .8rem;border:1px solid #765ca1;border-radius:.55rem;color:#d9c5f5;font-size:.82rem;font-weight:700;text-decoration:none}@media(max-width:600px){.my-night-guide nav ol{grid-template-columns:1fr}.my-night-guide section{grid-template-columns:2.35rem 1fr}}
+</style>
