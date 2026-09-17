@@ -17,9 +17,9 @@ const texts = {
   en: { title: 'My night', intro: 'Collect the session targets and choose which filters to use for each one. Astronomical ordering by visibility and Moon will be added in the next step.', back: 'Back to Prepare your session', session: '1 · The session', date: 'Night being planned', ready: 'Ready to photograph', readyHelp: 'Equipment polar aligned, correction files prepared and cameras cooled.', finish: 'Finish captures', finishHelp: 'Time to switch off the cameras. Allow extra time afterwards to close and pack the equipment.', equipment: '2 · Equipment', smart: 'Smart telescope', osc: 'OSC camera', mono: 'Monochrome camera', filters: 'Filters available tonight', targets: '3 · Target basket', search: 'Find a target', placeholder: 'M 31, NGC 7000, nebula…', add: 'Add to My night', empty: 'The basket is still empty.', selectAll: 'All', clearAll: 'None', remove: 'Remove', summary: 'Preliminary summary', duration: 'Available time', combinations: 'Target + filter combinations', next: 'Order the basket by altitude and Moon impact.', createPlan: 'Create my night plan', plan: '4 · Night order', reference: 'Provisional calculation for central Catalonia.', altitude: 'altitude', moonDistance: 'Moon', recalculate: 'Recalculate plan', hours: 'h', noFilter: 'Colour capture' },
 } as const;
 const sourceTexts = {
-  ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', targetCount: 'objectius', targetLimit: 'Has arribat al màxim de 4 objectius per nit.', previousWeek: 'Setmana anterior', nextWeek: 'Setmana següent', weekIso: 'Setmana ISO', month: 'Mes', selectedDay: 'Dia seleccionat', threshold: 'Llindar d\'altura', previousDay: 'Dia anterior', nextDay: 'Dia següent', scoringTitle: 'Puntuació dels objectius', scoringOrder: 'El pla divideix la sessió en trams iguals i, al centre de cada tram, ordena els objectius pendents per altura i incidència de la Lluna.', scoringThreshold: 'Un objecte situat per sota del llindar seleccionat rep una penalització forta. Llindar actual:', scoringMoon: 'La penalització lunar combina proximitat, fracció il·luminada i sensibilitat del filtre. Si la Lluna és sota l\'horitzó, la penalització és zero.', scoringWeights: 'Pes lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparació de visibilitat', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedSlot: 'Tram seleccionat', invalidSlot: 'Tram no vàlid', whyHere: 'Per què aquí?', chosenReason: 'Al centre del tram ({time}) era l’objectiu pendent amb millor puntuació: altura {altitude}° davant del llindar de {threshold}° i incidència lunar {moon}.', invalidReason: 'És la millor opció pendent a les {time}, però no és vàlida: altura {altitude}° davant del llindar de {threshold}°. Incidència lunar {moon}.', moonLow: 'baixa', moonMedium: 'mitjana', moonHigh: 'alta' },
-  es: { equipmentHelp: 'Selecciona un único tipo de cámara para toda la sesión.', local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.', targetCount: 'objetivos', targetLimit: 'Has alcanzado el máximo de 4 objetivos por noche.', previousWeek: 'Semana anterior', nextWeek: 'Semana siguiente', weekIso: 'Semana ISO', month: 'Mes', selectedDay: 'Día seleccionado', threshold: 'Umbral de altura', previousDay: 'Día anterior', nextDay: 'Día siguiente', scoringTitle: 'Puntuación de objetivos', scoringOrder: 'El plan divide la sesión en tramos iguales y, en el centro de cada tramo, ordena los objetivos pendientes por altura e incidencia de la Luna.', scoringThreshold: 'Un objeto situado por debajo del umbral seleccionado recibe una penalización fuerte. Umbral actual:', scoringMoon: 'La penalización lunar combina proximidad, fracción iluminada y sensibilidad del filtro. Si la Luna está bajo el horizonte, la penalización es cero.', scoringWeights: 'Peso lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparación de visibilidad', objectCurve: 'Objeto', moonCurve: 'Luna', selectedSlot: 'Tramo seleccionado', invalidSlot: 'Tramo no válido', whyHere: '¿Por qué aquí?', chosenReason: 'En el centro del tramo ({time}) era el objetivo pendiente con mejor puntuación: altura {altitude}° frente al umbral de {threshold}° e incidencia lunar {moon}.', invalidReason: 'Es la mejor opción pendiente a las {time}, pero no es válida: altura {altitude}° frente al umbral de {threshold}°. Incidencia lunar {moon}.', moonLow: 'baja', moonMedium: 'media', moonHigh: 'alta' },
-  en: { equipmentHelp: 'Choose one camera type for the whole session.', local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.', targetCount: 'targets', targetLimit: 'You have reached the maximum of 4 targets per night.', previousWeek: 'Previous week', nextWeek: 'Next week', weekIso: 'ISO week', month: 'Month', selectedDay: 'Selected day', threshold: 'Altitude threshold', previousDay: 'Previous day', nextDay: 'Next day', scoringTitle: 'Target scoring', scoringOrder: 'The plan divides the session into equal slots and, at each slot midpoint, ranks the remaining targets by altitude and Moon impact.', scoringThreshold: 'A target below the selected altitude threshold receives a strong penalty. Current threshold:', scoringMoon: 'The lunar penalty combines proximity, illuminated fraction and filter sensitivity. It is zero while the Moon is below the horizon.', scoringWeights: 'Lunar weight: B 34 · L/colour 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Visibility comparison', objectCurve: 'Target', moonCurve: 'Moon', selectedSlot: 'Selected slot', invalidSlot: 'Invalid slot', whyHere: 'Why here?', chosenReason: 'At the slot midpoint ({time}) it was the highest-scoring pending target: altitude {altitude}° versus a {threshold}° threshold, with {moon} Moon impact.', invalidReason: 'It is the best pending option at {time}, but it is not valid: altitude {altitude}° versus a {threshold}° threshold. Moon impact is {moon}.', moonLow: 'low', moonMedium: 'medium', moonHigh: 'high' },
+  ca: { equipmentHelp: 'Tria un únic tipus de càmera per a tota la sessió.', local: 'Llista local', simbad: 'SIMBAD', simbadSearch: 'Nom o catàleg', resolve: 'Resol', resolving: 'Resolent…', resolved: 'Objecte resolt', simbadHelp: 'SIMBAD aporta el nom i les coordenades per planificar aquesta nit.', simbadError: 'SIMBAD no ha pogut resoldre aquest objecte.', targetCount: 'objectius', targetLimit: 'Has arribat al màxim de 4 objectius per nit.', previousWeek: 'Setmana anterior', nextWeek: 'Setmana següent', weekIso: 'Setmana ISO', month: 'Mes', selectedDay: 'Dia seleccionat', threshold: 'Llindar d\'altura', previousDay: 'Dia anterior', nextDay: 'Dia següent', scoringTitle: 'Puntuació dels objectius', scoringOrder: 'El pla divideix la sessió en trams iguals i, al centre de cada tram, ordena els objectius pendents per altura i incidència de la Lluna.', scoringThreshold: 'Un objecte situat per sota del llindar seleccionat rep una penalització forta. Llindar actual:', scoringMoon: 'La penalització lunar combina proximitat, fracció il·luminada i sensibilitat del filtre. Si la Lluna és sota l\'horitzó, la penalització és zero.', scoringWeights: 'Pes lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparació de visibilitat', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedSlot: 'Tram seleccionat', invalidSlot: 'Tram no vàlid', whyHere: 'Per què en aquesta posició?', chosenReason: 'Al centre del tram ({time}) era l’objectiu pendent amb millor puntuació: altura {altitude}° davant del llindar de {threshold}° i incidència lunar {moon}.', invalidReason: 'És la millor opció pendent a les {time}, però no és vàlida: altura {altitude}° davant del llindar de {threshold}°. Incidència lunar {moon}.', moonLow: 'baixa', moonMedium: 'mitjana', moonHigh: 'alta' },
+  es: { equipmentHelp: 'Selecciona un único tipo de cámara para toda la sesión.', local: 'Lista local', simbad: 'SIMBAD', simbadSearch: 'Nombre o catálogo', resolve: 'Resolver', resolving: 'Resolviendo…', resolved: 'Objeto resuelto', simbadHelp: 'SIMBAD aporta el nombre y las coordenadas para planificar esta noche.', simbadError: 'SIMBAD no ha podido resolver este objeto.', targetCount: 'objetivos', targetLimit: 'Has alcanzado el máximo de 4 objetivos por noche.', previousWeek: 'Semana anterior', nextWeek: 'Semana siguiente', weekIso: 'Semana ISO', month: 'Mes', selectedDay: 'Día seleccionado', threshold: 'Umbral de altura', previousDay: 'Día anterior', nextDay: 'Día siguiente', scoringTitle: 'Puntuación de objetivos', scoringOrder: 'El plan divide la sesión en tramos iguales y, en el centro de cada tramo, ordena los objetivos pendientes por altura e incidencia de la Luna.', scoringThreshold: 'Un objeto situado por debajo del umbral seleccionado recibe una penalización fuerte. Umbral actual:', scoringMoon: 'La penalización lunar combina proximidad, fracción iluminada y sensibilidad del filtro. Si la Luna está bajo el horizonte, la penalización es cero.', scoringWeights: 'Peso lunar: B 34 · L/color 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Comparación de visibilidad', objectCurve: 'Objeto', moonCurve: 'Luna', selectedSlot: 'Tramo seleccionado', invalidSlot: 'Tramo no válido', whyHere: '¿Por qué en esta posición?', chosenReason: 'En el centro del tramo ({time}) era el objetivo pendiente con mejor puntuación: altura {altitude}° frente al umbral de {threshold}° e incidencia lunar {moon}.', invalidReason: 'Es la mejor opción pendiente a las {time}, pero no es válida: altura {altitude}° frente al umbral de {threshold}°. Incidencia lunar {moon}.', moonLow: 'baja', moonMedium: 'media', moonHigh: 'alta' },
+  en: { equipmentHelp: 'Choose one camera type for the whole session.', local: 'Local list', simbad: 'SIMBAD', simbadSearch: 'Name or catalogue', resolve: 'Resolve', resolving: 'Resolving…', resolved: 'Resolved target', simbadHelp: 'SIMBAD provides the name and coordinates needed to plan this night.', simbadError: 'SIMBAD could not resolve this target.', targetCount: 'targets', targetLimit: 'You have reached the maximum of 4 targets per night.', previousWeek: 'Previous week', nextWeek: 'Next week', weekIso: 'ISO week', month: 'Month', selectedDay: 'Selected day', threshold: 'Altitude threshold', previousDay: 'Previous day', nextDay: 'Next day', scoringTitle: 'Target scoring', scoringOrder: 'The plan divides the session into equal slots and, at each slot midpoint, ranks the remaining targets by altitude and Moon impact.', scoringThreshold: 'A target below the selected altitude threshold receives a strong penalty. Current threshold:', scoringMoon: 'The lunar penalty combines proximity, illuminated fraction and filter sensitivity. It is zero while the Moon is below the horizon.', scoringWeights: 'Lunar weight: B 34 · L/colour 30 · G 24 · R 15 · OIII 7 · Hα 4 · SII 4.', comparison: 'Visibility comparison', objectCurve: 'Target', moonCurve: 'Moon', selectedSlot: 'Selected slot', invalidSlot: 'Invalid slot', whyHere: 'Why in this position?', chosenReason: 'At the slot midpoint ({time}) it was the highest-scoring pending target: altitude {altitude}° versus a {threshold}° threshold, with {moon} Moon impact.', invalidReason: 'It is the best pending option at {time}, but it is not valid: altitude {altitude}° versus a {threshold}° threshold. Moon impact is {moon}.', moonLow: 'low', moonMedium: 'medium', moonHigh: 'high' },
 } as const;
 const t = { ...texts[lang], ...sourceTexts[lang] };
 const guideLinkText = {
@@ -31,6 +31,16 @@ const explanationText = {
   ca: { comparison: 'La següent alternativa era {target}, a {altitude}°.', only: 'No quedaven altres objectius pendents.', noneValid: 'Cap dels objectius pendents arribava al llindar.' },
   es: { comparison: 'La siguiente alternativa era {target}, a {altitude}°.', only: 'No quedaban otros objetivos pendientes.', noneValid: 'Ninguno de los objetivos pendientes alcanzaba el umbral.' },
   en: { comparison: 'The next alternative was {target}, at {altitude}°.', only: 'No other targets remained.', noneValid: 'None of the pending targets reached the threshold.' },
+}[lang];
+const exportText = {
+  ca: { txt: 'Descarrega TXT', pdf: 'Descarrega PDF', txtDone: '✓ TXT descarregat', pdfDone: '✓ PDF descarregat', hint: 'Descarrega el pla actual sense modificar-ne l’ordre.', title: 'PLA DE LA MEVA NIT', schedule: 'ORDRE PROPOSAT', summary: 'RESUM', equipment: 'Equip', threshold: 'Llindar mínim', available: 'Horari disponible', valid: 'Vàlid', invalid: 'NO RECOMANAT', targets: 'Objectius seleccionats', validSlots: 'Trams vàlids', warningSlots: 'Trams amb avís', reason: 'Motiu', filters: 'Filtre', note: 'Els trams amb avís es conserven per poder comparar-los, però no compleixen el llindar seleccionat.', file: 'pla-la-meva-nit' },
+  es: { txt: 'Descargar TXT', pdf: 'Descargar PDF', txtDone: '✓ TXT descargado', pdfDone: '✓ PDF descargado', hint: 'Descarga el plan actual sin modificar su orden.', title: 'PLAN DE MI NOCHE', schedule: 'ORDEN PROPUESTO', summary: 'RESUMEN', equipment: 'Equipo', threshold: 'Umbral mínimo', available: 'Horario disponible', valid: 'Válido', invalid: 'NO RECOMENDADO', targets: 'Objetivos seleccionados', validSlots: 'Tramos válidos', warningSlots: 'Tramos con advertencia', reason: 'Motivo', filters: 'Filtro', note: 'Los tramos con advertencia se conservan para poder compararlos, pero no cumplen el umbral seleccionado.', file: 'plan-mi-noche' },
+  en: { txt: 'Download TXT', pdf: 'Download PDF', txtDone: '✓ TXT downloaded', pdfDone: '✓ PDF downloaded', hint: 'Download the current plan without changing its order.', title: 'MY NIGHT PLAN', schedule: 'PROPOSED ORDER', summary: 'SUMMARY', equipment: 'Equipment', threshold: 'Minimum threshold', available: 'Available time', valid: 'Valid', invalid: 'NOT RECOMMENDED', targets: 'Selected targets', validSlots: 'Valid slots', warningSlots: 'Warning slots', reason: 'Reason', filters: 'Filter', note: 'Warning slots are retained for comparison, but they do not meet the selected threshold.', file: 'my-night-plan' },
+}[lang];
+const timeAdjustmentText = {
+  ca: { duration: 'Durada', decrease: 'Redueix 5 minuts', increase: 'Augmenta 5 minuts', reset: 'Iguala els períodes', recalculateFirst: 'Recalcula el pla abans de descarregar', pending: 'Durada pendent de recalcular' },
+  es: { duration: 'Duración', decrease: 'Reducir 5 minutos', increase: 'Aumentar 5 minutos', reset: 'Igualar periodos', recalculateFirst: 'Recalcula el plan antes de descargar', pending: 'Duración pendiente de recalcular' },
+  en: { duration: 'Duration', decrease: 'Reduce by 5 minutes', increase: 'Increase by 5 minutes', reset: 'Equalise periods', recalculateFirst: 'Recalculate the plan before downloading', pending: 'Duration pending recalculation' },
 }[lang];
 const lunarWeightHelp = {
   ca: {
@@ -66,7 +76,7 @@ const objects = objectsData
     return { id: object.id, catalogName: object.catalogName, commonName, label: `${formatCatalogDesignations(object.catalogName)}${commonName ? ` · ${commonName}` : ''}`, raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' };
   })
   .sort((a, b) => a.label.localeCompare(b.label, lang, { numeric: true }));
-const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanationText }, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanationText, export: exportText, timeAdjustment: timeAdjustmentText }, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNight(base)} focused>
@@ -164,11 +174,18 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
         <div class="my-night__plan-settings">
           <label><span>{t.selectedDay}</span><input type="date" data-plan-date /></label>
           <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b></span></label>
-          <button type="button" data-recalculate>{t.recalculate}</button>
+          <div class="my-night__time-actions">
+            <button type="button" data-recalculate>{t.recalculate}</button>
+            <button type="button" data-reset-times>{timeAdjustmentText.reset}</button>
+          </div>
+          <div class="my-night__plan-actions">
+            <span class="my-night__download-warning" data-time-pending hidden>{timeAdjustmentText.recalculateFirst}</span>
+            <button class="report-action report-action--my-night" type="button" data-download-txt title={exportText.hint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{exportText.txt}</span></button>
+            <button class="report-action report-action--my-night" type="button" data-download-pdf title={exportText.hint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{exportText.pdf}</span></button>
+          </div>
         </div>
         <div class="my-night__timeline" data-timeline></div>
         <div class="my-night__plan-charts" data-plan-charts></div>
-        <ol class="my-night__schedule" data-schedule></ol>
       </section>
     </div>
   </main>
@@ -213,14 +230,22 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   const plan = root.querySelector<HTMLElement>('[data-plan]')!;
   const timeline = root.querySelector<HTMLElement>('[data-timeline]')!;
   const planCharts = root.querySelector<HTMLElement>('[data-plan-charts]')!;
-  const schedule = root.querySelector<HTMLOListElement>('[data-schedule]')!;
   const planDate = root.querySelector<HTMLInputElement>('[data-plan-date]')!;
   const planThreshold = root.querySelector<HTMLInputElement>('[data-plan-threshold]')!;
   const recalculate = root.querySelector<HTMLButtonElement>('[data-recalculate]')!;
+  const resetTimes = root.querySelector<HTMLButtonElement>('[data-reset-times]')!;
+  const timePendingNotice = root.querySelector<HTMLElement>('[data-time-pending]')!;
+  const downloadTxt = root.querySelector<HTMLButtonElement>('[data-download-txt]')!;
+  const downloadPdf = root.querySelector<HTMLButtonElement>('[data-download-pdf]')!;
   type NightTarget = { id:string; label:string; filters:string[]; raDeg?:number; decDeg?:number; source?:string };
   const MAX_TARGETS = 4;
   let items: NightTarget[] = [];
   let selectedLocal: any = null;
+  let currentPlan: any[] = [];
+  let pendingTargetDurations = new Map<string, number>();
+  let lockedTargetDurations = new Set<string>();
+  let timeChangesPending = false;
+  let planParametersPending = false;
   let resolvedSimbad: { displayName:string; canonicalName?:string; raDeg:number; decDeg:number; source:string; localObjectId?:string } | null = null;
   const isoDate = (value:Date) => `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
   const parseDate = (value:string) => { const [year, month, day] = value.split('-').map(Number); return new Date(year, month - 1, day, 12); };
@@ -272,7 +297,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     combinations.textContent = String(equipment() === 'mono' ? items.reduce((total, item) => total + item.filters.length, 0) : items.length);
     createPlan.disabled = items.length === 0 || (equipment() === 'mono' && items.every((item) => item.filters.length === 0));
   };
-  const invalidatePlan = () => { plan.hidden = true; timeline.replaceChildren(); planCharts.replaceChildren(); schedule.replaceChildren(); };
+  const invalidatePlan = () => { currentPlan = []; pendingTargetDurations.clear(); lockedTargetDurations.clear(); timeChangesPending = false; planParametersPending = false; plan.hidden = true; timeline.replaceChildren(); planCharts.replaceChildren(); };
   const updateScoringThreshold = () => { scoringThreshold.value = altitudeThreshold.value; };
   altitudeThreshold.addEventListener('input', () => { updateScoringThreshold(); invalidatePlan(); render(); });
   const STORAGE_KEY = 'deepskyastro:my-night:v1';
@@ -402,7 +427,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     if (end <= start) end.setDate(end.getDate() + 1);
     return { start, end };
   };
-  function makeComparisonChart(item:NightTarget, selectedSlots:{ start:Date; end:Date; valid:boolean }[] = []) {
+  function makeComparisonChart(item:NightTarget, selectedSlots:any[] = []) {
     const figure = document.createElement('figure');
     figure.className = 'my-night-chart';
     figure.setAttribute('aria-label', `${config.texts.comparison}: ${item.label}`);
@@ -416,18 +441,43 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     const width = 320, height = 160, left = 28, right = 10, top = 16, bottom = 28;
     const plotWidth = width - left - right, plotHeight = height - top - bottom;
     const x = (index:number) => left + (index / (sampleCount - 1)) * plotWidth;
-    const y = (altitude:number) => top + ((90 - Math.max(-10, Math.min(90, altitude))) / 100) * plotHeight;
+    const y = (altitude:number) => top + ((90 - Math.max(-30, Math.min(90, altitude))) / 120) * plotHeight;
     const path = (key:'objectAltitudeDeg'|'moonAltitudeDeg') => readings.map((reading:any, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(reading[key]).toFixed(1)}`).join(' ');
     const timeX = (instant:Date) => left + ((instant.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * plotWidth;
     const slotBands = selectedSlots.map((slot) => {
       const bandStart = Math.max(left, timeX(slot.start));
       const bandEnd = Math.min(width - right, timeX(slot.end));
-      return `<rect class="my-night-chart__selected-slot${slot.valid ? '' : ' is-invalid'}" x="${bandStart.toFixed(1)}" y="${top}" width="${Math.max(0, bandEnd - bandStart).toFixed(1)}" height="${plotHeight}"/>`;
+      const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
+      return `<rect class="my-night-chart__selected-slot${valid ? '' : ' is-invalid'}" x="${bandStart.toFixed(1)}" y="${top}" width="${Math.max(0, bandEnd - bandStart).toFixed(1)}" height="${plotHeight}"/>`;
     }).join('');
     const thresholdY = y(Number(altitudeThreshold.value));
-    const grid = [0,30,60,90].map((value) => `<line x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text x="${left-5}" y="${y(value)+3}" text-anchor="end">${value}°</text>`).join('');
-    figure.innerHTML = `<figcaption><strong data-chart-title></strong><small>${config.texts.comparison}</small><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
-    figure.querySelector<HTMLElement>('[data-chart-title]')!.textContent = item.label;
+    const grid = [-30,0,30,60,90].map((value) => `<line x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text x="${left-5}" y="${y(value)+3}" text-anchor="end">${value}°</text>`).join('');
+    figure.innerHTML = `<figcaption><div class="my-night-chart__duration"><span>${config.texts.timeAdjustment.duration}</span><button type="button" data-duration-step="-1" aria-label="${config.texts.timeAdjustment.decrease}">↓</button><output data-target-duration aria-live="polite"></output><i class="my-night-chart__pending-mark" aria-hidden="true">•</i><button type="button" data-duration-step="1" aria-label="${config.texts.timeAdjustment.increase}">↑</button></div><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span><div class="my-night-chart__slot-details" data-chart-slot-details></div></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
+    figure.dataset.targetId = item.id;
+    const slotDetails = figure.querySelector<HTMLElement>('[data-chart-slot-details]')!;
+    selectedSlots.forEach((slot) => {
+      const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
+      const details = document.createElement('details');
+      details.className = 'my-night-chart__explanation';
+      details.classList.toggle('is-invalid', !valid);
+      const summary = document.createElement('summary');
+      const question = document.createElement('b'); question.textContent = config.texts.whyHere;
+      const slotTime = document.createElement('time'); slotTime.textContent = `${clock(slot.start)}–${clock(slot.end)}${equipment() === 'mono' ? ` · ${slot.task.filter}` : ''}`;
+      const metrics = document.createElement('span'); metrics.textContent = `${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°`;
+      const slotMeta = document.createElement('span'); slotMeta.className = 'my-night-chart__slot-meta'; slotMeta.append(slotTime, metrics);
+      const explanation = document.createElement('p'); explanation.textContent = explainSlot(slot, valid);
+      summary.append(question, slotMeta); details.append(summary, explanation); slotDetails.append(details);
+    });
+    figure.querySelectorAll<HTMLButtonElement>('[data-duration-step]').forEach((button) => button.addEventListener('click', () => adjustTargetDuration(item.id, Number(button.dataset.durationStep) * 5 * 60000)));
+    const svg = figure.querySelector<SVGSVGElement>('svg')!;
+    const preserveTextSize = () => {
+      const renderedWidth = svg.getBoundingClientRect().width;
+      if (!renderedWidth) return;
+      const compensatedSize = (8 * width) / renderedWidth;
+      svg.querySelectorAll<SVGTextElement>('.my-night-chart__grid text, .my-night-chart__time').forEach((label) => { label.style.fontSize = `${compensatedSize}px`; });
+    };
+    new ResizeObserver(preserveTextSize).observe(svg);
+    preserveTextSize();
     return figure;
   }
   const filterMoonWeight = (filter:string) => ({ B: 34, L: 30, G: 24, R: 15, Hα: 4, OIII: 7, SII: 4 }[filter] ?? 30);
@@ -453,24 +503,75 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       .replace('{altitude}', slot.runnerUp.reading.objectAltitudeDeg.toFixed(0));
     return `${mainReason} ${comparison}`;
   };
-  const makePlan = () => {
-    const tasks = items.flatMap((item) => (equipment() === 'mono' ? item.filters : [config.texts.noFilter]).map((filter) => ({ ...item, filter })));
-    if (!tasks.length) return;
-    const { start, end } = sessionBounds();
-    const slotMs = (end.getTime() - start.getTime()) / tasks.length;
-    const remaining = [...tasks];
-    const ordered = Array.from({ length: tasks.length }, (_, index) => {
-      const slotStart = new Date(start.getTime() + index * slotMs);
-      const slotEnd = new Date(start.getTime() + (index + 1) * slotMs);
-      const midpoint = new Date((slotStart.getTime() + slotEnd.getTime()) / 2);
-      const candidates = remaining.map((task) => ({ task, ...scoreAt(task, midpoint) })).sort((a, b) => b.score - a.score);
-      const selected = candidates[0];
-      remaining.splice(remaining.indexOf(selected.task), 1);
-      return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: candidates[1] ?? null, validCandidateCount: candidates.filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
+  const MIN_TARGET_DURATION = 5 * 60000;
+  const targetOrder = () => currentPlan.reduce<string[]>((ids, slot) => ids.includes(slot.task.id) ? ids : [...ids, slot.task.id], []);
+  const durationsFromPlan = (slots = currentPlan) => slots.reduce<Map<string,number>>((durations, slot) => durations.set(slot.task.id, (durations.get(slot.task.id) ?? 0) + slot.end.getTime() - slot.start.getTime()), new Map());
+  const durationLabel = (milliseconds:number) => { const minutes = Math.round(milliseconds / 60000), hours = Math.floor(minutes / 60); return hours ? `${hours} h ${String(minutes % 60).padStart(2, '0')} min` : `${minutes} min`; };
+  const setTimePendingState = (pending:boolean) => {
+    timeChangesPending = pending;
+    const planPending = timeChangesPending || planParametersPending;
+    recalculate.classList.toggle('has-pending-time', planPending);
+    downloadTxt.disabled = planPending;
+    downloadPdf.disabled = planPending;
+    timePendingNotice.hidden = !planPending;
+    downloadTxt.title = planPending ? config.texts.timeAdjustment.recalculateFirst : config.texts.export.hint;
+    downloadPdf.title = planPending ? config.texts.timeAdjustment.recalculateFirst : config.texts.export.hint;
+  };
+  const markPlanParametersPending = () => { planParametersPending = true; setTimePendingState(timeChangesPending); };
+  const laterUnlockedTargets = (targetId:string) => { const order = targetOrder(), index = order.indexOf(targetId); return index < 0 ? [] : order.slice(index + 1).filter((id) => !lockedTargetDurations.has(id)); };
+  const updateDurationControls = () => {
+    const durations = pendingTargetDurations.size ? pendingTargetDurations : durationsFromPlan();
+    const appliedDurations = durationsFromPlan();
+    planCharts.querySelectorAll<HTMLElement>('.my-night-chart[data-target-id]').forEach((figure) => {
+      const targetId = figure.dataset.targetId!, later = laterUnlockedTargets(targetId);
+      const targetDuration = durations.get(targetId) ?? 0;
+      const durationChanged = timeChangesPending && Math.abs(targetDuration - (appliedDurations.get(targetId) ?? 0)) > 1;
+      const availableToTake = later.reduce((total, id) => total + Math.max(0, (durations.get(id) ?? 0) - MIN_TARGET_DURATION), 0);
+      const output = figure.querySelector<HTMLOutputElement>('[data-target-duration]');
+      if (output) { output.value = durationLabel(targetDuration); output.setAttribute('aria-label', durationChanged ? `${durationLabel(targetDuration)} · ${config.texts.timeAdjustment.pending}` : durationLabel(targetDuration)); }
+      figure.querySelector<HTMLElement>('.my-night-chart__duration')?.classList.toggle('is-pending-change', durationChanged);
+      const decrease = figure.querySelector<HTMLButtonElement>('[data-duration-step="-1"]');
+      const increase = figure.querySelector<HTMLButtonElement>('[data-duration-step="1"]');
+      if (decrease) decrease.disabled = later.length === 0 || targetDuration < MIN_TARGET_DURATION + 5 * 60000;
+      if (increase) increase.disabled = later.length === 0 || availableToTake < 5 * 60000;
+      figure.classList.toggle('has-pending-duration', timeChangesPending && lockedTargetDurations.has(targetId));
     });
+    resetTimes.disabled = !currentPlan.length;
+  };
+  const redistributeDuration = (targetIds:string[], change:number) => {
+    if (change > 0) {
+      let remaining = change;
+      targetIds.forEach((id, index) => { const share = index === targetIds.length - 1 ? remaining : change / targetIds.length; pendingTargetDurations.set(id, (pendingTargetDurations.get(id) ?? 0) + share); remaining -= share; });
+      return;
+    }
+    const amount = -change;
+    const capacities = targetIds.map((id) => Math.max(0, (pendingTargetDurations.get(id) ?? 0) - MIN_TARGET_DURATION));
+    const capacityTotal = capacities.reduce((sum, value) => sum + value, 0);
+    let remaining = amount;
+    targetIds.forEach((id, index) => { const deduction = index === targetIds.length - 1 ? remaining : amount * (capacities[index] / capacityTotal); pendingTargetDurations.set(id, (pendingTargetDurations.get(id) ?? 0) - deduction); remaining -= deduction; });
+  };
+  const adjustTargetDuration = (targetId:string, change:number) => {
+    if (!currentPlan.length) return;
+    if (!pendingTargetDurations.size) pendingTargetDurations = durationsFromPlan();
+    const later = laterUnlockedTargets(targetId);
+    if (!later.length) return;
+    const current = pendingTargetDurations.get(targetId) ?? 0;
+    const availableToTake = later.reduce((total, id) => total + Math.max(0, (pendingTargetDurations.get(id) ?? 0) - MIN_TARGET_DURATION), 0);
+    if ((change < 0 && current + change < MIN_TARGET_DURATION) || (change > 0 && availableToTake < change)) return;
+    pendingTargetDurations.set(targetId, current + change);
+    lockedTargetDurations.add(targetId);
+    redistributeDuration(later, -change);
+    const appliedDurations = durationsFromPlan();
+    const hasChanges = [...pendingTargetDurations].some(([id, value]) => Math.abs(value - (appliedDurations.get(id) ?? 0)) > 1);
+    if (!hasChanges) lockedTargetDurations.clear();
+    setTimePendingState(hasChanges);
+    updateDurationControls();
+  };
+  const renderPlan = (ordered:any[], scroll = true) => {
+    currentPlan = ordered;
     planDate.value = date.value;
     planThreshold.value = altitudeThreshold.value;
-    timeline.replaceChildren(); planCharts.replaceChildren(); schedule.replaceChildren();
+    timeline.replaceChildren(); planCharts.replaceChildren();
     ordered.forEach((slot, index) => {
       const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
       const segment = document.createElement('div');
@@ -478,44 +579,108 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       segment.style.setProperty('--night-colour', `hsl(${270 + (index * 31) % 65} 48% ${42 + (index % 2) * 8}%)`);
       segment.innerHTML = `<strong>${slot.task.label}</strong><span>${equipment() === 'mono' ? slot.task.filter : ''}</span><small>${clock(slot.start)}–${clock(slot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
       timeline.append(segment);
-      const row = document.createElement('li');
-      row.classList.toggle('is-invalid', !valid);
-      const filter = equipment() === 'mono' ? ` · ${slot.task.filter}` : '';
-      row.innerHTML = `<time>${clock(slot.start)}–${clock(slot.end)}</time><strong>${slot.task.label}${filter}</strong><span>${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°${valid ? '' : ` · ${config.texts.invalidSlot}`}</span>`;
-      const explanation = document.createElement('details');
-      explanation.className = 'my-night__slot-explanation';
-      const explanationSummary = document.createElement('summary');
-      explanationSummary.textContent = config.texts.whyHere;
-      const explanationText = document.createElement('p');
-      explanationText.textContent = explainSlot(slot, valid);
-      explanation.append(explanationSummary, explanationText);
-      row.append(explanation);
-      schedule.append(row);
     });
     const chartTargets = ordered.reduce<NightTarget[]>((targets, slot) => targets.some((target) => target.id === slot.task.id) ? targets : [...targets, slot.task], []);
     chartTargets.slice(0, MAX_TARGETS).forEach((target) => {
-      const targetSlots = ordered.filter((slot) => slot.task.id === target.id).map((slot) => ({ start: slot.start, end: slot.end, valid: slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value) }));
+      const targetSlots = ordered.filter((slot) => slot.task.id === target.id);
       planCharts.append(makeComparisonChart(target, targetSlots));
     });
     plan.hidden = false;
     recalculate.classList.remove('is-dirty');
+    updateDurationControls();
     persistState();
-    plan.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (scroll) plan.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const applyPendingDurations = () => {
+    if (!currentPlan.length || !timeChangesPending) return false;
+    const counts = currentPlan.reduce<Map<string,number>>((values, slot) => values.set(slot.task.id, (values.get(slot.task.id) ?? 0) + 1), new Map());
+    const { start, end } = sessionBounds();
+    let cursor = start.getTime();
+    const ordered = currentPlan.map((oldSlot, index) => {
+      const targetId = oldSlot.task.id;
+      const targetDuration = pendingTargetDurations.get(targetId) ?? durationsFromPlan().get(targetId) ?? 0;
+      const slotDuration = targetDuration / (counts.get(targetId) ?? 1);
+      const slotStart = new Date(cursor), slotEnd = new Date(index === currentPlan.length - 1 ? end.getTime() : cursor + slotDuration); cursor = slotEnd.getTime();
+      const midpoint = new Date((slotStart.getTime() + slotEnd.getTime()) / 2);
+      const selected = { task: oldSlot.task, ...scoreAt(oldSlot.task, midpoint) };
+      const alternatives = currentPlan.slice(index + 1).map((slot) => ({ task: slot.task, ...scoreAt(slot.task, midpoint) })).sort((a, b) => b.score - a.score);
+      return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: alternatives[0] ?? null, validCandidateCount: [selected, ...alternatives].filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
+    });
+    pendingTargetDurations = durationsFromPlan(ordered);
+    planParametersPending = false;
+    setTimePendingState(false);
+    renderPlan(ordered, false);
+    return true;
+  };
+  const makePlan = () => {
+    if (applyPendingDurations()) return;
+    const tasks = items.flatMap((item) => (equipment() === 'mono' ? item.filters : [config.texts.noFilter]).map((filter) => ({ ...item, filter })));
+    if (!tasks.length) return;
+    const { start, end } = sessionBounds();
+    const slotMs = (end.getTime() - start.getTime()) / tasks.length;
+    const remaining = [...tasks];
+    const ordered = Array.from({ length: tasks.length }, (_, index) => {
+      const slotStart = new Date(start.getTime() + index * slotMs), slotEnd = new Date(start.getTime() + (index + 1) * slotMs), midpoint = new Date((slotStart.getTime() + slotEnd.getTime()) / 2);
+      const candidates = remaining.map((task) => ({ task, ...scoreAt(task, midpoint) })).sort((a, b) => b.score - a.score), selected = candidates[0];
+      remaining.splice(remaining.indexOf(selected.task), 1);
+      return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: candidates[1] ?? null, validCandidateCount: candidates.filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
+    });
+    pendingTargetDurations = durationsFromPlan(ordered);
+    lockedTargetDurations.clear();
+    planParametersPending = false;
+    setTimePendingState(false);
+    renderPlan(ordered);
   };
   createPlan.addEventListener('click', makePlan);
   recalculate.addEventListener('click', makePlan);
+  resetTimes.addEventListener('click', () => {
+    if (!currentPlan.length) return;
+    const { start, end } = sessionBounds(), equalSlot = (end.getTime() - start.getTime()) / currentPlan.length;
+    pendingTargetDurations = currentPlan.reduce<Map<string,number>>((values, slot) => values.set(slot.task.id, (values.get(slot.task.id) ?? 0) + equalSlot), new Map());
+    lockedTargetDurations.clear();
+    const appliedDurations = durationsFromPlan();
+    const hasChanges = [...pendingTargetDurations].some(([id, value]) => Math.abs(value - (appliedDurations.get(id) ?? 0)) > 1);
+    setTimePendingState(hasChanges);
+    updateDurationControls();
+  });
+  const equipmentLabel = () => config.texts[equipment()] ?? equipment();
+  const dateLabel = () => new Intl.DateTimeFormat(config.lang, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(parseDate(date.value));
+  const planText = () => {
+    const exportT = config.texts.export;
+    const validCount = currentPlan.filter((slot) => slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length;
+    const lines = [exportT.title, '', `${config.texts.selectedDay}: ${dateLabel()}`, `${exportT.available}: ${ready.value}–${finish.value}`, `${exportT.threshold}: ${altitudeThreshold.value}°`, `${exportT.equipment}: ${equipmentLabel()}`, '', exportT.schedule, ''];
+    currentPlan.forEach((slot, index) => {
+      const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
+      const filter = equipment() === 'mono' ? ` · ${exportT.filters}: ${slot.task.filter}` : '';
+      lines.push(`${index + 1}. ${slot.task.label}${filter}`, `   ${clock(slot.start)}–${clock(slot.end)} · ${valid ? exportT.valid : exportT.invalid}`, `   ${config.texts.altitude}: ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance}: ${slot.reading.moonSeparationDeg.toFixed(0)}°`, `   ${exportT.reason}: ${explainSlot(slot, valid)}`, '');
+    });
+    lines.push(exportT.summary, `${exportT.targets}: ${items.length}`, `${exportT.validSlots}: ${validCount}`, `${exportT.warningSlots}: ${currentPlan.length - validCount}`, '', exportT.note);
+    return lines.join('\n');
+  };
+  const saveBlob = (blob:Blob, filename:string) => { const url = URL.createObjectURL(blob), link = document.createElement('a'); link.href = url; link.download = filename; link.click(); window.setTimeout(() => URL.revokeObjectURL(url), 4000); };
+  const confirmExport = (button:HTMLButtonElement, message:string) => { const label = button.querySelector<HTMLElement>('span:last-child'); const original = label?.textContent ?? ''; if (label) label.textContent = message; button.classList.add('is-confirmed'); window.setTimeout(() => { if (label) label.textContent = original; button.classList.remove('is-confirmed'); }, 2800); };
+  downloadTxt.addEventListener('click', () => { if (!currentPlan.length) return; saveBlob(new Blob(['\ufeff', planText()], { type: 'text/plain;charset=utf-8' }), `${config.texts.export.file}-${date.value}.txt`); confirmExport(downloadTxt, config.texts.export.txtDone); });
+  const wrapCanvasText = (context:CanvasRenderingContext2D, value:string, x:number, y:number, maxWidth:number, lineHeight:number, maxLines = 99) => { const words = value.split(/\s+/); let line = '', lines = 0; for (const word of words) { const candidate = line ? `${line} ${word}` : word; if (context.measureText(candidate).width > maxWidth && line) { context.fillText(line, x, y); y += lineHeight; lines += 1; line = word; if (lines >= maxLines) return y; } else line = candidate; } if (line && lines < maxLines) { context.fillText(line, x, y); y += lineHeight; } return y; };
+  const reportCanvas = () => { const canvas = document.createElement('canvas'); canvas.width = 1240; canvas.height = 1754; const context = canvas.getContext('2d')!; context.fillStyle = '#f7f4ed'; context.fillRect(0, 0, canvas.width, canvas.height); context.fillStyle = '#21172f'; context.fillRect(0, 0, canvas.width, 155); context.fillStyle = '#f1e8fb'; context.font = '700 42px Arial'; context.fillText(config.texts.export.title, 70, 82); context.fillStyle = '#c7b7da'; context.font = '20px Arial'; context.fillText(`${dateLabel()} · ${ready.value}–${finish.value}`, 70, 122); return { canvas, context }; };
+  const summaryPdfPage = () => { const { canvas, context } = reportCanvas(); let y = 215; context.fillStyle = '#6e5295'; context.font = '700 21px Arial'; context.fillText(config.texts.export.summary, 70, y); y += 48; context.fillStyle = '#172033'; context.font = '22px Arial'; [`${config.texts.export.equipment}: ${equipmentLabel()}`, `${config.texts.export.threshold}: ${altitudeThreshold.value}°`, `${config.texts.export.targets}: ${items.length}`].forEach((line) => { context.fillText(line, 70, y); y += 38; }); y += 22; context.fillStyle = '#6e5295'; context.font = '700 21px Arial'; context.fillText(config.texts.export.schedule, 70, y); y += 42; currentPlan.forEach((slot, index) => { const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value); context.fillStyle = valid ? '#e9e4db' : '#f4d8d8'; context.fillRect(60, y - 25, 1120, 150); context.fillStyle = valid ? '#172033' : '#8b2834'; context.font = '700 24px Arial'; context.fillText(`${index + 1}. ${clock(slot.start)}–${clock(slot.end)} · ${slot.task.label}${equipment() === 'mono' ? ` · ${slot.task.filter}` : ''}`, 78, y + 8); context.font = '19px Arial'; context.fillText(`${config.texts.altitude}: ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance}: ${slot.reading.moonSeparationDeg.toFixed(0)}° · ${valid ? config.texts.export.valid : config.texts.export.invalid}`, 78, y + 43); context.fillStyle = '#475467'; context.font = '17px Arial'; wrapCanvasText(context, explainSlot(slot, valid), 78, y + 76, 1060, 23, 2); y += 166; }); context.fillStyle = '#667085'; context.font = '17px Arial'; wrapCanvasText(context, config.texts.export.note, 70, 1670, 1100, 25, 2); return canvas; };
+  const chartsPdfPage = async () => { const { canvas, context } = reportCanvas(); context.fillStyle = '#6e5295'; context.font = '700 21px Arial'; context.fillText(config.texts.comparison.toLocaleUpperCase(config.lang), 70, 215); const charts = [...planCharts.querySelectorAll<SVGSVGElement>('svg')], figures = [...planCharts.querySelectorAll<HTMLElement>('figure')]; for (let index = 0; index < charts.length; index += 1) { const column = index % 2, row = Math.floor(index / 2), x = 70 + column * 565, y = 265 + row * 610; const targetId = figures[index]?.dataset.targetId, title = currentPlan.find((entry) => entry.task.id === targetId)?.task.label ?? ''; context.fillStyle = '#172033'; context.font = '700 21px Arial'; context.fillText(title, x, y); context.fillStyle = '#090e18'; context.fillRect(x, y + 25, 530, 290); const clone = charts[index].cloneNode(true) as SVGSVGElement; const style = document.createElementNS('http://www.w3.org/2000/svg', 'style'); style.textContent = `.my-night-chart__grid line{stroke:#43506a}.my-night-chart__grid text,.my-night-chart__time{fill:#aab4c5;font:8px monospace}.my-night-chart__object-line{fill:none;stroke:#55d9b3;stroke-width:2.2}.my-night-chart__moon-line{fill:none;stroke:#e78983;stroke-width:1.6;stroke-dasharray:4 3}.my-night-chart__threshold-line{stroke:#75a8d7;stroke-dasharray:3 3}.my-night-chart__selected-slot{fill:rgba(155,114,209,.24);stroke:#cba9f4}.my-night-chart__selected-slot.is-invalid{fill:rgba(229,91,91,.3);stroke:#ef7878}`; clone.prepend(style); clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: 'image/svg+xml' })); try { const image = new Image(); await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = () => reject(new Error('Chart export failed')); image.src = url; }); context.drawImage(image, x + 10, y + 35, 510, 255); } finally { URL.revokeObjectURL(url); } const slots = currentPlan.filter((slot) => slot.task.id === targetId); context.fillStyle = '#475467'; context.font = '17px Arial'; let detailY = y + 350; slots.forEach((slot) => { const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value); detailY = wrapCanvasText(context, `${clock(slot.start)}–${clock(slot.end)} · ${valid ? config.texts.export.valid : config.texts.export.invalid} · ${explainSlot(slot, valid)}`, x, detailY, 530, 23, 4) + 8; }); } return canvas; };
+  const canvasJpeg = (canvas:HTMLCanvasElement) => new Promise<Uint8Array>((resolve, reject) => canvas.toBlob(async (blob) => blob ? resolve(new Uint8Array(await blob.arrayBuffer())) : reject(new Error('PDF image failed')), 'image/jpeg', .92));
+  const pdfFromJpegs = (images:{ bytes:Uint8Array; width:number; height:number }[]) => { const encoder = new TextEncoder(), objects = new Map<number,Uint8Array>(); const bytes = (value:string) => encoder.encode(value); const join = (parts:Uint8Array[]) => { const result = new Uint8Array(parts.reduce((sum, part) => sum + part.length, 0)); let offset = 0; parts.forEach((part) => { result.set(part, offset); offset += part.length; }); return result; }; objects.set(1, bytes('<< /Type /Catalog /Pages 2 0 R >>')); objects.set(2, bytes(`<< /Type /Pages /Count ${images.length} /Kids [${images.map((_, index) => `${3 + index * 3} 0 R`).join(' ')}] >>`)); images.forEach((image, index) => { const page = 3 + index * 3, content = page + 1, picture = page + 2; objects.set(page, bytes(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 ${picture} 0 R >> >> /Contents ${content} 0 R >>`)); const drawing = bytes('q\n595 0 0 842 0 0 cm\n/Im0 Do\nQ'); objects.set(content, join([bytes(`<< /Length ${drawing.length} >>\nstream\n`), drawing, bytes('\nendstream')])); objects.set(picture, join([bytes(`<< /Type /XObject /Subtype /Image /Width ${image.width} /Height ${image.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${image.bytes.length} >>\nstream\n`), image.bytes, bytes('\nendstream')])); }); const chunks:Uint8Array[] = [new Uint8Array([37,80,68,70,45,49,46,52,10,37,226,227,207,211,10])], offsets = [0]; let position = chunks[0].length; for (let number = 1; number <= objects.size; number += 1) { offsets[number] = position; const chunk = join([bytes(`${number} 0 obj\n`), objects.get(number)!, bytes('\nendobj\n')]); chunks.push(chunk); position += chunk.length; } const xref = position, entries = ['0000000000 65535 f ', ...offsets.slice(1).map((offset) => `${String(offset).padStart(10, '0')} 00000 n `)]; chunks.push(bytes(`xref\n0 ${objects.size + 1}\n${entries.join('\n')}\ntrailer\n<< /Size ${objects.size + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`)); return new Blob(chunks as BlobPart[], { type: 'application/pdf' }); };
+  downloadPdf.addEventListener('click', async () => { if (!currentPlan.length) return; downloadPdf.disabled = true; try { const pages = [summaryPdfPage(), await chartsPdfPage()]; const images = await Promise.all(pages.map(async (page) => ({ bytes: await canvasJpeg(page), width: page.width, height: page.height }))); saveBlob(pdfFromJpegs(images), `${config.texts.export.file}-${date.value}.pdf`); confirmExport(downloadPdf, config.texts.export.pdfDone); } catch (error) { console.error(error); } finally { downloadPdf.disabled = false; } });
   planDate.addEventListener('change', () => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(planDate.value)) return;
     date.value = planDate.value;
     visibleWeek = parseDate(date.value);
     renderNightDays();
     recalculate.classList.add('is-dirty');
+    markPlanParametersPending();
     render();
   });
   planThreshold.addEventListener('input', () => {
     altitudeThreshold.value = planThreshold.value;
     updateScoringThreshold();
     recalculate.classList.add('is-dirty');
+    markPlanParametersPending();
     render();
   });
   [date, ready, finish].forEach((input) => input.addEventListener('change', () => { invalidatePlan(); render(); }));
@@ -596,24 +761,45 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
 </style>
 
 <style is:global>
-  .my-night .my-night-item{min-width:0;padding:.9rem;border:1px solid #343d50;border-radius:.65rem;background:#090e18}
+  .my-night .my-night__basket{width:50%;gap:.35rem;margin-top:.65rem}
+  .my-night .my-night-item{box-sizing:border-box;min-width:0;min-height:2.25rem;padding:.24rem .45rem;border:1px solid #343d50;border-radius:.55rem;background:#090e18}
   .my-night .my-night-item header{display:flex;justify-content:space-between;align-items:center;gap:1rem}
-  .my-night .my-night-item header button,.my-night .my-night-item__actions button{padding:.35rem .55rem;border:1px solid #765ca1;border-radius:.45rem;background:transparent;color:#d9c5f5;font-size:.7rem;cursor:pointer}
+  .my-night .my-night-item header strong{min-width:0;overflow:hidden;font-size:.76rem;line-height:1.25;text-overflow:ellipsis;white-space:nowrap}
+  .my-night .my-night-item header button,.my-night .my-night-item__actions button{flex:0 0 auto;padding:.3rem .5rem;border:1px solid #765ca1;border-radius:.42rem;background:transparent;color:#d9c5f5;font-size:.68rem;cursor:pointer}
   .my-night .my-night-item__actions{display:flex;gap:.4rem;margin-top:.75rem}
   .my-night .my-night-item__filters{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem}
   .my-night .my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14;color:#b7c1d1;font-size:.76rem}
   .my-night .my-night-item__filters input{width:auto}
   .my-night .my-night-chart{min-width:0;margin:0;padding:.8rem;border:1px solid #3d3450;border-radius:.6rem;background:rgba(8,12,20,.66)}
-  .my-night .my-night-chart figcaption{display:grid;gap:.45rem;margin-bottom:.35rem}
-  .my-night .my-night-chart figcaption strong{overflow:hidden;font-size:.72rem;text-overflow:ellipsis;white-space:nowrap}
-  .my-night .my-night-chart figcaption small{margin:0;color:#9ea8b8;font-size:.62rem}
-  .my-night .my-night-chart figcaption span{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;color:var(--color-muted);font-size:.62rem}
+  .my-night .my-night-chart figcaption{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem;margin-bottom:1rem}
+  .my-night .my-night-chart figcaption>span{display:flex;grid-column:1/-1;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;margin-top:.8rem;color:var(--color-muted);font-size:.62rem}
+  .my-night .my-night-chart__duration{display:flex;grid-column:1/-1;align-items:center;justify-self:end;gap:.3rem;color:#b7c1d1;font-size:.62rem;white-space:nowrap}
+  .my-night .my-night-chart__duration button{display:grid;width:1.45rem;height:1.45rem;min-height:0;place-items:center;padding:0!important;border-radius:.35rem!important;background:rgba(155,114,209,.1)!important;color:#d9c5f5;font:700 .78rem/1 var(--font-technical)}
+  .my-night .my-night-chart__duration output{min-width:4.7rem;color:#d9c5f5;font:700 .62rem var(--font-technical);text-align:center}
+  .my-night .my-night-chart figcaption .my-night-chart__pending-mark{display:none;width:auto;height:auto;margin:0;background:transparent;color:#e5b85b;font:700 .9rem/1 var(--font-technical)}
+  .my-night .my-night-chart__duration.is-pending-change output{color:#e6c58d}
+  .my-night .my-night-chart__duration.is-pending-change .my-night-chart__pending-mark{display:inline-block}
+  .my-night .my-night-chart__slot-details{display:grid;grid-column:1/-1;gap:.3rem;margin-top:.8rem}
+  .my-night .my-night-chart__explanation{padding-top:.35rem;border-top:1px solid rgba(118,92,161,.3)}
+  .my-night .my-night-chart__explanation summary{color:#cba9f4;cursor:pointer}
+  .my-night .my-night-chart__explanation summary::marker{content:''}
+  .my-night .my-night-chart__explanation summary::-webkit-details-marker{display:none}
+  .my-night .my-night-chart__explanation summary b{display:flex;align-items:center;gap:.28rem;font-size:.66rem;text-decoration:underline;text-decoration-color:rgba(203,169,244,.42);text-underline-offset:.15rem}
+  .my-night .my-night-chart__explanation summary b::before{display:inline-block;color:#aa8ace;content:'▸';font-size:.62rem;text-decoration:none;transition:transform .15s ease}
+  .my-night .my-night-chart__explanation[open] summary b::before{transform:rotate(90deg)}
+  .my-night .my-night-chart__slot-meta{display:flex;justify-content:space-between;gap:.7rem;align-items:center;margin-top:.9rem}
+  .my-night .my-night-chart__explanation summary time{color:#929cad;font:.58rem var(--font-technical)}
+  .my-night .my-night-chart__slot-meta>span{color:#9ea8b8;font:.58rem var(--font-technical);text-align:right;white-space:nowrap}
+  .my-night .my-night-chart__explanation p{margin:.45rem 0 0;color:#b7c1d1;font-size:.65rem;line-height:1.45}
+  .my-night .my-night-chart__explanation.is-invalid summary b{color:#f0aaa7}
+  .my-night .my-night-chart.has-pending-duration{border-color:#765ca1;background:rgba(31,21,47,.72)}
   .my-night .my-night-chart figcaption i{display:inline-block;width:1.2rem;height:2px;margin-right:-.25rem;background:#55d9b3}
   .my-night .my-night-chart figcaption .my-night-chart__moon{background:#e78983}
   .my-night .my-night-chart figcaption .my-night-chart__threshold{height:0;border-top:1px dashed #75a8d7;background:transparent}
   .my-night .my-night-chart figcaption .my-night-chart__slot{height:.55rem;border:1px solid rgba(184,140,240,.7);background:rgba(155,114,209,.25)}
   .my-night .my-night-chart figcaption .my-night-chart__slot--invalid{border-color:rgba(239,120,120,.85);background:rgba(229,91,91,.25)}
   .my-night .my-night-chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .my-night .my-night-chart__grid line,.my-night .my-night-chart__object-line,.my-night .my-night-chart__moon-line,.my-night .my-night-chart__threshold-line,.my-night .my-night-chart__selected-slot{vector-effect:non-scaling-stroke}
   .my-night .my-night-chart__grid line{stroke:#293246;stroke-width:.7}
   .my-night .my-night-chart__grid text,.my-night .my-night-chart__time{fill:#778296;font:8px var(--font-technical)}
   .my-night .my-night-chart__object-line,.my-night .my-night-chart__moon-line{fill:none;stroke:#55d9b3;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -650,31 +836,33 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__plan>header{display:flex;justify-content:space-between;align-items:start;gap:1rem;margin-bottom:1rem}
   .my-night .my-night__plan h2{margin:0 0 .3rem}
   .my-night .my-night__plan header p{margin:0;color:var(--color-muted);font-size:.76rem}
-  .my-night .my-night__plan-settings{display:grid;grid-template-columns:11rem 7.5rem auto;gap:.7rem;align-items:end;justify-content:start;margin-bottom:1rem}
+  .my-night .my-night__plan-settings{display:grid;grid-template-columns:10.25rem 7.5rem auto minmax(0,1fr);gap:.7rem;align-items:end;margin-bottom:1rem}
   .my-night .my-night__plan-settings label{gap:.4rem;font-size:.82rem;font-weight:700}
   .my-night .my-night__plan-settings input{min-height:2.65rem;padding:.58rem .68rem;border-radius:.55rem;font:.86rem var(--font-technical)}
+  .my-night .my-night__plan-settings [data-plan-date]{overflow:visible;padding-right:.55rem;color-scheme:dark}
+  .my-night .my-night__plan-settings [data-plan-date]::-webkit-calendar-picker-indicator{width:1.05rem;height:1.05rem;margin:0;padding:.18rem;opacity:1;cursor:pointer;filter:brightness(0) saturate(100%) invert(72%) sepia(24%) saturate(1035%) hue-rotate(226deg) brightness(93%) contrast(92%)}
   .my-night .my-night__plan-threshold{display:flex;align-items:center;justify-content:center;gap:.28rem;min-height:2.65rem;padding:0 .68rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}
   .my-night .my-night__plan-threshold input{width:3ch;min-height:0;padding:0;border:0;background:transparent;text-align:center}
   .my-night .my-night__plan-threshold b{font:700 .86rem var(--font-technical)}
-  .my-night .my-night__plan-settings>button{min-height:2.65rem;padding:.55rem .8rem;background:transparent;font-size:.72rem}
-  .my-night .my-night__plan-settings>button.is-dirty{border-color:#cba9f4;background:#332247;box-shadow:0 0 0 2px rgba(155,114,209,.16)}
-  .my-night .my-night__timeline{display:flex;min-height:7.2rem;overflow:hidden;border:1px solid #765ca1;border-radius:.65rem;background:#080c14}
-  .my-night .my-night__timeline>div{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:.18rem;padding:.65rem;border-left:1px solid rgba(255,255,255,.16);background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
+  .my-night .my-night__time-actions{display:flex;align-items:center;gap:.45rem}
+  .my-night .my-night__time-actions>[data-recalculate]{min-height:2.65rem;padding:.55rem .8rem;background:transparent;font-size:.72rem;white-space:nowrap}
+  .my-night .my-night__time-actions>[data-recalculate].is-dirty{border-color:#cba9f4;background:#332247;box-shadow:0 0 0 2px rgba(155,114,209,.16)}
+  .my-night .my-night__time-actions>[data-reset-times]{padding:.3rem .4rem;border-color:transparent;background:transparent;color:#aa97c2;font-size:.66rem;text-decoration:underline;text-decoration-color:rgba(170,151,194,.45);text-underline-offset:.18rem;white-space:nowrap}
+  .my-night .my-night__time-actions>[data-reset-times]:hover,.my-night .my-night__time-actions>[data-reset-times]:focus-visible{color:#e2d1f7}
+  @keyframes my-night-pending-pulse{0%,100%{border-color:#765ca1;background:#1a1226;box-shadow:0 0 0 0 rgba(155,114,209,.1)}50%{border-color:#d5b7f8;background:#3d2856;box-shadow:0 0 0 .28rem rgba(155,114,209,.24)}}
+  .my-night .my-night__time-actions>[data-recalculate].has-pending-time{animation:my-night-pending-pulse 1.65s ease-in-out infinite;color:#f0e6ff}
+  @media(prefers-reduced-motion:reduce){.my-night .my-night__time-actions>[data-recalculate].has-pending-time{animation:none;border-color:#d5b7f8;background:#302043;box-shadow:0 0 0 .2rem rgba(155,114,209,.22)}}
+  .my-night .my-night__plan-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.55rem}
+  .my-night .my-night__download-warning{flex-basis:100%;color:#cba9f4;font-size:.65rem;text-align:right}
+  .my-night .report-action--my-night{border-color:rgba(155,114,209,.66)!important;background:rgba(155,114,209,.17)!important;color:#d9c5f5!important}
+  .my-night .report-action--my-night:hover,.my-night .report-action--my-night:focus-visible{background:rgba(155,114,209,.25)!important}
+  .my-night .my-night__timeline{display:flex;min-height:4.65rem;overflow:hidden;border:1px solid #765ca1;border-radius:.65rem;background:#080c14}
+  .my-night .my-night__timeline>div{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:.08rem;padding:.32rem .55rem;border-left:1px solid rgba(255,255,255,.16);background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
   .my-night .my-night__timeline>div:first-child{border-left:0}
   .my-night .my-night__timeline>div.is-invalid{background:linear-gradient(145deg,rgba(126,43,52,.74),rgba(42,16,24,.94));box-shadow:inset 0 0 0 1px rgba(239,120,120,.35)}
   .my-night .my-night__timeline strong{overflow:hidden;font-size:.74rem;text-overflow:ellipsis;white-space:nowrap}
   .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.68rem}
   .my-night .my-night__timeline small{margin:0;color:#d2c7df;font-family:var(--font-technical);font-size:.62rem}
   .my-night .my-night__plan-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.65rem;margin-top:.75rem}
-  .my-night .my-night__schedule{display:grid;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none}
-  .my-night .my-night__schedule li{display:grid;grid-template-columns:8rem 1fr auto;gap:.8rem;align-items:center;padding:.65rem .75rem;border:1px solid #3d3450;border-radius:.5rem;background:rgba(8,12,20,.66)}
-  .my-night .my-night__schedule li.is-invalid{border-color:rgba(239,120,120,.58);background:rgba(84,25,35,.34)}
-  .my-night .my-night__schedule time,.my-night .my-night__schedule span{color:var(--color-muted);font-family:var(--font-technical);font-size:.69rem}
-  .my-night .my-night__schedule span{text-align:right}
-  .my-night .my-night__slot-explanation{grid-column:1/-1;padding-top:.35rem;border-top:1px solid rgba(118,92,161,.3)}
-  .my-night .my-night__slot-explanation summary{width:max-content;color:#cba9f4;font-size:.72rem;font-weight:700;cursor:pointer}
-  .my-night .my-night__slot-explanation summary:hover,.my-night .my-night__slot-explanation summary:focus-visible{color:#eadcff}
-  .my-night .my-night__slot-explanation p{margin:.5rem 0 0;color:#b7c1d1;font-size:.74rem;line-height:1.5}
-  .my-night .my-night__schedule li.is-invalid .my-night__slot-explanation summary{color:#f0aaa7}
-  @media(max-width:760px){.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night__schedule li{grid-template-columns:1fr}.my-night .my-night__schedule span{text-align:left}}
+  @media(max-width:760px){.my-night .my-night__basket{width:100%}.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__time-actions{flex-wrap:wrap}.my-night .my-night__plan-actions{justify-content:flex-end}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night-chart__slot-meta{flex-wrap:wrap}.my-night .my-night-chart__slot-meta>span{text-align:left}}
 </style>
