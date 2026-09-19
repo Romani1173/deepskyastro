@@ -23,6 +23,8 @@ const generatedObjects = Object.fromEntries(objects.map((object) => {
     status: object.status,
     raDeg: object.raDeg,
     decDeg: object.decDeg,
+    angularSizeArcmin: object.angularSizeArcmin,
+    angularSizeSource: object.angularSizeSource,
     daysAboveThreshold: daily.filter(({ altitudeDeg }) => altitudeDeg > observatory.thresholdDeg).length,
     aboveThresholdPeriods: thresholdPeriods(daily, observatory.thresholdDeg),
     weeks: weeklySamples(daily),

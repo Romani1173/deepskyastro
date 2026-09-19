@@ -1,0 +1,72 @@
+.period-calendar-ui {
+  margin-top: .65rem;
+  padding: .7rem;
+  border: 1px solid var(--period-calendar-border);
+  border-radius: .65rem;
+  background: rgba(5, 8, 14, .48);
+}
+
+.period-calendar-ui__caption {
+  margin: 0 0 .5rem;
+  color: var(--period-calendar-accent-soft);
+  font: 700 .72rem var(--font-technical);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.period-calendar-ui__weekdays,
+.period-calendar-ui__days {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(1.75rem, 1fr));
+}
+
+.period-calendar-ui__weekdays span {
+  padding: .2rem 0;
+  color: var(--color-muted);
+  font: 700 .58rem var(--font-technical);
+  text-align: center;
+}
+
+.period-calendar-ui__weekdays .is-weekend { color: var(--period-calendar-accent-soft); }
+
+.period-calendar-ui__days button {
+  min-width: 0;
+  min-height: 2.15rem;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--period-calendar-line);
+  border-bottom: 1px solid var(--period-calendar-line);
+  border-radius: 0;
+  background: rgba(17, 24, 39, .62);
+  color: var(--color-muted);
+  font: 700 .68rem var(--font-technical);
+  cursor: pointer;
+}
+
+.period-calendar-ui__days button.is-weekend {
+  background: var(--period-calendar-weekend);
+  color: var(--period-calendar-accent-soft);
+}
+
+.period-calendar-ui__days button.is-selected {
+  border-color: var(--period-calendar-selection-border);
+  background: var(--period-calendar-selection);
+  color: var(--period-calendar-selection-text);
+}
+
+.period-calendar-ui__days button.is-start {
+  border-left: 2px solid var(--period-calendar-accent);
+  border-radius: .45rem 0 0 .45rem;
+}
+
+.period-calendar-ui__days button.is-end {
+  border-right: 2px solid var(--period-calendar-accent);
+  border-radius: 0 .45rem .45rem 0;
+}
+
+.period-calendar-ui__days button:disabled { cursor: default; opacity: .62; }
+
+@media (max-width: 520px) {
+  .period-calendar-ui { overflow-x: auto; }
+  .period-calendar-ui__weekdays, .period-calendar-ui__days { min-width: 31rem; }
+}

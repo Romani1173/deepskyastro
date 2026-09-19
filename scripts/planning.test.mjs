@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DEFAULT_LOCATION, analyzeNight, analyzeWeek, isoWeekStart, isoWeeksInYear, sampleInstant, thresholdIntervals } from '../src/lib/planning/engine.mjs';
 import { loadPlanningSession, savePlanningSession } from '../src/lib/planning/session.mjs';
-import { findLocalObject, parseSesameXml, parseSimbadAliases } from '../src/lib/planning/simbad.mjs';
+import { findLocalObject, parseSesameXml, parseSimbadAliases, parseSimbadAngularSize } from '../src/lib/planning/simbad.mjs';
 import { formatCatalogDesignations } from '../src/lib/catalog-formatting.mjs';
 
 const m42 = { displayName: 'M42', raDeg: 83.82208, decDeg: -5.39111, source: 'gallery' };
@@ -43,6 +43,14 @@ test('night analysis produces five-minute samples and effective intervals', () =
   assert.equal(night.status, 'available');
   assert.ok(night.effectiveMinutes > 300);
   assert.ok(night.usefulCulmination);
+});
+
+test('night analysis applies a configurable object altitude threshold', () => {
+  const defaultNight = analyzeNight({ nightDateUtc: '2026-01-15', location: DEFAULT_LOCATION, object: m42 });
+  const highThresholdNight = analyzeNight({ nightDateUtc: '2026-01-15', location: DEFAULT_LOCATION, object: m42, objectLimitDeg: 60 });
+  assert.equal(highThresholdNight.objectLimitDeg, 60);
+  assert.ok(highThresholdNight.effectiveMinutes < defaultNight.effectiveMinutes);
+  assert.ok(highThresholdNight.samples.every((sample) => sample.isEffective === (sample.isAstronomicalNight && sample.objectAltitudeDeg > 60)));
 });
 
 test('week analysis always compares seven UTC nights', () => {
@@ -86,4 +94,10 @@ test('SIMBAD identifiers choose a useful NAME alias', () => {
 
 Bibcodes:`;
   assert.equal(parseSimbadAliases(identifiers), 'Carina Nebula');
+});
+
+test('SIMBAD angular dimensions are parsed in arcminutes', () => {
+  assert.deepEqual(parseSimbadAngularSize('Angular size: 199.53 70.79  35 (Opt )  D 2003A&A...412...45P'), { major: 199.53, minor: 70.79 });
+  assert.deepEqual(parseSimbadAngularSize('Angular size: 12.4 ~  ~ (~)  D'), { major: 12.4, minor: 12.4 });
+  assert.equal(parseSimbadAngularSize('Angular size: ~ ~ ~'), undefined);
 });

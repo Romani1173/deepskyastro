@@ -31,6 +31,15 @@ export function parseSimbadAliases(text) {
   return aliases.sort((a, b) => score(b) - score(a) || a.localeCompare(b))[0];
 }
 
+export function parseSimbadAngularSize(text) {
+  const match = text.match(/^Angular size:\s+([\d.]+|~)\s+([\d.]+|~)/m);
+  if (!match || match[1] === '~') return undefined;
+  const major = Number(match[1]);
+  const minor = match[2] === '~' ? major : Number(match[2]);
+  if (!Number.isFinite(major) || !Number.isFinite(minor) || major <= 0 || minor <= 0) return undefined;
+  return { major, minor };
+}
+
 export async function resolveSimbad(query, fetchImpl = fetch) {
   const normalized = query.trim();
   if (!normalized) throw new Error('empty-query');
@@ -42,7 +51,9 @@ export async function resolveSimbad(query, fetchImpl = fetch) {
     const identifiersUrl = `https://simbad.cds.unistra.fr/simbad/sim-id?Ident=${encodeURIComponent(object.canonicalName)}&output.format=ASCII`;
     const identifiersResponse = await fetchImpl(identifiersUrl, { signal: AbortSignal.timeout(15_000) });
     if (!identifiersResponse.ok) return object;
-    const alias = parseSimbadAliases(await identifiersResponse.text());
-    return alias ? { ...object, alias, displayName: `${object.displayName} · ${alias}` } : object;
+    const identifiersText = await identifiersResponse.text();
+    const alias = parseSimbadAliases(identifiersText);
+    const angularSizeArcmin = parseSimbadAngularSize(identifiersText);
+    return { ...object, ...(alias ? { alias, displayName: `${object.displayName} · ${alias}` } : {}), ...(angularSizeArcmin ? { angularSizeArcmin } : {}) };
   } catch { return object; }
 }
