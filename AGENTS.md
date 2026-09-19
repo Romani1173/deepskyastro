@@ -19,7 +19,7 @@
 - La galería permite buscar **solo por el campo `objecte`** y ordenar por fecha reciente o por nombre natural (`M 2` antes que `M 10`, `NGC 2237` antes que `NGC 6960`). Esta ordenación está disponible también en cada categoría.
 - Las denominaciones visibles de catálogo separan el prefijo y el número (`NGC 2237`, `IC 434`, `M 31`, `LDN 1235`, `Sh 2-119`, `PK 064+05.1`). Aplicar el espacio mediante la capa de presentación; no modificar por esta razón el YAML, los identificadores, slugs, nombres de archivo, rutas, enlaces ni referencias cruzadas técnicas.
 - El diseño de la galería y las categorías está aprobado en este punto; no cambiarlo de forma amplia sin petición expresa.
-- La portada usa `public/imagenes/portada.webp`, con estrellas visibles y el mensaje principal desplazado 10 mm hacia arriba. La autoría de Juan José Romero aparece integrada en el subtítulo con la tipografía manuscrita de la antigua firma; no mostrar una firma independiente abajo a la izquierda. En escritorio, los cuatro accesos inferiores forman una fila compacta a la derecha, con los tres secundarios más discretos y “Explora la galeria” destacado; en móvil se apilan verticalmente.
+- La portada usa `public/imagenes/portada.webp`, con estrellas visibles y el mensaje principal desplazado 10 mm hacia arriba. La autoría de Juan José Romero aparece integrada en el subtítulo con la tipografía manuscrita de la antigua firma; no mostrar una firma independiente abajo a la izquierda. En escritorio, los cinco accesos inferiores forman una fila compacta a la derecha: los accesos secundarios son discretos, «La meva nit» incorpora el distintivo «Avançat» y “Explora la galeria” queda destacado; en móvil se apilan verticalmente.
 
 ## Idiomas
 

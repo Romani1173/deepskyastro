@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, sessionPreparationHref, siteMapHref, withBase } from '../i18n';
+import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, myNightHref, sessionPreparationHref, siteMapHref, withBase } from '../i18n';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -18,6 +18,11 @@ const homeNavigationTitles = {
 	ca: { firstVisit: 'Primera visita', directAccess: 'Accessos directes' },
 	es: { firstVisit: 'Primera visita', directAccess: 'Accesos directos' },
 	en: { firstVisit: 'First visit', directAccess: 'Quick access' },
+}[lang];
+const advancedLevel = {
+	ca: 'Avançat',
+	es: 'Avanzado',
+	en: 'Advanced',
 }[lang];
 const rotatingCovers = [
 	{ src: withBase('imagenes/portadas/portada-rotativa-01.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
@@ -103,6 +108,7 @@ const structuredData = {
 					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--result" href={equipmentHref(lang, base)}><SiteMapIcon name="equipment" size="sm" />{t.myEquipment}</a>
 					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--articles" href={articlesHref(lang, base)}><SiteMapIcon name="articles" size="sm" />{t.articles}</a>
 					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--review context-tooltip context-tooltip--home" href={sessionPreparationHref(lang, base)} aria-describedby="home-session-tip"><SiteMapIcon name="route" size="sm" />{t.homeSessionPreparation}<span class="context-tooltip__bubble" id="home-session-tip" role="tooltip">{t.homeSessionPreparationTooltip}</span></a>
+					<a class="welcome-hero__cta welcome-hero__cta--secondary welcome-hero__cta--my-night" href={myNightHref(lang, base)}><SiteMapIcon name="night" size="sm" /><span>{t.myNight}</span><small>{advancedLevel}</small></a>
 					<a class="welcome-hero__cta welcome-hero__cta--primary welcome-hero__cta--gallery" href={galleryHref(lang, base)}><SiteMapIcon name="gallery" size="sm" />{t.explore}<span aria-hidden="true">→</span></a>
 				</div>
 			</section>

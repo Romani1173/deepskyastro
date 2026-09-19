@@ -27,6 +27,11 @@ const guideLinkText = {
   es: { label: 'Guía de Mi noche', tooltip: 'Abre la guía completa de Mi noche' },
   en: { label: 'My Night guide', tooltip: 'Open the complete My Night guide' },
 }[lang];
+const levelText = {
+  ca: { badge: 'Nivell avançat', note: 'Una eina completa per a qui ja coneix conceptes com l’altura, els filtres, el llindar i l’efecte de la Lluna.' },
+  es: { badge: 'Nivel avanzado', note: 'Una herramienta completa para quien ya conoce conceptos como la altura, los filtros, el umbral y el efecto de la Luna.' },
+  en: { badge: 'Advanced level', note: 'A complete tool for anyone already familiar with altitude, filters, thresholds and the Moon’s effect.' },
+}[lang];
 const explanationText = {
   ca: { comparison: 'La següent alternativa era {target}, a {altitude}°.', only: 'No quedaven altres objectius pendents.', noneValid: 'Cap dels objectius pendents arribava al llindar.' },
   es: { comparison: 'La siguiente alternativa era {target}, a {altitude}°.', only: 'No quedaban otros objetivos pendientes.', noneValid: 'Ninguno de los objetivos pendientes alcanzaba el umbral.' },
@@ -110,7 +115,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNight(base)} focused>
   <main class="my-night" data-my-night data-lang={lang}>
     <a class="my-night__back" href={sessionPreparationHref(lang, base)}>← {t.back}</a>
-    <header class="my-night__header"><h1>{t.title}</h1><span>{t.intro}</span></header>
+    <header class="my-night__header">
+      <div class="my-night__title-row"><h1>{t.title}</h1><strong class="my-night__level-badge">{levelText.badge}</strong></div>
+      <span>{t.intro}</span>
+      <p class="my-night__level-note">{levelText.note}</p>
+    </header>
     <div class="my-night__help-row">
       <a class="my-night__guide-link" href={myNightGuideHref(lang, base)} title={guideLinkText.tooltip}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg><span>{guideLinkText.label}</span></a>
     </div>
@@ -139,11 +148,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
         <h2>{t.equipment}</h2>
         <div class="my-night__equipment" data-equipment>
           <label><input type="radio" name="equipment" value="osc" /><span>{t.osc}</span></label>
-          <label><input type="radio" name="equipment" value="mono" /><span>{t.mono}</span></label>
-          <label><input type="radio" name="equipment" value="smart" checked /><span>{t.smart}</span></label>
+          <label><input type="radio" name="equipment" value="mono" checked /><span>{t.mono}</span></label>
+          <label><input type="radio" name="equipment" value="smart" /><span>{t.smart}</span></label>
         </div>
         <small class="my-night__equipment-help">{t.equipmentHelp}</small>
-        <div class="my-night__global-filters" data-global-filters hidden>
+        <div class="my-night__global-filters" data-global-filters>
           <strong>{t.filters}</strong>
           <div>{['L','R','G','B','Hα','OIII','SII'].map((filter) => <label><input type="checkbox" value={filter} /><span>{filter}</span></label>)}</div>
         </div>
@@ -339,7 +348,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   };
   root.querySelectorAll<HTMLButtonElement>('[data-week-step]').forEach((button) => button.addEventListener('click', () => { const day = parseDate(date.value); day.setDate(day.getDate() + Number(button.dataset.weekStep) * 7); selectNight(day); }));
   root.querySelectorAll<HTMLButtonElement>('[data-day-step]').forEach((button) => button.addEventListener('click', () => { const day = parseDate(date.value); day.setDate(day.getDate() + Number(button.dataset.dayStep)); selectNight(day); }));
-  const equipment = () => root.querySelector<HTMLInputElement>('input[name="equipment"]:checked')?.value ?? 'smart';
+  const equipment = () => root.querySelector<HTMLInputElement>('input[name="equipment"]:checked')?.value ?? 'mono';
   const availableFilters = () => equipment() === 'mono' ? [...globalFilters.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.value) : [config.texts.noFilter];
   const updateSummary = () => {
     const [rh, rm] = ready.value.split(':').map(Number), [fh, fm] = finish.value.split(':').map(Number);
@@ -789,8 +798,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
 
 <style is:global>
   .my-night .my-night__header{display:grid;margin:0 0 .7rem;padding:0;border:0;border-radius:0;background:none}
+  .my-night .my-night__title-row{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem}
   .my-night .my-night__header h1{margin:.15rem 0 .3rem;font-size:clamp(1.45rem,3vw,2.2rem);line-height:1.1}
   .my-night .my-night__header span{max-width:none;margin:0;color:var(--color-muted);font-size:.9rem;line-height:1.55}
+  .my-night .my-night__level-badge{display:inline-flex;align-items:center;margin-bottom:.15rem;padding:.3rem .68rem;border:1px solid rgba(203,169,244,.58);border-radius:999px;background:rgba(118,92,161,.19);color:#dfccf7;font:700 .76rem/1.2 var(--font-technical);letter-spacing:.04em;text-transform:uppercase}
+  .my-night .my-night__level-note{margin:.4rem 0 0;padding-left:.65rem;border-left:2px solid #765ca1;color:#a99ab9;font-size:.76rem;line-height:1.45}
   .my-night .my-night__grid{gap:1.1rem}
   .my-night .my-night__fields{grid-template-columns:repeat(2,minmax(0,1fr))}
   .my-night .my-night__panel--session,.my-night .my-night__panel--equipment{min-width:0;min-height:100%;padding:1.1rem;border-color:#493a60;border-radius:.9rem;background:linear-gradient(145deg,rgba(20,15,32,.92),rgba(11,17,29,.94))}
