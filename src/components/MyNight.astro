@@ -42,19 +42,47 @@ const timeAdjustmentText = {
   es: { duration: 'Duración', decrease: 'Reducir 5 minutos', increase: 'Aumentar 5 minutos', reset: 'Igualar periodos', recalculateFirst: 'Recalcula el plan antes de descargar', pending: 'Duración pendiente de recalcular' },
   en: { duration: 'Duration', decrease: 'Reduce by 5 minutes', increase: 'Increase by 5 minutes', reset: 'Equalise periods', recalculateFirst: 'Recalculate the plan before downloading', pending: 'Duration pending recalculation' },
 }[lang];
-const lunarWeightHelp = {
+const scoringHelp = {
   ca: {
-    values: 'Penalització lunar màxima que es pot restar segons el filtre: B −34 punts · L/color −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
-    meaning: 'Com més alt és el valor, més sensible és el filtre a la Lluna. Només s’aplica tota la penalització amb la Lluna visible, molt il·luminada i molt a prop de l’objecte; disminueix quan la separació augmenta o la fase és menor, i és zero quan la Lluna és sota l’horitzó.',
+    intro: 'La puntuació es calcula en tres passos: primer s’obtenen les dades d’entrada, després es calculen les penalitzacions i, finalment, s’obté la puntuació final.',
+    formulas: ['Lluna visible = 1 si l’altura de la Lluna és ≥ 0°; 0 si és sota l’horitzó', 'Proximitat = Lluna visible × màx(0, (100° − separació objecte–Lluna) / 100°)', 'Penalització lunar = proximitat × fracció il·luminada × pes lunar', 'Penalització per llindar = 120 punts si l’altura de l’objecte és sota el llindar; 0 en cas contrari'],
+    factorsTitle: '', factors: [], moonBelow: '',
+    threshold: 'Llindar seleccionat per a aquest pla:',
+    variablesTitle: '1 · Dades d’entrada',
+    variables: ['Altura de l’objecte: graus sobre l’horitzó al centre del tram.', 'Altura de la Lluna: graus sobre l’horitzó al centre del tram; determina si la Lluna és visible.', 'Separació objecte–Lluna: distància angular entre tots dos al centre del tram, expressada en graus.', 'Fracció il·luminada de la Lluna: percentatge de la superfície lunar visible que està il·luminada, calculat al centre del tram. Per a la fórmula es converteix en un valor continu entre 0 i 1; per exemple, 65 % = 0,65. No es divideix en fases ni esglaons prefixats.', 'Pes lunar: depèn dels filtres que utilitzem. Blue 34, Luminància 30, Green 24, Red 15, OIII 7, Hα 4 i SII 4. La càmera OSC i el telescopi intel·ligent es calculen com a captura en color, amb pes 30.', 'Llindar d’altura: valor seleccionat per decidir si l’altura de l’objecte és suficient.'],
+    operationsTitle: '2 · Variables calculades',
+    resultTitle: '3 · Puntuació final',
+    resultFormula: 'Puntuació final = altura de l’objecte − penalització lunar − penalització per llindar',
   },
   es: {
-    values: 'Penalización lunar máxima que puede restarse según el filtro: B −34 puntos · L/color −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
-    meaning: 'Cuanto mayor es el valor, más sensible es el filtro a la Luna. La penalización completa solo se aplica con la Luna visible, muy iluminada y muy próxima al objeto; disminuye al aumentar la separación o reducirse la fase, y es cero cuando la Luna está bajo el horizonte.',
+    intro: 'La puntuación se calcula en tres pasos: primero se obtienen los datos de entrada, después se calculan las penalizaciones y, por último, se obtiene la puntuación final.',
+    formulas: ['Luna visible = 1 si la altura de la Luna es ≥ 0°; 0 si está bajo el horizonte', 'Proximidad = Luna visible × máx(0, (100° − separación objeto–Luna) / 100°)', 'Penalización lunar = proximidad × fracción iluminada × peso lunar', 'Penalización por umbral = 120 puntos si la altura del objeto está bajo el umbral; 0 en caso contrario'],
+    factorsTitle: '',
+    factors: [],
+    moonBelow: '',
+    threshold: 'Umbral seleccionado para este plan:',
+    variablesTitle: '1 · Datos de entrada',
+    variables: ['Altura del objeto: grados sobre el horizonte en el centro del tramo.', 'Altura de la Luna: grados sobre el horizonte en el centro del tramo; determina si la Luna es visible.', 'Separación objeto–Luna: distancia angular entre ambos en el centro del tramo, expresada en grados.', 'Fracción iluminada de la Luna: porcentaje de la superficie lunar visible que está iluminada, calculado en el centro del tramo. Para la fórmula se convierte a un valor continuo entre 0 y 1; por ejemplo, 65 % = 0,65. No se divide en fases o escalones prefijados.', 'Peso lunar: depende de los filtros que empleamos. Blue 34, Luminancia 30, Green 24, Red 15, OIII 7, Hα 4 y SII 4. La cámara OSC y el telescopio inteligente se calculan como captura en color, con peso 30.', 'Umbral de altura: valor seleccionado para decidir si la altura del objeto es suficiente.'],
+    operationsTitle: '2 · Variables calculadas',
+    resultTitle: '3 · Puntuación final',
+    resultFormula: 'Puntuación final = altura del objeto − penalización lunar − penalización por umbral',
   },
   en: {
-    values: 'Maximum lunar penalty that may be subtracted by filter: B −34 points · L/colour −30 · G −24 · R −15 · OIII −7 · Hα −4 · SII −4.',
-    meaning: 'The larger the value, the more Moon-sensitive the filter is. The full penalty applies only when the Moon is visible, strongly illuminated and very close to the target; it decreases with greater separation or a smaller phase, and is zero while the Moon is below the horizon.',
+    intro: 'The score is calculated in three steps: first the input data are obtained, then the penalties are calculated, and finally the total score is obtained.',
+    formulas: ['Moon visible = 1 when Moon altitude is ≥ 0°; 0 when it is below the horizon', 'Proximity = Moon visible × max(0, (100° − target–Moon separation) / 100°)', 'Lunar penalty = proximity × illuminated fraction × lunar weight', 'Threshold penalty = 120 points when target altitude is below the threshold; 0 otherwise'],
+    factorsTitle: '', factors: [], moonBelow: '',
+    threshold: 'Threshold selected for this plan:',
+    variablesTitle: '1 · Input data',
+    variables: ['Target altitude: degrees above the horizon at the slot midpoint.', 'Moon altitude: degrees above the horizon at the slot midpoint; it determines whether the Moon is visible.', 'Target–Moon separation: the angular distance between them at the slot midpoint, expressed in degrees.', 'Moon illuminated fraction: the percentage of the visible lunar surface that is illuminated, calculated at the slot midpoint. The formula converts it to a continuous value between 0 and 1; for example, 65% = 0.65. It is not divided into predefined phases or steps.', 'Lunar weight: depends on the filters being used. Blue 34, Luminance 30, Green 24, Red 15, OIII 7, Hα 4 and SII 4. OSC cameras and smart telescopes are treated as colour capture, with weight 30.', 'Altitude threshold: the selected value used to decide whether the target is high enough.'],
+    operationsTitle: '2 · Calculated variables',
+    resultTitle: '3 · Final score',
+    resultFormula: 'Final score = target altitude − lunar penalty − threshold penalty',
   },
+}[lang];
+const calculationText = {
+  ca: { title: '5 · Càlculs', centreAltitude: 'Altura al centre del tram', moonSeparation: 'Separació angular respecte de la Lluna', moonProximity: 'Coeficient de proximitat lunar', moonPenalty: 'Penalització lunar', thresholdPenalty: 'Penalització per llindar', totalScore: 'Puntuació total', proximityZero: 'Proximitat 0 perquè la separació és igual o superior a 100°.', moonBelow: 'Penalització lunar 0 perquè la Lluna és sota l’horitzó.', score: 'Puntuació', points: 'punts', locale: 'ca-ES' },
+  es: { title: '5 · Cálculos', centreAltitude: 'Altura en el centro del tramo', moonSeparation: 'Separación angular respecto a la Luna', moonProximity: 'Coeficiente de proximidad lunar', moonPenalty: 'Penalización lunar', thresholdPenalty: 'Penalización por umbral', totalScore: 'Puntuación total', proximityZero: 'Proximidad 0 porque la separación es igual o superior a 100°.', moonBelow: 'Penalización lunar 0 porque la Luna está bajo el horizonte.', score: 'Puntuación', points: 'puntos', locale: 'es-ES' },
+  en: { title: '5 · Calculations', centreAltitude: 'Altitude at the slot midpoint', moonSeparation: 'Angular separation from the Moon', moonProximity: 'Lunar proximity coefficient', moonPenalty: 'Lunar penalty', thresholdPenalty: 'Threshold penalty', totalScore: 'Total score', proximityZero: 'Proximity is 0 because the separation is 100° or greater.', moonBelow: 'The lunar penalty is 0 because the Moon is below the horizon.', score: 'Score', points: 'points', locale: 'en-GB' },
 }[lang];
 const photos = await getCollection('fotos');
 const latestPhotoByObject = new Map<string, (typeof photos)[number]>();
@@ -76,26 +104,14 @@ const objects = objectsData
     return { id: object.id, catalogName: object.catalogName, commonName, label: `${formatCatalogDesignations(object.catalogName)}${commonName ? ` · ${commonName}` : ''}`, raDeg: object.raDeg, decDeg: object.decDeg, source: object.status === 'pending' ? 'pending' : 'gallery' };
   })
   .sort((a, b) => a.label.localeCompare(b.label, lang, { numeric: true }));
-const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanationText, export: exportText, timeAdjustment: timeAdjustmentText }, objects }).replace(/</g, '\\u003c');
+const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanationText, export: exportText, timeAdjustment: timeAdjustmentText, calculation: calculationText }, objects }).replace(/</g, '\\u003c');
 ---
 
 <Layout title={t.title} description={t.intro} lang={lang} languageLinks={languageLinks.myNight(base)} focused>
-  <main class="my-night" data-my-night>
+  <main class="my-night" data-my-night data-lang={lang}>
     <a class="my-night__back" href={sessionPreparationHref(lang, base)}>← {t.back}</a>
     <header class="my-night__header"><h1>{t.title}</h1><span>{t.intro}</span></header>
     <div class="my-night__help-row">
-      <details class="my-night__scoring my-night__scoring--guide">
-        <summary>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 10.5v6M12 7.5h.01" /></svg>
-          <span>{t.scoringTitle}</span>
-        </summary>
-        <div>
-          <p>{t.scoringOrder}</p>
-          <p>{t.scoringThreshold} <strong><output data-scoring-threshold>30</output>°</strong></p>
-          <p>{t.scoringMoon}</p>
-          <p class="my-night__scoring-weights"><strong>{lunarWeightHelp.values}</strong><span>{lunarWeightHelp.meaning}</span></p>
-        </div>
-      </details>
       <a class="my-night__guide-link" href={myNightGuideHref(lang, base)} title={guideLinkText.tooltip}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5c3.2-.8 5.9-.3 8.5 1.6v12c-2.6-1.9-5.3-2.4-8.5-1.6zM20.5 5.5c-3.2-.8-5.9-.3-8.5 1.6v12c2.6-1.9 5.3-2.4 8.5-1.6z" /></svg><span>{guideLinkText.label}</span></a>
     </div>
     <div class="my-night__grid">
@@ -122,14 +138,14 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       <section class="my-night__panel my-night__panel--equipment">
         <h2>{t.equipment}</h2>
         <div class="my-night__equipment" data-equipment>
-          <label><input type="radio" name="equipment" value="smart" checked /><span>{t.smart}</span></label>
           <label><input type="radio" name="equipment" value="osc" /><span>{t.osc}</span></label>
           <label><input type="radio" name="equipment" value="mono" /><span>{t.mono}</span></label>
+          <label><input type="radio" name="equipment" value="smart" checked /><span>{t.smart}</span></label>
         </div>
         <small class="my-night__equipment-help">{t.equipmentHelp}</small>
         <div class="my-night__global-filters" data-global-filters hidden>
           <strong>{t.filters}</strong>
-          <div>{['L','R','G','B','Hα','OIII','SII'].map((filter) => <label><input type="checkbox" value={filter} checked /><span>{filter}</span></label>)}</div>
+          <div>{['L','R','G','B','Hα','OIII','SII'].map((filter) => <label><input type="checkbox" value={filter} /><span>{filter}</span></label>)}</div>
         </div>
       </section>
 
@@ -186,6 +202,39 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
         </div>
         <div class="my-night__timeline" data-timeline></div>
         <div class="my-night__plan-charts" data-plan-charts></div>
+        <section class="my-night__calculations" aria-labelledby="my-night-calculations-title" data-plan-calculations hidden>
+          <header class="my-night__calculations-header">
+            <h3 id="my-night-calculations-title">{calculationText.title}</h3>
+            <details class="my-night__scoring my-night__scoring--guide my-night__scoring--calculations">
+              <summary>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 10.5v6M12 7.5h.01" /></svg>
+                <span>{t.scoringTitle}</span>
+              </summary>
+              <div class="my-night__scoring-explanation">
+                <p>{scoringHelp.intro}</p>
+                {scoringHelp.variables.length > 0 ? (
+                  <>
+                    <p><strong>{scoringHelp.variablesTitle}</strong></p>
+                    <ul class="my-night__scoring-factors">{scoringHelp.variables.map((variable) => <li>{variable}</li>)}</ul>
+                    <p><strong>{scoringHelp.operationsTitle}</strong></p>
+                    <div class="my-night__scoring-formula">{scoringHelp.formulas.map((formula) => <code>{formula}</code>)}</div>
+                    <p><strong>{scoringHelp.resultTitle}</strong></p>
+                    <div class="my-night__scoring-formula"><code>{scoringHelp.resultFormula}</code></div>
+                  </>
+                ) : (
+                  <>
+                    <div class="my-night__scoring-formula">{scoringHelp.formulas.map((formula) => <code>{formula}</code>)}</div>
+                    <p>{scoringHelp.factorsTitle}</p>
+                    <ul class="my-night__scoring-factors">{scoringHelp.factors.map((factor) => <li>{factor}</li>)}</ul>
+                  </>
+                )}
+                {scoringHelp.moonBelow && <p>{scoringHelp.moonBelow}</p>}
+                <p>{scoringHelp.threshold} <strong><output data-scoring-threshold>30</output>°</strong></p>
+              </div>
+            </details>
+          </header>
+          <div class="my-night__calculation-list" data-plan-calculation-list></div>
+        </section>
       </section>
     </div>
   </main>
@@ -222,6 +271,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   const addSimbad = root.querySelector<HTMLButtonElement>('[data-add-simbad]')!;
   const basket = root.querySelector<HTMLElement>('[data-basket]')!;
   const targetCount = root.querySelector<HTMLElement>('[data-target-count]')!;
+  const planCalculations = root.querySelector<HTMLElement>('[data-plan-calculations]');
+  const planCalculationList = root.querySelector<HTMLElement>('[data-plan-calculation-list]');
   const targetLimit = root.querySelector<HTMLElement>('[data-target-limit]')!;
   const empty = root.querySelector<HTMLElement>('[data-empty]')!;
   const duration = root.querySelector<HTMLElement>('[data-duration]')!;
@@ -463,8 +514,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       const summary = document.createElement('summary');
       const question = document.createElement('b'); question.textContent = config.texts.whyHere;
       const slotTime = document.createElement('time'); slotTime.textContent = `${clock(slot.start)}–${clock(slot.end)}${equipment() === 'mono' ? ` · ${slot.task.filter}` : ''}`;
-      const metrics = document.createElement('span'); metrics.textContent = `${config.texts.altitude} ${slot.reading.objectAltitudeDeg.toFixed(0)}° · ${config.texts.moonDistance} ${slot.reading.moonSeparationDeg.toFixed(0)}°`;
-      const slotMeta = document.createElement('span'); slotMeta.className = 'my-night-chart__slot-meta'; slotMeta.append(slotTime, metrics);
+      const slotMeta = document.createElement('span'); slotMeta.className = 'my-night-chart__slot-meta'; slotMeta.append(slotTime);
       const explanation = document.createElement('p'); explanation.textContent = explainSlot(slot, valid);
       summary.append(question, slotMeta); details.append(summary, explanation); slotDetails.append(details);
     });
@@ -488,6 +538,47 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     return { reading, moonPenalty, score: reading.objectAltitudeDeg - moonPenalty - (reading.objectAltitudeDeg < Number(altitudeThreshold.value) ? 120 : 0) };
   };
   const clock = (instant:Date) => instant.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const formatDecimal = (value:number, digits:number) => value.toLocaleString(config.texts.calculation.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  const renderCalculations = (ordered:any[]) => {
+    if (!planCalculations || !planCalculationList) return;
+    planCalculationList.replaceChildren();
+    const calculationGroups = new Map<string, HTMLElement>();
+    ordered.forEach((slot, index) => {
+      const altitude = slot.reading.objectAltitudeDeg;
+      const separation = slot.reading.moonSeparationDeg;
+      const proximity = slot.reading.isMoonUp ? Math.max(0, (100 - separation) / 100) : 0;
+      const thresholdPenalty = altitude < Number(altitudeThreshold.value) ? 120 : 0;
+      const card = document.createElement('article');
+      card.className = 'my-night__calculation-card';
+      const heading = document.createElement('h4'); heading.textContent = `${index + 1}. ${slot.task.label}${equipment() === 'mono' ? ` · ${slot.task.filter}` : ''}`;
+      const time = document.createElement('time'); time.textContent = `${clock(slot.start)}–${clock(slot.end)}`;
+      const values = document.createElement('dl');
+      [
+        [config.texts.calculation.centreAltitude, `${formatDecimal(altitude, 2)}°`],
+        [config.texts.calculation.moonSeparation, `${formatDecimal(separation, 2)}°`],
+        [config.texts.calculation.moonProximity, formatDecimal(proximity, 3)],
+        [config.texts.calculation.moonPenalty, `${formatDecimal(slot.moonPenalty, 2)} ${config.texts.calculation.points}`],
+        [config.texts.calculation.thresholdPenalty, `${thresholdPenalty} ${config.texts.calculation.points}`],
+        [config.texts.calculation.totalScore, `${formatDecimal(slot.score, 2)} ${config.texts.calculation.points}`],
+      ].forEach(([label, value]) => { const row = document.createElement('div'), term = document.createElement('dt'), description = document.createElement('dd'); term.textContent = label; description.textContent = value; row.append(term, description); values.append(row); });
+      const formula = document.createElement('code'); formula.textContent = `${config.texts.calculation.score} = ${formatDecimal(altitude, 2)} − ${formatDecimal(slot.moonPenalty, 2)} − ${thresholdPenalty} = ${formatDecimal(slot.score, 2)} ${config.texts.calculation.points}`;
+      const notes = document.createElement('div'); notes.className = 'my-night__calculation-notes';
+      if (separation >= 100) { const note = document.createElement('small'); note.textContent = config.texts.calculation.proximityZero; notes.append(note); }
+      if (!slot.reading.isMoonUp) { const note = document.createElement('small'); note.textContent = config.texts.calculation.moonBelow; notes.append(note); }
+      card.append(heading, time, values, formula);
+      if (notes.childElementCount) card.append(notes);
+      let group = calculationGroups.get(slot.task.id);
+      if (!group) {
+        group = document.createElement('section');
+        group.className = 'my-night__calculation-group';
+        group.setAttribute('aria-label', slot.task.label);
+        calculationGroups.set(slot.task.id, group);
+        planCalculationList.append(group);
+      }
+      group.append(card);
+    });
+    planCalculations.hidden = ordered.length === 0;
+  };
   const explainSlot = (slot:any, valid:boolean) => {
     const moonImpact = slot.moonPenalty < 5 ? config.texts.moonLow : slot.moonPenalty < 15 ? config.texts.moonMedium : config.texts.moonHigh;
     const template = valid ? config.texts.chosenReason : config.texts.invalidReason;
@@ -585,6 +676,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       const targetSlots = ordered.filter((slot) => slot.task.id === target.id);
       planCharts.append(makeComparisonChart(target, targetSlots));
     });
+    renderCalculations(ordered);
     plan.hidden = false;
     recalculate.classList.remove('is-dirty');
     updateDurationControls();
@@ -816,8 +908,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__scoring>div{max-width:52rem;margin-top:.7rem;padding:.85rem 1rem;border:1px solid #594671;border-radius:.65rem;background:#0b0d17}
   .my-night .my-night__scoring p{margin:0 0 .55rem;color:#b7c1d1;line-height:1.5}
   .my-night .my-night__scoring p:last-child{margin-bottom:0}
-  .my-night .my-night__scoring strong,.my-night .my-night__scoring-weights strong{color:#ddc8f7;font-family:var(--font-technical)}
-  .my-night .my-night__scoring-weights span{display:block;margin-top:.55rem;color:#b7c1d1;font-family:var(--font-body)}
+  .my-night .my-night__scoring strong{color:#ddc8f7;font-family:var(--font-technical)}
+  .my-night .my-night__scoring-explanation{font-size:.78rem}
+  .my-night .my-night__scoring-formula{display:grid;gap:.28rem;margin:.65rem 0;padding:.65rem .75rem;border:1px solid #3f3654;border-radius:.5rem;background:#080b13}
+  .my-night .my-night__scoring-formula code{color:#d8c9eb;font:.72rem/1.55 var(--font-technical);white-space:normal}
+  .my-night .my-night__scoring-factors{display:grid;gap:.38rem;margin:.15rem 0 .7rem;padding-left:1.15rem;color:#b7c1d1;line-height:1.45}
   .my-night .my-night__scoring--guide{position:relative;z-index:2;margin:0 0 1rem}
   .my-night .my-night__scoring--guide summary{display:flex;width:max-content;align-items:center;gap:.45rem;padding:.55rem .75rem;border:1px solid #765ca1;border-radius:.55rem;background:#251a38;color:#eadcff;text-decoration:none;box-shadow:0 .35rem 1rem rgba(0,0,0,.18)}
   .my-night .my-night__scoring--guide summary::marker{content:''}
@@ -864,5 +959,24 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.68rem}
   .my-night .my-night__timeline small{margin:0;color:#d2c7df;font-family:var(--font-technical);font-size:.62rem}
   .my-night .my-night__plan-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.65rem;margin-top:.75rem}
-  @media(max-width:760px){.my-night .my-night__basket{width:100%}.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__time-actions{flex-wrap:wrap}.my-night .my-night__plan-actions{justify-content:flex-end}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night-chart__slot-meta{flex-wrap:wrap}.my-night .my-night-chart__slot-meta>span{text-align:left}}
+  .my-night .my-night__calculations{margin-top:1rem;padding:.85rem;border:1px solid #594671;border-radius:.7rem;background:rgba(12,10,20,.72)}
+  .my-night .my-night__calculations-header{position:relative;min-height:2.35rem}
+  .my-night .my-night__calculations h3{margin:0 0 .7rem;padding-right:13rem;color:#e2d1f7;font-size:.9rem}
+  .my-night .my-night__scoring--calculations{position:static;width:100%;margin:0 0 .7rem}
+  .my-night .my-night__scoring--calculations>summary{position:absolute;top:0;right:0}
+  .my-night[data-lang="es"] .my-night__scoring--calculations>summary{padding:.36rem .65rem}
+  .my-night .my-night__scoring--calculations>div{box-sizing:border-box;width:100%;max-width:none;margin-top:.35rem}
+  .my-night .my-night__calculation-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:.6rem}
+  .my-night .my-night__calculation-group{display:grid;align-content:start;gap:.6rem;min-width:0}
+  .my-night .my-night__calculation-card{min-width:0;padding:.7rem;border:1px solid #493b60;border-radius:.55rem;background:linear-gradient(145deg,rgba(45,30,64,.5),rgba(8,12,20,.82));font-size:.62rem}
+  .my-night .my-night__calculation-card h4{margin:0;color:#eadcff;font-size:.7rem;line-height:1.35}
+  .my-night .my-night__calculation-card>time{display:block;margin:.16rem 0 .55rem;color:#a99ab9;font:.6rem var(--font-technical)}
+  .my-night .my-night__calculation-card dl{display:grid;gap:.25rem;margin:0}
+  .my-night .my-night__calculation-card dl>div{display:flex;justify-content:space-between;gap:.65rem;padding-bottom:.2rem;border-bottom:1px solid rgba(118,92,161,.2)}
+  .my-night .my-night__calculation-card dt{color:#aeb7c7;line-height:1.35}
+  .my-night .my-night__calculation-card dd{margin:0;color:#d9c5f5;font-family:var(--font-technical);text-align:right;white-space:nowrap}
+  .my-night .my-night__calculation-card>code{display:block;margin-top:.55rem;padding:.5rem;border-radius:.4rem;background:#080b13;color:#d8c9eb;font:.6rem/1.5 var(--font-technical);white-space:normal}
+  .my-night .my-night__calculation-notes{display:grid;gap:.2rem;margin-top:.45rem;color:#b7c1d1;line-height:1.4}
+  .my-night .my-night__calculation-notes small{font-size:.58rem}
+  @media(max-width:760px){.my-night .my-night__basket{width:100%}.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__time-actions{flex-wrap:wrap}.my-night .my-night__plan-actions{justify-content:flex-end}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night-chart__slot-meta{flex-wrap:wrap}.my-night .my-night-chart__slot-meta>span{text-align:left}.my-night .my-night__calculations h3{padding-right:0}.my-night .my-night__scoring--calculations>summary{position:static}.my-night .my-night__scoring--calculations>div{margin-top:.55rem}}
 </style>
