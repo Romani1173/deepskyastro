@@ -514,7 +514,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     }).join('');
     const thresholdY = y(Number(altitudeThreshold.value));
     const grid = [-30,0,30,60,90].map((value) => `<line x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text x="${left-5}" y="${y(value)+3}" text-anchor="end">${value}°</text>`).join('');
-    figure.innerHTML = `<figcaption><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span><div class="my-night-chart__slot-details" data-chart-slot-details></div></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
+    figure.innerHTML = `<figcaption><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span><div class="my-night-chart__slot-details" data-chart-slot-details></div></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
     const chartHeader = document.createElement('header'); chartHeader.className = 'my-night-chart__header';
     const chartTitle = document.createElement('h3'); chartTitle.textContent = item.label; chartHeader.append(chartTitle); figure.prepend(chartHeader);
     figure.dataset.targetId = item.id;
@@ -695,14 +695,14 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       else groups.push({ id: slot.task.id, label: slot.task.label, slots: [slot] });
       return groups;
     }, []);
-    timelineTargets.forEach((group, index) => {
-      const valid = group.slots.every((slot:any) => slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value));
+    timelineTargets.forEach((group) => {
+      const valid = group.slots.some((slot:any) => slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value));
       const firstSlot = group.slots[0];
       const lastSlot = group.slots[group.slots.length - 1];
       const filters = equipment() === 'mono' ? group.slots.map((slot:any) => slot.task.filter).join(' · ') : '';
       const segment = document.createElement('div');
       segment.classList.toggle('is-invalid', !valid);
-      segment.style.setProperty('--night-colour', `hsl(${270 + (index * 31) % 65} 48% ${42 + (index % 2) * 8}%)`);
+      segment.style.setProperty('--night-colour', 'hsl(270 48% 42%)');
       segment.innerHTML = `<strong>${group.label}</strong><span>${filters}</span><small>${clock(firstSlot.start)}–${clock(lastSlot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
       timeline.append(segment);
     });
@@ -829,6 +829,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night [data-filter="OIII"]{--filter-colour:#32bfe6}
   .my-night [data-filter="SII"]{--filter-colour:#a66cff}
   .my-night .my-night__global-filters label[data-filter],.my-night .my-night-item__filters label[data-filter]{border-color:color-mix(in srgb,var(--filter-colour) 38%,#354156)}
+  .my-night label[data-filter]:not(:has(input:checked)){border-width:2px}
   .my-night label[data-filter] input{accent-color:var(--filter-colour)}
   .my-night label[data-filter]:has(input:checked){border-color:color-mix(in srgb,var(--filter-colour) 82%,white);background:color-mix(in srgb,var(--filter-colour) 13%,#080c14);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--filter-colour) 20%,transparent)}
   .my-night label[data-filter]:has(input:checked) span{color:color-mix(in srgb,var(--filter-colour) 82%,white);font-weight:700}
@@ -933,6 +934,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night-chart__explanation summary time{color:#929cad;font:.58rem var(--font-technical)}
   .my-night .my-night-chart__slot-meta>span{color:#9ea8b8;font:.58rem var(--font-technical);text-align:right;white-space:nowrap}
   .my-night .my-night-chart__explanation p{margin:.45rem 0 0;color:#b7c1d1;font-size:.65rem;line-height:1.45}
+  .my-night .my-night-chart__explanation.is-invalid{margin-top:.15rem;padding:.55rem .5rem;border:1px solid rgba(239,120,120,.72);border-radius:.42rem;background:rgba(126,43,52,.2);box-shadow:inset .18rem 0 0 rgba(239,120,120,.72)}
+  .my-night .my-night-chart__explanation.is-invalid summary b,.my-night .my-night-chart__explanation.is-invalid .my-night-chart__filter{color:#f06b67!important}
   .my-night .my-night-chart.has-pending-duration{border-color:#765ca1;background:rgba(31,21,47,.72)}
   .my-night .my-night-chart figcaption i{display:inline-block;width:1.2rem;height:2px;margin-right:-.25rem;background:#55d9b3}
   .my-night .my-night-chart figcaption .my-night-chart__moon{background:#e78983}
