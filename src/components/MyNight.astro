@@ -523,6 +523,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
       const details = document.createElement('details');
       details.className = 'my-night-chart__explanation';
+      details.style.setProperty('--filter-colour', filterColour(slot.task.filter));
       details.classList.toggle('is-invalid', !valid);
       const summary = document.createElement('summary');
       const question = document.createElement('b'); question.textContent = config.texts.whyHere;
@@ -921,18 +922,17 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night-chart__duration.is-pending-change .my-night-chart__pending-mark{display:inline-block}
   .my-night .my-night-chart__slot-details{display:grid;grid-column:1/-1;gap:.3rem;margin-top:.8rem}
   .my-night .my-night-chart__explanation{padding-top:.35rem;border-top:1px solid rgba(118,92,161,.3)}
-  .my-night .my-night-chart__explanation summary{display:block;color:#cba9f4;cursor:pointer;list-style:none}
+  .my-night .my-night-chart__explanation summary{display:block;color:var(--filter-colour,#cba9f4);cursor:pointer;list-style:none}
   .my-night .my-night-chart__explanation summary::marker{content:''}
   .my-night .my-night-chart__explanation summary::-webkit-details-marker{display:none}
-  .my-night .my-night-chart__explanation summary b{display:flex;align-items:center;gap:.28rem;font-size:.66rem;text-decoration:underline;text-decoration-color:rgba(203,169,244,.42);text-underline-offset:.15rem}
-  .my-night .my-night-chart__explanation summary b::before{display:inline-block;color:#aa8ace;content:'▸';font-size:.62rem;text-decoration:none;transition:transform .15s ease}
+  .my-night .my-night-chart__explanation summary b{display:flex;align-items:center;gap:.28rem;font-size:.66rem;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:.15rem}
+  .my-night .my-night-chart__explanation summary b::before{display:inline-block;color:currentColor;content:'▸';font-size:.62rem;text-decoration:none;transition:transform .15s ease}
   .my-night .my-night-chart__explanation[open] summary b::before{transform:rotate(90deg)}
   .my-night .my-night-chart__slot-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.55rem .7rem;align-items:center;margin-top:.7rem}
   .my-night .my-night-chart__filter{color:#efe5ff;font:700 .78rem/1.15 var(--font-technical)}
   .my-night .my-night-chart__explanation summary time{color:#929cad;font:.58rem var(--font-technical)}
   .my-night .my-night-chart__slot-meta>span{color:#9ea8b8;font:.58rem var(--font-technical);text-align:right;white-space:nowrap}
   .my-night .my-night-chart__explanation p{margin:.45rem 0 0;color:#b7c1d1;font-size:.65rem;line-height:1.45}
-  .my-night .my-night-chart__explanation.is-invalid summary b{color:#f0aaa7}
   .my-night .my-night-chart.has-pending-duration{border-color:#765ca1;background:rgba(31,21,47,.72)}
   .my-night .my-night-chart figcaption i{display:inline-block;width:1.2rem;height:2px;margin-right:-.25rem;background:#55d9b3}
   .my-night .my-night-chart figcaption .my-night-chart__moon{background:#e78983}
