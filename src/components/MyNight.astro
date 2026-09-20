@@ -197,8 +197,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       <section class="my-night__panel my-night__plan" data-plan hidden>
         <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div></header>
         <div class="my-night__plan-settings">
-          <label><span>{t.selectedDay}</span><input type="date" data-plan-date /></label>
-          <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b></span></label>
+          <label><span>{t.selectedDay}</span><span class="my-night__plan-date"><input type="date" data-plan-date /><button type="button" data-plan-date-picker aria-label={t.selectedDay}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3M4.5 8.5h15M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" /></svg></button></span></label>
+          <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><button type="button" data-plan-threshold-step="-1" aria-label={`${t.threshold} − 5`}>−</button><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b><button type="button" data-plan-threshold-step="1" aria-label={`${t.threshold} + 5`}>+</button></span></label>
           <div class="my-night__time-actions">
             <button type="button" data-recalculate>{t.recalculate}</button>
             <button type="button" data-reset-times>{timeAdjustmentText.reset}</button>
@@ -292,6 +292,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   const planCharts = root.querySelector<HTMLElement>('[data-plan-charts]')!;
   const planDate = root.querySelector<HTMLInputElement>('[data-plan-date]')!;
   const planThreshold = root.querySelector<HTMLInputElement>('[data-plan-threshold]')!;
+  const planDatePicker = root.querySelector<HTMLButtonElement>('[data-plan-date-picker]')!;
   const recalculate = root.querySelector<HTMLButtonElement>('[data-recalculate]')!;
   const resetTimes = root.querySelector<HTMLButtonElement>('[data-reset-times]')!;
   const timePendingNotice = root.querySelector<HTMLElement>('[data-time-pending]')!;
@@ -808,6 +809,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     markPlanParametersPending();
     render();
   });
+  planDatePicker.addEventListener('click', () => { if (typeof planDate.showPicker === 'function') planDate.showPicker(); else { planDate.focus(); planDate.click(); } });
+  root.querySelectorAll<HTMLButtonElement>('[data-plan-threshold-step]').forEach((button) => button.addEventListener('click', () => { Number(button.dataset.planThresholdStep) < 0 ? planThreshold.stepDown() : planThreshold.stepUp(); planThreshold.dispatchEvent(new Event('input', { bubbles: true })); }));
   [date, ready, finish].forEach((input) => input.addEventListener('change', () => { invalidatePlan(); render(); }));
   restoreState();
   visibleWeek = parseDate(date.value);
@@ -983,14 +986,19 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__plan>header{display:flex;justify-content:space-between;align-items:start;gap:1rem;margin-bottom:1rem}
   .my-night .my-night__plan h2{margin:0 0 .3rem}
   .my-night .my-night__plan header p{margin:0;color:var(--color-muted);font-size:.76rem}
-  .my-night .my-night__plan-settings{display:grid;grid-template-columns:10.25rem 7.5rem auto minmax(0,1fr);gap:.7rem;align-items:end;margin-bottom:1rem}
+  .my-night .my-night__plan-settings{display:grid;grid-template-columns:10.25rem 9.5rem auto minmax(0,1fr);gap:.7rem;align-items:end;margin-bottom:1rem}
   .my-night .my-night__plan-settings label{gap:.4rem;font-size:.82rem;font-weight:700}
   .my-night .my-night__plan-settings input{min-height:2.65rem;padding:.58rem .68rem;border-radius:.55rem;font:.86rem var(--font-technical)}
-  .my-night .my-night__plan-settings [data-plan-date]{overflow:visible;padding-right:.55rem;color-scheme:dark}
-  .my-night .my-night__plan-settings [data-plan-date]::-webkit-calendar-picker-indicator{width:1.05rem;height:1.05rem;margin:0;padding:.18rem;opacity:1;cursor:pointer;filter:brightness(0) saturate(100%) invert(72%) sepia(24%) saturate(1035%) hue-rotate(226deg) brightness(93%) contrast(92%)}
+  .my-night .my-night__plan-date{display:flex;align-items:center;min-height:2.65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}
+  .my-night .my-night__plan-settings [data-plan-date]{min-width:0;padding-right:.2rem;border:0;background:transparent;color-scheme:dark}
+  .my-night .my-night__plan-settings [data-plan-date]::-webkit-calendar-picker-indicator{width:0;margin:0;padding:0;opacity:0}
   .my-night .my-night__plan-threshold{display:flex;align-items:center;justify-content:center;gap:.28rem;min-height:2.65rem;padding:0 .68rem;border:1px solid #354156;border-radius:.55rem;background:#080c14}
-  .my-night .my-night__plan-threshold input{width:3ch;min-height:0;padding:0;border:0;background:transparent;text-align:center}
+  .my-night .my-night__plan-threshold input{width:3ch;min-height:0;padding:0;border:0;background:transparent;text-align:center;-moz-appearance:textfield}
+  .my-night .my-night__plan-threshold input::-webkit-inner-spin-button,.my-night .my-night__plan-threshold input::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}
   .my-night .my-night__plan-threshold b{font:700 .86rem var(--font-technical)}
+  .my-night .my-night__plan-date button,.my-night .my-night__plan-threshold button{display:grid;width:1.7rem;height:1.7rem;min-height:0;flex:0 0 auto;place-items:center;padding:0!important;border:1px solid rgba(155,114,209,.62)!important;border-radius:.38rem!important;background:rgba(155,114,209,.13)!important;color:#d9c5f5!important;font:700 .9rem/1 var(--font-technical)}
+  .my-night .my-night__plan-date button{margin-right:.42rem}
+  .my-night .my-night__plan-date button svg{width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.7}
   .my-night .my-night__time-actions{display:flex;align-items:center;gap:.45rem}
   .my-night .my-night__time-actions>[data-recalculate]{min-height:2.65rem;padding:.55rem .8rem;background:transparent;font-size:.72rem;white-space:nowrap}
   .my-night .my-night__time-actions>[data-recalculate].is-dirty{border-color:#cba9f4;background:#332247;box-shadow:0 0 0 2px rgba(155,114,209,.16)}
