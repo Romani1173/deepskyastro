@@ -302,8 +302,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   let items: NightTarget[] = [];
   let selectedLocal: any = null;
   let currentPlan: any[] = [];
-  let pendingTargetDurations = new Map<string, number>();
-  let lockedTargetDurations = new Set<string>();
+  let pendingTaskDurations = new Map<string, number>();
+  let lockedTaskDurations = new Set<string>();
   let timeChangesPending = false;
   let planParametersPending = false;
   let resolvedSimbad: { displayName:string; canonicalName?:string; raDeg:number; decDeg:number; source:string; localObjectId?:string } | null = null;
@@ -357,7 +357,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     combinations.textContent = String(equipment() === 'mono' ? items.reduce((total, item) => total + item.filters.length, 0) : items.length);
     createPlan.disabled = items.length === 0 || (equipment() === 'mono' && items.every((item) => item.filters.length === 0));
   };
-  const invalidatePlan = () => { currentPlan = []; pendingTargetDurations.clear(); lockedTargetDurations.clear(); timeChangesPending = false; planParametersPending = false; plan.hidden = true; timeline.replaceChildren(); planCharts.replaceChildren(); };
+  const invalidatePlan = () => { currentPlan = []; pendingTaskDurations.clear(); lockedTaskDurations.clear(); timeChangesPending = false; planParametersPending = false; plan.hidden = true; timeline.replaceChildren(); planCharts.replaceChildren(); };
   const updateScoringThreshold = () => { scoringThreshold.value = altitudeThreshold.value; };
   altitudeThreshold.addEventListener('input', () => { updateScoringThreshold(); invalidatePlan(); render(); });
   const STORAGE_KEY = 'deepskyastro:my-night:v1';
@@ -512,7 +512,9 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     }).join('');
     const thresholdY = y(Number(altitudeThreshold.value));
     const grid = [-30,0,30,60,90].map((value) => `<line x1="${left}" y1="${y(value)}" x2="${width-right}" y2="${y(value)}"/><text x="${left-5}" y="${y(value)+3}" text-anchor="end">${value}°</text>`).join('');
-    figure.innerHTML = `<figcaption><div class="my-night-chart__duration"><span>${config.texts.timeAdjustment.duration}</span><button type="button" data-duration-step="-1" aria-label="${config.texts.timeAdjustment.decrease}">↓</button><output data-target-duration aria-live="polite"></output><i class="my-night-chart__pending-mark" aria-hidden="true">•</i><button type="button" data-duration-step="1" aria-label="${config.texts.timeAdjustment.increase}">↑</button></div><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span><div class="my-night-chart__slot-details" data-chart-slot-details></div></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
+    figure.innerHTML = `<figcaption><span><i class="my-night-chart__object"></i>${config.texts.objectCurve}<i class="my-night-chart__moon"></i>${config.texts.moonCurve}<i class="my-night-chart__threshold"></i>${config.texts.threshold}<i class="my-night-chart__slot"></i>${config.texts.selectedSlot}<i class="my-night-chart__slot my-night-chart__slot--invalid"></i>${config.texts.invalidSlot}</span><div class="my-night-chart__slot-details" data-chart-slot-details></div></figcaption><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true"><g class="my-night-chart__grid">${grid}</g>${slotBands}<line class="my-night-chart__threshold-line" x1="${left}" y1="${thresholdY}" x2="${width-right}" y2="${thresholdY}"/><path class="my-night-chart__moon-line" d="${path('moonAltitudeDeg')}"/><path class="my-night-chart__object-line" d="${path('objectAltitudeDeg')}"/><text class="my-night-chart__time" x="${left}" y="${height-7}">${clock(start)}</text><text class="my-night-chart__time" x="${width-right}" y="${height-7}" text-anchor="end">${clock(end)}</text></svg>`;
+    const chartHeader = document.createElement('header'); chartHeader.className = 'my-night-chart__header';
+    const chartTitle = document.createElement('h3'); chartTitle.textContent = item.label; chartHeader.append(chartTitle); figure.prepend(chartHeader);
     figure.dataset.targetId = item.id;
     const slotDetails = figure.querySelector<HTMLElement>('[data-chart-slot-details]')!;
     selectedSlots.forEach((slot) => {
@@ -522,12 +524,22 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       details.classList.toggle('is-invalid', !valid);
       const summary = document.createElement('summary');
       const question = document.createElement('b'); question.textContent = config.texts.whyHere;
-      const slotTime = document.createElement('time'); slotTime.textContent = `${clock(slot.start)}–${clock(slot.end)}${equipment() === 'mono' ? ` · ${slot.task.filter}` : ''}`;
-      const slotMeta = document.createElement('span'); slotMeta.className = 'my-night-chart__slot-meta'; slotMeta.append(slotTime);
+      const slotTime = document.createElement('time'); slotTime.textContent = `${clock(slot.start)}–${clock(slot.end)}`;
+      const filterName = document.createElement('strong'); filterName.className = 'my-night-chart__filter'; filterName.textContent = slot.task.filter;
+      const durationControl = document.createElement('span'); durationControl.className = 'my-night-chart__duration';
+      const durationTitle = document.createElement('span'); durationTitle.textContent = config.texts.timeAdjustment.duration;
+      const decrease = document.createElement('button'); decrease.type = 'button'; decrease.dataset.durationStep = '-1'; decrease.dataset.durationTaskKey = taskKey(slot.task); decrease.setAttribute('aria-label', config.texts.timeAdjustment.decrease); decrease.textContent = '↓';
+      const durationOutput = document.createElement('output'); durationOutput.dataset.taskDuration = taskKey(slot.task); durationOutput.setAttribute('aria-live', 'polite');
+      const pendingMark = document.createElement('i'); pendingMark.className = 'my-night-chart__pending-mark'; pendingMark.setAttribute('aria-hidden', 'true'); pendingMark.textContent = '•';
+      const increase = document.createElement('button'); increase.type = 'button'; increase.dataset.durationStep = '1'; increase.dataset.durationTaskKey = taskKey(slot.task); increase.setAttribute('aria-label', config.texts.timeAdjustment.increase); increase.textContent = '↑';
+      durationControl.append(durationTitle, decrease, durationOutput, pendingMark, increase);
+      const slotMeta = document.createElement('span'); slotMeta.className = 'my-night-chart__slot-meta';
+      if (equipment() === 'mono') slotMeta.append(filterName);
+      slotMeta.append(slotTime, durationControl);
       const explanation = document.createElement('p'); explanation.textContent = explainSlot(slot, valid);
       summary.append(question, slotMeta); details.append(summary, explanation); slotDetails.append(details);
     });
-    figure.querySelectorAll<HTMLButtonElement>('[data-duration-step]').forEach((button) => button.addEventListener('click', () => adjustTargetDuration(item.id, Number(button.dataset.durationStep) * 5 * 60000)));
+    figure.querySelectorAll<HTMLButtonElement>('[data-duration-task-key]').forEach((button) => button.addEventListener('click', () => adjustTaskDuration(button.dataset.durationTaskKey!, Number(button.dataset.durationStep) * 5 * 60000)));
     const svg = figure.querySelector<SVGSVGElement>('svg')!;
     const preserveTextSize = () => {
       const renderedWidth = svg.getBoundingClientRect().width;
@@ -604,8 +616,9 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     return `${mainReason} ${comparison}`;
   };
   const MIN_TARGET_DURATION = 5 * 60000;
-  const targetOrder = () => currentPlan.reduce<string[]>((ids, slot) => ids.includes(slot.task.id) ? ids : [...ids, slot.task.id], []);
-  const durationsFromPlan = (slots = currentPlan) => slots.reduce<Map<string,number>>((durations, slot) => durations.set(slot.task.id, (durations.get(slot.task.id) ?? 0) + slot.end.getTime() - slot.start.getTime()), new Map());
+  const taskKey = (task:any) => `${task.id}::${task.filter}`;
+  const taskOrder = () => currentPlan.map((slot) => taskKey(slot.task));
+  const durationsFromPlan = (slots = currentPlan) => slots.reduce<Map<string,number>>((durations, slot) => durations.set(taskKey(slot.task), slot.end.getTime() - slot.start.getTime()), new Map());
   const durationLabel = (milliseconds:number) => { const minutes = Math.round(milliseconds / 60000), hours = Math.floor(minutes / 60); return hours ? `${hours} h ${String(minutes % 60).padStart(2, '0')} min` : `${minutes} min`; };
   const setTimePendingState = (pending:boolean) => {
     timeChangesPending = pending;
@@ -618,52 +631,53 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     downloadPdf.title = planPending ? config.texts.timeAdjustment.recalculateFirst : config.texts.export.hint;
   };
   const markPlanParametersPending = () => { planParametersPending = true; setTimePendingState(timeChangesPending); };
-  const laterUnlockedTargets = (targetId:string) => { const order = targetOrder(), index = order.indexOf(targetId); return index < 0 ? [] : order.slice(index + 1).filter((id) => !lockedTargetDurations.has(id)); };
+  const otherUnlockedTasks = (selectedKey:string) => taskOrder().filter((key) => key !== selectedKey && !lockedTaskDurations.has(key));
   const updateDurationControls = () => {
-    const durations = pendingTargetDurations.size ? pendingTargetDurations : durationsFromPlan();
+    const durations = pendingTaskDurations.size ? pendingTaskDurations : durationsFromPlan();
     const appliedDurations = durationsFromPlan();
-    planCharts.querySelectorAll<HTMLElement>('.my-night-chart[data-target-id]').forEach((figure) => {
-      const targetId = figure.dataset.targetId!, later = laterUnlockedTargets(targetId);
-      const targetDuration = durations.get(targetId) ?? 0;
-      const durationChanged = timeChangesPending && Math.abs(targetDuration - (appliedDurations.get(targetId) ?? 0)) > 1;
-      const availableToTake = later.reduce((total, id) => total + Math.max(0, (durations.get(id) ?? 0) - MIN_TARGET_DURATION), 0);
-      const output = figure.querySelector<HTMLOutputElement>('[data-target-duration]');
-      if (output) { output.value = durationLabel(targetDuration); output.setAttribute('aria-label', durationChanged ? `${durationLabel(targetDuration)} · ${config.texts.timeAdjustment.pending}` : durationLabel(targetDuration)); }
-      figure.querySelector<HTMLElement>('.my-night-chart__duration')?.classList.toggle('is-pending-change', durationChanged);
-      const decrease = figure.querySelector<HTMLButtonElement>('[data-duration-step="-1"]');
-      const increase = figure.querySelector<HTMLButtonElement>('[data-duration-step="1"]');
-      if (decrease) decrease.disabled = later.length === 0 || targetDuration < MIN_TARGET_DURATION + 5 * 60000;
-      if (increase) increase.disabled = later.length === 0 || availableToTake < 5 * 60000;
-      figure.classList.toggle('has-pending-duration', timeChangesPending && lockedTargetDurations.has(targetId));
+    planCharts.querySelectorAll<HTMLElement>('[data-task-duration]').forEach((output) => {
+      const selectedKey = output.dataset.taskDuration!, others = otherUnlockedTasks(selectedKey);
+      const taskDuration = durations.get(selectedKey) ?? 0;
+      const durationChanged = timeChangesPending && Math.abs(taskDuration - (appliedDurations.get(selectedKey) ?? 0)) > 1;
+      const availableToTake = others.reduce((total, key) => total + Math.max(0, (durations.get(key) ?? 0) - MIN_TARGET_DURATION), 0);
+      output.textContent = durationLabel(taskDuration);
+      output.setAttribute('aria-label', durationChanged ? `${durationLabel(taskDuration)} · ${config.texts.timeAdjustment.pending}` : durationLabel(taskDuration));
+      const control = output.closest<HTMLElement>('.my-night-chart__duration');
+      control?.classList.toggle('is-pending-change', durationChanged);
+      const decrease = control?.querySelector<HTMLButtonElement>('[data-duration-step="-1"]');
+      const increase = control?.querySelector<HTMLButtonElement>('[data-duration-step="1"]');
+      if (decrease) decrease.disabled = others.length === 0 || taskDuration < MIN_TARGET_DURATION + 5 * 60000;
+      if (increase) increase.disabled = others.length === 0 || availableToTake < 5 * 60000;
     });
+    planCharts.querySelectorAll<HTMLElement>('.my-night-chart[data-target-id]').forEach((figure) => figure.classList.toggle('has-pending-duration', [...figure.querySelectorAll<HTMLElement>('[data-task-duration]')].some((output) => lockedTaskDurations.has(output.dataset.taskDuration!))));
     resetTimes.disabled = !currentPlan.length;
   };
-  const redistributeDuration = (targetIds:string[], change:number) => {
+  const redistributeDuration = (taskKeys:string[], change:number) => {
     if (change > 0) {
       let remaining = change;
-      targetIds.forEach((id, index) => { const share = index === targetIds.length - 1 ? remaining : change / targetIds.length; pendingTargetDurations.set(id, (pendingTargetDurations.get(id) ?? 0) + share); remaining -= share; });
+      taskKeys.forEach((key, index) => { const share = index === taskKeys.length - 1 ? remaining : change / taskKeys.length; pendingTaskDurations.set(key, (pendingTaskDurations.get(key) ?? 0) + share); remaining -= share; });
       return;
     }
     const amount = -change;
-    const capacities = targetIds.map((id) => Math.max(0, (pendingTargetDurations.get(id) ?? 0) - MIN_TARGET_DURATION));
+    const capacities = taskKeys.map((key) => Math.max(0, (pendingTaskDurations.get(key) ?? 0) - MIN_TARGET_DURATION));
     const capacityTotal = capacities.reduce((sum, value) => sum + value, 0);
     let remaining = amount;
-    targetIds.forEach((id, index) => { const deduction = index === targetIds.length - 1 ? remaining : amount * (capacities[index] / capacityTotal); pendingTargetDurations.set(id, (pendingTargetDurations.get(id) ?? 0) - deduction); remaining -= deduction; });
+    taskKeys.forEach((key, index) => { const deduction = index === taskKeys.length - 1 ? remaining : amount * (capacities[index] / capacityTotal); pendingTaskDurations.set(key, (pendingTaskDurations.get(key) ?? 0) - deduction); remaining -= deduction; });
   };
-  const adjustTargetDuration = (targetId:string, change:number) => {
+  const adjustTaskDuration = (selectedKey:string, change:number) => {
     if (!currentPlan.length) return;
-    if (!pendingTargetDurations.size) pendingTargetDurations = durationsFromPlan();
-    const later = laterUnlockedTargets(targetId);
-    if (!later.length) return;
-    const current = pendingTargetDurations.get(targetId) ?? 0;
-    const availableToTake = later.reduce((total, id) => total + Math.max(0, (pendingTargetDurations.get(id) ?? 0) - MIN_TARGET_DURATION), 0);
+    if (!pendingTaskDurations.size) pendingTaskDurations = durationsFromPlan();
+    const others = otherUnlockedTasks(selectedKey);
+    if (!others.length) return;
+    const current = pendingTaskDurations.get(selectedKey) ?? 0;
+    const availableToTake = others.reduce((total, key) => total + Math.max(0, (pendingTaskDurations.get(key) ?? 0) - MIN_TARGET_DURATION), 0);
     if ((change < 0 && current + change < MIN_TARGET_DURATION) || (change > 0 && availableToTake < change)) return;
-    pendingTargetDurations.set(targetId, current + change);
-    lockedTargetDurations.add(targetId);
-    redistributeDuration(later, -change);
+    pendingTaskDurations.set(selectedKey, current + change);
+    lockedTaskDurations.add(selectedKey);
+    redistributeDuration(others, -change);
     const appliedDurations = durationsFromPlan();
-    const hasChanges = [...pendingTargetDurations].some(([id, value]) => Math.abs(value - (appliedDurations.get(id) ?? 0)) > 1);
-    if (!hasChanges) lockedTargetDurations.clear();
+    const hasChanges = [...pendingTaskDurations].some(([key, value]) => Math.abs(value - (appliedDurations.get(key) ?? 0)) > 1);
+    if (!hasChanges) lockedTaskDurations.clear();
     setTimePendingState(hasChanges);
     updateDurationControls();
   };
@@ -672,12 +686,21 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
     planDate.value = date.value;
     planThreshold.value = altitudeThreshold.value;
     timeline.replaceChildren(); planCharts.replaceChildren();
-    ordered.forEach((slot, index) => {
-      const valid = slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value);
+    const timelineTargets = ordered.reduce<any[]>((groups, slot) => {
+      const group = groups.find((entry) => entry.id === slot.task.id);
+      if (group) group.slots.push(slot);
+      else groups.push({ id: slot.task.id, label: slot.task.label, slots: [slot] });
+      return groups;
+    }, []);
+    timelineTargets.forEach((group, index) => {
+      const valid = group.slots.every((slot:any) => slot.reading.objectAltitudeDeg >= Number(altitudeThreshold.value));
+      const firstSlot = group.slots[0];
+      const lastSlot = group.slots[group.slots.length - 1];
+      const filters = equipment() === 'mono' ? group.slots.map((slot:any) => slot.task.filter).join(' · ') : '';
       const segment = document.createElement('div');
       segment.classList.toggle('is-invalid', !valid);
       segment.style.setProperty('--night-colour', `hsl(${270 + (index * 31) % 65} 48% ${42 + (index % 2) * 8}%)`);
-      segment.innerHTML = `<strong>${slot.task.label}</strong><span>${equipment() === 'mono' ? slot.task.filter : ''}</span><small>${clock(slot.start)}–${clock(slot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
+      segment.innerHTML = `<strong>${group.label}</strong><span>${filters}</span><small>${clock(firstSlot.start)}–${clock(lastSlot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
       timeline.append(segment);
     });
     const chartTargets = ordered.reduce<NightTarget[]>((targets, slot) => targets.some((target) => target.id === slot.task.id) ? targets : [...targets, slot.task], []);
@@ -694,20 +717,18 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   };
   const applyPendingDurations = () => {
     if (!currentPlan.length || !timeChangesPending) return false;
-    const counts = currentPlan.reduce<Map<string,number>>((values, slot) => values.set(slot.task.id, (values.get(slot.task.id) ?? 0) + 1), new Map());
     const { start, end } = sessionBounds();
     let cursor = start.getTime();
     const ordered = currentPlan.map((oldSlot, index) => {
-      const targetId = oldSlot.task.id;
-      const targetDuration = pendingTargetDurations.get(targetId) ?? durationsFromPlan().get(targetId) ?? 0;
-      const slotDuration = targetDuration / (counts.get(targetId) ?? 1);
+      const selectedKey = taskKey(oldSlot.task);
+      const slotDuration = pendingTaskDurations.get(selectedKey) ?? durationsFromPlan().get(selectedKey) ?? 0;
       const slotStart = new Date(cursor), slotEnd = new Date(index === currentPlan.length - 1 ? end.getTime() : cursor + slotDuration); cursor = slotEnd.getTime();
       const midpoint = new Date((slotStart.getTime() + slotEnd.getTime()) / 2);
       const selected = { task: oldSlot.task, ...scoreAt(oldSlot.task, midpoint) };
       const alternatives = currentPlan.slice(index + 1).map((slot) => ({ task: slot.task, ...scoreAt(slot.task, midpoint) })).sort((a, b) => b.score - a.score);
       return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: alternatives[0] ?? null, validCandidateCount: [selected, ...alternatives].filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
     });
-    pendingTargetDurations = durationsFromPlan(ordered);
+    pendingTaskDurations = durationsFromPlan(ordered);
     planParametersPending = false;
     setTimePendingState(false);
     renderPlan(ordered, false);
@@ -726,8 +747,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       remaining.splice(remaining.indexOf(selected.task), 1);
       return { ...selected, start: slotStart, end: slotEnd, midpoint, runnerUp: candidates[1] ?? null, validCandidateCount: candidates.filter((candidate) => candidate.reading.objectAltitudeDeg >= Number(altitudeThreshold.value)).length };
     });
-    pendingTargetDurations = durationsFromPlan(ordered);
-    lockedTargetDurations.clear();
+    pendingTaskDurations = durationsFromPlan(ordered);
+    lockedTaskDurations.clear();
     planParametersPending = false;
     setTimePendingState(false);
     renderPlan(ordered);
@@ -737,10 +758,10 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   resetTimes.addEventListener('click', () => {
     if (!currentPlan.length) return;
     const { start, end } = sessionBounds(), equalSlot = (end.getTime() - start.getTime()) / currentPlan.length;
-    pendingTargetDurations = currentPlan.reduce<Map<string,number>>((values, slot) => values.set(slot.task.id, (values.get(slot.task.id) ?? 0) + equalSlot), new Map());
-    lockedTargetDurations.clear();
+    pendingTaskDurations = currentPlan.reduce<Map<string,number>>((values, slot) => values.set(taskKey(slot.task), equalSlot), new Map());
+    lockedTaskDurations.clear();
     const appliedDurations = durationsFromPlan();
-    const hasChanges = [...pendingTargetDurations].some(([id, value]) => Math.abs(value - (appliedDurations.get(id) ?? 0)) > 1);
+    const hasChanges = [...pendingTaskDurations].some(([key, value]) => Math.abs(value - (appliedDurations.get(key) ?? 0)) > 1);
     setTimePendingState(hasChanges);
     updateDurationControls();
   });
@@ -875,9 +896,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night-item__filters label{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border:1px solid #354156;border-radius:.55rem;background:#080c14;color:#b7c1d1;font-size:.76rem}
   .my-night .my-night-item__filters input{width:auto}
   .my-night .my-night-chart{min-width:0;margin:0;padding:.8rem;border:1px solid #3d3450;border-radius:.6rem;background:rgba(8,12,20,.66)}
+  .my-night .my-night-chart__header{margin:-.8rem -.8rem .7rem;padding:.65rem .8rem;border-bottom:1px solid rgba(118,92,161,.42);background:rgba(31,21,47,.48)}
+  .my-night .my-night-chart__header h3{margin:0;color:#eadcff;font-size:.78rem;line-height:1.35}
   .my-night .my-night-chart figcaption{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem;margin-bottom:1rem}
   .my-night .my-night-chart figcaption>span{display:flex;grid-column:1/-1;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;margin-top:.8rem;color:var(--color-muted);font-size:.62rem}
-  .my-night .my-night-chart__duration{display:flex;grid-column:1/-1;align-items:center;justify-self:end;gap:.3rem;color:#b7c1d1;font-size:.62rem;white-space:nowrap}
+  .my-night .my-night-chart__duration{display:flex;align-items:center;gap:.3rem;color:#b7c1d1;font-size:.62rem;white-space:nowrap}
   .my-night .my-night-chart__duration button{display:grid;width:1.45rem;height:1.45rem;min-height:0;place-items:center;padding:0!important;border-radius:.35rem!important;background:rgba(155,114,209,.1)!important;color:#d9c5f5;font:700 .78rem/1 var(--font-technical)}
   .my-night .my-night-chart__duration output{min-width:4.7rem;color:#d9c5f5;font:700 .62rem var(--font-technical);text-align:center}
   .my-night .my-night-chart figcaption .my-night-chart__pending-mark{display:none;width:auto;height:auto;margin:0;background:transparent;color:#e5b85b;font:700 .9rem/1 var(--font-technical)}
@@ -885,13 +908,14 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night-chart__duration.is-pending-change .my-night-chart__pending-mark{display:inline-block}
   .my-night .my-night-chart__slot-details{display:grid;grid-column:1/-1;gap:.3rem;margin-top:.8rem}
   .my-night .my-night-chart__explanation{padding-top:.35rem;border-top:1px solid rgba(118,92,161,.3)}
-  .my-night .my-night-chart__explanation summary{color:#cba9f4;cursor:pointer}
+  .my-night .my-night-chart__explanation summary{display:block;color:#cba9f4;cursor:pointer;list-style:none}
   .my-night .my-night-chart__explanation summary::marker{content:''}
   .my-night .my-night-chart__explanation summary::-webkit-details-marker{display:none}
   .my-night .my-night-chart__explanation summary b{display:flex;align-items:center;gap:.28rem;font-size:.66rem;text-decoration:underline;text-decoration-color:rgba(203,169,244,.42);text-underline-offset:.15rem}
   .my-night .my-night-chart__explanation summary b::before{display:inline-block;color:#aa8ace;content:'▸';font-size:.62rem;text-decoration:none;transition:transform .15s ease}
   .my-night .my-night-chart__explanation[open] summary b::before{transform:rotate(90deg)}
-  .my-night .my-night-chart__slot-meta{display:flex;justify-content:space-between;gap:.7rem;align-items:center;margin-top:.9rem}
+  .my-night .my-night-chart__slot-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.55rem .7rem;align-items:center;margin-top:.7rem}
+  .my-night .my-night-chart__filter{color:#efe5ff;font:700 .78rem/1.15 var(--font-technical)}
   .my-night .my-night-chart__explanation summary time{color:#929cad;font:.58rem var(--font-technical)}
   .my-night .my-night-chart__slot-meta>span{color:#9ea8b8;font:.58rem var(--font-technical);text-align:right;white-space:nowrap}
   .my-night .my-night-chart__explanation p{margin:.45rem 0 0;color:#b7c1d1;font-size:.65rem;line-height:1.45}
@@ -963,12 +987,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__download-warning{flex-basis:100%;color:#cba9f4;font-size:.65rem;text-align:right}
   .my-night .report-action--my-night{border-color:rgba(155,114,209,.66)!important;background:rgba(155,114,209,.17)!important;color:#d9c5f5!important}
   .my-night .report-action--my-night:hover,.my-night .report-action--my-night:focus-visible{background:rgba(155,114,209,.25)!important}
-  .my-night .my-night__timeline{display:flex;min-height:4.65rem;overflow:hidden;border:1px solid #765ca1;border-radius:.65rem;background:#080c14}
-  .my-night .my-night__timeline>div{display:flex;flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:.08rem;padding:.32rem .55rem;border-left:1px solid rgba(255,255,255,.16);background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
-  .my-night .my-night__timeline>div:first-child{border-left:0}
+  .my-night .my-night__timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.65rem;min-height:4.65rem}
+  .my-night .my-night__timeline>div{display:flex;min-width:0;min-height:4.65rem;flex-direction:column;justify-content:center;gap:.08rem;padding:.32rem .55rem;border:1px solid #765ca1;border-radius:.65rem;background:linear-gradient(145deg,var(--night-colour),rgba(16,12,25,.9));text-align:center}
   .my-night .my-night__timeline>div.is-invalid{background:linear-gradient(145deg,rgba(126,43,52,.74),rgba(42,16,24,.94));box-shadow:inset 0 0 0 1px rgba(239,120,120,.35)}
   .my-night .my-night__timeline strong{overflow:hidden;font-size:.74rem;text-overflow:ellipsis;white-space:nowrap}
-  .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.68rem}
+  .my-night .my-night__timeline span{min-height:1em;color:#efe5ff;font-family:var(--font-technical);font-size:.82rem;font-weight:700;letter-spacing:.02em}
   .my-night .my-night__timeline small{margin:0;color:#d2c7df;font-family:var(--font-technical);font-size:.62rem}
   .my-night .my-night__plan-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));gap:.65rem;margin-top:.75rem}
   .my-night .my-night__calculations{margin-top:1rem;padding:.85rem;border:1px solid #594671;border-radius:.7rem;background:rgba(12,10,20,.72)}
@@ -990,5 +1013,5 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__calculation-card>code{display:block;margin-top:.55rem;padding:.5rem;border-radius:.4rem;background:#080b13;color:#d8c9eb;font:.6rem/1.5 var(--font-technical);white-space:normal}
   .my-night .my-night__calculation-notes{display:grid;gap:.2rem;margin-top:.45rem;color:#b7c1d1;line-height:1.4}
   .my-night .my-night__calculation-notes small{font-size:.58rem}
-  @media(max-width:760px){.my-night .my-night__basket{width:100%}.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__time-actions{flex-wrap:wrap}.my-night .my-night__plan-actions{justify-content:flex-end}.my-night .my-night__timeline{overflow-x:auto}.my-night .my-night__timeline>div{min-width:10rem}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night-chart__slot-meta{flex-wrap:wrap}.my-night .my-night-chart__slot-meta>span{text-align:left}.my-night .my-night__calculations h3{padding-right:0}.my-night .my-night__scoring--calculations>summary{position:static}.my-night .my-night__scoring--calculations>div{margin-top:.55rem}}
+  @media(max-width:760px){.my-night .my-night__basket{width:100%}.my-night .my-night__plan{grid-column:auto}.my-night .my-night__plan>header{flex-direction:column}.my-night .my-night__plan-settings{grid-template-columns:1fr}.my-night .my-night__time-actions{flex-wrap:wrap}.my-night .my-night__plan-actions{justify-content:flex-end}.my-night .my-night__timeline{grid-template-columns:1fr}.my-night .my-night__plan-charts{grid-template-columns:1fr}.my-night .my-night-chart__slot-meta{flex-wrap:wrap}.my-night .my-night-chart__slot-meta>span{text-align:left}.my-night .my-night__calculations h3{padding-right:0}.my-night .my-night__scoring--calculations>summary{position:static}.my-night .my-night__scoring--calculations>div{margin-top:.55rem}}
 </style>
