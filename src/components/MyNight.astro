@@ -197,6 +197,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
 
       <section class="my-night__panel my-night__plan" data-plan hidden>
         <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div></header>
+        {import.meta.env.DEV && <a class="my-night__feedback-shortcut" href="#feedback-my-night">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>}
         <div class="my-night__plan-settings">
           <label><span>{t.selectedDay}</span><span class="my-night__plan-date"><input type="date" data-plan-date /><button type="button" data-plan-date-picker aria-label={t.selectedDay}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3M4.5 8.5h15M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" /></svg></button></span></label>
           <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><button type="button" data-plan-threshold-step="-1" aria-label={`${t.threshold} − 5`}>−</button><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b><button type="button" data-plan-threshold-step="1" aria-label={`${t.threshold} + 5`}>+</button></span></label>
@@ -210,7 +211,6 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
             <button class="report-action report-action--my-night" type="button" data-download-pdf title={exportText.hint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{exportText.pdf}</span></button>
           </div>
         </div>
-        {import.meta.env.DEV && <a class="my-night__feedback-shortcut" href="#feedback-my-night">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>}
         <div class="my-night__timeline" data-timeline></div>
         <div class="my-night__plan-charts" data-plan-charts></div>
         <section class="my-night__calculations" aria-labelledby="my-night-calculations-title" data-plan-calculations hidden>
@@ -1054,7 +1054,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
   .my-night .my-night__time-actions>[data-recalculate].has-pending-time{animation:my-night-pending-pulse 1.65s ease-in-out infinite;color:#f0e6ff}
   @media(prefers-reduced-motion:reduce){.my-night .my-night__time-actions>[data-recalculate].has-pending-time{animation:none;border-color:#d5b7f8;background:#302043;box-shadow:0 0 0 .2rem rgba(155,114,209,.22)}}
   .my-night .my-night__plan-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.55rem}
-  .my-night .my-night__feedback-shortcut{display:inline-flex;width:fit-content;align-items:center;justify-content:center;margin:0;padding:.52rem .72rem;border:1px solid rgba(224,239,88,.78);border-radius:.6rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
+  .my-night .my-night__feedback-shortcut{display:inline-flex;width:fit-content;align-items:center;justify-content:center;margin:0 0 .85rem;padding:.52rem .72rem;border:1px solid rgba(224,239,88,.78);border-radius:.6rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
   .my-night .my-night__feedback-shortcut:hover,.my-night .my-night__feedback-shortcut:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
   .my-night .my-night__download-warning{flex-basis:100%;color:#cba9f4;font-size:.65rem;text-align:right}
   .my-night .report-action--my-night{border-color:rgba(155,114,209,.66)!important;background:rgba(155,114,209,.17)!important;color:#d9c5f5!important}
