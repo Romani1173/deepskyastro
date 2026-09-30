@@ -234,6 +234,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
         <p class="planning-conclusion__comment" data-conclusion-comment></p>
         <small>{t.geometryNotice}</small>
       </section>
+      {import.meta.env.DEV && <a class="planning-feedback-shortcut" href="#feedback-planning">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>}
       <div class="planning-section-heading"><h2>{t.comparison}</h2><strong class="planning-selected-object" data-selected-object></strong><span class="planning-week-context" data-week-label></span></div>
       <div class="planning-table-wrap">
         <table class="planning-table">
@@ -297,7 +298,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
         </div>
         <div class="planning-framing__result" data-framing-result><strong data-framing-verdict></strong><span data-framing-field></span><span data-framing-size></span></div>
       </section>
-      {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="planning" />}
+      {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="planning" allowNegativeBack />}
     </section>
   </main>
 </Layout>

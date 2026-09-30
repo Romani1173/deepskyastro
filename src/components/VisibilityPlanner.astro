@@ -187,7 +187,7 @@ const weekParts = (week: number) => {
         </article>;
       })}
     </div>
-    {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="visibility" />}
+    {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="visibility" allowNegativeBack />}
     <dialog class="visibility-chart" data-visibility-chart>
       <div class="visibility-chart__header"><div><p data-chart-kicker>{t.annualChart}</p><h2 data-chart-title></h2></div><button type="button" data-close-chart aria-label={t.close}>×</button></div>
       <nav class="visibility-chart__tabs" data-chart-tabs hidden><button type="button" data-chart-mode="annual" aria-pressed="true">{t.annual}</button><button type="button" data-chart-mode="night" aria-pressed="false">{t.selectedNight}</button></nav>
@@ -199,7 +199,8 @@ const weekParts = (week: number) => {
 </Layout>
 
 <style>
-  .visibility-feedback-shortcut{display:inline-block;margin:.3rem 0 .7rem;color:var(--color-accent);font-size:.78rem;font-weight:700;text-decoration:underline;text-underline-offset:.2em}
+  .visibility-feedback-shortcut{display:inline-flex;width:fit-content;align-items:center;justify-content:center;margin:.3rem 0 .7rem;padding:.52rem .72rem;border:1px solid rgba(224,239,88,.78);border-radius:.6rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
+  .visibility-feedback-shortcut:hover,.visibility-feedback-shortcut:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
 </style>
 
 <script define:vars={{ t, lang, showPending, enhancedVisibility }}>

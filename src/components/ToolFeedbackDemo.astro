@@ -4,16 +4,17 @@ import type { Lang } from '../i18n';
 interface Props {
   lang: Lang;
   tool: 'visibility' | 'planning' | 'analyser' | 'my-night';
+  allowNegativeBack?: boolean;
 }
 
-const { lang, tool } = Astro.props;
+const { lang, tool, allowNegativeBack = false } = Astro.props;
 const copy = {
   ca: {
     question: 'T’ha estat útil aquesta eina?', yes: 'Sí, m’ha estat útil', no: 'No, cal millorar-la',
     reason: 'Què hauries de millorar?', confusing: 'El resultat no és clar',
     missing: 'Trobo a faltar una funció', broken: 'No ha funcionat com esperava',
     other: 'Un altre motiu', comment: 'Vols concretar-ho? (opcional)',
-    send: 'Envia la valoració', thanks: 'Gràcies per ajudar-me a millorar aquesta eina.',
+    send: 'Envia la valoració', back: 'Torna sense valorar', thanks: 'Gràcies per ajudar-me a millorar aquesta eina.',
     change: 'Canvia la resposta', preview: 'Resum privat de la prova',
     note: 'Prototip local: només es desa una resposta per eina en aquest navegador. No s’envia res a Internet.',
     positive: 'positives', negative: 'negatives', empty: 'Sense resposta',
@@ -24,7 +25,7 @@ const copy = {
     reason: '¿Qué debería mejorar?', confusing: 'El resultado no está claro',
     missing: 'Echo en falta una función', broken: 'No funcionó como esperaba',
     other: 'Otro motivo', comment: '¿Quieres concretarlo? (opcional)',
-    send: 'Enviar valoración', thanks: 'Gracias por ayudarme a mejorar esta herramienta.',
+    send: 'Enviar valoración', back: 'Volver sin valorar', thanks: 'Gracias por ayudarme a mejorar esta herramienta.',
     change: 'Cambiar respuesta', preview: 'Resumen privado de la prueba',
     note: 'Prototipo local: solo se guarda una respuesta por herramienta en este navegador. No se envía nada a Internet.',
     positive: 'positivos', negative: 'negativos', empty: 'Sin respuesta',
@@ -35,7 +36,7 @@ const copy = {
     reason: 'What should be improved?', confusing: 'The result is unclear',
     missing: 'A feature is missing', broken: 'It did not work as expected',
     other: 'Another reason', comment: 'Would you like to explain? (optional)',
-    send: 'Send feedback', thanks: 'Thank you for helping me improve this tool.',
+    send: 'Send feedback', back: 'Go back without rating', thanks: 'Thank you for helping me improve this tool.',
     change: 'Change response', preview: 'Private test summary',
     note: 'Local prototype: one response per tool is stored in this browser only. Nothing is sent online.',
     positive: 'positive', negative: 'negative', empty: 'No response',
@@ -59,7 +60,10 @@ const copy = {
       <label><input type="radio" name="reason" value="other" />{copy.other}</label>
     </fieldset>
     <label class="tool-feedback-demo__comment">{copy.comment}<textarea name="comment" rows="2" maxlength="500"></textarea></label>
-    <button type="submit">{copy.send}</button>
+    <div class="tool-feedback-demo__form-actions">
+      <button type="submit">{copy.send}</button>
+      {allowNegativeBack && <button type="button" class="tool-feedback-demo__back" data-feedback-back>{copy.back}</button>}
+    </div>
   </form>
   <p class="tool-feedback-demo__thanks" data-feedback-thanks hidden>{copy.thanks} <button type="button" data-feedback-change>{copy.change}</button></p>
   <details class="tool-feedback-demo__preview">
@@ -128,6 +132,12 @@ const copy = {
       save({ ...read(), [tool]: { vote: 'down', reason, comment: String(values.get('comment') ?? '').trim() } });
       render();
     });
+    root.querySelector<HTMLButtonElement>('[data-feedback-back]')?.addEventListener('click', () => {
+      form.reset();
+      form.hidden = true;
+      choices.hidden = false;
+      choices.querySelector<HTMLButtonElement>('[data-feedback-vote="down"]')?.focus();
+    });
     root.querySelector<HTMLButtonElement>('[data-feedback-change]')!.addEventListener('click', () => {
       const votes = read();
       delete votes[tool];
@@ -144,9 +154,9 @@ const copy = {
   .tool-feedback-demo{margin:1.5rem 0;padding:1.15rem 1.35rem;border:1px solid rgba(113,188,214,.42);border-radius:.8rem;background:linear-gradient(135deg,rgba(25,47,63,.75),rgba(15,23,38,.9));color:#e7f3f6}
   .tool-feedback-demo__question{margin:0 0 .85rem;font-size:1rem;font-weight:700}
   .tool-feedback-demo__choices{display:flex;flex-wrap:wrap;gap:.65rem}
-  .tool-feedback-demo__choices button,.tool-feedback-demo__reason>button{padding:.55rem .8rem;border:1px solid #75c8e4;border-radius:.48rem;background:#102b3a;color:#e8f7fc;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
-  .tool-feedback-demo__choices button:hover,.tool-feedback-demo__reason>button:hover{background:#21475a}
-  .tool-feedback-demo__choices button:focus-visible,.tool-feedback-demo__reason button:focus-visible,.tool-feedback-demo__thanks button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .tool-feedback-demo__choices button,.tool-feedback-demo__form-actions button{padding:.55rem .8rem;border:1px solid #75c8e4;border-radius:.48rem;background:#102b3a;color:#e8f7fc;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
+  .tool-feedback-demo__choices button:hover,.tool-feedback-demo__form-actions button:hover{background:#21475a}
+  .tool-feedback-demo__choices button:focus-visible,.tool-feedback-demo__form-actions button:focus-visible,.tool-feedback-demo__thanks button:focus-visible{outline:2px solid #fff;outline-offset:3px}
   .tool-feedback-demo__reason{display:grid;gap:.75rem}
   .tool-feedback-demo__reason fieldset{display:grid;gap:.5rem;margin:0;padding:0;border:0}
   .tool-feedback-demo__reason legend{margin-bottom:.4rem;font-size:.82rem;font-weight:700}
@@ -154,9 +164,12 @@ const copy = {
   .tool-feedback-demo__reason input{accent-color:#5bc6ef}
   .tool-feedback-demo__comment{display:grid!important;align-items:stretch!important;gap:.35rem!important}
   .tool-feedback-demo__comment textarea{width:100%;max-width:36rem;padding:.55rem;border:1px solid #6b94a3;border-radius:.4rem;background:#0a1624;color:#fff;font:inherit;resize:vertical}
-  .tool-feedback-demo__reason>button{justify-self:start}
+  .tool-feedback-demo__form-actions{display:flex;flex-wrap:wrap;gap:.55rem}
+  .tool-feedback-demo__form-actions .tool-feedback-demo__back{border-color:#617786;background:transparent;color:#b8cad2}
   .tool-feedback-demo__thanks{margin:0;font-size:.85rem}
   .tool-feedback-demo__thanks button{margin-left:.45rem;padding:0;border:0;background:transparent;color:#75d5f5;font:inherit;text-decoration:underline;cursor:pointer}
+  .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button{display:inline-flex;align-items:center;justify-content:center;padding:.48rem .68rem;border:1px solid rgba(224,239,88,.78);border-radius:.52rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
+  .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:hover,.tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
   .tool-feedback-demo__preview{margin-top:1rem;padding-top:.65rem;border-top:1px solid rgba(135,174,188,.25);font-size:.72rem;color:#b3cbd3}
   .tool-feedback-demo__preview summary{cursor:pointer}
   .tool-feedback-demo__preview p{margin:.6rem 0}
