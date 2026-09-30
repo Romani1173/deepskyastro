@@ -15,5 +15,6 @@ export default defineConfig({
 		'/foto/vbd_152': '/foto/vdb_152/',
 		'/es/foto/vbd_152': '/es/foto/vdb_152/',
 		'/en/photo/vbd_152': '/en/photo/vdb_152/',
+		'/laboratorio/analizador-equipo': '/es/laboratorio/analizador-equipo/',
 	},
 });
