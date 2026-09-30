@@ -18,6 +18,32 @@
     "angularSizeSource": "SIMBAD"
   },
   {
+    "id": "abell85",
+    "catalogName": "Abell 85",
+    "aliases": [
+      "CTB 1",
+      "SNR G116.9+00.1",
+      "AJG 110",
+      "DA 615",
+      "PN A55 72",
+      "PN A66 85",
+      "SNR G116.9+00.2",
+      "SNR G117.3+00.1",
+      "VRO 62.23.01"
+    ],
+    "raDeg": 359.804,
+    "decDeg": 62.437,
+    "constellation": "Cassiopeia",
+    "coordinateSource": "CDS Sesame / SIMBAD (CTB 1)",
+    "coordinateEpoch": "J2000",
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 34,
+      "minor": 34
+    },
+    "angularSizeSource": "SIMBAD"
+  },
+  {
     "id": "albireo",
     "catalogName": "Albireo",
     "aliases": [
@@ -448,6 +474,27 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "ldn1489",
+    "catalogName": "LDN1489",
+    "aliases": [
+      "MLB 3-6",
+      "PCCS2 143 G168.07-19.15",
+      "TGU H1144",
+      "[BM89] 1-8"
+    ],
+    "raDeg": 61.19791667,
+    "decDeg": 26.32833333,
+    "constellation": "Taurus",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 18,
+      "minor": 13.8
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "m1",
@@ -1305,6 +1352,23 @@
     "status": "pending"
   },
   {
+    "id": "ngc6820",
+    "catalogName": "NGC6820",
+    "aliases": [
+      "IRAS 19403+2258",
+      "MSX6C G059.1392-00.1131",
+      "OCISM 22",
+      "OCl 122",
+      "WFS 77"
+    ],
+    "raDeg": 295.616375,
+    "decDeg": 23.087431,
+    "constellation": "Vulpecula",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending"
+  },
+  {
     "id": "ngc6883",
     "catalogName": "NGC6883",
     "aliases": [
@@ -1548,11 +1612,6 @@
   {
     "id": "sh2-86",
     "catalogName": "Sh2-86",
-    "commonNames": {
-      "ca": "Nebulosa NGC 6820",
-      "es": "Nebulosa NGC 6820",
-      "en": "NGC 6820 Nebula"
-    },
     "aliases": [
       "LBN 059.38-00.15"
     ],

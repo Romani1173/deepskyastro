@@ -14,9 +14,9 @@ interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; showPending?: b
 const { lang, fotos, showPending = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const texts = {
-  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Descobreix i compara molts objectes des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18° · Hores: hora local', guide: 'Com funciona Visibilitat', guideTooltip: 'Guia per interpretar les gràfiques i planificar una nit', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana', constellation: 'Constel·lació', allConstellations: 'Totes', minimumVisibility: 'Mínim', photographed: 'Galeria', pending: 'Pendents', all: 'Tots', photos: 'Vista', list: 'Llista', display: 'Visualització dels objectes', selectedObject: 'objecte seleccionat', selectedObjects: 'objectes seleccionats', noResults: 'No hi ha objectes que compleixin els criteris aquesta setmana.', downloadReport: 'Descarrega informe TXT', reportHint: 'Descarrega els resultats visibles sense fotografies.', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre {threshold}°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Nit seleccionada', annualChart: 'Visibilitat anual · 00:00 UTC', nightChart: 'Altura durant la nit astronòmica', darkness: 'Foscor astronòmica', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedDay: 'Nit de la setmana', moonPhases: ['Lluna nova', 'Creixent fina', 'Quart creixent', 'Gibosa creixent', 'Lluna plena', 'Gibosa minvant', 'Quart minvant', 'Minvant fina'], dayShort: ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'], qualities: { excellent: 'Excel·lent', good: 'Bona' } },
-  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Descubre y compara muchos objetos desde una ubicación de referencia en el centro de Cataluña. Cuando elijas uno, Planificación permite estudiarlo desde tu ubicación.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18° · Horas: hora local', guide: 'Cómo funciona Visibilidad', guideTooltip: 'Guía para interpretar las gráficas y planificar una noche', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana', constellation: 'Constelación', allConstellations: 'Todas', minimumVisibility: 'Mínimo', photographed: 'Galería', pending: 'Pendientes', all: 'Todos', photos: 'Vista', list: 'Lista', display: 'Visualización de los objetos', selectedObject: 'objeto seleccionado', selectedObjects: 'objetos seleccionados', noResults: 'No hay objetos que cumplan los criterios esta semana.', downloadReport: 'Descargar informe TXT', reportHint: 'Descarga los resultados visibles sin fotografías.', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre {threshold}°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Noche seleccionada', annualChart: 'Visibilidad anual · 00:00 UTC', nightChart: 'Altura durante la noche astronómica', darkness: 'Oscuridad astronómica', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', objectCurve: 'Objeto', moonCurve: 'Luna', selectedDay: 'Noche de la semana', moonPhases: ['Luna nueva', 'Creciente fina', 'Cuarto creciente', 'Gibosa creciente', 'Luna llena', 'Gibosa menguante', 'Cuarto menguante', 'Menguante fina'], dayShort: ['L', 'M', 'X', 'J', 'V', 'S', 'D'], qualities: { excellent: 'Excelente', good: 'Buena' } },
-  en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Gallery', pending: 'Pending', all: 'All', photos: 'View', list: 'List', display: 'Object display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above {threshold}°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
+  ca: { title: 'Què podem fotografiar aquesta setmana?', intro: 'Descobreix i compara molts objectes des d’una ubicació de referència al centre de Catalunya. Quan n’hagis escollit un, Planificació permet estudiar-lo des de la teva ubicació.', location: 'Centre de Catalunya · 41° N, 1,5° E · Nit astronòmica: Sol per sota de −18° · Hores: hora local', guide: 'Com funciona Visibilitat', guideTooltip: 'Guia per interpretar les gràfiques i planificar una nit', analysed: (count: number) => `${count} objectes astronòmics analitzats`, week: 'Setmana', constellation: 'Constel·lació', allConstellations: 'Totes', minimumVisibility: 'Mínim', photographed: 'Galeria', pending: 'Pendents', allPending: 'Pendents sense filtrar', filterMode: 'Filtres', unfiltered: 'SENSE FILTRAR', all: 'Tots', photos: 'Vista', list: 'Llista', display: 'Visualització dels objectes', selectedObject: 'objecte seleccionat', selectedObjects: 'objectes seleccionats', noResults: 'No hi ha objectes que compleixin els criteris aquesta setmana.', downloadReport: 'Descarrega informe TXT', reportHint: 'Descarrega els resultats visibles sense fotografies.', pendingTarget: 'Objectiu pendent', pendingNote: 'Pendent de fotografiar', choosePending: 'Selecciona un objectiu pendent', maxAltitude: 'Altura màxima', bestTime: 'Millor hora', localTime: 'hora local', usefulTime: 'Temps sobre {threshold}°', above: 'sobre', view: 'Veure fotografia', viewChart: 'Veure gràfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Nit seleccionada', annualChart: 'Visibilitat anual · 00:00 UTC', nightChart: 'Altura durant la nit astronòmica', darkness: 'Foscor astronòmica', selectedWeek: 'Setmana seleccionada', close: 'Tancar', night: 'Nit del màxim', objectCurve: 'Objecte', moonCurve: 'Lluna', selectedDay: 'Nit de la setmana', moonPhases: ['Lluna nova', 'Creixent fina', 'Quart creixent', 'Gibosa creixent', 'Lluna plena', 'Gibosa minvant', 'Quart minvant', 'Minvant fina'], dayShort: ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'], qualities: { excellent: 'Excel·lent', good: 'Bona' } },
+  es: { title: '¿Qué podemos fotografiar esta semana?', intro: 'Descubre y compara muchos objetos desde una ubicación de referencia en el centro de Cataluña. Cuando elijas uno, Planificación permite estudiarlo desde tu ubicación.', location: 'Centro de Cataluña · 41° N, 1,5° E · Noche astronómica: Sol por debajo de −18° · Horas: hora local', guide: 'Cómo funciona Visibilidad', guideTooltip: 'Guía para interpretar las gráficas y planificar una noche', analysed: (count: number) => `${count} objetos astronómicos analizados`, week: 'Semana', constellation: 'Constelación', allConstellations: 'Todas', minimumVisibility: 'Mínimo', photographed: 'Galería', pending: 'Pendientes', allPending: 'Pendientes sin filtrar', filterMode: 'Filtros', unfiltered: 'SIN FILTRADO', all: 'Todos', photos: 'Vista', list: 'Lista', display: 'Visualización de los objetos', selectedObject: 'objeto seleccionado', selectedObjects: 'objetos seleccionados', noResults: 'No hay objetos que cumplan los criterios esta semana.', downloadReport: 'Descargar informe TXT', reportHint: 'Descarga los resultados visibles sin fotografías.', pendingTarget: 'Objetivo pendiente', pendingNote: 'Pendiente de fotografiar', choosePending: 'Selecciona un objetivo pendiente', maxAltitude: 'Altura máxima', bestTime: 'Mejor hora', localTime: 'hora local', usefulTime: 'Tiempo sobre {threshold}°', above: 'sobre', view: 'Ver fotografía', viewChart: 'Ver gráfica', plan: 'Planificar', annual: 'Anual', selectedNight: 'Noche seleccionada', annualChart: 'Visibilidad anual · 00:00 UTC', nightChart: 'Altura durante la noche astronómica', darkness: 'Oscuridad astronómica', selectedWeek: 'Semana seleccionada', close: 'Cerrar', night: 'Noche del máximo', objectCurve: 'Objeto', moonCurve: 'Luna', selectedDay: 'Noche de la semana', moonPhases: ['Luna nueva', 'Creciente fina', 'Cuarto creciente', 'Gibosa creciente', 'Luna llena', 'Gibosa menguante', 'Cuarto menguante', 'Menguante fina'], dayShort: ['L', 'M', 'X', 'J', 'V', 'S', 'D'], qualities: { excellent: 'Excelente', good: 'Buena' } },
+  en: { title: 'What can we photograph this week?', intro: 'Discover and compare many objects from a reference location in central Catalonia. Once you choose one, Planning lets you study it from your own location.', location: 'Central Catalonia · 41° N, 1.5° E · Astronomical night: Sun below −18° · Times: local time', analysed: (count: number) => `${count} astronomical objects analysed`, week: 'Week', constellation: 'Constellation', allConstellations: 'All', minimumVisibility: 'Minimum', photographed: 'Gallery', pending: 'Pending', allPending: 'Unfiltered pending', filterMode: 'Filters', unfiltered: 'UNFILTERED', all: 'All', photos: 'View', list: 'List', display: 'Object display', selectedObject: 'selected object', selectedObjects: 'selected objects', noResults: 'No objects meet the criteria this week.', downloadReport: 'Download TXT report', reportHint: 'Download the visible results without photographs.', pendingTarget: 'Pending target', pendingNote: 'Waiting to be photographed', choosePending: 'Select a pending target', maxAltitude: 'Maximum altitude', bestTime: 'Best time', localTime: 'local time', usefulTime: 'Time above {threshold}°', above: 'above', view: 'View photograph', viewChart: 'View chart', plan: 'Plan', annual: 'Annual', selectedNight: 'Selected night', annualChart: 'Annual visibility · 00:00 UTC', nightChart: 'Altitude during astronomical night', darkness: 'Astronomical darkness', selectedWeek: 'Selected week', close: 'Close', night: 'Night of maximum', objectCurve: 'Object', moonCurve: 'Moon', selectedDay: 'Night of the week', moonPhases: ['New moon', 'Waxing crescent', 'First quarter', 'Waxing gibbous', 'Full moon', 'Waning gibbous', 'Last quarter', 'Waning crescent'], dayShort: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], qualities: { excellent: 'Excellent', good: 'Good' } },
 } as const;
 const exportTexts = {
   ca: { downloadTxt: 'Descarrega el TXT', downloadedTxt: '✓ TXT descarregat', downloadPdf: 'Descarrega el PDF', downloadedPdf: '✓ PDF descarregat', reportHint: 'Descarrega els resultats visibles sense fotografies.', periodSection: '1. Període temporal', filtersSection: '2. Filtres', month: 'Mes', days: 'Dies', selectedWeeklyPeriod: 'Període setmanal seleccionat', shiftPeriod: 'Desplaçament de dies', previousDay: 'Un dia abans', nextDay: 'Un dia després', year: 'Any', altitudeThreshold: 'Llindar d’altura', graphThreshold: 'Llindar', minimumVisibility: 'Hores mínimes sobre el llindar', meridianPass: 'Pas pel meridià', north: 'Nord', south: 'Sud', both: 'Nord i sud' },
@@ -133,26 +133,27 @@ const weekParts = (week: number) => {
       <label><input type="checkbox" value="north" data-meridian-filter checked /><span>{t.north}</span></label>
       <label><input type="checkbox" value="south" data-meridian-filter checked /><span>{t.south}</span></label>
     </div></div>
+    <div class="visibility-filter-modes">
+      <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
+        <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
+        <button type="button" data-visibility-layout="list" aria-pressed="false">{t.list}</button>
+      </nav>
+      {showPending && <nav class="visibility-filters" aria-label={t.title}>
+        <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
+        <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
+        <button type="button" data-visibility-filter="pending-all" aria-pressed="false">{t.allPending} <span>{pendingCount}</span></button>
+      </nav>}
+    </div>
     </div></fieldset>
 
     <div class="visibility-toolbar__downloads">
       <button class="report-action report-action--visibility" type="button" data-download-visibility-txt title={t.reportHint}><span class="report-action__icon report-action__icon--txt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5.5V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3v.7M9 5.5h6M8 5.5H6.8c-.7 0-1.3.6-1.3 1.3v12.4c0 .7.6 1.3 1.3 1.3h10.4c.7 0 1.3-.6 1.3-1.3V6.8c0-.7-.6-1.3-1.3-1.3H16M8.5 10h7M8.5 13.5h7M8.5 17h4.5" /></svg></span><span>{t.downloadTxt}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
       <button class="report-action report-action--visibility" type="button" data-download-visibility title={t.reportHint}><span class="report-action__icon report-action__icon--pdf" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h6.5L18 8v12.5H7zM13.5 3.5V8H18" /><text x="8.5" y="16.5">PDF</text></svg></span><span>{t.downloadPdf}</span><span class="visibility-output__check" aria-hidden="true">✓</span></button>
     </div>
-    <div class="visibility-toolbar__modes">
-      <nav class="visibility-layout" aria-label={t.display} data-visibility-layout-controls>
-        <button type="button" data-visibility-layout="photos" aria-pressed="true">{t.photos}</button>
-        <button type="button" data-visibility-layout="list" aria-pressed="false">{t.list}</button>
-      </nav>
-
-      {showPending && <nav class="visibility-filters" aria-label={t.title}>
-        <button type="button" data-visibility-filter="photographed" aria-pressed="true">{t.photographed} <span>{photographedCount}</span></button>
-        <button type="button" data-visibility-filter="pending" aria-pressed="false">{t.pending} <span>{pendingCount}</span></button>
-      </nav>}
-    </div></div>
+    </div>
 
     <div class="visibility-output">
-      <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span></p>
+      <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span> <span class="visibility-results__unfiltered" data-unfiltered-indicator hidden>{t.unfiltered}</span></p>
     </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
 
@@ -217,6 +218,7 @@ const weekParts = (week: number) => {
   const layoutControls = document.querySelector('[data-visibility-layout-controls]');
   const visibleCount = document.querySelector('[data-visible-count]');
   const visibleLabel = document.querySelector('[data-visible-label]');
+  const unfilteredIndicator = document.querySelector('[data-unfiltered-indicator]');
   const downloadTxtButton = document.querySelector('[data-download-visibility-txt]');
   const downloadReportButton = document.querySelector('[data-download-visibility]');
   const emptyMessage = document.querySelector('[data-visibility-empty]');
@@ -279,7 +281,7 @@ const weekParts = (week: number) => {
     selector.value = String(Math.max(1, Math.min(count, preferredWeek || 1)));
   };
   const requestedView = new URL(window.location.href).searchParams.get('view');
-  let currentView = showPending && requestedView === 'pending' ? 'pending' : 'photographed';
+  let currentView = showPending && ['pending', 'pending-all'].includes(requestedView) ? requestedView : 'photographed';
   const requestedLayout = new URL(window.location.href).searchParams.get('layout');
   let currentLayout = ['photos', 'list'].includes(requestedLayout) ? requestedLayout : 'photos';
   const requestedOffset = Number(new URL(window.location.href).searchParams.get('offset'));
@@ -457,11 +459,13 @@ const weekParts = (week: number) => {
     cards.forEach((card) => {
       const value = shiftedPeriodMetrics(card, year, week, dayOffset, altitudeThreshold);
       const [altitude, bestTimeUtc, hoursAboveThreshold, qualityCode, representativeNight] = value;
+      const allPending = currentView === 'pending-all';
       const meetsThreshold = hoursAboveThreshold >= minimumHours;
       const matchesConstellation = !selectedConstellation || card.dataset.constellation === selectedConstellation;
       const matchesMeridian = selectedMeridianSides.includes(card.dataset.meridianSide);
-      card.dataset.selected = String(meetsThreshold && matchesConstellation && matchesMeridian);
-      card.hidden = card.dataset.status !== currentView || !meetsThreshold || !matchesConstellation || !matchesMeridian;
+      const meetsFilters = meetsThreshold && matchesConstellation && matchesMeridian;
+      card.dataset.selected = String(meetsFilters);
+      card.hidden = allPending ? card.dataset.status !== 'pending' : card.dataset.status !== currentView || !meetsFilters;
       card.dataset.altitude = altitude;
       card.querySelector('[data-altitude]').textContent = `${altitude.toLocaleString(locale)}°`;
       card.querySelector('[data-best-time]').textContent = new Intl.DateTimeFormat(locale, { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' }).format(new Date(bestTimeUtc));
@@ -470,7 +474,7 @@ const weekParts = (week: number) => {
       const referenceNight = new Date(`${representativeNight}T12:00:00Z`);
       card.querySelector('[data-night]').textContent = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(referenceNight);
       const quality = card.querySelector('[data-quality]');
-      quality.hidden = !qualityCode;
+      quality.hidden = currentView === 'pending-all' || !qualityCode;
       quality.textContent = qualityCode ? t.qualities[qualityCode] : '';
       quality.className = qualityCode ? `quality quality--${qualityCode}` : '';
     });
@@ -487,7 +491,11 @@ const weekParts = (week: number) => {
     });
     pendingButtons.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
     document.querySelector('[data-pending-list]')?.append(...pendingButtons);
-    const counts = Object.fromEntries(['photographed', 'pending'].map((status) => [status, cards.filter((card) => card.dataset.status === status && card.dataset.selected === 'true').length]));
+    const counts = {
+      photographed: cards.filter((card) => card.dataset.status === 'photographed' && card.dataset.selected === 'true').length,
+      pending: cards.filter((card) => card.dataset.status === 'pending' && card.dataset.selected === 'true').length,
+      'pending-all': cards.filter((card) => card.dataset.status === 'pending').length,
+    };
     filterButtons.forEach((button) => {
       button.setAttribute('aria-pressed', String(button.dataset.visibilityFilter === currentView));
       button.querySelector('span').textContent = String(counts[button.dataset.visibilityFilter]);
@@ -495,10 +503,11 @@ const weekParts = (week: number) => {
     const currentCount = counts[currentView];
     visibleCount.textContent = String(currentCount);
     visibleLabel.textContent = currentCount === 1 ? t.selectedObject : t.selectedObjects;
+    unfilteredIndicator.hidden = currentView !== 'pending-all';
     downloadTxtButton.disabled = currentCount === 0;
     downloadReportButton.disabled = currentCount === 0;
     emptyMessage.hidden = currentCount !== 0;
-    cards.sort((a, b) => Number(b.dataset.altitude) - Number(a.dataset.altitude));
+    cards.sort((a, b) => currentView === 'pending-all' ? a.dataset.objectName.localeCompare(b.dataset.objectName, locale, { numeric: true }) : Number(b.dataset.altitude) - Number(a.dataset.altitude));
     grid.append(...cards);
     const visiblePendingButtons = pendingButtons.filter((button) => !button.hidden);
     const selectedPending = visiblePendingButtons.find((button) => button.getAttribute('aria-pressed') === 'true') ?? visiblePendingButtons[0];
@@ -910,7 +919,7 @@ const weekParts = (week: number) => {
   .visibility-guide-link svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
   .visibility-guide-link:hover, .visibility-guide-link:focus-visible { border-color: #438ea0; background: radial-gradient(circle at 90% 8%, rgba(67, 142, 160, .32), transparent 52%), rgba(67, 142, 160, .16); color: #99d2dd; transform: translateY(-1px); }
   .visibility-planner__location { margin: 0; color: var(--color-muted); font-family: var(--font-mono); font-size: .8rem; line-height: 1.5; text-align: right; }
-  .visibility-controls { display: grid; grid-template-areas: 'period filters' 'downloads modes'; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: .75rem 0 1rem; }
+  .visibility-controls { display: grid; grid-template-areas: 'period filters' 'downloads filters'; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: .75rem 0 1rem; }
   .visibility-toolbar { min-width: 0; margin: 0; padding: 1.1rem; border: 1px solid var(--color-border); border-radius: .9rem; background: linear-gradient(135deg, rgba(67,142,160,.09), var(--color-surface)); }
   .visibility-toolbar legend { padding: 0 .45rem; color: var(--color-text); font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
   .visibility-toolbar--period { grid-area: period; }
@@ -919,9 +928,10 @@ const weekParts = (week: number) => {
   .visibility-toolbar--filters { border-color: rgba(67,142,160,.34); }
   .visibility-filter-grid { display: grid; grid-template-columns: minmax(8rem, .85fr) minmax(10rem, 1.15fr); align-items: end; gap: .55rem .7rem; }
   .visibility-toolbar__downloads { grid-area: downloads; display: flex; align-items: center; justify-content: flex-end; gap: .55rem; min-width: 0; }
-  .visibility-toolbar__modes { grid-area: modes; display: flex; align-items: center; justify-content: flex-end; gap: .75rem; min-width: 0; }
-  .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { display: grid; grid-template-columns: 7.2rem 7.2rem; gap: .5rem; width: 14.9rem; }
-  .visibility-toolbar__modes .visibility-layout button, .visibility-toolbar__modes .visibility-filters button { width: 100%; text-align: left; }
+  .visibility-filter-modes { grid-column: 1 / -1; display: grid; gap: .5rem; margin-top: .25rem; padding-top: .75rem; border-top: 1px solid rgba(67,142,160,.25); }
+  .visibility-filter-modes .visibility-layout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; width: 100%; }
+  .visibility-filter-modes .visibility-filters { display: grid; grid-template-columns: minmax(7.2rem, .9fr) minmax(7.8rem, 1fr) minmax(10.5rem, 1.35fr); gap: .5rem; width: 100%; }
+  .visibility-filter-modes .visibility-layout button, .visibility-filter-modes .visibility-filters button { width: 100%; text-align: left; }
   .week-control { display: grid; gap: .22rem; margin: 0; }
   .week-control label, .week-control__field > span, .visibility-select-control span { color: var(--color-text); font-size: .7rem; font-weight: 700; line-height: 1.15; }
   .week-control__row { display: grid; grid-template-columns: 6.2rem minmax(10.5rem, 1.35fr) minmax(5.2rem, .72fr) minmax(4.7rem, .62fr); align-items: end; gap: .5rem; }
@@ -972,12 +982,12 @@ const weekParts = (week: number) => {
   .visibility-layout button:hover, .visibility-layout button:focus-visible,
   .visibility-filters button:hover, .visibility-filters button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
   @media (max-width: 1024px) {
-    .visibility-controls { grid-template-areas: 'period' 'downloads' 'filters' 'modes'; grid-template-columns: 1fr; }
-    .visibility-toolbar__modes { justify-content: flex-end; width: 100%; }
+    .visibility-controls { grid-template-areas: 'period' 'filters' 'downloads'; grid-template-columns: 1fr; }
   }
   .visibility-output { margin: -.35rem 0 .8rem; }
   .visibility-results { margin: 0; color: var(--color-muted); font-size: 1rem; }
   .visibility-results strong { color: var(--color-accent); font: 700 1.18rem var(--font-mono); }
+  .visibility-results__unfiltered { display: inline-flex; margin-left: .45rem; padding: .25rem .48rem; border: 1px solid rgba(85,217,179,.55); border-radius: 999px; background: rgba(85,217,179,.12); color: #75e3c4; font: 700 .66rem var(--font-mono); letter-spacing: .045em; vertical-align: middle; }
   .visibility-toolbar__downloads button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; min-height: 2rem; padding: .38rem .62rem; border: 1px solid rgba(67,142,160,.48); border-radius: .5rem; background: rgba(5,8,14,.42); color: #9bcbd5; font: 700 .68rem var(--font-sans); cursor: pointer; transition: border-color .16s ease, color .16s ease, background .16s ease; }
   .visibility-toolbar__downloads button:hover, .visibility-toolbar__downloads button:focus-visible { border-color: #438ea0; background: rgba(67,142,160,.16); color: #b3e1e9; }
   .visibility-output__check { width: .8rem; color: #75e3c4; opacity: 0; transform: scale(.6); transition: opacity .16s ease, transform .16s ease; }
@@ -1102,8 +1112,6 @@ const weekParts = (week: number) => {
     .visibility-filter-grid { grid-template-columns: 1fr; }
     .threshold-hours-control { grid-template-columns: 1fr 1fr; width: 100%; }
     .meridian-control { grid-column: auto; }
-    .visibility-toolbar__modes { justify-content: stretch; width: 100%; min-width: 0; }
-    .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { flex: 1 1 0; width: auto; }
     .visibility-layout { margin-left: 0; padding-left: 0; border-left: 0; }
     .visibility-planner__location { text-align: left; }
     .week-control__row { grid-template-columns: 6.2rem minmax(10.5rem, 1.35fr) minmax(5.2rem, .72fr) minmax(4.7rem, .62fr); }
@@ -1145,8 +1153,7 @@ const weekParts = (week: number) => {
     .week-control select, .week-control__range, .period-shift__range { padding-right: .35rem; padding-left: .35rem; }
     .week-control label, .week-control__field > span, .period-shift__label { overflow: hidden; font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
     .threshold-hours-control { grid-template-columns: 1fr; }
-    .visibility-toolbar__modes { flex-direction: column; align-items: stretch; gap: .5rem; }
-    .visibility-toolbar__modes .visibility-layout, .visibility-toolbar__modes .visibility-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+    .visibility-filter-modes .visibility-filters { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) { .visibility-card--return-focus { animation: none; } }
 </style>

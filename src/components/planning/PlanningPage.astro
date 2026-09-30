@@ -117,7 +117,7 @@ const objects = objectsData
   .filter((object) => import.meta.env.DEV || PUBLIC_PENDING_OBJECTS || object.status === 'photographed')
   .map((object) => {
     const photo = latestPhotoByObject.get(object.id);
-    return { id: object.id, catalogName: object.catalogName, displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, angularSizeArcmin: object.angularSizeArcmin, angularSizeSource: object.angularSizeSource, source: object.status === 'pending' ? 'pending' : 'gallery', photoSrc: photo ? withBase(`imagenes/cielo-profundo/${photo.data.imatge}`, base) : undefined };
+    return { id: object.id, catalogName: object.catalogName, aliases: object.aliases ?? [], displayCatalogName: formatCatalogDesignations(object.catalogName), commonName: formatCatalogDesignations(object.commonNames?.[lang] ?? photoAlias(object.id, object.catalogName)), raDeg: object.raDeg, decDeg: object.decDeg, angularSizeArcmin: object.angularSizeArcmin, angularSizeSource: object.angularSizeSource, source: object.status === 'pending' ? 'pending' : 'gallery', photoSrc: photo ? withBase(`imagenes/cielo-profundo/${photo.data.imatge}`, base) : undefined };
   });
 const photographed = objects.filter((object) => object.source === 'gallery');
 const pending = objects.filter((object) => object.source === 'pending');
@@ -617,6 +617,8 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     if (objectCoordinatesSexagesimal) objectCoordinatesSexagesimal.textContent = hasCoordinates ? `AR ${formatRaHms(coordinateObject.raDeg)} · Dec ${formatDecDms(coordinateObject.decDeg)}` : '';
   };
   const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '').toLocaleLowerCase();
+  let localObjectSource: 'gallery' | 'pending' = 'gallery';
+  const objectMatchesQuery = (object: any, query: string) => normalizeSearch(`${objectLabel(object)} ${object.catalogName} ${object.id} ${(object.aliases ?? []).join(' ')}`).includes(query);
   const syncLocalObjectSearch = () => {
     const selected = config.objects.find((object: any) => object.id === field('localObject').value);
     localObjectSearch.value = selected ? objectLabel(selected) : '';
@@ -645,6 +647,18 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     if (localObjectResults) localObjectResults.hidden = true;
     localObjectSearch.setAttribute('aria-expanded', 'false');
   };
+  const selectLocalObjectSource = (source: 'gallery' | 'pending', event: Event) => {
+    if (event.type === 'pointerdown') event.preventDefault();
+    localObjectSource = source;
+    localObjectSearch.value = '';
+    field('localObject').value = '';
+    field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
+    syncPhotoLink();
+    syncObjectAngularSize();
+    renderLocalObjectResults(true);
+    if (event.type === 'pointerdown') localObjectSearch.focus({ preventScroll: true });
+    else localObjectResults.querySelector<HTMLButtonElement>(`[data-object-source="${source}"]`)?.focus();
+  };
   const positionMobileObjectResults = () => {
     if (!localObjectResults || !window.matchMedia('(max-width: 520px)').matches || localObjectResults.hidden) return;
     const viewport = window.visualViewport;
@@ -662,6 +676,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   };
   const chooseLocalObject = (selected: any) => {
     if (!selected) return;
+    localObjectSource = selected.source;
     field('localObject').value = selected.id;
     localObjectSearch.value = objectLabel(selected);
     field('localObject').dispatchEvent(new Event('change', { bubbles: true }));
@@ -671,31 +686,61 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   };
   const matchingLocalObjects = (showAll = false) => {
     const query = normalizeSearch(localObjectSearch.value);
-    if (showAll || !query) return config.objects;
-    return config.objects
-      .filter((object: any) => normalizeSearch(`${objectLabel(object)} ${object.catalogName} ${object.id}`).includes(query));
+    const sourceObjects = config.objects.filter((object: any) => object.source === localObjectSource);
+    if (showAll || !query) return sourceObjects;
+    const matches = sourceObjects.filter((object: any) => objectMatchesQuery(object, query));
+    if (matches.length) return matches;
+    const alternateSource = localObjectSource === 'gallery' ? 'pending' : 'gallery';
+    const alternateMatches = config.objects.filter((object: any) => object.source === alternateSource && objectMatchesQuery(object, query));
+    if (alternateMatches.length) localObjectSource = alternateSource;
+    return alternateMatches;
   };
   const renderLocalObjectResults = (showAll = false) => {
     if (!localObjectResults) return;
     if (window.matchMedia('(max-width: 520px)').matches && localObjectResults.parentElement !== document.body) document.body.append(localObjectResults);
     const matches = matchingLocalObjects(showAll);
     localObjectResults.replaceChildren();
+    const sourceTabs = document.createElement('nav');
+    sourceTabs.className = 'planning-object-source-tabs';
+    sourceTabs.setAttribute('aria-label', config.texts.localObject);
+    (['gallery', 'pending'] as const).forEach((source) => {
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.dataset.objectSource = source;
+      tab.setAttribute('aria-pressed', String(source === localObjectSource));
+      const count = config.objects.filter((object: any) => object.source === source).length;
+      tab.textContent = `${source === 'gallery' ? config.texts.gallery : config.texts.pending} ${count}`;
+      tab.addEventListener('pointerdown', (event) => selectLocalObjectSource(source, event));
+      tab.addEventListener('click', (event) => selectLocalObjectSource(source, event));
+      sourceTabs.append(tab);
+    });
+    localObjectResults.append(sourceTabs);
     if (!matches.length) {
       const empty = document.createElement('p');
       empty.className = 'planning-object-results__empty';
       empty.textContent = config.texts.noObjectMatches;
       localObjectResults.append(empty);
     } else {
-      matches.forEach((object: any) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.role = 'option';
-        button.dataset.objectId = object.id;
-        button.textContent = objectLabel(object);
-        button.addEventListener('pointerdown', (event) => event.preventDefault());
-        button.addEventListener('click', () => chooseLocalObject(object));
-        localObjectResults.append(button);
-      });
+      matches
+        .sort((a: any, b: any) => objectLabel(a).localeCompare(objectLabel(b), config.lang, { numeric: true }))
+        .forEach((object: any) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.role = 'option';
+          button.dataset.objectId = object.id;
+          const label = document.createElement('span');
+          label.textContent = objectLabel(object);
+          button.append(label);
+          if (object.source === 'pending') {
+            const badge = document.createElement('small');
+            badge.textContent = config.texts.pending;
+            button.append(badge);
+          }
+          button.addEventListener('pointerdown', (event) => event.preventDefault());
+          button.addEventListener('mousedown', (event) => event.preventDefault());
+          button.addEventListener('click', () => chooseLocalObject(object));
+          localObjectResults.append(button);
+        });
     }
     localObjectResults.hidden = false;
     localObjectSearch.setAttribute('aria-expanded', 'true');
@@ -707,7 +752,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
   localObjectSearch.addEventListener('touchstart', () => renderLocalObjectResults(true), { passive: true });
   localObjectSearch.addEventListener('focus', () => renderLocalObjectResults(true));
   localObjectSearch.addEventListener('click', () => renderLocalObjectResults(true));
-  localObjectSearch.addEventListener('input', renderLocalObjectResults);
+  localObjectSearch.addEventListener('input', () => renderLocalObjectResults());
   localObjectSearch.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { closeLocalObjectResults(); return; }
     if (event.key === 'Enter') {
@@ -717,7 +762,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       if (localObjectResults?.hidden) renderLocalObjectResults();
-      localObjectResults?.querySelector<HTMLButtonElement>('button')?.focus();
+      localObjectResults?.querySelector<HTMLButtonElement>('[role="option"]')?.focus();
     }
   });
   localObjectSearch.addEventListener('change', () => {
@@ -725,7 +770,9 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     const exact = config.objects.find((object: any) => normalizeSearch(objectLabel(object)) === query);
     if (exact) chooseLocalObject(exact);
   });
-  localObjectSearch.addEventListener('blur', () => window.setTimeout(closeLocalObjectResults, 120));
+  localObjectSearch.addEventListener('blur', () => window.setTimeout(() => {
+    if (document.activeElement !== localObjectSearch && !localObjectResults?.contains(document.activeElement)) closeLocalObjectResults();
+  }, 120));
 
   const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-object-mode]')];
   const modePanels = [...root.querySelectorAll<HTMLElement>('[data-object-panel]')];
