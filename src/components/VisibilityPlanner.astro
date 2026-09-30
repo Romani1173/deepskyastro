@@ -571,7 +571,9 @@ const weekParts = (week: number) => {
     const selectedConstellation = constellationSelector?.value || t.allConstellations;
     const selectedMeridianSides = meridianInputs.filter((input) => input.checked).map((input) => input.value);
     const selectedMeridian = selectedMeridianSides.length === 2 ? t.both : selectedMeridianSides[0] === 'north' ? t.north : t.south;
-    const reportCards = cards.filter((card) => card.dataset.status === currentView && card.dataset.selected === 'true');
+    const reportCards = cards.filter((card) => !card.hidden);
+    const unfilteredPending = currentView === 'pending-all';
+    const selectionLabel = unfilteredPending ? t.allPending : currentView === 'photographed' ? t.photographed : t.pending;
     const labels = {
       title: { ca: 'INFORME DE VISIBILITAT', es: 'INFORME DE VISIBILIDAD', en: 'VISIBILITY REPORT' }[lang],
       generated: { ca: 'Generat', es: 'Generado', en: 'Generated' }[lang],
@@ -585,11 +587,13 @@ const weekParts = (week: number) => {
       `${labels.generated}: ${new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeStyle: 'short' }).format(new Date())}`,
       `${t.week}: ${week}/${year} · ${formatPeriodRange(year, week, dayOffset)}`,
       t.location,
-      `${labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending}`,
-      `${t.constellation}: ${selectedConstellation}`,
-      `${t.meridianPass}: ${selectedMeridian}`,
-      `${t.altitudeThreshold}: ${altitudeThreshold}°`,
-      `${t.minimumVisibility}: ${minimumHours} h`,
+      `${labels.selection}: ${selectionLabel}${unfilteredPending ? ` · ${t.unfiltered}` : ''}`,
+      ...(!unfilteredPending ? [
+        `${t.constellation}: ${selectedConstellation}`,
+        `${t.meridianPass}: ${selectedMeridian}`,
+        `${t.altitudeThreshold}: ${altitudeThreshold}°`,
+        `${t.minimumVisibility}: ${minimumHours} h`,
+      ] : []),
       `${labels.objects}: ${reportCards.length}`,
       '',
     ];
@@ -602,11 +606,11 @@ const weekParts = (week: number) => {
         `   ${t.bestTime}: ${card.querySelector('[data-best-time]')?.textContent?.trim() || '—'} (${t.localTime})`,
         `   ${t.usefulTime.replace('{threshold}', String(altitudeThreshold))}: ${card.querySelector('[data-hours]')?.textContent?.trim() || '—'}`,
         `   ${t.night}: ${card.querySelector('[data-night]')?.textContent?.trim() || '—'}`,
-        `   ${labels.quality}: ${quality || '—'}`,
+        ...(!unfilteredPending ? [`   ${labels.quality}: ${quality || '—'}`] : []),
         '',
       );
     });
-    return { lines, reportCards, labels, week, year, altitudeThreshold, minimumHours, selectedConstellation, selectedMeridian };
+    return { lines, reportCards, labels, week, year, altitudeThreshold, minimumHours, selectedConstellation, selectedMeridian, selectionLabel, unfilteredPending };
   };
   const confirmButton = (button, textValue) => {
     const originalLabel = button.getAttribute('aria-label');
@@ -661,8 +665,8 @@ const weekParts = (week: number) => {
       context.fillStyle = '#405268'; context.font = '21px Arial';
       context.fillText(`${t.week}: ${report.week}/${report.year} · ${formatPeriodRange(report.year, report.week, dayOffset)}`, margin, 154);
       context.fillText(t.location, margin, 188);
-      context.fillText(`${report.labels.selection}: ${currentView === 'photographed' ? t.photographed : t.pending} · ${t.constellation}: ${report.selectedConstellation} · ${t.meridianPass}: ${report.selectedMeridian}`, margin, 222);
-      context.fillText(`${t.altitudeThreshold}: ${report.altitudeThreshold}° · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 240);
+      context.fillText(`${report.labels.selection}: ${report.selectionLabel}${report.unfilteredPending ? ` · ${t.unfiltered}` : ` · ${t.constellation}: ${report.selectedConstellation} · ${t.meridianPass}: ${report.selectedMeridian}`}`, margin, 222);
+      if (!report.unfilteredPending) context.fillText(`${t.altitudeThreshold}: ${report.altitudeThreshold}° · ${t.minimumVisibility}: ${report.minimumHours} h`, margin, 240);
       let y = 285;
       pageCards.forEach((card, cardIndex) => {
         const absoluteIndex = pageIndex * itemsPerPage + cardIndex + 1;
@@ -674,7 +678,7 @@ const weekParts = (week: number) => {
           `${t.bestTime}: ${card.querySelector('[data-best-time]')?.textContent?.trim() || '—'}`,
           `${t.usefulTime.replace('{threshold}', String(report.altitudeThreshold))}: ${card.querySelector('[data-hours]')?.textContent?.trim() || '—'}`,
           `${t.night}: ${card.querySelector('[data-night]')?.textContent?.trim() || '—'}`,
-          `${report.labels.quality}: ${card.querySelector('[data-quality]')?.textContent?.trim() || '—'}`,
+          ...(!report.unfilteredPending ? [`${report.labels.quality}: ${card.querySelector('[data-quality]')?.textContent?.trim() || '—'}`] : []),
         ];
         context.fillText(values.join('  ·  '), margin, y + 31, pageWidth - margin * 2);
         context.strokeStyle = '#dce4eb'; context.beginPath(); context.moveTo(margin, y + 52); context.lineTo(pageWidth - margin, y + 52); context.stroke();
