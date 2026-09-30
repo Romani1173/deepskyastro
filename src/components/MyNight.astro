@@ -7,6 +7,7 @@ import { PUBLIC_PENDING_OBJECTS } from '../config/features';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import { getCollection } from 'astro:content';
 import { photoText } from '../photoTranslations';
+import ToolFeedbackDemo from './ToolFeedbackDemo.astro';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -244,6 +245,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
           </header>
           <div class="my-night__calculation-list" data-plan-calculation-list></div>
         </section>
+        {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="my-night" />}
       </section>
     </div>
   </main>
