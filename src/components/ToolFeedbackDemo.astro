@@ -8,6 +8,11 @@ interface Props {
 }
 
 const { lang, tool, allowNegativeBack = false } = Astro.props;
+const feedbackResultsHref = {
+  ca: '/laboratori/resultats-valoracio/',
+  es: '/es/laboratorio/resultados-valoracion/',
+  en: '/en/lab/feedback-results/',
+}[lang];
 const copy = {
   ca: {
     question: 'T’ha estat útil aquesta eina?', yes: 'Sí, m’ha estat útil', no: 'No, cal millorar-la',
@@ -15,7 +20,7 @@ const copy = {
     missing: 'Trobo a faltar una funció', broken: 'No ha funcionat com esperava',
     other: 'Un altre motiu', comment: 'Vols concretar-ho? (opcional)',
     send: 'Envia la valoració', back: 'Torna sense valorar', thanks: 'Gràcies per ajudar-me a millorar aquesta eina.',
-    change: 'Canvia la resposta', preview: 'Resum privat de la prova',
+    change: 'Canvia la resposta', preview: 'Resum privat de la prova', dashboard: 'Obre l’analitzador local',
     note: 'Prototip local: només es desa una resposta per eina en aquest navegador. No s’envia res a Internet.',
     positive: 'positives', negative: 'negatives', empty: 'Sense resposta',
     tools: { visibility: 'Visibilitat', planning: 'Planificació', analyser: 'Analitzador', 'my-night': 'La meva nit' },
@@ -26,7 +31,7 @@ const copy = {
     missing: 'Echo en falta una función', broken: 'No funcionó como esperaba',
     other: 'Otro motivo', comment: '¿Quieres concretarlo? (opcional)',
     send: 'Enviar valoración', back: 'Volver sin valorar', thanks: 'Gracias por ayudarme a mejorar esta herramienta.',
-    change: 'Cambiar respuesta', preview: 'Resumen privado de la prueba',
+    change: 'Cambiar respuesta', preview: 'Resumen privado de la prueba', dashboard: 'Abrir el analizador local',
     note: 'Prototipo local: solo se guarda una respuesta por herramienta en este navegador. No se envía nada a Internet.',
     positive: 'positivos', negative: 'negativos', empty: 'Sin respuesta',
     tools: { visibility: 'Visibilidad', planning: 'Planificación', analyser: 'Analizador', 'my-night': 'Mi noche' },
@@ -37,7 +42,7 @@ const copy = {
     missing: 'A feature is missing', broken: 'It did not work as expected',
     other: 'Another reason', comment: 'Would you like to explain? (optional)',
     send: 'Send feedback', back: 'Go back without rating', thanks: 'Thank you for helping me improve this tool.',
-    change: 'Change response', preview: 'Private test summary',
+    change: 'Change response', preview: 'Private test summary', dashboard: 'Open the local analyser',
     note: 'Local prototype: one response per tool is stored in this browser only. Nothing is sent online.',
     positive: 'positive', negative: 'negative', empty: 'No response',
     tools: { visibility: 'Visibility', planning: 'Planning', analyser: 'Equipment analyser', 'my-night': 'My night' },
@@ -70,11 +75,12 @@ const copy = {
     <summary>{copy.preview}</summary>
     <p>{copy.note}</p>
     <ul data-feedback-summary></ul>
+    <a class="tool-feedback-demo__dashboard" href={feedbackResultsHref}>{copy.dashboard} →</a>
   </details>
 </section>
 
 <script>
-  type Vote = { vote: 'up' | 'down'; reason?: string; comment?: string };
+  type Vote = { vote: 'up' | 'down'; reason?: string; comment?: string; createdAt?: string };
   type Tool = 'visibility' | 'planning' | 'analyser' | 'my-night';
   const key = 'deepskyastro-feedback-demo-v1';
   const labels = {
@@ -116,7 +122,7 @@ const copy = {
     };
     root.querySelectorAll<HTMLButtonElement>('[data-feedback-vote]').forEach((button) => button.addEventListener('click', () => {
       if (button.dataset.feedbackVote === 'up') {
-        save({ ...read(), [tool]: { vote: 'up' } });
+        save({ ...read(), [tool]: { vote: 'up', createdAt: new Date().toISOString() } });
         render();
       } else {
         choices.hidden = true;
@@ -129,7 +135,7 @@ const copy = {
       const values = new FormData(form);
       const reason = String(values.get('reason') ?? '');
       if (!reason) return;
-      save({ ...read(), [tool]: { vote: 'down', reason, comment: String(values.get('comment') ?? '').trim() } });
+      save({ ...read(), [tool]: { vote: 'down', reason, comment: String(values.get('comment') ?? '').trim(), createdAt: new Date().toISOString() } });
       render();
     });
     root.querySelector<HTMLButtonElement>('[data-feedback-back]')?.addEventListener('click', () => {
@@ -174,6 +180,7 @@ const copy = {
   .tool-feedback-demo__preview summary{cursor:pointer}
   .tool-feedback-demo__preview p{margin:.6rem 0}
   .tool-feedback-demo__preview ul{margin:.4rem 0 0;padding-left:1.2rem}
+  .tool-feedback-demo__dashboard{display:inline-flex;margin-top:.75rem;color:#eef879;font-weight:700;text-decoration:none}.tool-feedback-demo__dashboard:hover,.tool-feedback-demo__dashboard:focus-visible{color:#f7ffad;text-decoration:underline;text-underline-offset:.18rem}
   .tool-feedback-demo [hidden]{display:none!important}
   @media(max-width:520px){.tool-feedback-demo{padding:1rem}.tool-feedback-demo__choices{display:grid}.tool-feedback-demo__choices button{text-align:left}}
 </style>
