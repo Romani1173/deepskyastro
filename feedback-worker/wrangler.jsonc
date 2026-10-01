@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "deepskyastro-feedback",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://deepskyastro.com,https://www.deepskyastro.com,https://romani1173.github.io,http://127.0.0.1:4321,http://localhost:4321"
+  },
+  "d1_databases": [
+    {
+      "binding": "FEEDBACK_DB",
+      "database_name": "deepskyastro-feedback",
+      "database_id": "cc1ca55c-3697-43d3-b478-44349d10abc1",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

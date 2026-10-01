@@ -1,0 +1,17 @@
+{
+  "name": "deepskyastro-feedback-worker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "node --test test/*.test.mjs",
+    "secrets:configure": "node scripts/configure-secrets.mjs",
+    "db:migrate:local": "wrangler d1 migrations apply deepskyastro-feedback --local",
+    "db:migrate:remote": "wrangler d1 migrations apply deepskyastro-feedback --remote"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.2"
+  }
+}

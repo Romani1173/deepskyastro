@@ -197,7 +197,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
 
       <section class="my-night__panel my-night__plan" data-plan hidden>
         <header><div><h2>{t.plan}</h2><p>{t.reference}</p></div></header>
-        {import.meta.env.DEV && <a class="my-night__feedback-shortcut" href="#feedback-my-night">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>}
+        <a class="my-night__feedback-shortcut" href="#feedback-my-night">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>
         <div class="my-night__plan-settings">
           <label><span>{t.selectedDay}</span><span class="my-night__plan-date"><input type="date" data-plan-date /><button type="button" data-plan-date-picker aria-label={t.selectedDay}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3M4.5 8.5h15M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" /></svg></button></span></label>
           <label><span>{t.threshold}</span><span class="my-night__plan-threshold"><button type="button" data-plan-threshold-step="-1" aria-label={`${t.threshold} − 5`}>−</button><input type="number" min="0" max="90" step="5" data-plan-threshold /><b>°</b><button type="button" data-plan-threshold-step="1" aria-label={`${t.threshold} + 5`}>+</button></span></label>
@@ -246,7 +246,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
           </header>
           <div class="my-night__calculation-list" data-plan-calculation-list></div>
         </section>
-        {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="my-night" allowNegativeBack />}
+        <ToolFeedbackDemo lang={lang} tool="my-night" allowNegativeBack />
       </section>
     </div>
   </main>

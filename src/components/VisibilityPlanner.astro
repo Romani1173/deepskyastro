@@ -155,7 +155,7 @@ const weekParts = (week: number) => {
 
     <div class="visibility-output">
       <p class="visibility-results" aria-live="polite"><strong data-visible-count>—</strong> <span data-visible-label>{t.selectedObjects}</span> <span class="visibility-results__unfiltered" data-unfiltered-indicator hidden>{t.unfiltered}</span></p>
-      {import.meta.env.DEV && <a class="visibility-feedback-shortcut" href="#feedback-visibility">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>}
+      <a class="visibility-feedback-shortcut" href="#feedback-visibility">{lang === 'ca' ? 'Valora aquesta eina ↓' : lang === 'es' ? 'Valorar esta herramienta ↓' : 'Rate this tool ↓'}</a>
     </div>
     <p class="visibility-empty" data-visibility-empty hidden>{t.noResults}</p>
 
@@ -187,7 +187,7 @@ const weekParts = (week: number) => {
         </article>;
       })}
     </div>
-    {import.meta.env.DEV && <ToolFeedbackDemo lang={lang} tool="visibility" allowNegativeBack />}
+    <ToolFeedbackDemo lang={lang} tool="visibility" allowNegativeBack />
     <dialog class="visibility-chart" data-visibility-chart>
       <div class="visibility-chart__header"><div><p data-chart-kicker>{t.annualChart}</p><h2 data-chart-title></h2></div><button type="button" data-close-chart aria-label={t.close}>×</button></div>
       <nav class="visibility-chart__tabs" data-chart-tabs hidden><button type="button" data-chart-mode="annual" aria-pressed="true">{t.annual}</button><button type="button" data-chart-mode="night" aria-pressed="false">{t.selectedNight}</button></nav>

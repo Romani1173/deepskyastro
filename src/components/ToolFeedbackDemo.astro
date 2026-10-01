@@ -8,11 +8,7 @@ interface Props {
 }
 
 const { lang, tool, allowNegativeBack = false } = Astro.props;
-const feedbackResultsHref = {
-  ca: '/laboratori/resultats-valoracio/',
-  es: '/es/laboratorio/resultados-valoracion/',
-  en: '/en/lab/feedback-results/',
-}[lang];
+const feedbackApiUrl = import.meta.env.PUBLIC_FEEDBACK_API_URL ?? 'https://deepskyastro-feedback.jjromero1173.workers.dev';
 const copy = {
   ca: {
     question: 'T’ha estat útil aquesta eina?', yes: 'Sí, m’ha estat útil', no: 'No, cal millorar-la',
@@ -20,10 +16,7 @@ const copy = {
     missing: 'Trobo a faltar una funció', broken: 'No ha funcionat com esperava',
     other: 'Un altre motiu', comment: 'Vols concretar-ho? (opcional)',
     send: 'Envia la valoració', back: 'Torna sense valorar', thanks: 'Gràcies per ajudar-me a millorar aquesta eina.',
-    change: 'Canvia la resposta', preview: 'Resum privat de la prova', dashboard: 'Obre l’analitzador local',
-    note: 'Prototip local: només es desa una resposta per eina en aquest navegador. No s’envia res a Internet.',
-    positive: 'positives', negative: 'negatives', empty: 'Sense resposta',
-    tools: { visibility: 'Visibilitat', planning: 'Planificació', analyser: 'Analitzador', 'my-night': 'La meva nit' },
+    change: 'Canvia la resposta', sending: 'Enviant…', error: 'No s’ha pogut enviar. Torna-ho a provar.',
   },
   es: {
     question: '¿Te ha resultado útil esta herramienta?', yes: 'Sí, me ha resultado útil', no: 'No, podría mejorar',
@@ -31,10 +24,7 @@ const copy = {
     missing: 'Echo en falta una función', broken: 'No funcionó como esperaba',
     other: 'Otro motivo', comment: '¿Quieres concretarlo? (opcional)',
     send: 'Enviar valoración', back: 'Volver sin valorar', thanks: 'Gracias por ayudarme a mejorar esta herramienta.',
-    change: 'Cambiar respuesta', preview: 'Resumen privado de la prueba', dashboard: 'Abrir el analizador local',
-    note: 'Prototipo local: solo se guarda una respuesta por herramienta en este navegador. No se envía nada a Internet.',
-    positive: 'positivos', negative: 'negativos', empty: 'Sin respuesta',
-    tools: { visibility: 'Visibilidad', planning: 'Planificación', analyser: 'Analizador', 'my-night': 'Mi noche' },
+    change: 'Cambiar respuesta', sending: 'Enviando…', error: 'No se ha podido enviar. Inténtalo de nuevo.',
   },
   en: {
     question: 'Was this tool useful to you?', yes: 'Yes, it was useful', no: 'No, it could be improved',
@@ -42,15 +32,12 @@ const copy = {
     missing: 'A feature is missing', broken: 'It did not work as expected',
     other: 'Another reason', comment: 'Would you like to explain? (optional)',
     send: 'Send feedback', back: 'Go back without rating', thanks: 'Thank you for helping me improve this tool.',
-    change: 'Change response', preview: 'Private test summary', dashboard: 'Open the local analyser',
-    note: 'Local prototype: one response per tool is stored in this browser only. Nothing is sent online.',
-    positive: 'positive', negative: 'negative', empty: 'No response',
-    tools: { visibility: 'Visibility', planning: 'Planning', analyser: 'Equipment analyser', 'my-night': 'My night' },
+    change: 'Change response', sending: 'Sending…', error: 'Your feedback could not be sent. Please try again.',
   },
 }[lang];
 ---
 
-<section class="tool-feedback-demo" id={`feedback-${tool}`} data-tool-feedback={tool} data-lang={lang} aria-label={copy.question}>
+<section class="tool-feedback-demo" id={`feedback-${tool}`} data-tool-feedback={tool} data-lang={lang} data-feedback-api={feedbackApiUrl} data-sending={copy.sending} data-error={copy.error} aria-label={copy.question}>
   <p class="tool-feedback-demo__question">{copy.question}</p>
   <div class="tool-feedback-demo__choices" data-feedback-choices>
     <button type="button" data-feedback-vote="up" aria-label={copy.yes}><span aria-hidden="true">👍</span> {copy.yes}</button>
@@ -71,24 +58,14 @@ const copy = {
     </div>
   </form>
   <p class="tool-feedback-demo__thanks" data-feedback-thanks hidden>{copy.thanks} <button type="button" data-feedback-change>{copy.change}</button></p>
-  <details class="tool-feedback-demo__preview">
-    <summary>{copy.preview}</summary>
-    <p>{copy.note}</p>
-    <ul data-feedback-summary></ul>
-    <a class="tool-feedback-demo__dashboard" href={feedbackResultsHref}>{copy.dashboard} →</a>
-  </details>
+  <p class="tool-feedback-demo__status" data-feedback-status role="status" hidden></p>
 </section>
 
 <script>
   type Vote = { vote: 'up' | 'down'; reason?: string; comment?: string; createdAt?: string };
   type Tool = 'visibility' | 'planning' | 'analyser' | 'my-night';
-  const key = 'deepskyastro-feedback-demo-v1';
-  const labels = {
-    ca: { tools: { visibility: 'Visibilitat', planning: 'Planificació', analyser: 'Analitzador', 'my-night': 'La meva nit' }, empty: 'Sense resposta', reasons: { confusing: 'El resultat no és clar', missing: 'Trobo a faltar una funció', broken: 'No ha funcionat com esperava', other: 'Un altre motiu' } },
-    es: { tools: { visibility: 'Visibilidad', planning: 'Planificación', analyser: 'Analizador', 'my-night': 'Mi noche' }, empty: 'Sin respuesta', reasons: { confusing: 'El resultado no está claro', missing: 'Echo en falta una función', broken: 'No funcionó como esperaba', other: 'Otro motivo' } },
-    en: { tools: { visibility: 'Visibility', planning: 'Planning', analyser: 'Equipment analyser', 'my-night': 'My night' }, empty: 'No response', reasons: { confusing: 'The result is unclear', missing: 'A feature is missing', broken: 'It did not work as expected', other: 'Another reason' } },
-  } as const;
-  const tools: Tool[] = ['visibility', 'planning', 'analyser', 'my-night'];
+  const key = 'deepskyastro-feedback-v1';
+  const visitorKey = 'deepskyastro-feedback-visitor-v1';
   const read = (): Partial<Record<Tool, Vote>> => {
     try {
       const value = JSON.parse(localStorage.getItem(key) ?? '{}');
@@ -96,60 +73,116 @@ const copy = {
     } catch { return {}; }
   };
   const save = (votes: Partial<Record<Tool, Vote>>) => {
-    try { localStorage.setItem(key, JSON.stringify(votes)); } catch { /* The demo remains usable without storage. */ }
+    try { localStorage.setItem(key, JSON.stringify(votes)); } catch { /* The form remains usable without storage. */ }
+  };
+  const visitorId = () => {
+    try {
+      const stored = localStorage.getItem(visitorKey);
+      if (stored) return stored;
+      const created = crypto.randomUUID().replaceAll('-', '');
+      localStorage.setItem(visitorKey, created);
+      return created;
+    } catch {
+      return crypto.randomUUID().replaceAll('-', '');
+    }
   };
   document.querySelectorAll<HTMLElement>('[data-tool-feedback]').forEach((root) => {
     const tool = root.dataset.toolFeedback as Tool;
-    const lang = root.dataset.lang as keyof typeof labels;
+    const lang = root.dataset.lang ?? 'es';
+    const apiUrl = root.dataset.feedbackApi ?? '';
     const choices = root.querySelector<HTMLElement>('[data-feedback-choices]')!;
     const form = root.querySelector<HTMLFormElement>('[data-feedback-form]')!;
     const thanks = root.querySelector<HTMLElement>('[data-feedback-thanks]')!;
-    const list = root.querySelector<HTMLElement>('[data-feedback-summary]')!;
+    const status = root.querySelector<HTMLElement>('[data-feedback-status]')!;
+    const controls = [...root.querySelectorAll<HTMLButtonElement>('button')];
+    const setBusy = (busy: boolean) => controls.forEach((control) => { control.disabled = busy; });
+    const showStatus = (message = '', error = false) => {
+      status.textContent = message;
+      status.hidden = !message;
+      status.classList.toggle('is-error', error);
+    };
+    const request = async (method: 'POST' | 'DELETE', vote?: Vote) => {
+      const response = await fetch(`${apiUrl}/v1/feedback`, {
+        method,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          visitorId: visitorId(), tool, language: lang, pagePath: location.pathname,
+          website: '', ...(vote ?? {}),
+        }),
+      });
+      if (!response.ok) throw new Error(`feedback_${response.status}`);
+    };
     const render = () => {
       const votes = read();
       choices.hidden = Boolean(votes[tool]);
       form.hidden = true;
       thanks.hidden = !votes[tool];
-      list.replaceChildren(...tools.map((id) => {
-        const item = document.createElement('li');
-        const vote = votes[id];
-        const reason = vote?.reason && vote.reason in labels[lang].reasons
-          ? labels[lang].reasons[vote.reason as keyof typeof labels[typeof lang]['reasons']]
-          : '';
-        item.textContent = `${labels[lang].tools[id]}: ${vote ? (vote.vote === 'up' ? '👍 1 · 👎 0' : '👍 0 · 👎 1') : labels[lang].empty}${reason ? ` · ${reason}` : ''}${vote?.comment ? ` · “${vote.comment}”` : ''}`;
-        return item;
-      }));
     };
-    root.querySelectorAll<HTMLButtonElement>('[data-feedback-vote]').forEach((button) => button.addEventListener('click', () => {
+    root.querySelectorAll<HTMLButtonElement>('[data-feedback-vote]').forEach((button) => button.addEventListener('click', async () => {
       if (button.dataset.feedbackVote === 'up') {
-        save({ ...read(), [tool]: { vote: 'up', createdAt: new Date().toISOString() } });
-        render();
+        const vote: Vote = { vote: 'up', createdAt: new Date().toISOString() };
+        setBusy(true);
+        showStatus(root.dataset.sending);
+        try {
+          await request('POST', vote);
+          save({ ...read(), [tool]: vote });
+          showStatus();
+          render();
+        } catch {
+          showStatus(root.dataset.error, true);
+        } finally {
+          setBusy(false);
+        }
       } else {
+        showStatus();
         choices.hidden = true;
         form.hidden = false;
         form.querySelector<HTMLInputElement>('input[name="reason"]')?.focus();
       }
     }));
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const values = new FormData(form);
       const reason = String(values.get('reason') ?? '');
       if (!reason) return;
-      save({ ...read(), [tool]: { vote: 'down', reason, comment: String(values.get('comment') ?? '').trim(), createdAt: new Date().toISOString() } });
-      render();
+      const vote: Vote = { vote: 'down', reason, comment: String(values.get('comment') ?? '').trim(), createdAt: new Date().toISOString() };
+      setBusy(true);
+      showStatus(root.dataset.sending);
+      try {
+        await request('POST', vote);
+        save({ ...read(), [tool]: vote });
+        showStatus();
+        render();
+      } catch {
+        showStatus(root.dataset.error, true);
+      } finally {
+        setBusy(false);
+      }
     });
     root.querySelector<HTMLButtonElement>('[data-feedback-back]')?.addEventListener('click', () => {
       form.reset();
       form.hidden = true;
       choices.hidden = false;
+      showStatus();
       choices.querySelector<HTMLButtonElement>('[data-feedback-vote="down"]')?.focus();
     });
-    root.querySelector<HTMLButtonElement>('[data-feedback-change]')!.addEventListener('click', () => {
-      const votes = read();
-      delete votes[tool];
-      save(votes);
-      form.reset();
-      render();
+    root.querySelector<HTMLButtonElement>('[data-feedback-change]')!.addEventListener('click', async () => {
+      setBusy(true);
+      showStatus(root.dataset.sending);
+      try {
+        await request('DELETE');
+        const votes = read();
+        delete votes[tool];
+        save(votes);
+        form.reset();
+        showStatus();
+        render();
+        choices.querySelector<HTMLButtonElement>('[data-feedback-vote="up"]')?.focus();
+      } catch {
+        showStatus(root.dataset.error, true);
+      } finally {
+        setBusy(false);
+      }
     });
     window.addEventListener('storage', render);
     render();
@@ -176,11 +209,8 @@ const copy = {
   .tool-feedback-demo__thanks button{margin-left:.45rem;padding:0;border:0;background:transparent;color:#75d5f5;font:inherit;text-decoration:underline;cursor:pointer}
   .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button{display:inline-flex;align-items:center;justify-content:center;padding:.48rem .68rem;border:1px solid rgba(224,239,88,.78);border-radius:.52rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
   .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:hover,.tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
-  .tool-feedback-demo__preview{margin-top:1rem;padding-top:.65rem;border-top:1px solid rgba(135,174,188,.25);font-size:.72rem;color:#b3cbd3}
-  .tool-feedback-demo__preview summary{cursor:pointer}
-  .tool-feedback-demo__preview p{margin:.6rem 0}
-  .tool-feedback-demo__preview ul{margin:.4rem 0 0;padding-left:1.2rem}
-  .tool-feedback-demo__dashboard{display:inline-flex;margin-top:.75rem;color:#eef879;font-weight:700;text-decoration:none}.tool-feedback-demo__dashboard:hover,.tool-feedback-demo__dashboard:focus-visible{color:#f7ffad;text-decoration:underline;text-underline-offset:.18rem}
+  .tool-feedback-demo__status{margin:.75rem 0 0;color:#b3cbd3;font-size:.75rem}.tool-feedback-demo__status.is-error{color:#ffaaaa}
+  .tool-feedback-demo button:disabled{cursor:wait;opacity:.6}
   .tool-feedback-demo [hidden]{display:none!important}
   @media(max-width:520px){.tool-feedback-demo{padding:1rem}.tool-feedback-demo__choices{display:grid}.tool-feedback-demo__choices button{text-align:left}}
 </style>
