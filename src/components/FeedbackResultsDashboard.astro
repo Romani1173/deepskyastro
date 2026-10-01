@@ -19,7 +19,7 @@ const copy = {
     detail: 'Detall per eina', tool: 'Eina', result: 'Resultat', reason: 'Motiu', comment: 'Comentari', date: 'Data local',
     noResponse: 'Sense resposta', noReason: '—', noComment: '—', yes: 'Positiva', no: 'Negativa',
     reasons: 'Motius de millora', comments: 'Comentaris rebuts', emptyReasons: 'Encara no hi ha motius negatius.', emptyComments: 'Encara no hi ha comentaris.',
-    updated: 'Lectura actualitzada', refresh: 'Actualitza', json: 'Exporta JSON', csv: 'Exporta CSV',
+    updated: 'Lectura actualitzada', refresh: 'Actualitza', csv: 'Exporta CSV',
     tools: { visibility: 'Visibilitat', planning: 'Planificació', analyser: 'Analitzador', 'my-night': 'La meva nit' },
     reasonLabels: { confusing: 'El resultat no és clar', missing: 'Falta una funció', broken: 'No ha funcionat com esperava', other: 'Un altre motiu' },
   },
@@ -31,7 +31,7 @@ const copy = {
     detail: 'Detalle por herramienta', tool: 'Herramienta', result: 'Resultado', reason: 'Motivo', comment: 'Comentario', date: 'Fecha local',
     noResponse: 'Sin respuesta', noReason: '—', noComment: '—', yes: 'Positiva', no: 'Negativa',
     reasons: 'Motivos de mejora', comments: 'Comentarios recibidos', emptyReasons: 'Todavía no hay motivos negativos.', emptyComments: 'Todavía no hay comentarios.',
-    updated: 'Lectura actualizada', refresh: 'Actualizar', json: 'Exportar JSON', csv: 'Exportar CSV',
+    updated: 'Lectura actualizada', refresh: 'Actualizar', csv: 'Exportar CSV',
     tools: { visibility: 'Visibilidad', planning: 'Planificación', analyser: 'Analizador', 'my-night': 'Mi noche' },
     reasonLabels: { confusing: 'El resultado no está claro', missing: 'Falta una función', broken: 'No funcionó como esperaba', other: 'Otro motivo' },
   },
@@ -43,7 +43,7 @@ const copy = {
     detail: 'Detail by tool', tool: 'Tool', result: 'Result', reason: 'Reason', comment: 'Comment', date: 'Local date',
     noResponse: 'No response', noReason: '—', noComment: '—', yes: 'Positive', no: 'Negative',
     reasons: 'Improvement reasons', comments: 'Comments received', emptyReasons: 'There are no negative reasons yet.', emptyComments: 'There are no comments yet.',
-    updated: 'Reading updated', refresh: 'Refresh', json: 'Export JSON', csv: 'Export CSV',
+    updated: 'Reading updated', refresh: 'Refresh', csv: 'Export CSV',
     tools: { visibility: 'Visibility', planning: 'Planning', analyser: 'Equipment analyser', 'my-night': 'My night' },
     reasonLabels: { confusing: 'The result is unclear', missing: 'A feature is missing', broken: 'It did not work as expected', other: 'Another reason' },
   },
@@ -56,7 +56,6 @@ const copy = {
       <div><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span></div>
       <div class="feedback-results__actions">
         <button type="button" data-results-refresh>{copy.refresh}</button>
-        <button type="button" data-results-export="json">{copy.json}</button>
         <button type="button" data-results-export="csv">{copy.csv}</button>
       </div>
     </header>
@@ -158,10 +157,6 @@ const copy = {
   root.querySelector('[data-results-refresh]').addEventListener('click', render);
   root.querySelectorAll('[data-results-export]').forEach((button) => button.addEventListener('click', () => {
     const votes = readVotes();
-    if (button.dataset.resultsExport === 'json') {
-      download(JSON.stringify({ exportedAt: new Date().toISOString(), votes }, null, 2), 'deepskyastro-feedback-local.json', 'application/json;charset=utf-8');
-      return;
-    }
     const rows = [[copy.tool, copy.result, copy.reason, copy.comment, 'createdAt'], ...toolIds.map((tool) => {
       const vote = votes[tool];
       return [copy.tools[tool], vote?.vote ?? '', vote?.reason ?? '', vote?.comment ?? '', vote?.createdAt ?? ''];
