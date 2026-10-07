@@ -51,7 +51,6 @@ const [featured, ...remaining] = localized;
 			<div class="article-featured__cover">
 				<img src={withBase(`imagenes/articulos/${featured.data.translationKey}/${featured.data.portada}`, base)} alt="" />
 				<span>{labels.latest}</span>
-				<ReactionHeart itemType="article" itemId={featured.data.slug} lang={lang} />
 			</div>
 			<div class="article-featured__body">
 				<div class="article-card__meta">
@@ -61,6 +60,7 @@ const [featured, ...remaining] = localized;
 				<h2>{localizedText(featured).titulo}</h2>
 				<p>{localizedText(featured).resumen}</p>
 				<div class="article-card__pdfs">
+					<ReactionHeart itemType="article" itemId={featured.data.slug} lang={lang} placement="article-actions" />
 					{(['ca', 'es', 'en'] as const).filter((pdfLang) => featured.data.pdfs[pdfLang]).map((pdfLang) => <a href={withBase(featured.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener"><span>{languageNames[pdfLang]}</span><small>{labels.open} ↗</small></a>)}
 				</div>
 			</div>
@@ -73,7 +73,6 @@ const [featured, ...remaining] = localized;
 					<article class="article-card article-card--compact" id={`article-${article.data.slug}`}>
 						<div class="article-card__cover">
 							<img src={withBase(`imagenes/articulos/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
-							<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} />
 						</div>
 						<div class="article-card__body">
 							<div class="article-card__meta">
@@ -83,6 +82,7 @@ const [featured, ...remaining] = localized;
 							<h2>{text.titulo}</h2>
 							<p>{text.resumen}</p>
 							<div class="article-card__pdfs">
+								<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} placement="article-actions" />
 								{availablePdfs.map((pdfLang) => (
 									<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">
 										<span>{languageNames[pdfLang]}</span>
