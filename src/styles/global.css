@@ -422,7 +422,7 @@ main { padding: 1rem 0 4rem; }
 .article-featured .article-card__pdfs { grid-area: pdfs; align-content: center; align-self: center; }
 .articles-compact-list { display: grid; gap: .85rem; }
 .article-card { position: relative; overflow: hidden; border: 1px solid rgba(var(--articles-tone-rgb), .32); border-radius: 1rem; background: radial-gradient(circle at 98% 5%, rgba(var(--articles-tone-rgb), .07), transparent 38%), var(--color-surface); box-shadow: inset 3px 0 0 rgba(var(--articles-tone-rgb), .72); }
-.article-card__cover { display: block; background: #05070c; }
+.article-card__cover { position: relative; display: block; background: #05070c; }
 .article-card__cover img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
 .article-card__body { padding: 1.35rem; }
 .article-card__meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; color: var(--articles-tone); font-family: var(--font-technical); font-size: .78rem; text-transform: uppercase; }

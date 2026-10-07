@@ -48,10 +48,10 @@ const [featured, ...remaining] = localized;
 			</div>
 		</nav>
 		{featured && <article class="article-featured" id={`article-${featured.data.slug}`}>
-			<ReactionHeart itemType="article" itemId={featured.data.slug} lang={lang} />
 			<div class="article-featured__cover">
 				<img src={withBase(`imagenes/articulos/${featured.data.translationKey}/${featured.data.portada}`, base)} alt="" />
 				<span>{labels.latest}</span>
+				<ReactionHeart itemType="article" itemId={featured.data.slug} lang={lang} />
 			</div>
 			<div class="article-featured__body">
 				<div class="article-card__meta">
@@ -71,9 +71,9 @@ const [featured, ...remaining] = localized;
 				const availablePdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
 				return (
 					<article class="article-card article-card--compact" id={`article-${article.data.slug}`}>
-						<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} />
 						<div class="article-card__cover">
 							<img src={withBase(`imagenes/articulos/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
+							<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} />
 						</div>
 						<div class="article-card__body">
 							<div class="article-card__meta">
