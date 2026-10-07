@@ -906,6 +906,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
       syncObjectAngularSize();
       refreshFramingForSelection();
       markDirty(); persist();
+      await calculate();
     } catch (caught) { console.error(caught); if (simbadResult) simbadResult.textContent = config.texts.simbadError; }
     finally { simbadButton.disabled = false; simbadButton.textContent = config.texts.resolve; }
   });
