@@ -5,10 +5,9 @@ interface Props {
 	itemType: 'photo' | 'article';
 	itemId: string;
 	lang: Lang;
-	placement?: 'overlay' | 'inline';
 }
 
-const { itemType, itemId, lang, placement = 'overlay' } = Astro.props;
+const { itemType, itemId, lang } = Astro.props;
 const apiUrl = import.meta.env.PUBLIC_FEEDBACK_API_URL ?? 'https://deepskyastro-feedback.jjromero1173.workers.dev';
 const labels = {
 	ca: { add: 'M’agrada', remove: 'Treure el m’agrada', error: 'No s’ha pogut guardar' },
@@ -18,7 +17,7 @@ const labels = {
 ---
 
 <span
-	class:list={{ 'reaction-heart': true, 'reaction-heart--inline': placement === 'inline' }}
+	class="reaction-heart"
 	data-reaction-heart
 	data-item-type={itemType}
 	data-item-id={itemId}

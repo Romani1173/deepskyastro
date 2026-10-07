@@ -6,7 +6,6 @@ import type { Lang } from '../i18n';
 import { categoryByValue, categoryHref, copy, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
-import ReactionHeart from './ReactionHeart.astro';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -69,7 +68,7 @@ const structuredData = {
 <Layout title={text.objecte} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
 	<article class="photo-detail">
 		<a class="back-link" data-photo-back href={categoryHref(lang, category.key, base)} data-visibility-href={visibilityHref(lang, base)} data-visibility-label={t.visibilityPlanner}>← {t.backToCategory(categoryLabel)}</a>
-		<header class="page-heading"><h1>{text.objecte}</h1><ReactionHeart itemType="photo" itemId={foto.id} lang={lang} placement="inline" /></header>
+		<header class="page-heading"><h1>{text.objecte}</h1></header>
 		<div class="photo-detail__image">
 			<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} data-lightbox-alt={`${t.astroPhoto} ${text.objecte}`} data-lightbox-group="primary" aria-label={`${t.enlarge}: ${text.objecte}`}>
 				<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} fetchpriority="high" />
@@ -202,11 +201,9 @@ const structuredData = {
 		trigger.addEventListener('click', () => {
 			if (!lightbox) return;
 			displayTrigger(trigger);
-			document.body.classList.add('is-image-lightbox-open');
 			lightbox.showModal();
 		});
 	});
-	lightbox?.addEventListener('close', () => document.body.classList.remove('is-image-lightbox-open'));
 	previousButton?.addEventListener('click', () => navigateAdditional(-1));
 	nextButton?.addEventListener('click', () => navigateAdditional(1));
 	closeButton?.addEventListener('click', () => lightbox?.close());
