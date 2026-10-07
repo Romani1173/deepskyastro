@@ -412,6 +412,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     framingPanel.querySelector<HTMLElement>('[data-framing-field]')!.textContent = `${config.texts.framing.field}: ${data.width.toFixed(2)}° × ${data.height.toFixed(2)}° · ${data.angle}°`;
     framingPanel.querySelector<HTMLElement>('[data-framing-size]')!.textContent = `${config.texts.framing.object}: ${formatAngularSize(data.sizeArcmin)}`;
   };
+  const refreshFramingForSelection = () => {
+    const hasFovSource = Boolean(useAnalyserFov?.checked || forceManualFov?.checked);
+    if (framingPanel && hasFovSource) framingPanel.hidden = false;
+    renderFraming();
+  };
   [framingWidth, framingHeight, framingUnit].forEach((control) => { control?.addEventListener('input', renderFraming); control?.addEventListener('change', renderFraming); });
   root.querySelectorAll<HTMLButtonElement>('[data-framing-rotate]').forEach((button) => button.addEventListener('click', () => {
     framingAngle = (framingAngle + Number(button.dataset.framingRotate) + 360) % 360;
@@ -872,7 +877,13 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
     control.dispatchEvent(new Event('input', { bubbles: true }));
     control.dispatchEvent(new Event('change', { bubbles: true }));
   }));
-  field('localObject').addEventListener('change', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; syncObjectAngularSize(); invalidateObjectResults(); });
+  field('localObject').addEventListener('change', () => {
+    resolvedSimbad = null;
+    if (simbadResult) simbadResult.textContent = '';
+    syncObjectAngularSize();
+    invalidateObjectResults();
+    refreshFramingForSelection();
+  });
   field('simbadQuery').addEventListener('input', () => { resolvedSimbad = null; if (simbadResult) simbadResult.textContent = ''; syncObjectAngularSize(); invalidateObjectResults(); });
   field('simbadQuery').addEventListener('input', () => simbadButton?.classList.add('is-dirty'));
 
@@ -893,6 +904,7 @@ const clientData = JSON.stringify({ lang, texts: { ...t, ...apparentSizeText, fr
         if (simbadResult) simbadResult.textContent = `${resolvedSimbad.displayName} · AR ${resolvedSimbad.raDeg.toFixed(6)}° · Dec ${resolvedSimbad.decDeg.toFixed(6)}°`;
       }
       syncObjectAngularSize();
+      refreshFramingForSelection();
       markDirty(); persist();
     } catch (caught) { console.error(caught); if (simbadResult) simbadResult.textContent = config.texts.simbadError; }
     finally { simbadButton.disabled = false; simbadButton.textContent = config.texts.resolve; }
