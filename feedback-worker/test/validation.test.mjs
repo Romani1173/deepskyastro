@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { hashVisitor, validateFeedback } from '../src/index.js';
+import { hashVisitor, validateFeedback, validateReaction } from '../src/index.js';
 
 const valid = {
   tool: 'visibility',
@@ -32,4 +32,14 @@ test('genera un identificador estable sin guardar el original', async () => {
   assert.equal(first, second);
   assert.notEqual(first, valid.visitorId);
   assert.equal(first.length, 64);
+});
+
+test('acepta corazones para fotografías y artículos', () => {
+  assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'photo', itemId: 'm31' }).value.itemId, 'm31');
+  assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'article', itemId: 'pixinsight-fase-lineal' }).value.itemType, 'article');
+});
+
+test('rechaza tipos e identificadores de reacción desconocidos', () => {
+  assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'video', itemId: 'm31' }).error, 'invalid_reaction');
+  assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'photo', itemId: '../m31' }).error, 'invalid_reaction');
 });

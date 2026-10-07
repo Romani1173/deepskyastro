@@ -1,0 +1,114 @@
+---
+import type { Lang } from '../i18n';
+
+interface Props {
+	itemType: 'photo' | 'article';
+	itemId: string;
+	lang: Lang;
+	placement?: 'overlay' | 'inline';
+}
+
+const { itemType, itemId, lang, placement = 'overlay' } = Astro.props;
+const apiUrl = import.meta.env.PUBLIC_FEEDBACK_API_URL ?? 'https://deepskyastro-feedback.jjromero1173.workers.dev';
+const labels = {
+	ca: { add: 'M’agrada', remove: 'Treure el m’agrada', error: 'No s’ha pogut guardar' },
+	es: { add: 'Me gusta', remove: 'Quitar Me gusta', error: 'No se ha podido guardar' },
+	en: { add: 'Like', remove: 'Remove like', error: 'Could not save' },
+}[lang];
+---
+
+<span
+	class:list={{ 'reaction-heart': true, 'reaction-heart--inline': placement === 'inline' }}
+	data-reaction-heart
+	data-item-type={itemType}
+	data-item-id={itemId}
+	data-api={apiUrl}
+	data-add-label={labels.add}
+	data-remove-label={labels.remove}
+	data-error-label={labels.error}
+>
+	<button type="button" aria-pressed="false" aria-label={labels.add} title={labels.add}>
+		<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21.4l7.9-7.9.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg>
+		<strong data-reaction-count>0</strong>
+	</button>
+	<span class="sr-only" data-reaction-status aria-live="polite"></span>
+</span>
+
+<script>
+	type ReactionType = 'photo' | 'article';
+	type Heart = HTMLElement & { dataset: DOMStringMap & { itemType: ReactionType; itemId: string; api: string } };
+	const storageKey = 'deepskyastro-reactions-v1';
+	const visitorKey = 'deepskyastro-feedback-visitor-v1';
+	const reactionKey = (heart: Heart) => `${heart.dataset.itemType}:${heart.dataset.itemId}`;
+	const readLiked = () => {
+		try {
+			const value = JSON.parse(localStorage.getItem(storageKey) ?? '[]');
+			return new Set<string>(Array.isArray(value) ? value : []);
+		} catch { return new Set<string>(); }
+	};
+	const saveLiked = (liked: Set<string>) => {
+		try { localStorage.setItem(storageKey, JSON.stringify([...liked])); } catch { /* The heart remains usable. */ }
+	};
+	const visitorId = () => {
+		try {
+			const stored = localStorage.getItem(visitorKey);
+			if (stored) return stored;
+			const created = crypto.randomUUID().replaceAll('-', '');
+			localStorage.setItem(visitorKey, created);
+			return created;
+		} catch { return crypto.randomUUID().replaceAll('-', ''); }
+	};
+	const renderHeart = (heart: Heart, count: number, liked: boolean) => {
+		const button = heart.querySelector<HTMLButtonElement>('button')!;
+		button.setAttribute('aria-pressed', String(liked));
+		button.setAttribute('aria-label', liked ? heart.dataset.removeLabel! : heart.dataset.addLabel!);
+		button.title = liked ? heart.dataset.removeLabel! : heart.dataset.addLabel!;
+		heart.querySelector<HTMLElement>('[data-reaction-count]')!.textContent = String(Math.max(0, count));
+	};
+	const initializeReactions = async () => {
+		const hearts = [...document.querySelectorAll<Heart>('[data-reaction-heart]:not([data-ready])')];
+		if (!hearts.length) return;
+		hearts.forEach((heart) => { heart.dataset.ready = 'true'; });
+		const liked = readLiked();
+		const groups = new Map<string, Heart[]>();
+		hearts.forEach((heart) => groups.set(heart.dataset.api, [...(groups.get(heart.dataset.api) ?? []), heart]));
+		for (const [api, group] of groups) {
+			const items = group.map(reactionKey);
+			let counts: Record<string, number> = {};
+			try {
+				const response = await fetch(`${api}/v1/reactions?items=${encodeURIComponent(items.join(','))}`);
+				if (!response.ok) throw new Error('counts');
+				counts = (await response.json()).counts ?? {};
+			} catch { /* Local preview remains interactive even if the API is offline. */ }
+			group.forEach((heart) => {
+				const key = reactionKey(heart);
+				renderHeart(heart, counts[key] ?? 0, liked.has(key));
+				const button = heart.querySelector<HTMLButtonElement>('button')!;
+				button.addEventListener('click', async () => {
+					const wasLiked = liked.has(key);
+					const current = Number(heart.querySelector('[data-reaction-count]')?.textContent ?? 0);
+					const next = Math.max(0, current + (wasLiked ? -1 : 1));
+					wasLiked ? liked.delete(key) : liked.add(key);
+					renderHeart(heart, next, !wasLiked);
+					button.disabled = true;
+					try {
+						const response = await fetch(`${api}/v1/reactions`, {
+							method: wasLiked ? 'DELETE' : 'POST',
+							headers: { 'content-type': 'application/json' },
+							body: JSON.stringify({ visitorId: visitorId(), itemType: heart.dataset.itemType, itemId: heart.dataset.itemId }),
+						});
+						if (!response.ok) throw new Error('save');
+						saveLiked(liked);
+					} catch {
+						wasLiked ? liked.add(key) : liked.delete(key);
+						renderHeart(heart, current, wasLiked);
+						heart.querySelector<HTMLElement>('[data-reaction-status]')!.textContent = heart.dataset.errorLabel!;
+					} finally { button.disabled = false; }
+				});
+			});
+		}
+	};
+	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initializeReactions, { once: true });
+	else initializeReactions();
+	document.addEventListener('astro:page-load', initializeReactions);
+</script>

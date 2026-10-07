@@ -5,6 +5,7 @@ import { copy, localeFor, photoHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { photoTechnicalText } from '../technicalTranslations';
 import visibility from '../data/visibility.generated.json';
+import ReactionHeart from './ReactionHeart.astro';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang?: Lang; }
 const { foto, lang = 'ca' } = Astro.props;
@@ -24,6 +25,7 @@ const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
 ---
 
 <article class="photo-card">
+	<ReactionHeart itemType="photo" itemId={foto.id} lang={lang} />
 	<a class="photo-card__image-link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
 		<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} loading="lazy" decoding="async" />
 	</a>

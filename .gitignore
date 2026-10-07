@@ -2,6 +2,7 @@
 dist/
 # generated types
 .astro/
+feedback-worker/.wrangler/
 src/data/visibility.generated.json
 
 # dependencies
