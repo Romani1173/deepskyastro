@@ -18,32 +18,6 @@
     "angularSizeSource": "SIMBAD"
   },
   {
-    "id": "abell85",
-    "catalogName": "Abell 85",
-    "aliases": [
-      "CTB 1",
-      "SNR G116.9+00.1",
-      "AJG 110",
-      "DA 615",
-      "PN A55 72",
-      "PN A66 85",
-      "SNR G116.9+00.2",
-      "SNR G117.3+00.1",
-      "VRO 62.23.01"
-    ],
-    "raDeg": 359.804,
-    "decDeg": 62.437,
-    "constellation": "Cassiopeia",
-    "coordinateSource": "CDS Sesame / SIMBAD (CTB 1)",
-    "coordinateEpoch": "J2000",
-    "status": "pending",
-    "angularSizeArcmin": {
-      "major": 34,
-      "minor": 34
-    },
-    "angularSizeSource": "SIMBAD"
-  },
-  {
     "id": "albireo",
     "catalogName": "Albireo",
     "aliases": [
@@ -84,6 +58,38 @@
     "coordinateSource": "CDS Sesame / SIMBAD",
     "coordinateEpoch": "J2000",
     "status": "photographed"
+  },
+  {
+    "id": "ctb1",
+    "catalogName": "CTB 1",
+    "aliases": [
+      "Abell 85",
+      "SNR G116.9+00.1",
+      "AJG 110",
+      "DA 615",
+      "LBN 576",
+      "PN A55 72",
+      "PN A66 85",
+      "SNR G116.9+00.2",
+      "SNR G117.3+00.1",
+      "VRO 62.23.01"
+    ],
+    "commonNames": {
+      "ca": "Nebulosa de la Medul·la",
+      "es": "Nebulosa de la Médula",
+      "en": "Medulla Nebula"
+    },
+    "raDeg": 359.804,
+    "decDeg": 62.437,
+    "constellation": "Cassiopeia",
+    "coordinateSource": "CDS Sesame / SIMBAD (CTB 1)",
+    "coordinateEpoch": "J2000",
+    "status": "photographed",
+    "angularSizeArcmin": {
+      "major": 34,
+      "minor": 34
+    },
+    "angularSizeSource": "SIMBAD"
   },
   {
     "id": "hcg92",

@@ -54,8 +54,8 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
   const ids = new Set(catalog.map(({ id }) => id));
   const byId = new Map(catalog.map((object) => [object.id, object]));
   assert.equal(ids.size, catalog.length, 'astronomical object ids must be unique');
-  assert.equal(catalog.filter(({ status }) => status === 'photographed').length, 87);
-  assert.equal(catalog.filter(({ status }) => status === 'pending').length, 21);
+  assert.equal(catalog.filter(({ status }) => status === 'photographed').length, 88);
+  assert.equal(catalog.filter(({ status }) => status === 'pending').length, 20);
   for (const object of catalog) {
     assert.ok(object.raDeg >= 0 && object.raDeg < 360, `${object.id} has invalid right ascension`);
     assert.ok(object.decDeg >= -90 && object.decDeg <= 90, `${object.id} has invalid declination`);
@@ -78,7 +78,7 @@ test('every photo has a valid fixed object or an explicit variable-visibility ma
       fixedPhotos += 1;
     } else variablePhotos += 1;
   }
-  assert.equal(fixedPhotos, 95);
+  assert.equal(fixedPhotos, 96);
   assert.equal(variablePhotos, 2);
 });
 
