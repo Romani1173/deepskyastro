@@ -60,6 +60,25 @@
     "status": "photographed"
   },
   {
+    "id": "cta1",
+    "catalogName": "CTA 1",
+    "aliases": [
+      "SNR G119.5+10.2",
+      "G119.5+10.2"
+    ],
+    "raDeg": 1.65,
+    "decDeg": 72.78333333,
+    "constellation": "Cepheus",
+    "coordinateSource": "CDS Sesame / SIMBAD",
+    "coordinateEpoch": "J2000",
+    "status": "pending",
+    "angularSizeArcmin": {
+      "major": 90,
+      "minor": 90
+    },
+    "angularSizeSource": "SIMBAD"
+  },
+  {
     "id": "ctb1",
     "catalogName": "CTB 1",
     "aliases": [
