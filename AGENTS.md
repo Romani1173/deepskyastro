@@ -68,6 +68,15 @@
 - No duplicar en el cuerpo Markdown imágenes ya declaradas en `imatges_addicionals`.
 - Las imágenes con `tipus: "process"` usan siempre el título catalán `Flux de postprocessament`, sin guion; sus equivalentes son `Flujo de posprocesado` en castellano y `Post-processing workflow` en inglés.
 
+## Rendimiento, SEO y seguridad
+
+- `npm run dev` y `npm run build` ejecutan antes `images:generate` (`scripts/generate-optimized-images.mjs`): crea copias WebP ligeras en `public/imagenes/optimizadas/` (no se suben a Git) y falla si una ficha cita una imagen que no existe. Los originales no se modifican y el visor ampliado sigue usándolos.
+- En las plantillas, usar `optimizedImage()` de `src/lib/optimized-images.ts` para mostrar fotos en tarjetas o fichas; no enlazar directamente el original salvo para el visor ampliado.
+- Las URL canónicas, `hreflang` y Open Graph usan siempre `PRODUCTION_SITE` (`src/consts.ts`), también en la copia de GitHub Pages.
+- Las fuentes Inter y Space Mono se descargan al compilar (`fonts` en `astro.config.mjs`) y se sirven desde la propia web; no volver a enlazar Google Fonts.
+- `public/_headers` define las cabeceras de seguridad y caché de Cloudflare Pages. Si se añade un servicio externo (API, analítica, mapas…), hay que permitir su dominio en `Content-Security-Policy`.
+- El Worker de valoraciones (`feedback-worker/`) no se publica con `git push`: tras cambiarlo, ejecutar `npm run check` y `npm run deploy` dentro de esa carpeta.
+
 ## Verificación
 
 - Tras cambiar datos, imágenes o plantillas, ejecutar `npm run build` desde la raíz del proyecto.

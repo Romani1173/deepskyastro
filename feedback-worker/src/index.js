@@ -20,6 +20,19 @@ const corsHeaders = (request, env) => {
     : {};
 };
 
+// Límite de escrituras por visitante. La IP solo se usa en memoria para contar
+// peticiones (Cloudflare Rate Limiting); nunca se guarda en la base de datos.
+// Si el enlace WRITE_LIMITER no está configurado, no se aplica ningún límite.
+const isRateLimited = async (request, env) => {
+  if (!env.WRITE_LIMITER) return false;
+  const key = request.headers.get('cf-connecting-ip') || 'unknown';
+  const { success } = await env.WRITE_LIMITER.limit({ key });
+  return !success;
+};
+
+// D1 admite como máximo 100 parámetros por consulta; cada objeto usa dos.
+const COUNT_BATCH_SIZE = 50;
+
 const isAllowedOrigin = (request, env) => {
   const origin = request.headers.get('origin');
   return Boolean(origin && allowedOrigins(env).has(origin));
@@ -85,6 +98,7 @@ const saveFeedback = async (request, env) => {
   const cors = corsHeaders(request, env);
   if (!isAllowedOrigin(request, env)) return json({ error: 'origin_not_allowed' }, 403, cors);
   if (!env.FEEDBACK_HASH_SECRET) return json({ error: 'service_not_configured' }, 503, cors);
+  if (await isRateLimited(request, env)) return json({ error: 'rate_limited' }, 429, { ...cors, 'retry-after': '60' });
 
   let input;
   try {
@@ -123,6 +137,7 @@ const withdrawFeedback = async (request, env) => {
   const cors = corsHeaders(request, env);
   if (!isAllowedOrigin(request, env)) return json({ error: 'origin_not_allowed' }, 403, cors);
   if (!env.FEEDBACK_HASH_SECRET) return json({ error: 'service_not_configured' }, 503, cors);
+  if (await isRateLimited(request, env)) return json({ error: 'rate_limited' }, 429, { ...cors, 'retry-after': '60' });
 
   let input;
   try {
@@ -172,6 +187,7 @@ const saveReaction = async (request, env) => {
   const cors = corsHeaders(request, env);
   if (!isAllowedOrigin(request, env)) return json({ error: 'origin_not_allowed' }, 403, cors);
   if (!env.FEEDBACK_HASH_SECRET) return json({ error: 'service_not_configured' }, 503, cors);
+  if (await isRateLimited(request, env)) return json({ error: 'rate_limited' }, 429, { ...cors, 'retry-after': '60' });
   let input;
   try { input = await readBody(request); }
   catch (error) { return json({ error: error.message === 'payload_too_large' ? error.message : 'invalid_json' }, 400, cors); }
@@ -193,6 +209,7 @@ const withdrawReaction = async (request, env) => {
   const cors = corsHeaders(request, env);
   if (!isAllowedOrigin(request, env)) return json({ error: 'origin_not_allowed' }, 403, cors);
   if (!env.FEEDBACK_HASH_SECRET) return json({ error: 'service_not_configured' }, 503, cors);
+  if (await isRateLimited(request, env)) return json({ error: 'rate_limited' }, 429, { ...cors, 'retry-after': '60' });
   let input;
   try { input = await readBody(request); }
   catch (error) { return json({ error: error.message === 'payload_too_large' ? error.message : 'invalid_json' }, 400, cors); }
@@ -218,12 +235,17 @@ const reactionCounts = async (request, env) => {
     return { itemType: item.slice(0, separator), itemId: item.slice(separator + 1), key: item };
   }).filter(({ itemType, itemId }) => ITEM_TYPES.has(itemType) && /^[a-zA-Z0-9][a-zA-Z0-9._()+-]{0,99}$/.test(itemId));
   if (!items.length) return json({ counts: {} }, 200, { ...cors, 'cache-control': 'public, max-age=30' });
-  const where = items.map(() => '(item_type = ? AND item_id = ?)').join(' OR ');
-  const bindings = items.flatMap(({ itemType, itemId }) => [itemType, itemId]);
-  const { results = [] } = await env.FEEDBACK_DB.prepare(`
-    SELECT item_type, item_id, COUNT(*) AS total FROM reactions
-    WHERE deleted_at IS NULL AND (${where}) GROUP BY item_type, item_id
-  `).bind(...bindings).all();
+  const batches = [];
+  for (let index = 0; index < items.length; index += COUNT_BATCH_SIZE) batches.push(items.slice(index, index + COUNT_BATCH_SIZE));
+  const responses = await Promise.all(batches.map((batch) => {
+    const where = batch.map(() => '(item_type = ? AND item_id = ?)').join(' OR ');
+    const bindings = batch.flatMap(({ itemType, itemId }) => [itemType, itemId]);
+    return env.FEEDBACK_DB.prepare(`
+      SELECT item_type, item_id, COUNT(*) AS total FROM reactions
+      WHERE deleted_at IS NULL AND (${where}) GROUP BY item_type, item_id
+    `).bind(...bindings).all();
+  }));
+  const results = responses.flatMap((response) => response.results ?? []);
   const counts = Object.fromEntries(items.map(({ key }) => [key, 0]));
   results.forEach((row) => { counts[`${row.item_type}:${row.item_id}`] = Number(row.total); });
   return json({ counts }, 200, { ...cors, 'cache-control': 'public, max-age=30' });

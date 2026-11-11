@@ -7,6 +7,14 @@
   "vars": {
     "ALLOWED_ORIGINS": "https://deepskyastro.com,https://www.deepskyastro.com,https://romani1173.github.io,http://127.0.0.1:4321,http://localhost:4321"
   },
+  // Máximo 30 escrituras (valoraciones o corazones) por minuto y visitante.
+  "ratelimits": [
+    {
+      "name": "WRITE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 30, "period": 60 }
+    }
+  ],
   "d1_databases": [
     {
       "binding": "FEEDBACK_DB",

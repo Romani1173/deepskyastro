@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 import { PRODUCTION_SITE, SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import SiteMapIcon from '../components/SiteMapIcon.astro';
@@ -56,9 +57,8 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#080b12" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono&display=optional" rel="stylesheet" />
+		<Font cssVariable="--font-inter" preload />
+		<Font cssVariable="--font-space-mono" />
 		<link rel="icon" type="image/svg+xml" href={withBase('favicon.svg', base)} />
 		<link rel="icon" href={withBase('favicon.ico', base)} />
 		{noindex && <meta name="robots" content="noindex" />}

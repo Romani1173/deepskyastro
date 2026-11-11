@@ -2,7 +2,7 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
@@ -27,6 +27,12 @@ export default defineConfig({
 	site: isGitHubPages ? 'https://romani1173.github.io' : 'https://deepskyastro.com',
 	base: isGitHubPages ? '/deepskyastro' : '/',
 	integrations: [mdx(), sitemap({ serialize: addPageImage })],
+	// Inter y Space Mono se descargan al compilar y se sirven desde la propia web:
+	// mismas fuentes, sin enviar la IP de cada visitante a Google.
+	fonts: [
+		{ provider: fontProviders.google(), name: 'Inter', cssVariable: '--font-inter', weights: [400, 600, 700], styles: ['normal'], subsets: ['latin', 'latin-ext'], display: 'optional', fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'] },
+		{ provider: fontProviders.google(), name: 'Space Mono', cssVariable: '--font-space-mono', weights: [400], styles: ['normal'], subsets: ['latin', 'latin-ext'], display: 'optional', fallbacks: ['ui-monospace', 'monospace'] },
+	],
 	redirects: {
 		'/foto/vbd_152': '/foto/vdb_152/',
 		'/es/foto/vbd_152': '/es/foto/vdb_152/',
