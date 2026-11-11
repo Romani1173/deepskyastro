@@ -4,12 +4,13 @@ import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
 import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, myNightHref, sessionPreparationHref, siteMapHref, withBase } from '../i18n';
 import { optimizedVariant } from '../lib/optimized-images';
+import { PRODUCTION_SITE } from '../consts';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
-const homeUrl = new URL(lang === 'ca' ? base : `${base}${lang}/`, Astro.site).href;
+const homeUrl = new URL(lang === 'ca' ? '/' : `/${lang}/`, PRODUCTION_SITE).href;
 const authorName = 'Juan José Romero';
 const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName);
 const coverRotationDays = 1;

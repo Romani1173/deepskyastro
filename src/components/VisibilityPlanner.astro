@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n';
-import { languageLinks, photoHref, planningHref, sessionPreparationHref, visibilityGuideHref, withBase } from '../i18n';
+import { copy, languageLinks, photoHref, planningHref, sessionPreparationHref, visibilityGuideHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
 import { optimizedImage } from '../lib/optimized-images';
@@ -96,7 +96,7 @@ const weekParts = (week: number) => {
 };
 ---
 
-<Layout title={t.title} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
+<Layout title={t.title} description={copy[lang].visibilitySeoDescription} lang={lang} languageLinks={languageLinks.visibility(base)} focused>
   <section class="visibility-planner" aria-labelledby="visibility-title">
     <SessionToolLink lang={lang} href={sessionPreparationHref(lang, base)} />
     <header class="visibility-planner__header">

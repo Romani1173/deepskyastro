@@ -16,7 +16,7 @@ const searchableText = (value: string) => value.normalize('NFD').replace(/[\u030
 const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))].sort((a, b) => a.localeCompare(b, lang, { sensitivity: 'base' }));
 ---
 
-<Layout title={t.catalogue} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
+<Layout title={t.catalogue} description={t.gallerySeoDescription} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
 	<section class="gallery-theme" aria-labelledby="collection-heading">
 		<div class="catalog-controls">
 			<CatalogHeader lang={lang} catalogue />

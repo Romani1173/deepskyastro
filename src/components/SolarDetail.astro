@@ -18,6 +18,10 @@ const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
 const comment = lang === 'ca'
 	? foto.data.comentario
 	: foto.data.traducciones?.[lang] ?? foto.data.comentario;
+const seoDescription = (() => {
+	const full = `${labels.title}, ${date}. ${comment}`.replace(/\s+/g, ' ');
+	return full.length <= 160 ? full : `${full.slice(0, 159).replace(/\s+\S*$/, '')}…`;
+})();
 const languageLinks = {
 	ca: withBase(`sol/${foto.id}/`, base),
 	es: withBase(`es/sol/${foto.id}/`, base),
@@ -25,7 +29,7 @@ const languageLinks = {
 };
 ---
 
-<Layout title={`${labels.title} · ${date}`} description={comment} minimal lang={lang} languageLinks={languageLinks}>
+<Layout title={`${labels.title} · ${date}`} description={seoDescription} image={imageUrl} ogType="article" minimal lang={lang} languageLinks={languageLinks}>
 	<article class="photo-detail">
 		<a class="back-link" href={categoryHref(lang, 'sun', base)}>← {labels.back}</a>
 		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>
