@@ -6,13 +6,14 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "predev": "npm run visibility:generate",
+    "predev": "npm run visibility:generate && npm run images:generate",
     "dev": "astro dev",
-    "prebuild": "npm run visibility:generate",
+    "prebuild": "npm run visibility:generate && npm run images:generate",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "visibility:generate": "node scripts/generate-visibility-data.mjs",
+    "images:generate": "node scripts/generate-optimized-images.mjs",
     "visibility:chart": "node scripts/generate-visibility-chart.mjs",
     "catalogue:apparent-sizes": "node scripts/enrich-apparent-sizes.mjs",
     "visibility:test": "node --test scripts/visibility.test.mjs",

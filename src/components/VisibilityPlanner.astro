@@ -4,6 +4,7 @@ import type { Lang } from '../i18n';
 import { languageLinks, photoHref, planningHref, sessionPreparationHref, visibilityGuideHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { formatCatalogDesignations } from '../lib/catalog-formatting.mjs';
+import { optimizedImage } from '../lib/optimized-images';
 import Layout from '../layouts/Layout.astro';
 import SessionToolLink from './SessionToolLink.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
@@ -164,7 +165,7 @@ const weekParts = (week: number) => {
         const compactWeeks = object.nightWeeks.map((week) => [week.maxAltitudeDeg, week.bestTimeUtc, week.hoursAbove['30'], week.quality, week.representativeNight]);
         return <article class:list={{ 'visibility-card': true, 'visibility-card--pending': object.status === 'pending' }} data-visibility-card data-object-id={id} data-object-name={displayAlias ? `${displayCatalogName} · ${displayAlias}` : displayCatalogName} data-constellation={object.constellation} data-ra={object.raDeg} data-dec={object.decDeg} data-meridian-side={object.decDeg >= 41 ? 'north' : 'south'} data-status={object.status} data-weeks={JSON.stringify(compactWeeks)} data-chart-values={JSON.stringify(object.weeks.map((week) => week.altitudeDeg))}>
           {foto && text
-            ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={text.objecte} loading="lazy" /></a>
+            ? <a class="visibility-card__image" data-photo-link href={photoHref(lang, foto.id, base)}><img {...optimizedImage(`cielo-profundo/${foto.data.imatge}`, base, 960)} sizes="(min-width: 1212px) 330px, 28vw" alt={text.objecte} loading="lazy" decoding="async" /></a>
             : <button class="visibility-card__image visibility-card__image--pending" type="button" data-open-chart aria-label={`${t.viewChart}: ${displayCatalogName}`}><span aria-hidden="true">P</span></button>}
           <div class="visibility-card__body">
             <div class="visibility-card__heading">

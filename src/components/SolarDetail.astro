@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
 import { categoryHref, localeFor, withBase } from '../i18n';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
 
 interface Props { foto: CollectionEntry<'sol'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -30,7 +31,7 @@ const languageLinks = {
 		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>
 		<div class="photo-detail__image">
 			<button class="image-zoom-trigger" type="button" data-solar-enlarge aria-label={labels.enlarge}>
-				<img src={imageUrl} alt={`${labels.title}, ${date}`} fetchpriority="high" />
+				<img {...optimizedImage(`sol/${foto.data.imagen}`, base)} sizes={imageSizes.detail} alt={`${labels.title}, ${date}`} fetchpriority="high" />
 				<span aria-hidden="true">{labels.enlarge} ↗</span>
 			</button>
 		</div>
@@ -38,7 +39,7 @@ const languageLinks = {
 	</article>
 	<dialog class="image-lightbox solar-detail-lightbox">
 		<button class="image-lightbox__close" type="button" aria-label={labels.close}>×</button>
-		<img src={imageUrl} alt={`${labels.title}, ${date}`} />
+		<img src={imageUrl} alt={`${labels.title}, ${date}`} loading="lazy" />
 	</dialog>
 </Layout>
 

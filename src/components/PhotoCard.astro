@@ -4,6 +4,7 @@ import type { Lang } from '../i18n';
 import { copy, localeFor, photoHref, withBase } from '../i18n';
 import { photoText } from '../photoTranslations';
 import { photoTechnicalText } from '../technicalTranslations';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
 import visibility from '../data/visibility.generated.json';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang?: Lang; }
@@ -16,6 +17,7 @@ const hasProcess = foto.data.imatges_addicionals.some((imatge) => imatge.tipus =
 const hasVisibility = Boolean(foto.data.visibilitat);
 const processImage = foto.data.imatges_addicionals.find((imatge) => imatge.tipus === 'process');
 const base = import.meta.env.BASE_URL;
+const cardImage = optimizedImage(`cielo-profundo/${foto.data.imatge}`, base, 960);
 const visibilityObject = foto.data.objecte_astronomic ? visibility.objects[foto.data.objecte_astronomic as keyof typeof visibility.objects] : undefined;
 const periodDate = new Intl.DateTimeFormat(localeFor(lang), { day: 'numeric', month: 'short', timeZone: 'UTC' });
 const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
@@ -25,7 +27,7 @@ const visibilityPeriod = visibilityObject?.aboveThresholdPeriods
 
 <article class="photo-card">
 	<a class="photo-card__image-link" href={photoHref(lang, foto.id, base)} aria-label={`${t.viewPhoto} ${text.objecte}`}>
-		<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} loading="lazy" decoding="async" />
+		<img src={cardImage.src} srcset={cardImage.srcset} sizes={imageSizes.card} alt={`${t.astroPhoto} ${text.objecte}`} loading="lazy" decoding="async" />
 	</a>
 	{(hasProcess || hasVisibility) && <span class="photo-card__features">
 		{processImage && <span class="context-tooltip context-tooltip--feature">

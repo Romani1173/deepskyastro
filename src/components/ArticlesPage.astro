@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
 import { languageLinks, localeFor, withBase } from '../i18n';
 import ReactionHeart from './ReactionHeart.astro';
 
@@ -49,7 +50,7 @@ const [featured, ...remaining] = localized;
 		</nav>
 		{featured && <article class="article-featured" id={`article-${featured.data.slug}`}>
 			<div class="article-featured__cover">
-				<img src={withBase(`imagenes/articulos/${featured.data.translationKey}/${featured.data.portada}`, base)} alt="" />
+				<img {...optimizedImage(`articulos/${featured.data.translationKey}/${featured.data.portada}`, base, 960)} sizes={imageSizes.detail} alt="" />
 				<span>{labels.latest}</span>
 			</div>
 			<div class="article-featured__body">
@@ -72,7 +73,7 @@ const [featured, ...remaining] = localized;
 				return (
 					<article class="article-card article-card--compact" id={`article-${article.data.slug}`}>
 						<div class="article-card__cover">
-							<img src={withBase(`imagenes/articulos/${article.data.translationKey}/${article.data.portada}`, base)} alt="" loading="lazy" />
+							<img {...optimizedImage(`articulos/${article.data.translationKey}/${article.data.portada}`, base, 960)} sizes={imageSizes.card} alt="" loading="lazy" decoding="async" />
 						</div>
 						<div class="article-card__body">
 							<div class="article-card__meta">
