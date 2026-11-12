@@ -1,10 +1,12 @@
 # Cabeceras HTTP que aplica Cloudflare Pages (GitHub Pages ignora este archivo).
 # Si se añade un servicio externo nuevo (p. ej. otra API o un script de analítica),
 # hay que permitir su dominio en Content-Security-Policy o el navegador lo bloqueará.
+# Cloudflare Web Analytics inyecta su script al servir la página (no está en el código):
+# necesita static.cloudflareinsights.com (script) y cloudflareinsights.com (envío de datos).
 
 /*
   Strict-Transport-Security: max-age=31536000
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://deepskyastro-feedback.jjromero1173.workers.dev https://cds.unistra.fr https://simbad.cds.unistra.fr; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://deepskyastro-feedback.jjromero1173.workers.dev https://cds.unistra.fr https://simbad.cds.unistra.fr; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
