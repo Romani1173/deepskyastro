@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
 import { categoryHref, localeFor, withBase } from '../i18n';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
 
 interface Props { foto: CollectionEntry<'sol'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -17,6 +18,10 @@ const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
 const comment = lang === 'ca'
 	? foto.data.comentario
 	: foto.data.traducciones?.[lang] ?? foto.data.comentario;
+const seoDescription = (() => {
+	const full = `${labels.title}, ${date}. ${comment}`.replace(/\s+/g, ' ');
+	return full.length <= 160 ? full : `${full.slice(0, 159).replace(/\s+\S*$/, '')}…`;
+})();
 const languageLinks = {
 	ca: withBase(`sol/${foto.id}/`, base),
 	es: withBase(`es/sol/${foto.id}/`, base),
@@ -24,13 +29,13 @@ const languageLinks = {
 };
 ---
 
-<Layout title={`${labels.title} · ${date}`} description={comment} minimal lang={lang} languageLinks={languageLinks}>
+<Layout title={`${labels.title} · ${date}`} description={seoDescription} image={imageUrl} ogType="article" minimal lang={lang} languageLinks={languageLinks}>
 	<article class="photo-detail">
 		<a class="back-link" href={categoryHref(lang, 'sun', base)}>← {labels.back}</a>
 		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>
 		<div class="photo-detail__image">
 			<button class="image-zoom-trigger" type="button" data-solar-enlarge aria-label={labels.enlarge}>
-				<img src={imageUrl} alt={`${labels.title}, ${date}`} fetchpriority="high" />
+				<img {...optimizedImage(`sol/${foto.data.imagen}`, base)} sizes={imageSizes.detail} alt={`${labels.title}, ${date}`} fetchpriority="high" />
 				<span aria-hidden="true">{labels.enlarge} ↗</span>
 			</button>
 		</div>
@@ -38,7 +43,7 @@ const languageLinks = {
 	</article>
 	<dialog class="image-lightbox solar-detail-lightbox">
 		<button class="image-lightbox__close" type="button" aria-label={labels.close}>×</button>
-		<img src={imageUrl} alt={`${labels.title}, ${date}`} />
+		<img src={imageUrl} alt={`${labels.title}, ${date}`} loading="lazy" />
 	</dialog>
 </Layout>
 

@@ -4,6 +4,8 @@ dist/
 .astro/
 feedback-worker/.wrangler/
 src/data/visibility.generated.json
+src/data/optimized-images.generated.json
+public/imagenes/optimizadas/
 
 # dependencies
 node_modules/

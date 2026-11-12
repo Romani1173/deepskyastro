@@ -43,3 +43,43 @@ test('rechaza tipos e identificadores de reacción desconocidos', () => {
   assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'video', itemId: 'm31' }).error, 'invalid_reaction');
   assert.equal(validateReaction({ visitorId: valid.visitorId, itemType: 'photo', itemId: '../m31' }).error, 'invalid_reaction');
 });
+
+test('cuenta más de 50 corazones sin superar el límite de parámetros de D1', async () => {
+  const { default: worker } = await import('../src/index.js');
+  const calls = [];
+  const env = {
+    ALLOWED_ORIGINS: 'https://deepskyastro.com',
+    FEEDBACK_DB: {
+      prepare: () => ({
+        bind: (...values) => {
+          calls.push(values.length);
+          return { all: async () => ({ results: [{ item_type: values[0], item_id: values[1], total: 2 }] }) };
+        },
+      }),
+    },
+  };
+  const items = Array.from({ length: 120 }, (_, index) => `photo:m${index + 1}`).join(',');
+  const response = await worker.fetch(new Request(`https://api.test/v1/reactions?items=${items}`, { headers: { origin: 'https://deepskyastro.com' } }), env);
+  const { counts } = await response.json();
+  assert.equal(response.status, 200);
+  assert.ok(calls.every((count) => count <= 100));
+  assert.equal(calls.length, 3);
+  assert.equal(counts['photo:m1'], 2);
+  assert.equal(counts['photo:m120'], 0);
+});
+
+test('responde 429 cuando se supera el límite de escrituras', async () => {
+  const { default: worker } = await import('../src/index.js');
+  const env = {
+    ALLOWED_ORIGINS: 'https://deepskyastro.com',
+    FEEDBACK_HASH_SECRET: 'secret',
+    WRITE_LIMITER: { limit: async () => ({ success: false }) },
+  };
+  const request = new Request('https://api.test/v1/reactions', {
+    method: 'POST',
+    headers: { origin: 'https://deepskyastro.com', 'content-type': 'application/json' },
+    body: JSON.stringify({ visitorId: valid.visitorId, itemType: 'photo', itemId: 'm31' }),
+  });
+  const response = await worker.fetch(request, env);
+  assert.equal(response.status, 429);
+});

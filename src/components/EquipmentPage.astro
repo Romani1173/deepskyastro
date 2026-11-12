@@ -12,7 +12,7 @@ const ui = equipmentUi[lang];
 const photo = withBase('imagenes/equipo/equipo-vista-lateral-izquierda.webp', base);
 ---
 
-<Layout minimal compact lang={lang} title={t.myEquipment} languageLinks={languageLinks.equipment(base)} backLink={{ href: homeHref(lang, base), label: ui.backHome }}>
+<Layout minimal compact lang={lang} title={t.myEquipment} description={t.equipmentSeoDescription} languageLinks={languageLinks.equipment(base)} backLink={{ href: homeHref(lang, base), label: ui.backHome }}>
 	<article class="equipment-page">
 		<header class="equipment-heading">
 			<div class="equipment-heading__title">

@@ -3,9 +3,11 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
-import { categoryByValue, categoryHref, copy, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
+import { categoryByValue, categoryHref, copy, galleryHref, homeHref, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
+import { PRODUCTION_SITE } from '../consts';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
 
 interface Props { foto: CollectionEntry<'fotos'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -38,8 +40,10 @@ const sessions = foto.data.entorn.sessions.map((session) => {
 	].filter(Boolean);
 	return details.length > 0 ? `${interval} — ${details.join(' · ')}` : interval;
 });
-const photoUrl = new URL(photoHref(lang, foto.id, base), Astro.site).toString();
-const imageUrl = new URL(withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base), Astro.site).toString();
+// URL públicas (siempre en deepskyastro.com, también en la copia de GitHub Pages).
+const publicUrl = (path: string) => new URL(path.replace(new RegExp(`^${base.replace(/\/?$/, '/')}`), '/'), PRODUCTION_SITE).toString();
+const photoUrl = publicUrl(photoHref(lang, foto.id, base));
+const imageUrl = publicUrl(withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base));
 const summary = text.caracteristiques.trim().replace(/\s+/g, ' ');
 const shortenDescription = (value: string, limit = 160) => {
 	if (value.length <= limit) return value;
@@ -47,8 +51,7 @@ const shortenDescription = (value: string, limit = 160) => {
 	return `${shortened}…`;
 };
 const seoDescription = shortenDescription(`${text.objecte}. ${summary}`);
-const structuredData = {
-	'@context': 'https://schema.org',
+const imageObject = {
 	'@type': 'ImageObject',
 	name: text.objecte,
 	description: seoDescription,
@@ -63,15 +66,26 @@ const structuredData = {
 	copyrightNotice: `© Juan José Romero`,
 	dateCreated: foto.data.entorn.data.toISOString().slice(0, 10),
 };
+// Ruta de navegación (Inicio › Galería › Categoría › Ficha) para los resultados de Google.
+const breadcrumb = {
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ name: t.home, item: publicUrl(homeHref(lang, base)) },
+		{ name: t.catalogue, item: publicUrl(galleryHref(lang, base)) },
+		{ name: categoryLabel, item: publicUrl(categoryHref(lang, category.key, base)) },
+		{ name: text.objecte, item: photoUrl },
+	].map((entry, index) => ({ '@type': 'ListItem', position: index + 1, ...entry })),
+};
+const structuredData = { '@context': 'https://schema.org', '@graph': [imageObject, breadcrumb] };
 ---
 
-<Layout title={text.objecte} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
+<Layout title={text.objecte} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} ogType="article" minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
 	<article class="photo-detail">
 		<a class="back-link" data-photo-back href={categoryHref(lang, category.key, base)} data-visibility-href={visibilityHref(lang, base)} data-visibility-label={t.visibilityPlanner}>← {t.backToCategory(categoryLabel)}</a>
 		<header class="page-heading"><h1>{text.objecte}</h1></header>
 		<div class="photo-detail__image">
 			<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} data-lightbox-alt={`${t.astroPhoto} ${text.objecte}`} data-lightbox-group="primary" aria-label={`${t.enlarge}: ${text.objecte}`}>
-				<img src={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} alt={`${t.astroPhoto} ${text.objecte}`} fetchpriority="high" />
+				<img {...optimizedImage(`cielo-profundo/${foto.data.imatge}`, base)} sizes={imageSizes.detail} alt={`${t.astroPhoto} ${text.objecte}`} fetchpriority="high" />
 				<span aria-hidden="true">{t.enlarge} ↗</span>
 			</button>
 		</div>
@@ -98,7 +112,7 @@ const structuredData = {
 						const imageText = additionalImageText(imatge, lang);
 						return <figure>
 							<button class="image-zoom-trigger" type="button" data-lightbox-src={withBase(`imagenes/cielo-profundo/${imatge.fitxer}`, base)} data-lightbox-alt={`${imageText.titol}: ${text.objecte}`} data-lightbox-group="additional" data-lightbox-title={imageText.titol} aria-label={`${t.enlarge}: ${imageText.titol}`}>
-								<img src={withBase(`imagenes/cielo-profundo/${imatge.fitxer}`, base)} alt={`${imageText.titol}: ${text.objecte}`} loading="lazy" decoding="async" />
+								<img {...optimizedImage(`cielo-profundo/${imatge.fitxer}`, base, 1600)} sizes={imageSizes.half} alt={`${imageText.titol}: ${text.objecte}`} loading="lazy" decoding="async" />
 								<span aria-hidden="true">{t.enlarge} ↗</span>
 							</button>
 							<figcaption><strong>{imageText.titol}</strong>{imageText.descripcio && <span>{imageText.descripcio}</span>}</figcaption>

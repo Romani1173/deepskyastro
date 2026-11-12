@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { Font } from 'astro:assets';
+import { PRODUCTION_SITE, SITE_TITLE } from '../consts';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import SiteMapIcon from '../components/SiteMapIcon.astro';
 import type { Lang } from '../i18n';
@@ -18,15 +19,22 @@ interface Props {
 	lang?: Lang;
 	languageLinks?: Record<Lang, string>;
 	backLink?: { href: string; label: string };
+	/** `article` para fichas individuales; `website` para el resto. */
+	ogType?: 'website' | 'article';
+	/** Páginas que no deben aparecer en buscadores (p. ej. la 404). */
+	noindex?: boolean;
 }
-const { title = SITE_TITLE, hero = false, minimal = false, compact = false, focused = false, lang = 'ca', languageLinks = makeLanguageLinks.home(import.meta.env.BASE_URL), backLink, image, structuredData } = Astro.props;
+const { title = SITE_TITLE, hero = false, minimal = false, compact = false, focused = false, lang = 'ca', languageLinks = makeLanguageLinks.home(import.meta.env.BASE_URL), backLink, image, structuredData, ogType = 'website', noindex = false } = Astro.props;
 const description = Astro.props.description ?? copy[lang].siteDescription;
 const pageTitle = title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
 const rootHref = normalizeBase(base);
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = image ? new URL(image, Astro.site) : undefined;
+// Quita el prefijo de GitHub Pages (`/deepskyastro/`) y construye la URL pública.
+const publicUrl = (path: string) => new URL(path.startsWith(rootHref) ? `/${path.slice(rootHref.length)}` : path, PRODUCTION_SITE);
+const canonicalURL = publicUrl(Astro.url.pathname);
+const socialImage = image ? publicUrl(image) : undefined;
+const ogLocales = { ca: 'ca_ES', es: 'es_ES', en: 'en_GB' } as const;
 const structuredDataJson = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 const nav = [
 	{ href: homeHref(lang, base), label: copy[lang].home, tone: 'home', icon: 'home' as const },
@@ -49,20 +57,24 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#080b12" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono&display=optional" rel="stylesheet" />
+		<Font cssVariable="--font-inter" preload />
+		<Font cssVariable="--font-space-mono" />
 		<link rel="icon" type="image/svg+xml" href={withBase('favicon.svg', base)} />
 		<link rel="icon" href={withBase('favicon.ico', base)} />
-		<link rel="canonical" href={canonicalURL} />
-		{Object.entries(languageLinks).map(([language, href]) => <link rel="alternate" hreflang={language} href={new URL(href, Astro.site)} />)}
-		<link rel="alternate" hreflang="x-default" href={new URL(languageLinks.ca, Astro.site)} />
+		{noindex && <meta name="robots" content="noindex" />}
+		{!noindex && <link rel="canonical" href={canonicalURL} />}
+		{!noindex && Object.entries(languageLinks).map(([language, href]) => <link rel="alternate" hreflang={language} href={publicUrl(href)} />)}
+		{!noindex && <link rel="alternate" hreflang="x-default" href={publicUrl(languageLinks.ca)} />}
 		<title>{pageTitle}</title>
-		<meta property="og:type" content="website" />
+		<meta property="og:type" content={ogType} />
 		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:site_name" content={SITE_TITLE} />
+		<meta property="og:locale" content={ogLocales[lang]} />
+		{(Object.keys(ogLocales) as Lang[]).filter((other) => other !== lang).map((other) => <meta property="og:locale:alternate" content={ogLocales[other]} />)}
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
 		{socialImage && <meta property="og:image" content={socialImage} />}
+		{socialImage && <meta property="og:image:alt" content={title} />}
 		<meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={description} />

@@ -10,6 +10,8 @@ aplicación local `Web_results`.
 - El identificador aleatorio del navegador se transforma con SHA-256 y un secreto.
 - Solo admite las cuatro herramientas y comentarios de hasta 500 caracteres.
 - Una persona puede actualizar su respuesta para cada herramienta.
+- Cada visitante puede hacer como máximo 30 escrituras por minuto (Cloudflare Rate
+  Limiting). La IP solo se usa en memoria para ese recuento y no se guarda.
 
 ## Configuración remota
 

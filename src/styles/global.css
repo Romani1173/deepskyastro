@@ -7,8 +7,8 @@
 	--color-muted: #aab5c8;
 	--color-accent: #e4c66a;
 	--color-accent-soft: #fff1b8;
-	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-	--font-technical: 'Space Mono', ui-monospace, monospace;
+	--font-sans: var(--font-inter, 'Inter', ui-sans-serif, system-ui, sans-serif);
+	--font-technical: var(--font-space-mono, 'Space Mono', ui-monospace, monospace);
 }
 
 * { box-sizing: border-box; }

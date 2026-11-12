@@ -3,12 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
 import { articlesHref, copy, equipmentHref, galleryHref, languageLinks, myNightHref, sessionPreparationHref, siteMapHref, withBase } from '../i18n';
+import { optimizedVariant } from '../lib/optimized-images';
+import { PRODUCTION_SITE } from '../consts';
 
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const t = copy[lang];
-const homeUrl = new URL(lang === 'ca' ? base : `${base}${lang}/`, Astro.site).href;
+const homeUrl = new URL(lang === 'ca' ? '/' : `/${lang}/`, PRODUCTION_SITE).href;
 const authorName = 'Juan José Romero';
 const [introBeforeAuthor, introAfterAuthor = ''] = t.homeIntro.split(authorName);
 const coverRotationDays = 1;
@@ -24,19 +26,26 @@ const advancedLevel = {
 	es: 'Avanzado',
 	en: 'Advanced',
 }[lang];
+// Cada portada ofrece copias de 1280, 1920 y 2560 px; el original (4K) solo se usa en pantallas mayores.
+const cover = (file: string) => ({
+	1280: optimizedVariant(`portadas/${file}`, 1280, base),
+	1920: optimizedVariant(`portadas/${file}`, 1920, base),
+	2560: optimizedVariant(`portadas/${file}`, 2560, base),
+	original: withBase(`imagenes/portadas/${file}`, base),
+});
 const rotatingCovers = [
-	{ src: withBase('imagenes/portadas/portada-rotativa-01.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-07.webp', base), shadeLeft: .55, shadeRight: .17 }, // NGC 2237 verde
-	{ src: withBase('imagenes/portadas/portada-rotativa-05.webp', base), shadeLeft: .53, shadeRight: .15 }, // rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-11.webp', base), shadeLeft: .48, shadeRight: .11 }, // neutro/oscuro
-	{ src: withBase('imagenes/portadas/portada-rotativa-06.webp', base), shadeLeft: .50, shadeRight: .13 }, // dorado/azul
-	{ src: withBase('imagenes/portadas/portada-rotativa-08.webp', base), shadeLeft: .48, shadeRight: .11 }, // NGC 2237 rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-03.webp', base), shadeLeft: .55, shadeRight: .17 }, // verde
-	{ src: withBase('imagenes/portadas/portada-rotativa-02.webp', base), shadeLeft: .45, shadeRight: .08 }, // rojo oscuro
-	{ src: withBase('imagenes/portadas/portada-rotativa-12.webp', base), shadeLeft: .55, shadeRight: .16 }, // magenta/azul
-	{ src: withBase('imagenes/portadas/portada-rotativa-09.webp', base), shadeLeft: .47, shadeRight: .10 }, // NGC 2237 azul/dorado
-	{ src: withBase('imagenes/portadas/portada-rotativa-10.webp', base), shadeLeft: .49, shadeRight: .11 }, // rojo
-	{ src: withBase('imagenes/portadas/portada-rotativa-04.webp', base), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
+	{ src: cover('portada-rotativa-01.webp'), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
+	{ src: cover('portada-rotativa-07.webp'), shadeLeft: .55, shadeRight: .17 }, // NGC 2237 verde
+	{ src: cover('portada-rotativa-05.webp'), shadeLeft: .53, shadeRight: .15 }, // rojo
+	{ src: cover('portada-rotativa-11.webp'), shadeLeft: .48, shadeRight: .11 }, // neutro/oscuro
+	{ src: cover('portada-rotativa-06.webp'), shadeLeft: .50, shadeRight: .13 }, // dorado/azul
+	{ src: cover('portada-rotativa-08.webp'), shadeLeft: .48, shadeRight: .11 }, // NGC 2237 rojo
+	{ src: cover('portada-rotativa-03.webp'), shadeLeft: .55, shadeRight: .17 }, // verde
+	{ src: cover('portada-rotativa-02.webp'), shadeLeft: .45, shadeRight: .08 }, // rojo oscuro
+	{ src: cover('portada-rotativa-12.webp'), shadeLeft: .55, shadeRight: .16 }, // magenta/azul
+	{ src: cover('portada-rotativa-09.webp'), shadeLeft: .47, shadeRight: .10 }, // NGC 2237 azul/dorado
+	{ src: cover('portada-rotativa-10.webp'), shadeLeft: .49, shadeRight: .11 }, // rojo
+	{ src: cover('portada-rotativa-04.webp'), shadeLeft: .45, shadeRight: .08 }, // azul/rojo
 ];
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -52,7 +61,7 @@ const structuredData = {
 };
 ---
 
-<Layout title={t.homeSeoTitle} description={t.homeSeoDescription} image={withBase('imagenes/portada.webp', base)} structuredData={structuredData} hero lang={lang} languageLinks={languageLinks.home(base)}>
+<Layout title={t.homeSeoTitle} description={t.homeSeoDescription} image={withBase('imagenes/optimizadas/og/portada-1200x630.jpg', base)} structuredData={structuredData} hero lang={lang} languageLinks={languageLinks.home(base)}>
 	<script is:inline define:vars={{ rotatingCovers, coverRotationDays, coverRotationAnchor, coverPreviewEnabled }}>
 		const requestedCover = coverPreviewEnabled ? Number(new URLSearchParams(window.location.search).get('cover')) : 0;
 		const madridDateParts = (date) => Object.fromEntries(
@@ -77,7 +86,10 @@ const structuredData = {
 			const cycleIndex = ((Math.floor(elapsedDays / coverRotationDays) % rotatingCovers.length) + rotatingCovers.length) % rotatingCovers.length;
 			const selectedIndex = Number.isInteger(requestedCover) && requestedCover >= 1 && requestedCover <= rotatingCovers.length ? requestedCover - 1 : cycleIndex;
 			const selectedCover = rotatingCovers[selectedIndex];
-			document.documentElement.style.setProperty('--rotating-hero-image', `url("${selectedCover.src}")`);
+			const pixelRatio = window.devicePixelRatio || 1;
+			const neededWidth = Math.max(window.innerWidth * pixelRatio, window.innerHeight * 16 / 9 * Math.min(pixelRatio, 1.5));
+			const coverSrc = neededWidth <= 1400 ? selectedCover.src[1280] : neededWidth <= 2100 ? selectedCover.src[1920] : neededWidth <= 2900 ? selectedCover.src[2560] : selectedCover.src.original;
+			document.documentElement.style.setProperty('--rotating-hero-image', `url("${coverSrc}")`);
 			document.documentElement.style.setProperty('--rotating-hero-shade-left', String(selectedCover.shadeLeft));
 			document.documentElement.style.setProperty('--rotating-hero-shade-right', String(selectedCover.shadeRight));
 		};

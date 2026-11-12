@@ -1,0 +1,24 @@
+# Cabeceras HTTP que aplica Cloudflare Pages (GitHub Pages ignora este archivo).
+# Si se añade un servicio externo nuevo (p. ej. otra API o un script de analítica),
+# hay que permitir su dominio en Content-Security-Policy o el navegador lo bloqueará.
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://deepskyastro-feedback.jjromero1173.workers.dev https://cds.unistra.fr https://simbad.cds.unistra.fr; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Archivos con huella en el nombre: no cambian nunca, se pueden guardar un año.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Imágenes y PDF conservan su nombre al actualizarse: un día en caché y, después,
+# se sirve la copia guardada mientras se comprueba si hay una versión nueva.
+/imagenes/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/documents/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

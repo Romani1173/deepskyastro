@@ -742,7 +742,11 @@ const clientData = JSON.stringify({ lang, texts: { ...t, explanation: explanatio
       const segment = document.createElement('div');
       segment.classList.toggle('is-invalid', !valid);
       segment.style.setProperty('--night-colour', 'hsl(270 48% 42%)');
-      segment.innerHTML = `<strong>${group.label}</strong><span>${filters}</span><small>${clock(firstSlot.start)}–${clock(lastSlot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}</small>`;
+      // Los nombres pueden venir de SIMBAD: se insertan como texto, nunca como HTML.
+      const name = document.createElement('strong'); name.textContent = group.label;
+      const filterText = document.createElement('span'); filterText.textContent = filters;
+      const timeRange = document.createElement('small'); timeRange.textContent = `${clock(firstSlot.start)}–${clock(lastSlot.end)}${valid ? '' : ` · ${config.texts.invalidSlot}`}`;
+      segment.replaceChildren(name, filterText, timeRange);
       timeline.append(segment);
     });
     const chartTargets = ordered.reduce<NightTarget[]>((targets, slot) => targets.some((target) => target.id === slot.task.id) ? targets : [...targets, slot.task], []);

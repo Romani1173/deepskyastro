@@ -1,0 +1,27 @@
+---
+// Página de error 404. Cloudflare Pages (y GitHub Pages) la sirven con el código 404
+// cuando una dirección no existe, en lugar de devolver la portada con un 200.
+import Layout from '../layouts/Layout.astro';
+import { galleryHref, homeHref } from '../i18n';
+
+const base = import.meta.env.BASE_URL;
+const messages = [
+	{ lang: 'ca', home: 'Tornar a l’inici', gallery: 'Explora la galeria' },
+	{ lang: 'es', home: 'Volver al inicio', gallery: 'Explora la galería' },
+	{ lang: 'en', home: 'Back to home', gallery: 'Explore the gallery' },
+] as const;
+---
+
+<Layout title="404" description="404" minimal noindex lang="ca">
+	<header class="page-heading">
+		<h1>404</h1>
+		<p>No hem trobat aquesta pàgina · No hemos encontrado esta página · We couldn’t find this page</p>
+	</header>
+	<div class="intro">
+		{messages.map((message) => (
+			<p lang={message.lang}>
+				<a href={homeHref(message.lang, base)}>{message.home}</a> · <a href={galleryHref(message.lang, base)}>{message.gallery}</a>
+			</p>
+		))}
+	</div>
+</Layout>
