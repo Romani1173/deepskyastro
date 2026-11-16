@@ -18,7 +18,7 @@ export const categories: Array<{
 export const copy = {
 	ca: {
 		siteDescription: 'Un recull personal de fotografies de cel profund.',
-		homeSeoTitle: 'Astrofotografia de cel profund',
+		homeSeoTitle: 'Astrofotografia de cel profund de Juan José Romero',
 		homeSeoDescription: 'Galeria personal d’astrofotografia de Juan José Romero: nebuloses, galàxies, cúmuls estel·lars i el Sol, amb dades de captura, equip i processament.',
 		gallerySeoDescription: 'Galeria d’astrofotografia de cel profund de Juan José Romero: nebuloses, galàxies, cúmuls estel·lars i el Sol, amb dades de captura, equip i processat de cada imatge.',
 		visibilitySeoDescription: 'Quins objectes de cel profund es poden fotografiar aquesta setmana des del centre de Catalunya: alçada, períodes de visibilitat i gràfics anuals de cada objecte.',
@@ -37,7 +37,7 @@ export const copy = {
 	},
 	es: {
 		siteDescription: 'Una colección personal de fotografías de cielo profundo.',
-		homeSeoTitle: 'Astrofotografía de cielo profundo',
+		homeSeoTitle: 'Astrofotografía de cielo profundo de Juan José Romero',
 		homeSeoDescription: 'Galería personal de astrofotografía de Juan José Romero: nebulosas, galaxias, cúmulos estelares y el Sol, con datos de captura, equipo y procesado.',
 		gallerySeoDescription: 'Galería de astrofotografía de cielo profundo de Juan José Romero: nebulosas, galaxias, cúmulos estelares y el Sol, con datos de captura, equipo y procesado de cada imagen.',
 		visibilitySeoDescription: 'Qué objetos de cielo profundo se pueden fotografiar esta semana desde el centro de Cataluña: altura, periodos de visibilidad y gráficos anuales de cada objeto.',
@@ -56,7 +56,7 @@ export const copy = {
 	},
 	en: {
 		siteDescription: 'A personal collection of deep-sky photographs.',
-		homeSeoTitle: 'Deep-Sky Astrophotography',
+		homeSeoTitle: 'Deep-Sky Astrophotography by Juan José Romero',
 		homeSeoDescription: 'Juan José Romero’s personal astrophotography gallery: nebulae, galaxies, star clusters and the Sun, with capture, equipment and processing details.',
 		gallerySeoDescription: 'Juan José Romero’s deep-sky astrophotography gallery: nebulae, galaxies, star clusters and the Sun, with capture, equipment and processing details for every image.',
 		visibilitySeoDescription: 'Which deep-sky objects can be photographed this week from central Catalonia: altitude, visibility periods and yearly charts for each object.',

@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { astrophotographyGear, breadcrumbList, shortenDescription, titleWith } from '../lib/seo';
 import type { Lang } from '../i18n';
-import { withBase } from '../i18n';
+import { copy, equipmentHref, homeHref, withBase } from '../i18n';
 import type { EquipmentGroupId, EquipmentItemId } from '../data/equipment';
-import { equipmentGroups, equipmentItemLinks, equipmentUi, groupHref } from '../data/equipment';
+import { equipmentGroups, equipmentItemLinks, equipmentUi, groupHref, itemHref } from '../data/equipment';
 
 interface Props { lang: Lang; groupId: EquipmentGroupId; itemId: EquipmentItemId; }
 const { lang, groupId, itemId } = Astro.props;
@@ -11,9 +12,17 @@ const base = import.meta.env.BASE_URL;
 const group = equipmentGroups.find((candidate) => candidate.id === groupId)!;
 const equipmentItem = group.items.find((candidate) => candidate.id === itemId)!;
 const ui = equipmentUi[lang];
+// SEO: «Nombre: resumen. Parte del grupo … del equipo de Juan José Romero.»
+const lowerFirst = (value: string) => /^\p{Lu}\p{Ll}/u.test(value) ? value.charAt(0).toLocaleLowerCase(lang) + value.slice(1) : value;
+const seoDescription = shortenDescription({
+	ca: `${equipmentItem.title[lang]}: ${lowerFirst(equipmentItem.summary[lang])}. Grup «${group.title[lang]}» de l’equip d’astrofotografia de Juan José Romero.`,
+	es: `${equipmentItem.title[lang]}: ${lowerFirst(equipmentItem.summary[lang])}. Grupo «${group.title[lang]}» del equipo de astrofotografía de Juan José Romero.`,
+	en: `${equipmentItem.title[lang]}: ${lowerFirst(equipmentItem.summary[lang])}. Part of the “${group.title[lang]}” group in Juan José Romero’s astrophotography gear.`,
+}[lang]);
+const structuredData = { '@context': 'https://schema.org', ...breadcrumbList([[copy[lang].home, homeHref(lang, base)], [copy[lang].myEquipment, equipmentHref(lang, base)], [group.title[lang], groupHref(lang, group, base)], [equipmentItem.title[lang], itemHref(lang, group, equipmentItem, base)]], base) };
 ---
 
-<Layout minimal compact lang={lang} title={equipmentItem.title[lang]} description={equipmentItem.summary[lang]} languageLinks={equipmentItemLinks(group, equipmentItem, base)} backLink={{ href: groupHref(lang, group, base), label: group.title[lang] }}>
+<Layout minimal compact lang={lang} title={titleWith(equipmentItem.title[lang], astrophotographyGear[lang])} description={seoDescription} structuredData={structuredData} languageLinks={equipmentItemLinks(group, equipmentItem, base)} backLink={{ href: groupHref(lang, group, base), label: group.title[lang] }}>
 	<article class="equipment-detail">
 		<header class="equipment-detail__heading">
 			<p class="equipment-kicker">{group.number}.{equipmentItem.number} · {ui.provisional}</p>

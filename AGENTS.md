@@ -73,6 +73,8 @@
 - `npm run dev` y `npm run build` ejecutan antes `images:generate` (`scripts/generate-optimized-images.mjs`): crea copias WebP ligeras en `public/imagenes/optimizadas/` (no se suben a Git) y falla si una ficha cita una imagen que no existe. Los originales no se modifican y el visor ampliado sigue usándolos.
 - En las plantillas, usar `optimizedImage()` de `src/lib/optimized-images.ts` para mostrar fotos en tarjetas o fichas; no enlazar directamente el original salvo para el visor ampliado.
 - Las URL canónicas, `hreflang` y Open Graph usan siempre `PRODUCTION_SITE` (`src/consts.ts`), también en la copia de GitHub Pages.
+- Los títulos de página terminan en «| DeepSkyAstro» y se construyen con `src/lib/seo.ts` (palabra clave «Astrofotografia/Astrofotografía/Astrophotography» si cabe). Las descripciones y los datos estructurados (schema.org) de galería, categorías, Sol, artículos y equipo también salen de ahí; al crear un tipo de página nuevo, reutilizar esas utilidades.
+- Los nombres de objeto (`objecte`) en catalán y castellano deben estar en su idioma, no en inglés: el título de Google y la cabecera de la ficha salen de ese campo.
 - Las fuentes Inter y Space Mono se descargan al compilar (`fonts` en `astro.config.mjs`) y se sirven desde la propia web; no volver a enlazar Google Fonts.
 - `public/_headers` define las cabeceras de seguridad y caché de Cloudflare Pages. Si se añade un servicio externo (API, analítica, mapas…), hay que permitir su dominio en `Content-Security-Policy`.
 - El Worker de valoraciones (`feedback-worker/`) no se publica con `git push`: tras cambiarlo, ejecutar `npm run check` y `npm run deploy` dentro de esa carpeta.

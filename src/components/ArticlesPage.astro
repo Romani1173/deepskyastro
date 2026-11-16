@@ -3,7 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
-import { languageLinks, localeFor, withBase } from '../i18n';
+import { articlesHref, copy, homeHref, languageLinks, localeFor, withBase } from '../i18n';
+import { author, breadcrumbList, publicUrl, shortenDescription } from '../lib/seo';
 import ReactionHeart from './ReactionHeart.astro';
 
 interface Props {
@@ -34,9 +35,36 @@ const localizedText = (article: CollectionEntry<'articulos'>) => {
 	return article.data.traducciones[lang];
 };
 const [featured, ...remaining] = localized;
+// SEO: descripción con los temas reales y datos estructurados de cada artículo (con sus PDF).
+const seoDescription = shortenDescription({
+	ca: 'Articles en PDF de Juan José Romero sobre astrofotografia: apilat i processament amb PixInsight, màscares, fitxers de correcció, SNR, planificació i fotografia solar.',
+	es: 'Artículos en PDF de Juan José Romero sobre astrofotografía: apilado y procesado con PixInsight, máscaras, archivos de calibración, SNR, planificación y fotografía solar.',
+	en: 'Astrophotography articles by Juan José Romero (PDF, Catalan and Spanish): stacking and processing in PixInsight, masks, calibration frames, SNR, planning and solar imaging.',
+}[lang], 165);
+const pageUrl = publicUrl(articlesHref(lang, base), base);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'CollectionPage', name: labels.title, description: seoDescription, url: pageUrl, inLanguage: lang, author,
+			hasPart: localized.map((article) => ({
+				'@type': 'Article',
+				headline: localizedText(article).titulo,
+				abstract: localizedText(article).resumen,
+				url: `${pageUrl}#article-${article.data.slug}`,
+				datePublished: article.data.fecha.toISOString().slice(0, 10),
+				author,
+				encoding: (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]).map((pdfLang) => ({
+					'@type': 'MediaObject', contentUrl: publicUrl(withBase(article.data.pdfs[pdfLang]!, base), base), encodingFormat: 'application/pdf', inLanguage: pdfLang,
+				})),
+			})),
+		},
+		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [labels.title, articlesHref(lang, base)]], base),
+	],
+};
 ---
 
-<Layout title={labels.title} description={labels.description} focused lang={lang} languageLinks={languageLinks.articles(base)}>
+<Layout title={{ ca: 'Articles d’astrofotografia i PixInsight', es: 'Artículos de astrofotografía y PixInsight', en: 'Astrophotography and PixInsight articles' }[lang]} description={seoDescription} structuredData={structuredData} focused lang={lang} languageLinks={languageLinks.articles(base)}>
 	<section class="articles-index">
 		<header class="page-heading">
 			<h1>{labels.title}</h1>
