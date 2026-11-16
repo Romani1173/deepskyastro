@@ -2,8 +2,9 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { categoryHref, localeFor, withBase } from '../i18n';
+import { categoryHref, copy, homeHref, localeFor, withBase } from '../i18n';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
+import { author, breadcrumbList, publicUrl, sunVariant } from '../lib/seo';
 
 interface Props { foto: CollectionEntry<'sol'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -18,10 +19,24 @@ const imageUrl = withBase(`imagenes/sol/${foto.data.imagen}`, base);
 const comment = lang === 'ca'
 	? foto.data.comentario
 	: foto.data.traducciones?.[lang] ?? foto.data.comentario;
+const variant = sunVariant(foto.id, lang);
+const seoTitle = `${lang === 'en' ? 'Sun' : 'Sol'} · ${date}${variant ? ` (${variant})` : ''}`;
 const seoDescription = (() => {
-	const full = `${labels.title}, ${date}. ${comment}`.replace(/\s+/g, ' ');
+	const full = `${labels.title}, ${date}${variant ? ` (${variant})` : ''}. ${comment}`.replace(/\s+/g, ' ');
 	return full.length <= 160 ? full : `${full.slice(0, 159).replace(/\s+\S*$/, '')}…`;
 })();
+const pageHref = lang === 'ca' ? withBase(`sol/${foto.id}/`, base) : withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${foto.id}/`, base);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'ImageObject', name: seoTitle, description: seoDescription, caption: comment, contentUrl: publicUrl(imageUrl, base), url: publicUrl(pageHref, base),
+			inLanguage: lang, representativeOfPage: true, creator: author, creditText: author.name, copyrightHolder: author, copyrightNotice: `© ${author.name}`,
+			dateCreated: foto.data.fecha.toISOString().slice(0, 10),
+		},
+		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [lang === 'en' ? 'Sun' : 'Sol', categoryHref(lang, 'sun', base)], [seoTitle, pageHref]], base),
+	],
+};
 const languageLinks = {
 	ca: withBase(`sol/${foto.id}/`, base),
 	es: withBase(`es/sol/${foto.id}/`, base),
@@ -29,7 +44,7 @@ const languageLinks = {
 };
 ---
 
-<Layout title={`${labels.title} · ${date}`} description={seoDescription} image={imageUrl} ogType="article" minimal lang={lang} languageLinks={languageLinks}>
+<Layout title={seoTitle} description={seoDescription} image={imageUrl} structuredData={structuredData} ogType="article" minimal lang={lang} languageLinks={languageLinks}>
 	<article class="photo-detail">
 		<a class="back-link" href={categoryHref(lang, 'sun', base)}>← {labels.back}</a>
 		<header class="page-heading"><h1>{labels.title}</h1><p>{date}</p></header>

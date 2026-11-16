@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { Font } from 'astro:assets';
 import { PRODUCTION_SITE, SITE_TITLE } from '../consts';
+import { TITLE_BRAND } from '../lib/seo';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import SiteMapIcon from '../components/SiteMapIcon.astro';
 import type { Lang } from '../i18n';
@@ -26,7 +27,7 @@ interface Props {
 }
 const { title = SITE_TITLE, hero = false, minimal = false, compact = false, focused = false, lang = 'ca', languageLinks = makeLanguageLinks.home(import.meta.env.BASE_URL), backLink, image, structuredData, ogType = 'website', noindex = false } = Astro.props;
 const description = Astro.props.description ?? copy[lang].siteDescription;
-const pageTitle = title === SITE_TITLE ? SITE_TITLE : `${title} | ${SITE_TITLE}`;
+const pageTitle = title === SITE_TITLE ? SITE_TITLE : `${title} | ${TITLE_BRAND}`;
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
 const rootHref = normalizeBase(base);

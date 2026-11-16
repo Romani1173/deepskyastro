@@ -5,6 +5,7 @@ import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
 import { categoryByValue, categoryHref, copy, galleryHref, homeHref, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
 import { PRODUCTION_SITE } from '../consts';
+import { astrophotography, titleWith } from '../lib/seo';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
@@ -79,7 +80,7 @@ const breadcrumb = {
 const structuredData = { '@context': 'https://schema.org', '@graph': [imageObject, breadcrumb] };
 ---
 
-<Layout title={text.objecte} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} ogType="article" minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
+<Layout title={titleWith(text.objecte, astrophotography[lang])} description={seoDescription} image={withBase(`imagenes/cielo-profundo/${foto.data.imatge}`, base)} structuredData={structuredData} ogType="article" minimal lang={lang} languageLinks={languageLinks.photo(foto.id, base)}>
 	<article class="photo-detail">
 		<a class="back-link" data-photo-back href={categoryHref(lang, category.key, base)} data-visibility-href={visibilityHref(lang, base)} data-visibility-label={t.visibilityPlanner}>← {t.backToCategory(categoryLabel)}</a>
 		<header class="page-heading"><h1>{text.objecte}</h1></header>

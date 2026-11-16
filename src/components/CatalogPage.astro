@@ -5,7 +5,8 @@ import CatalogHeader from './CatalogHeader.astro';
 import PhotoCard from './PhotoCard.astro';
 import PhotoFeaturePreview from './PhotoFeaturePreview.astro';
 import type { Lang } from '../i18n';
-import { copy, languageLinks } from '../i18n';
+import { copy, galleryHref, homeHref, languageLinks, photoHref } from '../i18n';
+import { author, breadcrumbList, publicUrl } from '../lib/seo';
 import { photoText } from '../photoTranslations';
 
 interface Props { lang: Lang; fotos: CollectionEntry<'fotos'>[]; }
@@ -14,9 +15,19 @@ const base = import.meta.env.BASE_URL;
 const t = copy[lang];
 const searchableText = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
 const constellations = [...new Set(fotos.map((foto) => foto.data.constellacio))].sort((a, b) => a.localeCompare(b, lang, { sensitivity: 'base' }));
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'CollectionPage', name: t.catalogue, description: t.gallerySeoDescription, url: publicUrl(galleryHref(lang, base), base), inLanguage: lang, author,
+			mainEntity: { '@type': 'ItemList', numberOfItems: fotos.length, itemListElement: fotos.map((foto, index) => ({ '@type': 'ListItem', position: index + 1, name: photoText(foto, lang).objecte, url: publicUrl(photoHref(lang, foto.id, base), base) })) },
+		},
+		breadcrumbList([[t.home, homeHref(lang, base)], [t.catalogue, galleryHref(lang, base)]], base),
+	],
+};
 ---
 
-<Layout title={t.catalogue} description={t.gallerySeoDescription} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
+<Layout title={{ ca: 'Galeria d’astrofotografia', es: 'Galería de astrofotografía', en: 'Astrophotography gallery' }[lang]} description={t.gallerySeoDescription} structuredData={structuredData} focused lang={lang} languageLinks={languageLinks.gallery(base)}>
 	<section class="gallery-theme" aria-labelledby="collection-heading">
 		<div class="catalog-controls">
 			<CatalogHeader lang={lang} catalogue />

@@ -4,7 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import CatalogHeader from './CatalogHeader.astro';
 import type { Lang } from '../i18n';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
-import { languageLinks, localeFor, withBase } from '../i18n';
+import { categoryHref, copy, homeHref, languageLinks, localeFor, withBase } from '../i18n';
+import { author, breadcrumbList, publicUrl, shortenDescription } from '../lib/seo';
 
 interface Props {
 	lang: Lang;
@@ -19,6 +20,22 @@ const labels = {
 	en: { title: 'Sun', description: 'Photographs of the Sun, ordered from newest to oldest.', photo: 'solar photograph', photos: 'solar photographs', enlarge: 'Enlarge photograph', close: 'Close' },
 }[lang];
 const sortedFotos = [...fotos].sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const sunHref = (id: string) => lang === 'ca' ? withBase(`sol/${id}/`, base) : withBase(`${lang}/${lang === 'en' ? 'sun' : 'sol'}/${id}/`, base);
+const seoDescription = shortenDescription({
+	ca: `${fotos.length} fotografies del Sol de Juan José Romero: taques solars, regions actives, imatges en color i l’eclipsi total del 12 d’agost del 2026.`,
+	es: `${fotos.length} fotografías del Sol de Juan José Romero: manchas solares, regiones activas, imágenes en color y el eclipse total del 12 de agosto de 2026.`,
+	en: `${fotos.length} photographs of the Sun by Juan José Romero: sunspots, active regions, colour images and the total solar eclipse of 12 August 2026.`,
+}[lang]);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'CollectionPage', name: labels.title, description: seoDescription, url: publicUrl(categoryHref(lang, 'sun', base), base), inLanguage: lang, author,
+			mainEntity: { '@type': 'ItemList', numberOfItems: sortedFotos.length, itemListElement: sortedFotos.map((foto, index) => ({ '@type': 'ListItem', position: index + 1, url: publicUrl(sunHref(foto.id), base) })) },
+		},
+		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [labels.title, categoryHref(lang, 'sun', base)]], base),
+	],
+};
 const groupedYears = Array.from(
 	sortedFotos.reduce((years, foto) => {
 		const year = foto.data.fecha.getUTCFullYear();
@@ -33,7 +50,7 @@ const groupedYears = Array.from(
 );
 ---
 
-<Layout title={labels.title} description={labels.description} focused lang={lang} languageLinks={languageLinks.category('sun', base)}>
+<Layout title={{ ca: 'Sol – Astrofotografia solar', es: 'Sol – Astrofotografía solar', en: 'Sun – Solar astrophotography' }[lang]} description={seoDescription} structuredData={structuredData} focused lang={lang} languageLinks={languageLinks.category('sun', base)}>
 	<section aria-labelledby="solar-heading">
 		<div class="catalog-controls"><CatalogHeader lang={lang} currentCategory="sun" /></div>
 		<div class="page-heading solar-heading">
