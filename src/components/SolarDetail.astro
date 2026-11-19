@@ -2,9 +2,9 @@
 import type { CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
-import { categoryHref, copy, homeHref, localeFor, withBase } from '../i18n';
+import { categoryHref, copy, homeHref, imageUseHref, localeFor, withBase } from '../i18n';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
-import { author, breadcrumbList, publicUrl, sunVariant } from '../lib/seo';
+import { IMAGE_LICENSE, author, breadcrumbList, publicUrl, sunVariant } from '../lib/seo';
 
 interface Props { foto: CollectionEntry<'sol'>; lang: Lang; }
 const { foto, lang } = Astro.props;
@@ -32,6 +32,7 @@ const structuredData = {
 		{
 			'@type': 'ImageObject', name: seoTitle, description: seoDescription, caption: comment, contentUrl: publicUrl(imageUrl, base), url: publicUrl(pageHref, base),
 			inLanguage: lang, representativeOfPage: true, creator: author, creditText: author.name, copyrightHolder: author, copyrightNotice: `© ${author.name}`,
+			license: IMAGE_LICENSE.url, acquireLicensePage: publicUrl(imageUseHref(lang, base), base),
 			dateCreated: foto.data.fecha.toISOString().slice(0, 10),
 		},
 		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [lang === 'en' ? 'Sun' : 'Sol', categoryHref(lang, 'sun', base)], [seoTitle, pageHref]], base),

@@ -6,7 +6,7 @@ import { TITLE_BRAND } from '../lib/seo';
 import LanguageSelector from '../components/LanguageSelector.astro';
 import SiteMapIcon from '../components/SiteMapIcon.astro';
 import type { Lang } from '../i18n';
-import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, languageLinks as makeLanguageLinks, myNightHref, normalizeBase, planningHref, siteMapHref, visibilityHref, withBase } from '../i18n';
+import { articlesHref, copy, equipmentAnalyzerHref, galleryHref, homeHref, imageUseHref, languageLinks as makeLanguageLinks, myNightHref, normalizeBase, planningHref, siteMapHref, visibilityHref, withBase } from '../i18n';
 
 interface Props {
 	title?: string;
@@ -95,6 +95,6 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 			<LanguageSelector lang={lang} links={languageLinks} />
 		</div>}
 		<main class:list={{ 'site-shell': true, 'home-main': hero, 'minimal-main': minimal, 'compact-main': compact }}><slot /></main>
-		<footer class="site-footer site-shell"><span>© {new Date().getFullYear()} {SITE_TITLE}</span>{!isSiteMapPage && <a href={siteMapHref(lang, base)}><SiteMapIcon name="sitemap" size="sm" /><span>{copy[lang].siteMap}</span></a>}</footer>
+		<footer class="site-footer site-shell"><span>© {new Date().getFullYear()} {SITE_TITLE}</span>{!isSiteMapPage && <a href={siteMapHref(lang, base)}><SiteMapIcon name="sitemap" size="sm" /><span>{copy[lang].siteMap}</span></a>}<a href={imageUseHref(lang, base)} rel="license"><span>{copy[lang].imageUse} · CC BY-NC 4.0</span></a></footer>
 	</body>
 </html>

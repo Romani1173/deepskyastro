@@ -24,7 +24,7 @@ export const copy = {
 		visibilitySeoDescription: 'Quins objectes de cel profund es poden fotografiar aquesta setmana des del centre de Catalunya: alçada, períodes de visibilitat i gràfics anuals de cada objecte.',
 		equipmentSeoDescription: 'L’equip d’astrofotografia de Juan José Romero: telescopis, càmeres, filtres, muntura, tren de guiatge i electrònica, peça a peça.',
 		homeIntro: 'Una mirada al cel profund a través de l’astrofotografia de Juan José Romero.',
-		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', equipmentAnalyzer: 'Analitzador', planning: 'Planificació', myNight: 'La meva nit', myEquipment: 'El meu equip', siteMap: 'Descobreix la web', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
+		home: 'Inici', catalogue: 'Galeria', articles: 'Articles', visibilityPlanner: 'Visibilitat', equipmentAnalyzer: 'Analitzador', planning: 'Planificació', myNight: 'La meva nit', myEquipment: 'El meu equip', siteMap: 'Descobreix la web', imageUse: 'Ús de les imatges', all: 'Tots', backHome: 'Tornar a la portada', backCatalogue: 'Tornar a la galeria',
 		explore: 'Explora la galeria', categoryNav: 'Filtra per categoria', search: 'Cerca a la galeria', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Ordena', recent: 'Data: recents', name: 'Nom: A–Z', allConstellations: 'Totes', object: 'objecte', objects: 'objectes', photographedObject: 'objecte fotografiat', photographedObjects: 'objectes fotografiats',
 		noResults: "No s'ha trobat cap objecte amb aquesta cerca.", emptyCategory: 'Encara no hi ha cap fotografia en aquesta categoria.',
@@ -43,7 +43,7 @@ export const copy = {
 		visibilitySeoDescription: 'Qué objetos de cielo profundo se pueden fotografiar esta semana desde el centro de Cataluña: altura, periodos de visibilidad y gráficos anuales de cada objeto.',
 		equipmentSeoDescription: 'El equipo de astrofotografía de Juan José Romero: telescopios, cámaras, filtros, montura, tren de guiado y electrónica, pieza a pieza.',
 		homeIntro: 'Una mirada al cielo profundo a través de la astrofotografía de Juan José Romero.',
-		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', equipmentAnalyzer: 'Analizador', planning: 'Planificación', myNight: 'Mi noche', myEquipment: 'Mi equipo', siteMap: 'Descubre la web', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
+		home: 'Inicio', catalogue: 'Galería', articles: 'Artículos', visibilityPlanner: 'Visibilidad', equipmentAnalyzer: 'Analizador', planning: 'Planificación', myNight: 'Mi noche', myEquipment: 'Mi equipo', siteMap: 'Descubre la web', imageUse: 'Uso de las imágenes', all: 'Todas', backHome: 'Volver a la portada', backCatalogue: 'Volver a la galería',
 		explore: 'Explora la galería', categoryNav: 'Filtrar por categoría', search: 'Buscar en la galería', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Ordenar', recent: 'Fecha: recientes', name: 'Nombre: A–Z', allConstellations: 'Todas', object: 'objeto', objects: 'objetos', photographedObject: 'objeto fotografiado', photographedObjects: 'objetos fotografiados',
 		noResults: 'No se ha encontrado ningún objeto con esta búsqueda.', emptyCategory: 'Todavía no hay ninguna fotografía en esta categoría.',
@@ -62,7 +62,7 @@ export const copy = {
 		visibilitySeoDescription: 'Which deep-sky objects can be photographed this week from central Catalonia: altitude, visibility periods and yearly charts for each object.',
 		equipmentSeoDescription: 'Juan José Romero’s astrophotography equipment: telescopes, cameras, filters, mount, guiding train and electronics, piece by piece.',
 		homeIntro: 'A personal view of the deep sky through the astrophotography of Juan José Romero.',
-		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', equipmentAnalyzer: 'Analyser', planning: 'Planning', myNight: 'My night', myEquipment: 'My equipment', siteMap: 'Discover the website', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
+		home: 'Home', catalogue: 'Gallery', articles: 'Articles', visibilityPlanner: 'Visibility', equipmentAnalyzer: 'Analyser', planning: 'Planning', myNight: 'My night', myEquipment: 'My equipment', siteMap: 'Discover the website', imageUse: 'Image use', all: 'All', backHome: 'Back to the home page', backCatalogue: 'Back to the gallery',
 		explore: 'Explore the gallery', categoryNav: 'Filter by category', search: 'Search the gallery', searchPlaceholder: 'M 31, NGC 2237, …',
 		order: 'Sort', recent: 'Date: newest', name: 'Name: A–Z', allConstellations: 'All', object: 'object', objects: 'objects', photographedObject: 'photographed object', photographedObjects: 'photographed objects',
 		noResults: 'No objects match this search.', emptyCategory: 'There are no photographs in this category yet.',
@@ -103,6 +103,7 @@ export const myNightGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	: pageHref(`${lang}/${lang === 'en' ? 'my-night/guide' : 'mi-noche/guia'}`, base);
 export const sessionPreparationHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('prepara-la-sessio', base) : pageHref(`${lang}/${lang === 'en' ? 'prepare-your-session' : 'prepara-tu-sesion'}`, base);
 export const siteMapHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('mapa-web', base) : pageHref(`${lang}/${lang === 'en' ? 'site-map' : 'mapa-web'}`, base);
+export const imageUseHref = (lang: Lang, base = '/') => lang === 'ca' ? pageHref('us-de-les-imatges', base) : pageHref(lang === 'en' ? 'en/image-use' : 'es/uso-de-las-imagenes', base);
 export const planningGuideHref = (lang: Lang, base = '/') => lang === 'ca'
 	? pageHref('planificacio/guia', base)
 	: pageHref(`${lang}/${lang === 'en' ? 'planning/guide' : 'planificacion/guia'}`, base);
@@ -135,6 +136,7 @@ export const languageLinks = {
 	myNightGuide: (base = '/') => ({ ca: myNightGuideHref('ca', base), es: myNightGuideHref('es', base), en: myNightGuideHref('en', base) }),
 	sessionPreparation: (base = '/') => ({ ca: sessionPreparationHref('ca', base), es: sessionPreparationHref('es', base), en: sessionPreparationHref('en', base) }),
 	siteMap: (base = '/') => ({ ca: siteMapHref('ca', base), es: siteMapHref('es', base), en: siteMapHref('en', base) }),
+	imageUse: (base = '/') => ({ ca: imageUseHref('ca', base), es: imageUseHref('es', base), en: imageUseHref('en', base) }),
 	planningGuide: (base = '/') => ({ ca: planningGuideHref('ca', base), es: planningGuideHref('es', base), en: planningGuideHref('en', base) }),
 	equipmentAnalyzer: (base = '/') => ({ ca: equipmentAnalyzerHref('ca', base), es: equipmentAnalyzerHref('es', base), en: equipmentAnalyzerHref('en', base) }),
 	equipmentAnalyzerGuide: (base = '/') => ({ ca: equipmentAnalyzerGuideHref('ca', base), es: equipmentAnalyzerGuideHref('es', base), en: equipmentAnalyzerGuideHref('en', base) }),
