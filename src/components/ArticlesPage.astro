@@ -5,6 +5,7 @@ import type { Lang } from '../i18n';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
 import { articlesHref, copy, homeHref, languageLinks, localeFor, withBase } from '../i18n';
 import { author, breadcrumbList, publicUrl, shortenDescription } from '../lib/seo';
+import { articleTexts, articleWebHref, localizedArticle, textFor, topicNames as allTopicNames } from '../lib/articles';
 import ReactionHeart from './ReactionHeart.astro';
 
 interface Props {
@@ -15,9 +16,9 @@ interface Props {
 const { lang, articles } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const labels = {
-	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", index: 'Explora els articles', latest: 'Article més recent', topics: 'Temes', available: 'PDF disponibles', open: 'Obrir PDF', backHome: 'Tornar a la portada' },
-	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', index: 'Explora los artículos', latest: 'Artículo más reciente', topics: 'Temas', available: 'PDF disponibles', open: 'Abrir PDF', backHome: 'Volver a la portada' },
-	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', index: 'Explore the articles', latest: 'Latest article', topics: 'Topics', available: 'Available PDFs', open: 'Open PDF', backHome: 'Back to the home page' },
+	ca: { title: 'Articles', description: "Experiències, tècniques i procediments d'astrofotografia.", index: 'Explora els articles', latest: 'Article més recent', topics: 'Temes', available: 'PDF disponibles', open: 'Obrir PDF', read: 'Llegir l’article', readIn: 'Llegir', minutes: 'min de lectura', backHome: 'Tornar a la portada' },
+	es: { title: 'Artículos', description: 'Experiencias, técnicas y procedimientos de astrofotografía.', index: 'Explora los artículos', latest: 'Artículo más reciente', topics: 'Temas', available: 'PDF disponibles', open: 'Abrir PDF', read: 'Leer el artículo', readIn: 'Leer', minutes: 'min de lectura', backHome: 'Volver a la portada' },
+	en: { title: 'Articles', description: 'Astrophotography experiences, techniques and procedures.', index: 'Explore the articles', latest: 'Latest article', topics: 'Topics', available: 'Available PDFs', open: 'Open PDF', read: 'Read the article', readIn: 'Read', minutes: 'min read', backHome: 'Back to the home page' },
 }[lang];
 const localized = articles.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 const languageNames = {
@@ -25,21 +26,27 @@ const languageNames = {
 	es: { ca: 'Catalán', es: 'Castellano', en: 'Inglés' },
 	en: { ca: 'Catalan', es: 'Spanish', en: 'English' },
 }[lang];
-const topicNames = {
-	ca: { Procesado: 'Processament', 'Captura y calibración': 'Captura i calibratge', 'Planificación': 'Planificació', 'Astronomía solar': 'Astronomia solar' },
-	es: { Procesado: 'Procesado', 'Captura y calibración': 'Captura y calibración', 'Planificación': 'Planificación', 'Astronomía solar': 'Astronomía solar' },
-	en: { Procesado: 'Processing', 'Captura y calibración': 'Capture and calibration', 'Planificación': 'Planning', 'Astronomía solar': 'Solar astronomy' },
-}[lang];
-const localizedText = (article: CollectionEntry<'articulos'>) => {
-	if (lang === 'ca' || !article.data.traducciones) return { titulo: article.data.titulo, resumen: article.data.resumen };
-	return article.data.traducciones[lang];
+const topicNames = allTopicNames[lang];
+const localizedText = (article: CollectionEntry<'articulos'>) => localizedArticle(article, lang);
+const texts = await articleTexts();
+const webHref = (article: CollectionEntry<'articulos'>) => articleWebHref(texts, article, lang, base);
+// Botones de cada tarjeta: la versión web en el idioma de la página (con tiempo de lectura);
+// si no existe (inglés), las versiones web disponibles; si solo hay PDF, los PDF.
+const readingMinutes = (body = '') => Math.max(1, Math.round(body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').split(/\s+/).length / 200));
+const cardActions = (article: CollectionEntry<'articulos'>) => {
+	const own = textFor(texts, article, lang);
+	if (own) return [{ href: webHref(article)!, label: labels.read, detail: `${readingMinutes(own.body)} ${labels.minutes} →`, external: false }];
+	const otherLanguages = (['ca', 'es'] as const).filter((other) => other !== lang && textFor(texts, article, other));
+	if (otherLanguages.length) return otherLanguages.map((other) => ({ href: articleWebHref(texts, article, other, base)!, label: languageNames[other], detail: `${labels.readIn} →`, external: false }));
+	return (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]).map((pdfLang) => ({ href: withBase(article.data.pdfs[pdfLang]!, base), label: languageNames[pdfLang], detail: `${labels.open} ↗`, external: true }));
 };
+const titleHref = (article: CollectionEntry<'articulos'>) => cardActions(article).find((action) => !action.external)?.href;
 const [featured, ...remaining] = localized;
 // SEO: descripción con los temas reales y datos estructurados de cada artículo (con sus PDF).
 const seoDescription = shortenDescription({
-	ca: 'Articles en PDF de Juan José Romero sobre astrofotografia: apilat i processament amb PixInsight, màscares, fitxers de correcció, SNR, planificació i fotografia solar.',
-	es: 'Artículos en PDF de Juan José Romero sobre astrofotografía: apilado y procesado con PixInsight, máscaras, archivos de calibración, SNR, planificación y fotografía solar.',
-	en: 'Astrophotography articles by Juan José Romero (PDF, Catalan and Spanish): stacking and processing in PixInsight, masks, calibration frames, SNR, planning and solar imaging.',
+	ca: 'Articles de Juan José Romero sobre astrofotografia: apilat i processament amb PixInsight, màscares, fitxers de correcció, SNR, planificació i fotografia solar.',
+	es: 'Artículos de Juan José Romero sobre astrofotografía: apilado y procesado con PixInsight, máscaras, archivos de calibración, SNR, planificación y fotografía solar.',
+	en: 'Astrophotography articles by Juan José Romero (in Catalan and Spanish): stacking and processing in PixInsight, masks, calibration frames, SNR, planning and solar imaging.',
 }[lang], 165);
 const pageUrl = publicUrl(articlesHref(lang, base), base);
 const structuredData = {
@@ -51,7 +58,7 @@ const structuredData = {
 				'@type': 'Article',
 				headline: localizedText(article).titulo,
 				abstract: localizedText(article).resumen,
-				url: `${pageUrl}#article-${article.data.slug}`,
+				url: webHref(article) ? publicUrl(webHref(article)!, base) : `${pageUrl}#article-${article.data.slug}`,
 				datePublished: article.data.fecha.toISOString().slice(0, 10),
 				author,
 				encoding: (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]).map((pdfLang) => ({
@@ -86,18 +93,17 @@ const structuredData = {
 					<span>{topicNames[featured.data.tema]}</span>
 					<time datetime={featured.data.fecha.toISOString().slice(0, 10)}>{new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(featured.data.fecha)}</time>
 				</div>
-				<h2>{localizedText(featured).titulo}</h2>
+				<h2>{titleHref(featured) ? <a href={titleHref(featured)}>{localizedText(featured).titulo}</a> : localizedText(featured).titulo}</h2>
 				<p>{localizedText(featured).resumen}</p>
 				<div class="article-card__pdfs">
 					<ReactionHeart itemType="article" itemId={featured.data.slug} lang={lang} placement="article-actions" />
-					{(['ca', 'es', 'en'] as const).filter((pdfLang) => featured.data.pdfs[pdfLang]).map((pdfLang) => <a href={withBase(featured.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener"><span>{languageNames[pdfLang]}</span><small>{labels.open} ↗</small></a>)}
+					{cardActions(featured).map((action) => <a href={action.href} {...(action.external ? { target: '_blank', rel: 'noopener' } : {})}><span>{action.label}</span><small>{action.detail}</small></a>)}
 				</div>
 			</div>
 		</article>}
 		<div class="articles-compact-list">
 			{remaining.map((article) => {
 				const text = localizedText(article);
-				const availablePdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
 				return (
 					<article class="article-card article-card--compact" id={`article-${article.data.slug}`}>
 						<div class="article-card__cover">
@@ -108,14 +114,14 @@ const structuredData = {
 								<span>{topicNames[article.data.tema]}</span>
 								<time datetime={article.data.fecha.toISOString().slice(0, 10)}>{new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(article.data.fecha)}</time>
 							</div>
-							<h2>{text.titulo}</h2>
+							<h2>{titleHref(article) ? <a href={titleHref(article)}>{text.titulo}</a> : text.titulo}</h2>
 							<p>{text.resumen}</p>
 							<div class="article-card__pdfs">
 								<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} placement="article-actions" />
-								{availablePdfs.map((pdfLang) => (
-									<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">
-										<span>{languageNames[pdfLang]}</span>
-										<small>{labels.open} ↗</small>
+								{cardActions(article).map((action) => (
+									<a href={action.href} {...(action.external ? { target: '_blank', rel: 'noopener' } : {})}>
+										<span>{action.label}</span>
+										<small>{action.detail}</small>
 									</a>
 								))}
 							</div>

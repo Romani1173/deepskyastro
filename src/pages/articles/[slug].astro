@@ -1,0 +1,8 @@
+---
+import ArticleDetail from '../../components/ArticleDetail.astro';
+import { articlePaths } from '../../lib/articles';
+
+export const getStaticPaths = () => articlePaths('ca');
+const { article, text } = Astro.props;
+---
+<ArticleDetail lang="ca" article={article} text={text} />

@@ -64,7 +64,8 @@ const mainNavLabel = { ca: 'Navegació principal', es: 'Navegación principal', 
 		<link rel="icon" href={withBase('favicon.ico', base)} />
 		{noindex && <meta name="robots" content="noindex" />}
 		{!noindex && <link rel="canonical" href={canonicalURL} />}
-		{!noindex && Object.entries(languageLinks).map(([language, href]) => <link rel="alternate" hreflang={language} href={publicUrl(href)} />)}
+		{/* Un enlace con `#` apunta a otra página (p. ej. la lista de artículos): no es una traducción equivalente. */}
+		{!noindex && Object.entries(languageLinks).filter(([, href]) => !href.includes('#')).map(([language, href]) => <link rel="alternate" hreflang={language} href={publicUrl(href)} />)}
 		{!noindex && <link rel="alternate" hreflang="x-default" href={publicUrl(languageLinks.ca)} />}
 		<title>{pageTitle}</title>
 		<meta property="og:type" content={ogType} />
