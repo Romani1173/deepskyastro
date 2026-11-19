@@ -1,0 +1,58 @@
+---
+// Tarjeta de artículo (lista de artículos y «Continua llegint» al final de cada artículo).
+// Con versión web en el idioma de la página, toda la tarjeta es el enlace (sin botones);
+// si no (inglés), botones a las versiones web disponibles; si solo hay PDF, los PDF.
+import type { Lang } from '../i18n';
+import { localeFor, withBase } from '../i18n';
+import { articleWebHref, localizedArticle, readingMinutes, textFor, topicNames, type Article, type ArticleText } from '../lib/articles';
+import { imageSizes, optimizedImage } from '../lib/optimized-images';
+import ReactionHeart from './ReactionHeart.astro';
+
+interface Props {
+	lang: Lang;
+	article: Article;
+	texts: Map<string, ArticleText>;
+	/** Marca «Més recent» y carga la portada sin `lazy`. */
+	latest?: boolean;
+	heading?: 'h2' | 'h3';
+}
+
+const { lang, article, texts, latest = false, heading: Heading = 'h2' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const labels = {
+	ca: { latest: 'Més recent', readIn: 'Llegir', open: 'Obrir PDF', languages: { ca: 'Català', es: 'Castellà', en: 'Anglès' } },
+	es: { latest: 'Más reciente', readIn: 'Leer', open: 'Abrir PDF', languages: { ca: 'Catalán', es: 'Castellano', en: 'Inglés' } },
+	en: { latest: 'Latest', readIn: 'Read', open: 'Open PDF', languages: { ca: 'Catalan', es: 'Spanish', en: 'English' } },
+}[lang];
+const text = localizedArticle(article, lang);
+const own = textFor(texts, article, lang);
+const otherLanguages = (['ca', 'es'] as const).filter((other) => other !== lang && textFor(texts, article, other));
+const buttons = own ? [] : otherLanguages.length
+	? otherLanguages.map((other) => ({ href: articleWebHref(texts, article, other, base)!, label: labels.languages[other], detail: `${labels.readIn} →`, external: false }))
+	: (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]).map((pdfLang) => ({ href: withBase(article.data.pdfs[pdfLang]!, base), label: labels.languages[pdfLang], detail: `${labels.open} ↗`, external: true }));
+const titleHref = own ? articleWebHref(texts, article, lang, base) : buttons.find((button) => !button.external)?.href;
+const isoDate = article.data.fecha.toISOString().slice(0, 10);
+---
+
+<article class:list={['article-card', 'article-card--compact', { 'article-card--latest': latest }]} id={`article-${article.data.slug}`} data-topic={article.data.tema}>
+	<div class="article-card__cover">
+		<img {...optimizedImage(`articulos/${article.data.translationKey}/${article.data.portada}`, base, 960)} sizes={imageSizes.card} alt="" {...(latest ? {} : { loading: 'lazy', decoding: 'async' })} />
+	</div>
+	<div class="article-card__body">
+		<div class="article-card__meta">
+			<span>{latest && <strong class="article-card__latest">{labels.latest}</strong>}{topicNames[lang][article.data.tema]}{own && <span class="article-card__minutes"> · {readingMinutes(own.body)} min</span>}</span>
+			<time datetime={isoDate}>{new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(article.data.fecha)}</time>
+		</div>
+		<Heading class="article-card__title">{titleHref ? <a href={titleHref}>{text.titulo}</a> : text.titulo}</Heading>
+		<p>{text.resumen}</p>
+		<div class="article-card__pdfs">
+			<ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} placement="article-actions" />
+			{buttons.map((button) => (
+				<a href={button.href} {...(button.external ? { target: '_blank', rel: 'noopener' } : {})}>
+					<span>{button.label}</span>
+					<small>{button.detail}</small>
+				</a>
+			))}
+		</div>
+	</div>
+</article>

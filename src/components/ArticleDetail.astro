@@ -1,12 +1,14 @@
 ---
 // Versión web de un artículo (además del PDF). Recupera la plantilla de artículo
 // de agosto de 2026 (migas, cabecera, índice y estilos `.article-*` de global.css).
-import { render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import type { Lang } from '../i18n';
 import { articlesHref, copy, homeHref, localeFor, withBase } from '../i18n';
 import { articleTexts, articleWebHref, localizedArticle, topicNames, type Article, type ArticleText } from '../lib/articles';
 import { imageSizes, optimizedImage, optimizedVariant } from '../lib/optimized-images';
+import ArticleCard from './ArticleCard.astro';
+import ReactionHeart from './ReactionHeart.astro';
 import { author, breadcrumbList, publicUrl, shortenDescription } from '../lib/seo';
 
 interface Props {
@@ -18,9 +20,9 @@ interface Props {
 const { lang, article, text } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const labels = {
-	ca: { contents: "Contingut de l'article", pdf: 'També en PDF', languages: { ca: 'català', es: 'castellà', en: 'anglès' } },
-	es: { contents: 'Contenido del artículo', pdf: 'También en PDF', languages: { ca: 'catalán', es: 'castellano', en: 'inglés' } },
-	en: { contents: 'Article contents', pdf: 'Also as PDF', languages: { ca: 'Catalan', es: 'Spanish', en: 'English' } },
+	ca: { contents: "Contingut de l'article", back: 'Tots els articles', useful: 'T’ha estat útil?', more: 'Continua llegint', pdf: 'També en PDF', languages: { ca: 'català', es: 'castellà', en: 'anglès' } },
+	es: { contents: 'Contenido del artículo', back: 'Todos los artículos', useful: '¿Te ha resultado útil?', more: 'Sigue leyendo', pdf: 'También en PDF', languages: { ca: 'catalán', es: 'castellano', en: 'inglés' } },
+	en: { contents: 'Article contents', back: 'All articles', useful: 'Was this useful?', more: 'Keep reading', pdf: 'Also as PDF', languages: { ca: 'Catalan', es: 'Spanish', en: 'English' } },
 }[lang];
 const { titulo, resumen } = localizedArticle(article, lang);
 const texts = await articleTexts();
@@ -31,6 +33,10 @@ const isoDate = article.data.fecha.toISOString().slice(0, 10);
 const date = new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(article.data.fecha);
 const coverPath = `articulos/${article.data.translationKey}/${article.data.portada}`;
 const cover = optimizedImage(coverPath, base);
+// «Continua llegint»: el artículo anterior y el siguiente por fecha (o los dos más cercanos en los extremos).
+const ordered = (await getCollection('articulos')).filter((candidate) => articleWebHref(texts, candidate, lang, base)).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+const position = ordered.findIndex((candidate) => candidate.id === article.id);
+const neighbours = [ordered[position - 1], ordered[position + 1], ordered[position - 2], ordered[position + 2]].filter(Boolean).slice(0, 2);
 const pdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -75,5 +81,17 @@ const structuredData = {
 			<Content />
 			{pdfs.length > 0 && <p>{labels.pdf}: {pdfs.map((pdfLang, index) => <>{index > 0 && ' · '}<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">{labels.languages[pdfLang]}</a></>)}</p>}
 		</div>
+		<footer class="article-end">
+			<div class="article-end__actions">
+				<a class="article-end__back" href={articlesHref(lang, base)}>← {labels.back}</a>
+				<span class="article-end__like">{labels.useful} <ReactionHeart itemType="article" itemId={article.data.slug} lang={lang} placement="article-actions" /></span>
+			</div>
+			{neighbours.length > 0 && (
+				<section aria-labelledby="article-end-more">
+					<h2 id="article-end-more">{labels.more}</h2>
+					<div class="articles-compact-list">{neighbours.map((neighbour) => <ArticleCard lang={lang} article={neighbour} texts={texts} heading="h3" />)}</div>
+				</section>
+			)}
+		</footer>
 	</article>
 </Layout>

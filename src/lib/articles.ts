@@ -18,6 +18,9 @@ export const localizedArticle = (article: Article, lang: Lang) => {
 	return article.data.traducciones[lang];
 };
 
+/** Minutos de lectura aproximados (200 palabras por minuto, sin contar las imágenes). */
+export const readingMinutes = (body = '') => Math.max(1, Math.round(body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').split(/\s+/).length / 200));
+
 /** Textos web disponibles, indexados por `translationKey/idioma`. */
 export const articleTexts = async () => new Map((await getCollection('articulosTexto')).map((entry) => [entry.id, entry]));
 
