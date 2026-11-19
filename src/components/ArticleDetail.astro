@@ -1,0 +1,79 @@
+---
+// Versión web de un artículo (además del PDF). Recupera la plantilla de artículo
+// de agosto de 2026 (migas, cabecera, índice y estilos `.article-*` de global.css).
+import { render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import type { Lang } from '../i18n';
+import { articlesHref, copy, homeHref, localeFor, withBase } from '../i18n';
+import { articleTexts, articleWebHref, localizedArticle, topicNames, type Article, type ArticleText } from '../lib/articles';
+import { imageSizes, optimizedImage, optimizedVariant } from '../lib/optimized-images';
+import { author, breadcrumbList, publicUrl, shortenDescription } from '../lib/seo';
+
+interface Props {
+	lang: Lang;
+	article: Article;
+	text: ArticleText;
+}
+
+const { lang, article, text } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const labels = {
+	ca: { contents: "Contingut de l'article", pdf: 'També en PDF', languages: { ca: 'català', es: 'castellà', en: 'anglès' } },
+	es: { contents: 'Contenido del artículo', pdf: 'También en PDF', languages: { ca: 'catalán', es: 'castellano', en: 'inglés' } },
+	en: { contents: 'Article contents', pdf: 'Also as PDF', languages: { ca: 'Catalan', es: 'Spanish', en: 'English' } },
+}[lang];
+const { titulo, resumen } = localizedArticle(article, lang);
+const texts = await articleTexts();
+const languageLinks = Object.fromEntries((['ca', 'es', 'en'] as const).map((target) => [target, articleWebHref(texts, article, target, base) ?? `${articlesHref(target, base)}#article-${article.data.slug}`])) as Record<Lang, string>;
+const pageHref = articleWebHref(texts, article, lang, base)!;
+const { Content, headings } = await render(text);
+const isoDate = article.data.fecha.toISOString().slice(0, 10);
+const date = new Intl.DateTimeFormat(localeFor(lang), { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(article.data.fecha);
+const coverPath = `articulos/${article.data.translationKey}/${article.data.portada}`;
+const cover = optimizedImage(coverPath, base);
+const pdfs = (['ca', 'es', 'en'] as const).filter((pdfLang) => article.data.pdfs[pdfLang]);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Article',
+			headline: titulo,
+			description: resumen,
+			url: publicUrl(pageHref, base),
+			inLanguage: lang,
+			datePublished: isoDate,
+			author,
+			image: publicUrl(optimizedVariant(coverPath, 960, base), base),
+			encoding: pdfs.map((pdfLang) => ({ '@type': 'MediaObject', contentUrl: publicUrl(withBase(article.data.pdfs[pdfLang]!, base), base), encodingFormat: 'application/pdf', inLanguage: pdfLang })),
+		},
+		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [copy[lang].articles, articlesHref(lang, base)], [titulo, pageHref]], base),
+	],
+};
+---
+
+<Layout title={titulo} description={shortenDescription(resumen)} image={optimizedVariant(coverPath, 960, base)} structuredData={structuredData} ogType="article" minimal lang={lang} languageLinks={languageLinks}>
+	<article class="article-detail">
+		<nav class="article-breadcrumb" aria-label="Breadcrumb">
+			<a href={homeHref(lang, base)}>{copy[lang].home}</a>
+			<span aria-hidden="true">/</span>
+			<a href={articlesHref(lang, base)}>{copy[lang].articles}</a>
+		</nav>
+		<header class="article-detail__header">
+			<p class="article-detail__kicker">{topicNames[lang][article.data.tema]} · <time datetime={isoDate}>{date}</time></p>
+			<h1>{titulo}</h1>
+			<p class="article-detail__summary">{resumen}</p>
+			<p class="article-detail__author">{article.data.autor}</p>
+		</header>
+		<figure class="article-detail__cover"><img {...cover} sizes={imageSizes.detail} alt="" fetchpriority="high" /></figure>
+		{headings.length > 0 && (
+			<nav class="article-toc" aria-label={labels.contents}>
+				<strong>{labels.contents}</strong>
+				<ul>{headings.filter((heading) => heading.depth === 2).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul>
+			</nav>
+		)}
+		<div class="article-prose">
+			<Content />
+			{pdfs.length > 0 && <p>{labels.pdf}: {pdfs.map((pdfLang, index) => <>{index > 0 && ' · '}<a href={withBase(article.data.pdfs[pdfLang]!, base)} target="_blank" rel="noopener">{labels.languages[pdfLang]}</a></>)}</p>}
+		</div>
+	</article>
+</Layout>

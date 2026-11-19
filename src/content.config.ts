@@ -124,8 +124,18 @@ const articulos = defineCollection({
 	}),
 });
 
+// Texto web de los artículos (además del PDF): `<translationKey>/<idioma>.md`.
+// Si existe, la lista de artículos enlaza a la versión web y se genera su página.
+const articulosTexto = defineCollection({
+	loader: glob({ base: './src/content/articulos-texto', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		/** Slug de la URL en ese idioma (por defecto, el `slug` del artículo). No usar `slug`: Astro lo toma como id. */
+		ruta: z.string().optional(),
+	}),
+});
+
 const comentarisFotos = defineCollection({
 	loader: glob({ base: './src/content/comentaris-fotos', pattern: '**/*.{md,mdx}' }),
 });
 
-export const collections = { fotos, sol, articulos, comentarisFotos };
+export const collections = { fotos, sol, articulos, articulosTexto, comentarisFotos };

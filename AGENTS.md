@@ -55,6 +55,14 @@
 - `imatges_addicionals` es opcional: incluir únicamente las imágenes que existan físicamente.
 - Antes de generar o modificar una ficha, revisar los archivos reales en `public/imagenes/`; nunca inventar nombres de imagen.
 
+## Artículos
+
+- Cada artículo tiene sus datos (título, resumen, fecha, tema, portada y PDF) en `src/content/articulos/<clave>.md`.
+- El texto web de cada idioma va en `src/content/articulos-texto/<clave>/ca.md` y `es.md` (Markdown con títulos `##`/`###`, listas, notas `>` e imágenes). Sus figuras se guardan en `src/assets/articulos/<clave>/` y se enlazan como `../../../assets/articulos/<clave>/<archivo>`; Astro las convierte a WebP. Cada imagen necesita un texto alternativo descriptivo en su idioma.
+- La URL usa el `slug` del artículo; para un slug distinto en castellano, poner `ruta: "..."` en el frontmatter de `es.md` (nunca `slug:`, que Astro usa como identificador).
+- Si existe el texto web, la lista de artículos enlaza a la página web (con tiempo de lectura) y el PDF queda como descarga al final del artículo. Si un artículo solo tiene PDF, la lista muestra los botones de PDF como antes.
+- No hay versión inglesa del texto: la lista en inglés enlaza a las versiones catalana y castellana.
+
 ## Objetivos pendientes
 
 - La skill local `.codex/skills/anadir-pendientes-visibilidad` añade o actualiza objetivos pendientes, nombres comunes multilingües y alias de catálogo. Usarla siempre que se soliciten cambios en estos objetivos.
