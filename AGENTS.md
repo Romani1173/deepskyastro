@@ -62,6 +62,8 @@
 - La URL usa el `slug` del artículo; para un slug distinto en castellano, poner `ruta: "..."` en el frontmatter de `es.md` (nunca `slug:`, que Astro usa como identificador).
 - Si existe el texto web, la lista de artículos enlaza a la página web (con tiempo de lectura) y el PDF queda como descarga al final del artículo. Si un artículo solo tiene PDF, la lista muestra los botones de PDF como antes.
 - No hay versión inglesa del texto: la lista en inglés enlaza a las versiones catalana y castellana.
+- Las tarjetas de artículo salen de `src/components/ArticleCard.astro` (lista y bloque «Continua llegint» al final de cada artículo). Todas comparten tamaño de imagen y título; la más reciente solo lleva la etiqueta «Més recent» y un borde algo más marcado. Toda la tarjeta es el enlace.
+- La lista se filtra por tema (`tema` del artículo); al añadir un tema nuevo, añadir su nombre en `topicNames` de `src/lib/articles.ts`.
 
 ## Objetivos pendientes
 

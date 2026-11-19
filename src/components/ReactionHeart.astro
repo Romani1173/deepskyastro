@@ -29,7 +29,7 @@ const labels = {
 >
 	<button type="button" aria-pressed="false" aria-label={labels.add} title={labels.add}>
 		<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 4.7a5.6 5.6 0 0 0-7.9 0L12 5.6l-.9-.9a5.6 5.6 0 0 0-7.9 7.9l.9.9L12 21.4l7.9-7.9.9-.9a5.6 5.6 0 0 0 0-7.9Z" /></svg>
-		<strong data-reaction-count>0</strong>
+		<strong data-reaction-count hidden>0</strong>
 	</button>
 	<span class="sr-only" data-reaction-status aria-live="polite"></span>
 </span>
@@ -63,7 +63,10 @@ const labels = {
 		button.setAttribute('aria-pressed', String(liked));
 		button.setAttribute('aria-label', liked ? heart.dataset.removeLabel! : heart.dataset.addLabel!);
 		button.title = liked ? heart.dataset.removeLabel! : heart.dataset.addLabel!;
-		heart.querySelector<HTMLElement>('[data-reaction-count]')!.textContent = String(Math.max(0, count));
+		const counter = heart.querySelector<HTMLElement>('[data-reaction-count]')!;
+		counter.textContent = String(Math.max(0, count));
+		// Sin «Me gusta» todavía, solo el corazón (un «0» no aporta nada).
+		counter.hidden = count <= 0;
 	};
 	const initializeReactions = async () => {
 		const hearts = [...document.querySelectorAll<Heart>('[data-reaction-heart]:not([data-ready])')];
