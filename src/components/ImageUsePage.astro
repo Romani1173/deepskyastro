@@ -1,0 +1,83 @@
+---
+// Página «Ús de les imatges»: licencia CC BY-NC 4.0 de las fotografías.
+// Google la usa como `acquireLicensePage` de cada foto (etiqueta «Con licencia» en Imágenes).
+import Layout from '../layouts/Layout.astro';
+import type { Lang } from '../i18n';
+import { copy, homeHref, imageUseHref, languageLinks } from '../i18n';
+import { IMAGE_LICENSE, LICENSE_CONTACT_EMAIL, author, breadcrumbList, publicUrl } from '../lib/seo';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const credit = `Foto: ${author.name} — deepskyastro.com (${IMAGE_LICENSE.name})`;
+const text = {
+	ca: {
+		title: 'Ús de les imatges',
+		description: 'Les fotografies de Juan José Romero a DeepSkyAstro es publiquen amb llicència CC BY-NC 4.0: es poden compartir i adaptar citant l’autor i sense finalitat comercial.',
+		intro: `Les fotografies astronòmiques i solars d’aquesta web són de ${author.name} i es publiquen amb la llicència Creative Commons Reconeixement-NoComercial 4.0 Internacional (${IMAGE_LICENSE.name}).`,
+		canTitle: 'Què pots fer',
+		can: ['Compartir-les: copiar-les i redistribuir-les en qualsevol mitjà o format (blogs, classes, xerrades, fòrums, agrupacions astronòmiques…).', 'Adaptar-les: retallar-les, combinar-les amb altres materials o anotar-les.'],
+		conditionsTitle: 'Condicions',
+		conditions: ['Reconeixement: cal citar l’autor, enllaçar aquesta web i indicar la llicència. Per exemple:', 'No comercial: no es poden fer servir amb finalitats comercials (publicitat, productes, publicacions de pagament…).'],
+		commercialTitle: 'Usos comercials',
+		commercial: 'Per a qualsevol ús comercial cal demanar permís a l’autor abans de fer-lo servir.',
+		contact: 'Escriu a',
+		legal: 'Aquest resum no substitueix el text legal de la llicència:',
+	},
+	es: {
+		title: 'Uso de las imágenes',
+		description: 'Las fotografías de Juan José Romero en DeepSkyAstro se publican con licencia CC BY-NC 4.0: se pueden compartir y adaptar citando al autor y sin fines comerciales.',
+		intro: `Las fotografías astronómicas y solares de esta web son de ${author.name} y se publican con la licencia Creative Commons Reconocimiento-NoComercial 4.0 Internacional (${IMAGE_LICENSE.name}).`,
+		canTitle: 'Qué puedes hacer',
+		can: ['Compartirlas: copiarlas y redistribuirlas en cualquier medio o formato (blogs, clases, charlas, foros, agrupaciones astronómicas…).', 'Adaptarlas: recortarlas, combinarlas con otros materiales o anotarlas.'],
+		conditionsTitle: 'Condiciones',
+		conditions: ['Reconocimiento: hay que citar al autor, enlazar esta web e indicar la licencia. Por ejemplo:', 'No comercial: no se pueden usar con fines comerciales (publicidad, productos, publicaciones de pago…).'],
+		commercialTitle: 'Usos comerciales',
+		commercial: 'Para cualquier uso comercial hay que pedir permiso al autor antes de utilizarlas.',
+		contact: 'Escribe a',
+		legal: 'Este resumen no sustituye al texto legal de la licencia:',
+	},
+	en: {
+		title: 'Image use',
+		description: 'Juan José Romero’s photographs on DeepSkyAstro are licensed under CC BY-NC 4.0: you may share and adapt them with credit, for non-commercial purposes.',
+		intro: `The astronomical and solar photographs on this website are by ${author.name} and are published under the Creative Commons Attribution-NonCommercial 4.0 International licence (${IMAGE_LICENSE.name}).`,
+		canTitle: 'What you can do',
+		can: ['Share: copy and redistribute them in any medium or format (blogs, classes, talks, forums, astronomy clubs…).', 'Adapt: crop them, combine them with other material or annotate them.'],
+		conditionsTitle: 'Conditions',
+		conditions: ['Attribution: credit the author, link to this website and name the licence. For example:', 'NonCommercial: they may not be used for commercial purposes (advertising, products, paid publications…).'],
+		commercialTitle: 'Commercial use',
+		commercial: 'Any commercial use requires the author’s permission in advance.',
+		contact: 'Write to',
+		legal: 'This summary does not replace the legal text of the licence:',
+	},
+}[lang];
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ '@type': 'WebPage', name: text.title, description: text.description, url: publicUrl(imageUseHref(lang, base), base), inLanguage: lang, license: IMAGE_LICENSE.url, author },
+		breadcrumbList([[copy[lang].home, homeHref(lang, base)], [text.title, imageUseHref(lang, base)]], base),
+	],
+};
+---
+
+<Layout title={text.title} description={text.description} structuredData={structuredData} minimal lang={lang} languageLinks={languageLinks.imageUse(base)}>
+	<article class="article-detail">
+		<header class="article-detail__header">
+			<p class="article-detail__kicker">{IMAGE_LICENSE.name}</p>
+			<h1>{text.title}</h1>
+			<p class="article-detail__summary">{text.intro}</p>
+		</header>
+		<div class="article-prose">
+			<h2>{text.canTitle}</h2>
+			<ul>{text.can.map((item) => <li>{item}</li>)}</ul>
+			<h2>{text.conditionsTitle}</h2>
+			<ul>
+				<li>{text.conditions[0]}<blockquote>{credit}</blockquote></li>
+				<li>{text.conditions[1]}</li>
+			</ul>
+			<h2>{text.commercialTitle}</h2>
+			<p>{text.commercial}{LICENSE_CONTACT_EMAIL && <> {text.contact} <a href={`mailto:${LICENSE_CONTACT_EMAIL}`}>{LICENSE_CONTACT_EMAIL}</a>.</>}</p>
+			<p>{text.legal} <a href={IMAGE_LICENSE.legalCode[lang]} rel="license noopener" target="_blank">{IMAGE_LICENSE.name}</a>.</p>
+		</div>
+	</article>
+</Layout>

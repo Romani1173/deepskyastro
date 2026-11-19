@@ -57,6 +57,23 @@ export const publicUrl = (path: string, base = '/') => {
 
 export const author = { '@type': 'Person', name: 'Juan José Romero', url: `${PRODUCTION_SITE}/` } as const;
 
+/** Licencia de las fotografías (elegida por el autor el 2026-11-19). */
+export const IMAGE_LICENSE = {
+	name: 'CC BY-NC 4.0',
+	url: 'https://creativecommons.org/licenses/by-nc/4.0/',
+	legalCode: {
+		ca: 'https://creativecommons.org/licenses/by-nc/4.0/deed.ca',
+		es: 'https://creativecommons.org/licenses/by-nc/4.0/deed.es',
+		en: 'https://creativecommons.org/licenses/by-nc/4.0/deed.en',
+	},
+} as const;
+
+/**
+ * Correo para pedir permiso de uso comercial. Mientras esté vacío, la página
+ * «Ús de les imatges» solo indica que hay que pedir permiso al autor.
+ */
+export const LICENSE_CONTACT_EMAIL = '';
+
 /** BreadcrumbList a partir de pares [nombre, ruta]. */
 export const breadcrumbList = (items: Array<[string, string]>, base = '/') => ({
 	'@type': 'BreadcrumbList',

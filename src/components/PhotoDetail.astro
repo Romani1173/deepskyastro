@@ -3,9 +3,9 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SiteMapIcon from './SiteMapIcon.astro';
 import type { Lang } from '../i18n';
-import { categoryByValue, categoryHref, copy, galleryHref, homeHref, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
+import { categoryByValue, categoryHref, copy, galleryHref, homeHref, imageUseHref, languageLinks, localeFor, photoHref, planningHref, visibilityHref, withBase } from '../i18n';
 import { PRODUCTION_SITE } from '../consts';
-import { astrophotography, titleWith } from '../lib/seo';
+import { IMAGE_LICENSE, astrophotography, titleWith } from '../lib/seo';
 import { additionalImageText, photoText } from '../photoTranslations';
 import { photoTechnicalText, technicalValue } from '../technicalTranslations';
 import { imageSizes, optimizedImage } from '../lib/optimized-images';
@@ -65,6 +65,8 @@ const imageObject = {
 	creator: { '@type': 'Person', name: 'Juan José Romero' },
 	copyrightHolder: { '@type': 'Person', name: 'Juan José Romero' },
 	copyrightNotice: `© Juan José Romero`,
+	license: IMAGE_LICENSE.url,
+	acquireLicensePage: publicUrl(imageUseHref(lang, base)),
 	dateCreated: foto.data.entorn.data.toISOString().slice(0, 10),
 };
 // Ruta de navegación (Inicio › Galería › Categoría › Ficha) para los resultados de Google.
