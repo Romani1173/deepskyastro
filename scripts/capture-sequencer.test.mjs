@@ -7,11 +7,18 @@ test('allocates approximate percentages while keeping every filter present', () 
   assert.deepEqual(result.map(({ id, count }) => ({ id, count })), [{ id: 'ha', count: 5 }, { id: 'oiii', count: 3 }, { id: 'sii', count: 2 }]);
 });
 
-test('resets dither count for every filter block and omits final block dither', () => {
-  const result = simulateCapture({ exposureSeconds: 60, iterations: 1, autofocusDurationSeconds: 140, autofocusIntervalSeconds: 3600, filterChangeSeconds: 5, ditherDurationSeconds: 15, ditherEvery: 2 }, [{ id: 'ha', count: 5 }, { id: 'oiii', count: 3 }]);
-  assert.equal(result.ditherCount, 3);
+test('keeps one global dither count across filters and omits dither after the final light', () => {
+  const result = simulateCapture({ exposureSeconds: 60, iterations: 1, autofocusDurationSeconds: 140, autofocusIntervalSeconds: 3600, filterChangeSeconds: 5, ditherDurationSeconds: 15, ditherEvery: 3 }, [{ id: 'ha', count: 5 }, { id: 'oiii', count: 3 }]);
+  assert.equal(result.ditherCount, 2);
   assert.equal(result.filterChangeCount, 1);
-  assert.equal(result.elapsedSeconds, 140 + 8 * 60 + 3 * 15 + 5);
+  assert.equal(result.elapsedSeconds, 140 + 8 * 60 + 2 * 15 + 5);
+});
+
+test('adds measured readout and preparation time only between lights', () => {
+  const result = simulateCapture({ exposureSeconds: 300, iterations: 1, autofocusDurationSeconds: 0, autofocusIntervalSeconds: 0, filterChangeSeconds: 0, ditherDurationSeconds: 0, ditherEvery: 0, lightOverheadSeconds: 6 }, [{ id: 'ha', count: 3 }]);
+  assert.equal(result.lightOverheadCount, 2);
+  assert.equal(result.lightOverheadSeconds, 12);
+  assert.equal(result.elapsedSeconds, 912);
 });
 
 test('returns equal complete iterations without exceeding the session', () => {

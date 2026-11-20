@@ -27,6 +27,7 @@ export function simulateCapture(input, perIteration) {
   const filterChange = positive(input.filterChangeSeconds);
   const ditherDuration = positive(input.ditherDurationSeconds);
   const ditherEvery = Math.max(0, Math.floor(positive(input.ditherEvery, 0)));
+  const lightOverhead = positive(input.lightOverheadSeconds);
   let elapsed = autofocusDuration;
   let nextAutofocus = autofocusInterval ? elapsed + autofocusInterval : Infinity;
   let autofocusCount = autofocusDuration ? 1 : 0;
@@ -35,6 +36,7 @@ export function simulateCapture(input, perIteration) {
   let lights = 0;
   let integration = 0;
   let previousFilter = null;
+  const plannedLights = perIteration.reduce((sum, filter) => sum + Math.max(0, Math.floor(positive(filter.count))), 0) * iterations;
   const totals = Object.fromEntries(perIteration.map((filter) => [filter.id, 0]));
   const ensureFocus = () => {
     if (elapsed + 1e-9 < nextAutofocus) return;
@@ -56,8 +58,9 @@ export function simulateCapture(input, perIteration) {
         integration += exposure;
         lights += 1;
         totals[filter.id] += 1;
-        const moreInBlock = frame < filter.count;
-        if (ditherEvery && frame % ditherEvery === 0 && moreInBlock) {
+        const moreLightsRemain = lights < plannedLights;
+        if (moreLightsRemain) elapsed += lightOverhead;
+        if (ditherEvery && lights % ditherEvery === 0 && moreLightsRemain) {
           elapsed += ditherDuration;
           ditherCount += 1;
         }
@@ -72,6 +75,8 @@ export function simulateCapture(input, perIteration) {
     autofocusSeconds: autofocusCount * autofocusDuration,
     ditherCount,
     ditherSeconds: ditherCount * ditherDuration,
+    lightOverheadCount: Math.max(0, lights - 1),
+    lightOverheadSeconds: Math.max(0, lights - 1) * lightOverhead,
     filterChangeCount,
     filterChangeSeconds: filterChangeCount * filterChange,
     totals,
