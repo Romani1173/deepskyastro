@@ -56,6 +56,7 @@ a { color: inherit; }
 .site-nav a[data-nav-tone]:hover::before, .site-nav a[data-nav-tone][aria-current='page']::before { opacity: 1; }
 .site-nav a[data-nav-tone='visibility'] { --nav-tone: #438ea0; --nav-tone-rgb: 67, 142, 160; --nav-tone-soft: #74b2c0; --nav-tone-active: #99d2dd; }
 .site-nav a[data-nav-tone='analyser'] { --nav-tone: #55bda4; --nav-tone-rgb: 85, 189, 164; --nav-tone-soft: #7bc9b6; --nav-tone-active: #9de2d1; }
+.site-nav a[data-nav-tone='capture'] { --nav-tone: #7aa7ef; --nav-tone-rgb: 122, 167, 239; --nav-tone-soft: #a8c7f7; --nav-tone-active: #cbdcff; }
 .site-nav a[data-nav-tone='planning'] { --nav-tone: #d49b4d; --nav-tone-rgb: 212, 155, 77; --nav-tone-soft: #d9b074; --nav-tone-active: #f0c984; }
 .site-nav a[data-nav-tone='my-night'] { --nav-tone: #9b72d1; --nav-tone-rgb: 155, 114, 209; --nav-tone-soft: #b89ade; --nav-tone-active: #d9c3f5; }
 .site-nav a[data-nav-tone='articles'] { --nav-tone: #ddd8c9; --nav-tone-rgb: 221, 216, 201; --nav-tone-soft: #e5e1d5; --nav-tone-active: #fffdf6; }
