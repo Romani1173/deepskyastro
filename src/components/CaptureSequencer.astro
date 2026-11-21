@@ -36,7 +36,7 @@ const guideText = {
       <form class="capture-form" data-form>
         <fieldset><legend>01 · {t.operations}</legend><div class="field-grid field-grid--three">
           <label>{t.ditherEvery}<span><input name="ditherEvery" type="number" min="0" step="1" value="4" /><b>{t.lights}</b></span></label>
-          <label>{t.ditherTime}<span><input name="ditherTime" type="number" min="0" step="1" value="22" /><b>{t.seconds}</b></span></label>
+          <label>{t.ditherTime}<span><input name="ditherTime" type="number" min="0" step="1" value="6" /><b>{t.seconds}</b></span></label>
           <label>{t.lightTime}<span><input name="lightTime" type="number" min="0" step="1" value="6" /><b>{t.seconds}</b></span></label>
           <label>{t.afEvery}<span><input name="afEvery" type="number" min="1" step="1" value="60" /><b>min</b></span></label>
           <label>{t.afTime}<span><input name="afTime" type="number" min="0" step="1" value="235" /><b>{t.seconds}</b></span></label>
@@ -141,8 +141,9 @@ const guideText = {
 .capture-form input:is([type="number"],[type="time"]){border-color:rgba(var(--capture-rgb),.5);background:rgba(var(--capture-rgb),.09);color:#edf4ff;color-scheme:dark;transition:border-color .16s ease,background .16s ease,box-shadow .16s ease}
 .capture-form input:is([type="number"],[type="time"]):hover{border-color:rgba(var(--capture-rgb),.75);background:rgba(var(--capture-rgb),.12)}
 .capture-form input:is([type="number"],[type="time"]):focus-visible{border-color:var(--capture);outline:2px solid rgba(var(--capture-rgb),.35);outline-offset:2px;background:rgba(var(--capture-rgb),.14)}
-.capture-form input[type="number"]{appearance:textfield;-moz-appearance:textfield}
-.capture-form input[type="number"]::-webkit-inner-spin-button,.capture-form input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}
+/* Keep native increment/decrement controls visible in the dark colour scheme. */
+.capture-form input[type="number"]{appearance:auto;-moz-appearance:auto}
+.capture-form input[type="number"]::-webkit-inner-spin-button,.capture-form input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:auto;appearance:auto;opacity:1;margin:0;cursor:pointer}
 .capture-form label b{border-color:rgba(var(--capture-rgb),.5);background:rgba(var(--capture-rgb),.16);color:#cbdfff}
 .capture-form label>span:has(>input:is([type="number"],[type="time"])){align-self:end;align-items:stretch}
 .capture-form label>span:not(:has(>b))>input{border-radius:.45rem}

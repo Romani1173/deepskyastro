@@ -9,6 +9,7 @@
 
 - Conservar Inter para los textos. En todas las herramientas (Visibilidad, Planificación, Analizador, Captura y Mi noche), usar también Inter para los datos numéricos, siguiendo Visibilidad: cifras claras y cero sin punto interior. Space Mono puede conservarse fuera de estas interfaces.
 - Las herramientas nuevas deben reutilizar la tipografía, tamaños, pesos y controles ya aprobados, tomando Visibilidad como referencia de legibilidad. Revisar campos, resultados, tablas, gráficas y vista móvil; evitar ceros con punto interior y negritas sintéticas. No introducir variantes de diseño por iniciativa propia.
+- En Captura, el tiempo adicional de dither inicial aprobado es 6 s. Los cambios visuales no deben modificar los valores iniciales ni invalidar o sobrescribir los ajustes guardados del usuario. Conservar las claves de persistencia salvo migración expresamente necesaria y comprobar recarga y cambio de modo.
 - Mantener la estética oscura actual y no rediseñar el sitio de forma amplia sin solicitarlo primero.
 
 ## Publicación y estado actual
