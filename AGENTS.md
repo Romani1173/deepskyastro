@@ -7,8 +7,8 @@
 
 ## Diseño
 
-- Conservar la tipografía elegida por el autor: Inter para los textos y Space Mono para los datos técnicos.
-- Las herramientas nuevas deben reutilizar como base la tipografía, tamaños, pesos y controles de las herramientas ya aprobadas (por ejemplo, Planificación). No introducir variantes por iniciativa propia ni negritas sintéticas de fuentes que solo se cargan en peso regular. Verificar la legibilidad de los números antes de presentar una herramienta como terminada.
+- Conservar Inter para los textos. En todas las herramientas (Visibilidad, Planificación, Analizador, Captura y Mi noche), usar también Inter para los datos numéricos, siguiendo Visibilidad: cifras claras y cero sin punto interior. Space Mono puede conservarse fuera de estas interfaces.
+- Las herramientas nuevas deben reutilizar la tipografía, tamaños, pesos y controles ya aprobados, tomando Visibilidad como referencia de legibilidad. Revisar campos, resultados, tablas, gráficas y vista móvil; evitar ceros con punto interior y negritas sintéticas. No introducir variantes de diseño por iniciativa propia.
 - Mantener la estética oscura actual y no rediseñar el sitio de forma amplia sin solicitarlo primero.
 
 ## Publicación y estado actual
