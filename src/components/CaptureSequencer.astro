@@ -131,4 +131,22 @@ const guideText = {
 @media(max-width:860px){.capture-tool__layout{grid-template-columns:1fr}.capture-result{position:static}.field-grid--four{grid-template-columns:repeat(2,1fr)}.filter-choices{grid-template-columns:repeat(4,1fr)}}@media(max-width:560px){.field-grid--three,.field-grid--four{grid-template-columns:1fr 1fr}.filter-choices{grid-template-columns:repeat(2,1fr)}.filter-row{grid-template-columns:.55fr 1fr}.capture-form fieldset,.capture-result{padding:.8rem}.result-metrics{grid-template-columns:1fr 1fr}}@media(max-width:380px){.field-grid--three,.field-grid--four{grid-template-columns:1fr}}
 .sequence-card h4{margin:.72rem 0 .4rem;color:#9facc0;font:700 .7rem var(--font-technical);letter-spacing:.04em;text-transform:uppercase}.sequence-card [data-allocation-total]{display:grid;gap:.4rem}.sequence-card [data-allocation-total]>div{display:flex;flex-wrap:wrap;gap:.25rem .38rem;align-items:baseline;padding-bottom:.4rem;border-bottom:1px solid #263247}.sequence-card [data-allocation-total] strong,.sequence-card [data-allocation-total] span,.sequence-card [data-allocation-total] b,.sequence-card [data-allocation-total] em,.sequence-card [data-allocation-total] i{font:700 .82rem var(--font-technical)}.sequence-card [data-allocation] strong,.sequence-card [data-allocation-total] strong{margin-right:.35rem;color:#f0f4fb}.sequence-card [data-allocation-total] span,.sequence-card [data-allocation-total] em{color:#d8e0ed;font-style:normal}.sequence-card [data-allocation-total] b{color:var(--capture)}.sequence-card [data-allocation-total] i{color:#7688a3;font-style:normal}
 .capture-guide-link{display:inline-flex;align-items:center;gap:.5rem;margin-top:.6rem;padding:.5rem .65rem;border:1px solid rgba(var(--capture-rgb),.48);border-radius:.5rem;background:rgba(var(--capture-rgb),.08);color:#cfe0fa;font:700 .72rem var(--font-technical);text-decoration:none}.capture-guide-link svg{width:1.05rem;height:1.05rem;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5}.capture-guide-link:hover{border-color:var(--capture);background:rgba(var(--capture-rgb),.14)}
+/* Match Planning's regular technical face: Space Mono is loaded at 400 only.
+   Keep figures larger and tabular without synthesizing bold strokes. */
+.capture-tool{font-synthesis:none}
+.capture-form label{font-size:.85rem;line-height:1.45}
+.capture-form input{min-height:2.65rem;font:400 1rem/1.45 var(--font-technical);font-variant-numeric:tabular-nums}
+.capture-form label b{font:400 .8rem/1.45 var(--font-technical)}
+.capture-form .filter-choice{font-weight:400!important}
+.filter-row>strong{font-weight:400}
+.result-metrics span{font-size:.8rem;line-height:1.45}
+.result-metrics strong{font:400 1rem/1.5 var(--font-technical);font-variant-numeric:tabular-nums}
+.sequence-card :global([data-allocation]>div),.sequence-card :global([data-allocation-total]>div){gap:.3rem .45rem;line-height:1.6}
+.sequence-card :global([data-allocation] :is(strong,span,b,em,i)),.sequence-card :global([data-allocation-total] :is(strong,span,b,em,i)){font:400 .95rem/1.6 var(--font-technical);font-variant-numeric:tabular-nums}
+.overhead-card dt{font-size:.85rem;line-height:1.55}
+.overhead-card dd{font:400 .9rem/1.55 var(--font-technical);font-variant-numeric:tabular-nums}
+.percentage-total strong{font:400 .95rem/1.45 var(--font-technical);font-variant-numeric:tabular-nums}
+.form-note,.sequence-card p,.meridian-option small{font-size:.8rem;line-height:1.55}
+@media(max-width:560px){.field-grid--three,.field-grid--four{grid-template-columns:repeat(2,minmax(0,1fr))}.overhead-card dl div{flex-wrap:wrap;gap:.15rem .6rem}}
+@media(max-width:380px){.field-grid--three,.field-grid--four{grid-template-columns:1fr}}
 </style>

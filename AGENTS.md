@@ -8,6 +8,7 @@
 ## Diseño
 
 - Conservar la tipografía elegida por el autor: Inter para los textos y Space Mono para los datos técnicos.
+- Las herramientas nuevas deben reutilizar como base la tipografía, tamaños, pesos y controles de las herramientas ya aprobadas (por ejemplo, Planificación). No introducir variantes por iniciativa propia ni negritas sintéticas de fuentes que solo se cargan en peso regular. Verificar la legibilidad de los números antes de presentar una herramienta como terminada.
 - Mantener la estética oscura actual y no rediseñar el sitio de forma amplia sin solicitarlo primero.
 
 ## Publicación y estado actual
