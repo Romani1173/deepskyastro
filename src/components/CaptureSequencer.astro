@@ -136,6 +136,18 @@ const guideText = {
 .capture-form label{font-size:.85rem;line-height:1.45}
 .capture-form input{min-height:2.65rem;font:400 1rem/1.45 var(--font-technical);font-variant-numeric:tabular-nums}
 .capture-form label b{font:400 .8rem/1.45 var(--font-technical)}
+/* Capture controls share the section blue; filter identities keep their colours. */
+.capture-form fieldset{border-color:rgba(var(--capture-rgb),.3)}
+.capture-form input:is([type="number"],[type="time"]){border-color:rgba(var(--capture-rgb),.5);background:rgba(var(--capture-rgb),.09);color:#edf4ff;color-scheme:dark;transition:border-color .16s ease,background .16s ease,box-shadow .16s ease}
+.capture-form input:is([type="number"],[type="time"]):hover{border-color:rgba(var(--capture-rgb),.75);background:rgba(var(--capture-rgb),.12)}
+.capture-form input:is([type="number"],[type="time"]):focus-visible{border-color:var(--capture);outline:2px solid rgba(var(--capture-rgb),.35);outline-offset:2px;background:rgba(var(--capture-rgb),.14)}
+.capture-form input[type="number"]{appearance:textfield;-moz-appearance:textfield}
+.capture-form input[type="number"]::-webkit-inner-spin-button,.capture-form input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;appearance:none;margin:0}
+.capture-form label b{border-color:rgba(var(--capture-rgb),.5);background:rgba(var(--capture-rgb),.16);color:#cbdfff}
+.capture-form label>span:has(>input:is([type="number"],[type="time"])){align-self:end;align-items:stretch}
+.capture-form label>span:not(:has(>b))>input{border-radius:.45rem}
+.result-metrics section{border-color:rgba(var(--capture-rgb),.32);background:rgba(var(--capture-rgb),.055)}
+.sequence-card,.overhead-card{border-color:rgba(var(--capture-rgb),.24)}
 .capture-form .filter-choice{font-weight:400!important}
 .filter-row>strong{font-weight:400}
 .result-metrics span{font-size:.8rem;line-height:1.45}
