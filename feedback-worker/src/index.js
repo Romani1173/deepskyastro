@@ -1,4 +1,4 @@
-const TOOLS = new Set(['visibility', 'planning', 'analyser', 'my-night']);
+const TOOLS = new Set(['visibility', 'planning', 'analyser', 'my-night', 'capture-sequencer']);
 const VOTES = new Set(['up', 'down']);
 const REASONS = new Set(['confusing', 'missing', 'broken', 'other']);
 const LANGUAGES = new Set(['ca', 'es', 'en']);

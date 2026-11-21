@@ -3,7 +3,7 @@ import type { Lang } from '../i18n';
 
 interface Props {
   lang: Lang;
-  tool: 'visibility' | 'planning' | 'analyser' | 'my-night';
+  tool: 'visibility' | 'planning' | 'analyser' | 'my-night' | 'capture-sequencer';
   allowNegativeBack?: boolean;
 }
 
@@ -63,7 +63,7 @@ const copy = {
 
 <script>
   type Vote = { vote: 'up' | 'down'; reason?: string; comment?: string; createdAt?: string };
-  type Tool = 'visibility' | 'planning' | 'analyser' | 'my-night';
+  type Tool = 'visibility' | 'planning' | 'analyser' | 'my-night' | 'capture-sequencer';
   const key = 'deepskyastro-feedback-v1';
   const visitorKey = 'deepskyastro-feedback-visitor-v1';
   const read = (): Partial<Record<Tool, Vote>> => {
@@ -210,6 +210,8 @@ const copy = {
   .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button{display:inline-flex;align-items:center;justify-content:center;padding:.48rem .68rem;border:1px solid rgba(224,239,88,.78);border-radius:.52rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
   .tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:hover,.tool-feedback-demo:is([data-tool-feedback="visibility"],[data-tool-feedback="planning"],[data-tool-feedback="analyser"],[data-tool-feedback="my-night"]) .tool-feedback-demo__thanks button:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
   .tool-feedback-demo__status{margin:.75rem 0 0;color:#b3cbd3;font-size:.75rem}.tool-feedback-demo__status.is-error{color:#ffaaaa}
+  .tool-feedback-demo[data-tool-feedback="capture-sequencer"] .tool-feedback-demo__thanks button{display:inline-flex;align-items:center;justify-content:center;padding:.48rem .68rem;border:1px solid rgba(224,239,88,.78);border-radius:.52rem;background:rgba(224,239,88,.1);color:#eef879;font-size:.78rem;font-weight:700;line-height:1;text-decoration:none;transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease}
+  .tool-feedback-demo[data-tool-feedback="capture-sequencer"] .tool-feedback-demo__thanks button:hover,.tool-feedback-demo[data-tool-feedback="capture-sequencer"] .tool-feedback-demo__thanks button:focus-visible{border-color:#eef879;background:rgba(224,239,88,.2);color:#f7ffad;text-decoration:none;transform:translateY(-1px)}
   .tool-feedback-demo button:disabled{cursor:wait;opacity:.6}
   .tool-feedback-demo [hidden]{display:none!important}
   @media(max-width:520px){.tool-feedback-demo{padding:1rem}.tool-feedback-demo__choices{display:grid}.tool-feedback-demo__choices button{text-align:left}}
