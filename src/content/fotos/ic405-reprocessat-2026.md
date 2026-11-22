@@ -33,7 +33,7 @@ exposicio:
 
 tractament:
   adquisicio: "NINA"
-  processat: "Apilat i postprocessat amb PixInsight 1.9.6 · HOO · PixelMath: H = $T + (SII × 0.6), O = $T, O = $T"
+  processat: "Apilat i postprocessat amb PixInsight 1.9.6 · HOO"
 
 entorn:
   lloc: "l’Ampolla"
@@ -69,12 +69,21 @@ imatges_addicionals:
   - tipus: "process"
     fitxer: "IC405_Flaming_repro-2026_process.jpg"
     titol: "Flux de postprocessament"
-    descripcio: "Historial dels processos aplicats a PixInsight durant el reprocessat de 2026."
+    descripcio: >-
+      Al pas 0.18 vaig aplicar l’script DarkStructureEnhance per remarcar lleugerament les estructures més fosques.
+      Després dels passos que es veuen al diagrama, vaig reforçar amb PixelMath el canal vermell (Hα) de la composició HOO amb senyal de S II. El S II es va fer servir només en aquest reforç. L’expressió del canal R era $T + (SII * 0.6) i als canals G i B vaig deixar $T, de manera que el senyal d’O III es va mantenir.
+      Les entrades d’ImageIdentifier indiquen que vaig canviar el nom de la vista segons l’últim procés aplicat. És un pas opcional que ajuda a identificar etapes i a reprendre el treball des d’una còpia intermèdia si s’ha desat per separat.
     traduccions:
       es:
         titol: "Flujo de posprocesado"
-        descripcio: "Historial de los procesos aplicados en PixInsight durante el reprocesado de 2026."
+        descripcio: >-
+          En el paso 0.18 apliqué el script DarkStructureEnhance para realzar ligeramente las estructuras más oscuras.
+          Después de los pasos que se ven en el diagrama, reforcé con PixelMath el canal rojo (Hα) de la composición HOO con señal de S II. El S II se usó solo para este refuerzo. La expresión del canal R era $T + (SII * 0.6) y en los canales G y B dejé $T, de modo que se conservó la señal de O III.
+          Las entradas de ImageIdentifier indican que cambié el nombre de la vista según el último proceso aplicado. Es un paso opcional que ayuda a identificar etapas y a retomar el trabajo desde una copia intermedia si se ha guardado por separado.
       en:
         titol: "Post-processing workflow"
-        descripcio: "PixInsight process history for the 2026 reprocessing."
+        descripcio: >-
+          At step 0.18, I used the DarkStructureEnhance script to bring out the darker structures slightly.
+          After the steps shown in the diagram, I used PixelMath to enhance the red (Hα) channel of the HOO image with S II signal. This was the only use of S II. The R channel expression was $T + (SII * 0.6), while G and B used $T to retain their O III signal.
+          The ImageIdentifier entries mark where I renamed the view after the most recent process. This optional step makes it easier to identify stages and resume work from an intermediate copy if one was saved separately.
 ---
